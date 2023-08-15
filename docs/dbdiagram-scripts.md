@@ -1,26 +1,26 @@
 # DATABASE CREATION
 
-```sql
+``` sql
 // User
 
-enum Role {
+enum Role { 
   admin
-  client
+  client 
   super_admin
 }
 
-enum Gender {
+enum Gender { 
   male
   female
   other
 }
 
-enum user_type {
+enum user_type { 
   google
   email
 }
 
-Table user {
+Table user { 
   id varchar [pk, not null]
   username varchar [not null, unique]
   email varchar [not null, unique]
@@ -39,33 +39,33 @@ Table user {
 
   last_connection timestamp [default: 'now()']
 
-  indexes {
+  indexes { 
     (id, username) [pk]
-    [email](unique)
+    (email)[unique]
   }
 }
 
-// Review & Comments
+// Review & Comments 
 
-Table review {
+Table review { 
   id varchar [pk, not null]
   user_id varchar [not null]
   ordered_product_id varchar [not null]
-  rating_value integer
+  rating_value integer [not null]
   visible boolean [default: true]
   comment_id varchar
 
   created_at timestamp [default: 'now()']
   updated_at timestamp
 
-  indexes {
+  indexes { 
     (user_id, ordered_product_id) [unique]
-    (ordered_product_id)
+    (ordered_product_id) 
     (visible)
   }
 }
 
-Table comment {
+Table comment { 
   id varchar [pk]
   user_id varchar [not null]
   content text [not null]
@@ -76,24 +76,24 @@ Table comment {
   created_at timestamp [default: 'now()']
   updated_at timestamp
 
-   indexes {
+   indexes { 
     (user_id)
     (visible)
   }
 }
 
-// Shipping Address
+// Shipping Address 
 
-Table user_address {
+Table user_address { 
   user_id varchar [not null]
   address_id varchar [not null]
   is_default boolean [default: true]
 }
 
-Table address {
+Table address { 
   id varchar [pk, not null]
   unit_number integer
-  street_number varchar
+  street_number varchar 
   address_line1 varchar [not null]
   address_line2 varchar [not null]
   city varchar [not null]
@@ -104,51 +104,54 @@ Table address {
   location_id varchar
 }
 
-Table location {
+Table location { 
   id varchar [pk]
   lat number
   lng number
 }
 
-Table country {
-  id integer [pk, increment, not null]
+Table country { 
+  id integer [pk, increment, not null] 
   code varchar [not null, unique]
   long_name varchar [not null]
   
-  indexes {
-    [code](unique)
+  indexes { 
+    (code)[unique]
   }
 }
 
-// Payments
 
-Table user_payment_method {
+// Payments 
+
+Table user_payment_method { 
   id varchar [pk, not null]
   user_id varchar [not null]
   payment_method_id varchar [not null]
   
   provider varchar [not null]
-  account_number varchar [not null]
-  expiry_date timestamp
+  account_number varchar [not null] 
+  expiry_date timestamp 
   is_default boolean [default: true]
 }
 
+
 enum payment_value {
-  credit_card
+  credit_card 
   other
 }
 
-Table payment_method {
+Table payment_method { 
   id varchar [pk, not null]
   value payment_value [not null, default: 'credit_card']
 }
 
-// Shopping cart
 
-Table shopping_cart {
+// Shopping cart 
+
+Table shopping_cart { 
   id varchar [pk, not null]
   user_id varchar [not null]
-}
+} 
 
 Table shopping_cart_product_item {
   id varchar [pk, not null]
@@ -165,11 +168,12 @@ Table shopping_cart_product_item {
 
 // Product
 
-Table product {
+Table product { 
   id varchar [pk, not null]
   title varchar [not null]
   subtitle varchar [not null]
   description text [not null]
+
 
   created_by varchar [not null]
   updated_by varchar [not null]
@@ -177,7 +181,7 @@ Table product {
   created_at timestamp [default: 'now()']
   updated_at timestamp
 
-  indexes {
+  indexes { 
     (id) [pk]
   }
 
@@ -191,26 +195,42 @@ Table product_image {
   uploaded_by varchar [not null]
   uploaded_at timestamp [default: 'now()']
 
-  indexes {
+  indexes { 
     (product_id)
   }
 }
 
-Table  product_item {
-  id varchar [pk, not null]
+Table  product_item { 
+  id varchar [pk, not null] 
   product_id varchar [not null]
   SKU varchar [not null]
   quantity_in_stock integer [default: 1]
   price number [default: 0]
-  percentage_discount integer [default: 0]
+  
   slug text [not null]
 
   indexes {
-    [product_id](unique)
-    [SKU](unique)
+    (product_id)[unique]
+    (SKU)[unique]
     (slug)
   }
   
+}
+
+Table product_promotion { 
+  product_id varchar [not null]
+  promotion_id varchar [not null]
+}
+
+
+
+
+Table promotion { 
+  id varchar [pk, not null]
+  description text [not null]
+  percentage_discount integer [default: 0]
+  start_date timestamp [default: 'now()']
+  end_date timestamp 
 }
 
 Table product_tag {
@@ -229,40 +249,55 @@ Table tag {
   }
 }
 
-Table product_category {
+Table product_category { 
   product_id varchar [not null]
   category_id varchar [not null]
 }
 
-Table category {
+Table category { 
   id varchar [pk, not null]
   value varchar [not null]
   description text [not null]
-  
+
+  season_id varchar [not null]
   parent_category_id varchar
   active boolean [default: true]
 
   created_by varchar [not null]
 }
 
-Table variation {
+Table category_promotion { 
+  category_id varchar [not null]
+  promotion_id varchar [not null]
+}
+
+Table variation { 
   id varchar [pk, not null]
   category_id varchar [not null]
   name varchar [not null]
 }
 
-Table variation_option {
+Table variation_option { 
   id varchar [pk, not null]
   variation_id varchar [not null]
   value varchar [not null]
 }
 
-Table product_configuration {
+Table product_configuration { 
   product_item_id varchar [not null]
   variation_option_id varchar [not null]
 }
 
-// Orders
+Table season {
+  id varchar [pk, not null]
+
+  description text [not null]
+
+  start_date timestamp [default: 'now()']
+  end_date timestamp 
+}
+
+// Orders 
 Table order_line {
   id varchar [pk, not null]
   product_item_id varchar [not null]
@@ -271,7 +306,7 @@ Table order_line {
   total_price number [not null]
 }
 
-Table shop_order {
+Table shop_order { 
   id varchar [pk, not null]
   user_id varchar [not null]
   user_payment_method_id varchar [not null]
@@ -281,16 +316,16 @@ Table shop_order {
   order_status_id varchar [not null]
 
   created_at timestamp [default: 'now()']
-  updated_at timestamp
+  updated_at timestamp 
 
-  last_location_id varchar
+  last_location_id varchar 
 
-  indexes {
-    [user_id](unique)
+  indexes { 
+    (user_id)[unique]
   }
 }
 
-Table shipping_method {
+Table shipping_method { 
   id varchar [pk, not null]
   name varchar [not null]
   price number [not null, default: 0]
@@ -303,14 +338,15 @@ enum status_value {
   delivered
 }
 
-Table order_status {
+Table order_status { 
   id varchar [pk, not null]
   status_value status_value
 }
 
+
 Ref: "user"."id" < "user_address"."user_id"
 
-Ref: "address"."id" < "user_address"."adress_id"
+Ref: "address"."id" < "user_address"."address_id"
 
 Ref: "country"."id" < "address"."country_id"
 
@@ -322,7 +358,7 @@ Ref: "user"."id" < "review"."user_id"
 
 Ref: "user"."id" < "comment"."user_id"
 
-Ref: "user"."username" < "user_payment_method"."user_id"
+Ref: "user"."id" < "user_payment_method"."user_id"
 
 Ref: "payment_method"."id" < "user_payment_method"."payment_method_id"
 
@@ -344,9 +380,9 @@ Ref: "product"."id" < "product_item"."product_id"
 
 Ref: "product"."id" < "product_image"."product_id"
 
-Ref: "category"."id" < "variation"."id"
+Ref: "category"."id" < "variation"."category_id"
 
-Ref: "variation"."category_id" < "variation_option"."variation_id"
+Ref: "variation"."id" < "variation_option"."variation_id"
 
 Ref: "product_item"."product_id" < "product_configuration"."product_item_id"
 
@@ -372,8 +408,19 @@ Ref: "address"."id" < "shop_order"."shipping_address_id"
 
 Ref: "product_item"."id" < "order_line"."product_item_id"
 
-Ref: "user"."id" < "user"."password"
-
 Ref: "shop_order"."last_location_id" - "location"."id"
 
+Ref: "order_line"."id" < "review"."ordered_product_id"
+
+Ref: "product_item"."id" < "product_image"."product_id"
+
+Ref: "product"."id" < "product_promotion"."product_id"
+
+Ref: "promotion"."id" < "product_promotion"."promotion_id"
+
+Ref: "category"."id" < "category_promotion"."category_id"
+
+Ref: "promotion"."id" < "category_promotion"."promotion_id"
+
+Ref: "season"."id" < "category"."season_id"
 ```
