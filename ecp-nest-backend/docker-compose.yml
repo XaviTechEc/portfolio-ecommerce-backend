@@ -21,22 +21,22 @@ services:
       - ${SERVER_PORT}=${SERVER_PORT}
 
     environment:
-      - APP_VERSION: ${APP_VERSION}
-      - STAGE: ${STAGE}
-      - DB_PASSWORD: ${DB_PASSWORD}
-      - DB_NAME: ${DB_NAME}
-      - DB_HOST: ${DB_HOST}
-      - DB_PORT: ${DB_PORT}
-      - DB_USERNAME: ${DB_USERNAME}
-      - SERVER_PORT: ${SERVER_PORT}
-      - HOST_API: ${HOST_API}
+      APP_VERSION: ${APP_VERSION}
+      STAGE: ${STAGE}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      SERVER_PORT: ${SERVER_PORT}
+      HOST_API: ${HOST_API}
 
   database:
-    container_name: ecp_database
+    container_name: ecp-database
     image: postgres:15.3
     restart: always
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
@@ -44,7 +44,7 @@ services:
       - ./postgres:/var/lib/postgresql/data
 
   pgadmin:
-    container_name: pgadmin4
+    container_name: ecp-pgadmin4
     image: dpage/pgadmin4:7.0
     restart: always
     depends_on:
