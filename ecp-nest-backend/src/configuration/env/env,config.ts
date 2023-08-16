@@ -1,3 +1,4 @@
 export const EnvConfiguration = () => ({
-  NODE_ENV: process.env.NODE_ENV || 'dev',
+  environment: process.env.NODE_ENV || 'development',
+  port: process.env.SERVER_PORT || 3000,
 });

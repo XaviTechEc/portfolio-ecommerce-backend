@@ -14,18 +14,12 @@ import { UsersModule } from './users/users.module';
 import { SeedModule } from './seed/seed.module';
 import { ConfigModule } from '@nestjs/config';
 import { EnvConfiguration } from './configuration/env/env,config';
-import { JoiEnvValidationSchema } from './configuration/env/env.validation';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      cache: true,
+      envFilePath: ['.env.development'],
       load: [EnvConfiguration],
-      validationSchema: JoiEnvValidationSchema,
-      validationOptions: {
-        allowUnknown: false,
-        abortEarly: true,
-      },
     }),
     SharedModule,
     AuthModule,
