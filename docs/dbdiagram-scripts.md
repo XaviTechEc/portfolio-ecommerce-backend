@@ -3,13 +3,13 @@
 ``` sql
 // User
 
-enum Role { 
+enum role { 
   admin
   client 
   super_admin
 }
 
-enum Gender { 
+enum gender { 
   male
   female
   other
@@ -29,8 +29,8 @@ Table user {
   phone_number varchar [not null, unique]
 
   user_type user_type [default: 'email']
-  role Role [default: 'client']
-  gender Gender
+  role role [default: 'client']
+  gender gender
   avatar_img varchar
   active boolean [default: true]
 
