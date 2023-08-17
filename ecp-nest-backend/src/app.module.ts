@@ -1,30 +1,23 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 
 import { CommonModule } from './common/common.module';
-import { UserController } from './interface-adapters/controllers/users/user.controller';
 import { DataServicesModule } from './services/data-services/data-services.module';
-import { UserUseCasesModule } from './use-cases/users/user-use-cases.module';
-// import { EnvConfiguration } from './configuration/env/env,config';
-import { AppController } from './app/app.controller';
+
 import { ConfigurationModule } from './configuration/configuration.module';
-import { AppService } from './app/app.service';
+import { InterfaceAdaptersModule } from './interface-adapters/interface-adapters.module';
+import { UseCasesModule } from './use-cases/use-cases.module';
+import { FrameworksModule } from './frameworks/frameworks.module';
 
 @Module({
   imports: [
-    /*
-      {
-        envFilePath: ['.env.development'],
-        load: [EnvConfiguration],
-      }
-    */
-    ConfigModule.forRoot(),
-    ConfigurationModule,
     CommonModule,
+    ConfigurationModule,
+    InterfaceAdaptersModule,
     DataServicesModule,
-    UserUseCasesModule,
+    UseCasesModule,
+    FrameworksModule,
   ],
-  controllers: [UserController, AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

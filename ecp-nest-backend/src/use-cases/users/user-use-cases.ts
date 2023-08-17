@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { IDataServices } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import { UserFactoryService } from './user-factory.service';
 import { User } from 'src/core/entities';
+import { IUsersRepository } from 'src/core/abstracts/repositories/users.repository';
 
 @Injectable()
-export class UserUseCases {
+export class UserUseCases implements IUsersRepository {
   constructor(
-    private dataServices: IDataServices,
+    private dataServices: IDataSourcesService,
     private userFactoryService: UserFactoryService,
   ) {}
 
