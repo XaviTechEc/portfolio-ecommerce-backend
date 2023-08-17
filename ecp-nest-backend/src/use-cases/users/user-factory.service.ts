@@ -4,12 +4,12 @@ import { User } from 'src/core/entities';
 @Injectable()
 export class UserFactoryService {
   createUser(createUserDto: any) {
-    const newUser = new User({ ...createUserDto });
+    const newUser = new User();
     return newUser;
   }
 
   updateUser(updateUserDto: any) {
-    const newUser = new User({ ...updateUserDto });
+    const newUser = new User();
     return newUser;
   }
 }

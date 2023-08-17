@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { UserUseCases } from 'src/use-cases/users/user-use-cases';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private userUseCases: UserUseCases) {}
 

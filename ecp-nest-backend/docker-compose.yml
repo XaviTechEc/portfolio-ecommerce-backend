@@ -60,6 +60,6 @@ services:
       - ./pgadmin:/certs/server.key
       - ./pgadmin:/pgadmin4/servers.json
 
-# volumes:
-#   postgres-db: 
-#     external: false
+volumes:
+  postgres-db:
+    external: false

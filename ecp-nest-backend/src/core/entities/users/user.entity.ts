@@ -1,3 +1,7 @@
+import { Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
 export class User {
-  constructor(public userData: any) {}
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 }

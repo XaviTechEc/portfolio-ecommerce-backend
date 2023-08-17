@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataServices } from 'src/core/abstracts/services/data-sources.service';
 import { UserFactoryService } from './user-factory.service';
 import { User } from 'src/core/entities';
 
 @Injectable()
 export class UserUseCases {
   constructor(
-    private dataServices: IDataSourcesService,
+    private dataServices: IDataServices,
     private userFactoryService: UserFactoryService,
   ) {}
 
