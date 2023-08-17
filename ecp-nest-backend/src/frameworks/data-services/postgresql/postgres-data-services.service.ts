@@ -1,27 +1,24 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IGenericDataMethodsRepository } from 'src/core/abstracts/repositories/generic-data-methods.repository';
+
 import { IDataServices } from 'src/core/abstracts/services/data-sources.service';
-import { User } from 'src/core/entities';
+
 import { Repository } from 'typeorm';
 import { PostgresGenericRepository } from './postgres-generic-repository';
+import { UserEntity } from './typeorm/entities/users/user.entity';
 
 @Injectable()
 export class PostgresDataServices
   implements IDataServices, OnApplicationBootstrap
 {
-  users: IGenericDataMethodsRepository<User>;
+  users: PostgresGenericRepository<UserEntity>;
 
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-  ) {
-    console.log('====================================');
-    console.log(process.env.DB_HOST);
-    console.log('====================================');
-  }
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
+  ) {}
 
   onApplicationBootstrap() {
-    this.users = new PostgresGenericRepository<User>(this.userRepository);
+    this.users = new PostgresGenericRepository<UserEntity>(this.userRepository);
   }
 }

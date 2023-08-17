@@ -1,35 +1,35 @@
 version: '3'
 
 services:
-  app:
-    container_name: ecp-backend-app
-    restart: always
-    depends_on:
-      - database
-    build:
-      context: ./
-      target: ${STAGE}
-      dockerfile: Dockerfile
+  # app:
+  #   container_name: ecp-backend-app
+  #   restart: always
+  #   depends_on:
+  #     - database
+  #   build:
+  #     context: ./
+  #     target: ${STAGE}
+  #     dockerfile: Dockerfile
 
-    command: yarn star:dev
+  #   command: yarn star:dev
 
-    volumes:
-      - ./:/app/
-      - /app/node_modules
+  #   volumes:
+  #     - ./:/app/
+  #     - /app/node_modules
 
-    ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+  #   ports:
+  #     - ${SERVER_PORT}:${SERVER_PORT}
 
-    environment:
-      APP_VERSION: ${APP_VERSION}
-      STAGE: ${STAGE}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_USERNAME: ${DB_USERNAME}
-      SERVER_PORT: ${SERVER_PORT}
-      HOST_API: ${HOST_API}
+  #   environment:
+  #     APP_VERSION: ${APP_VERSION}
+  #     STAGE: ${STAGE}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #     DB_NAME: ${DB_NAME}
+  #     DB_HOST: ${DB_HOST}
+  #     DB_PORT: ${DB_PORT}
+  #     DB_USERNAME: ${DB_USERNAME}
+  #     SERVER_PORT: ${SERVER_PORT}
+  #     HOST_API: ${HOST_API}
 
   database:
     container_name: ecp-database
