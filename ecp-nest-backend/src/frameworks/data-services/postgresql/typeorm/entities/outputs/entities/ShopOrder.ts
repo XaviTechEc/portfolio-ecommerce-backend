@@ -1,30 +1,22 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from './User';
-
-/*
-  Table shop_order { 
-  id varchar [pk, not null]
-  user_id varchar [not null]
-  user_payment_method_id varchar [not null]
-  shipping_address_id varchar [not null]
-  shipping_method_id varchar [not null]
-  order_total number [not null]
-  order_status_id varchar [not null]
-  created_at timestamp [default: 'now()']
-  updated_at timestamp 
-  last_location_id varchar 
-  indexes { 
-    (user_id)[unique]
-  }
-}
-*/
+import { Address } from './Address';
+import { Location } from './Location';
+import { OrderLine } from './OrderLine';
+import { ShippingMethod } from './ShippingMethod';
+import { OrderStatus } from './OrderStatus';
+import { UserPaymentMethod } from './UserPaymentMethod';
 
 @Index('shop_order_pkey', ['id'], { unique: true })
 @Index('shop_order_user_id_idx', ['user_id'], { unique: true })
@@ -45,25 +37,48 @@ export class ShopOrder {
   @Column('varying character', { name: 'shipping_method_id' })
   shippingMethodId: string;
 
-  @Column('float', { name: 'order_total' })
+  @Column('real', { name: 'order_total' })
   orderTotal: number;
 
   @Column('varying character', { name: 'order_status_id' })
   orderStatusId: string;
 
-  @Column('timestamp without time zone', {
-    name: 'created_at',
-    default: () => Date.now(),
-  })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
 
-  @Column('timestamp without time zone', { name: 'updated_at', nullable: true })
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date | null;
 
   @Column('varying character', { name: 'last_location_id', nullable: true })
   lastLocationId: string | null;
 
+  // Relations
+  @OneToMany(() => OrderLine, (orderLine) => orderLine.shopOrder)
+  orderLine: OrderLine[];
+
+  @ManyToOne(() => ShippingMethod, (shippingMethod) => shippingMethod.shopOrder)
+  @JoinColumn([{ name: 'shipping_method_id', referencedColumnName: 'id' }])
+  shippingMethod: ShippingMethod;
+
+  @ManyToOne(() => OrderStatus, (orderStatus) => orderStatus.shopOrder)
+  @JoinColumn([{ name: 'order_status_id', referencedColumnName: 'id' }])
+  orderStatus: OrderStatus;
+
+  @OneToOne(() => Location, (location) => location.shopOrder)
+  @JoinColumn([{ name: 'last_location_id', referencedColumnName: 'id' }])
+  location: Location;
+
   @ManyToOne(() => User, (user) => user.shopOrder)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
+
+  @OneToMany(
+    () => UserPaymentMethod,
+    (userPaymentMethod) => userPaymentMethod.shopOrder,
+  )
+  userPaymentMethod: UserPaymentMethod[];
+
+  @ManyToOne(() => Address, (address) => address.shopOrder)
+  @JoinColumn([{ name: 'shipping_address_id', referencedColumnName: 'id' }])
+  address: Address;
 }

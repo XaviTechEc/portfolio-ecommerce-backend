@@ -1,5 +1,17 @@
-import { Column, Entity, Index, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  JoinColumn,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { User } from './User';
+import { OrderLine } from './OrderLine';
+import { Comment } from './Comment';
 
 @Index('review_pkey', ['id'], { unique: true })
 @Index(
@@ -11,7 +23,7 @@ import { User } from './User';
 @Index('review_visible_idx', ['visible'], {})
 @Entity('review', { schema: 'public' })
 export class Review {
-  @Column('character varying', { primary: true, name: 'id' })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('character varying', { name: 'user_id' })
@@ -20,26 +32,30 @@ export class Review {
   @Column('character varying', { name: 'ordered_product_id' })
   orderedProductId: string;
 
-  @Column('integer', { name: 'rating_value' })
+  @Column('smallint', { name: 'rating_value' })
   ratingValue: number;
 
-  @Column('boolean', { name: 'visible', nullable: true, default: () => 'true' })
-  visible: boolean | null;
+  @Column('boolean', { name: 'visible', default: true })
+  visible: boolean;
 
   @Column('character varying', { name: 'comment_id', nullable: true })
   commentId: string | null;
 
-  @Column('timestamp without time zone', {
-    name: 'created_at',
-    nullable: true,
-    default: () => "'2023-08-17 18:59:44.56802'",
-  })
-  createdAt: Date | null;
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
 
-  @Column('timestamp without time zone', { name: 'updated_at', nullable: true })
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date | null;
 
+  // Relations
   @ManyToOne(() => User, (user) => user.review)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
+
+  @ManyToOne(() => OrderLine, (orderLine) => orderLine.review)
+  @JoinColumn([{ name: 'ordered_product_id', referencedColumnName: 'id' }])
+  orderLine: OrderLine;
+
+  @OneToMany(() => Comment, (comment) => comment.review)
+  comment: Comment[];
 }

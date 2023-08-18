@@ -4,6 +4,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
+  BeforeInsert,
+  BeforeUpdate,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserAddress } from './UserAddress';
 import { Review } from './Review';
@@ -12,74 +16,20 @@ import { ShopOrder } from './ShopOrder';
 import { Comment } from './Comment';
 import { UserPaymentMethod } from './UserPaymentMethod';
 import { ProductImage } from './ProductImage';
-/*
-  enum role { 
-  admin
-  client 
-  super_admin
-}
-
-enum gender { 
-  male
-  female
-  other
-}
-
-enum user_type { 
-  google
-  email
-}
-
-Table user { 
-  id varchar [pk, not null]
-  username varchar [not null, unique]
-  email varchar [not null, unique]
-  password varchar [not null]
-  full_name varchar [not null]
-  phone_number varchar [not null, unique]
-  user_type user_type [default: 'email']
-  role role [default: 'client']
-  gender gender
-  avatar_img varchar
-  active boolean [default: true]
-  created_at timestamp [default: 'now()']
-  updated_at timestamp
-  last_connection timestamp [default: 'now()']
-
-  indexes { 
-    (id, username) [pk]
-    (email)[unique]
-  }
-}
-
-*/
-
-export enum UserType {
-  email,
-  google,
-}
-
-export enum Role {
-  admin,
-  client,
-  super_admin,
-}
-
-export enum Gender {
-  male,
-  female,
-  other,
-}
+import { Product } from './Product';
+import { UserType, Role, Gender } from 'src/core/enums';
+import { Category } from './Category';
 
 @Index('user_pkey', ['id'], { unique: true })
 @Index('user_id_user_username_idx', ['id', 'username'], { unique: true })
+@Index('user_email_idx', ['username'], {})
 @Index('user_email_idx', ['email'], {})
 @Entity('user', { schema: 'public' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'username' })
+  @Column('character varying', { name: 'username', unique: true })
   username: string;
 
   @Column('character varying', { name: 'email', unique: true })
@@ -114,8 +64,9 @@ export class User {
     type: 'enum',
     enum: Gender,
     name: 'role',
+    nullable: true,
   })
-  gender: Gender;
+  gender: Gender | null;
 
   @Column('character varying', { name: 'avatar_img', nullable: true })
   avatarImg: string | null;
@@ -123,16 +74,13 @@ export class User {
   @Column('boolean', { name: 'active', default: true })
   active: boolean;
 
-  @Column('timestamp without time zone', {
-    name: 'created_at',
-    default: () => Date.now(),
-  })
-  createdAt: Date | null;
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
 
-  @Column('timestamp without time zone', { name: 'updated_at', nullable: true })
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date | null;
 
-  @Column('timestamp without time zone', {
+  @Column('timestamptz', {
     name: 'last_connection',
     nullable: true,
   })
@@ -158,8 +106,24 @@ export class User {
     () => UserPaymentMethod,
     (userPaymentMethod) => userPaymentMethod.user,
   )
-  userPaymentMethod: UserPaymentMethod;
+  userPaymentMethod: UserPaymentMethod[];
+
+  @OneToMany(() => Product, (product) => product.user)
+  product: Product[];
 
   @OneToMany(() => ProductImage, (productImage) => productImage.user)
-  productImage: ProductImage;
+  productImage: ProductImage[];
+
+  @OneToMany(() => Category, (category) => category.user)
+  category: Category;
+
+  @BeforeInsert()
+  checkFields() {
+    this.email = this.email.toLowerCase();
+  }
+
+  @BeforeUpdate()
+  checkFieldsBeforeUpdate() {
+    this.checkFields();
+  }
 }

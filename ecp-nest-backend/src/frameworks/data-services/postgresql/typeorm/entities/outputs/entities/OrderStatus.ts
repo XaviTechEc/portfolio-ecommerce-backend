@@ -1,15 +1,28 @@
-import { Column, Entity, Index } from "typeorm";
+import { StatusValue } from 'src/core/enums/orders/status-value.enum';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ShopOrder } from './ShopOrder';
 
-@Index("order_status_pkey", ["id"], { unique: true })
-@Entity("order_status", { schema: "public" })
+@Index('order_status_pkey', ['id'], { unique: true })
+@Entity('order_status', { schema: 'public' })
 export class OrderStatus {
-  @Column("character varying", { primary: true, name: "id" })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column("enum", {
-    name: "status_value",
-    nullable: true,
-    enum: ["placed", "processing", "in_progress", "delivered"],
+  @Column({
+    type: 'enum',
+    name: 'status_value',
+    enum: StatusValue,
+    default: StatusValue.processing,
   })
-  statusValue: "placed" | "processing" | "in_progress" | "delivered" | null;
+  statusValue: StatusValue;
+
+  // Relations
+  @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.orderStatus)
+  shopOrder: ShopOrder[];
 }

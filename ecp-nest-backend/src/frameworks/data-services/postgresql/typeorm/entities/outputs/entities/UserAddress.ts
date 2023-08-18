@@ -7,10 +7,12 @@ export class UserAddress {
   @Column('character varying', { name: 'user_id' })
   userId: string;
 
+  @Column('character varying', { name: 'address_id' })
+  addressId: string;
+
   @Column('boolean', {
     name: 'is_default',
     nullable: true,
-    default: () => 'true',
   })
   isDefault: boolean | null;
 

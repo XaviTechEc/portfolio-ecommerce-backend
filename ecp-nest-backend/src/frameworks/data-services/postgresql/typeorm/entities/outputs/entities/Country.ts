@@ -4,23 +4,24 @@ import {
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { Address } from "./Address";
+} from 'typeorm';
+import { Address } from './Address';
 
-@Index("country_code_idx", ["code"], { unique: true })
-@Index("country_code_key", ["code"], { unique: true })
-@Index("country_pkey", ["id"], { unique: true })
-@Entity("country", { schema: "public" })
+@Index('country_code_idx', ['code'], { unique: true })
+@Index('country_code_key', ['code'], { unique: true })
+@Index('country_pkey', ['id'], { unique: true })
+@Entity('country', { schema: 'public' })
 export class Country {
-  @PrimaryGeneratedColumn({ type: "integer", name: "id" })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column("character varying", { name: "code", unique: true })
+  @Column('character varying', { name: 'code', unique: true })
   code: string;
 
-  @Column("character varying", { name: "long_name" })
+  @Column('character varying', { name: 'long_name' })
   longName: string;
 
+  // Relations
   @OneToMany(() => Address, (address) => address.country)
   addresses: Address[];
 }

@@ -5,26 +5,31 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-} from "typeorm";
-import { ProductConfiguration } from "./ProductConfiguration";
-import { Variation } from "./Variation";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProductConfiguration } from './ProductConfiguration';
+import { Variation } from './Variation';
 
-@Index("variation_option_pkey", ["id"], { unique: true })
-@Entity("variation_option", { schema: "public" })
+@Index('variation_option_pkey', ['id'], { unique: true })
+@Entity('variation_option', { schema: 'public' })
 export class VariationOption {
-  @Column("character varying", { primary: true, name: "id" })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column("character varying", { name: "value" })
+  @Column('varying character', { name: 'variation_id' })
+  variationId: string;
+
+  @Column('character varying', { name: 'value' })
   value: string;
 
+  // Relations
   @OneToMany(
     () => ProductConfiguration,
-    (productConfiguration) => productConfiguration.variationOption
+    (productConfiguration) => productConfiguration.variationOption,
   )
-  productConfigurations: ProductConfiguration[];
+  productConfiguration: ProductConfiguration[];
 
-  @ManyToOne(() => Variation, (variation) => variation.variationOptions)
-  @JoinColumn([{ name: "variation_id", referencedColumnName: "id" }])
+  @ManyToOne(() => Variation, (variation) => variation.variationOption)
+  @JoinColumn([{ name: 'variation_id', referencedColumnName: 'id' }])
   variation: Variation;
 }

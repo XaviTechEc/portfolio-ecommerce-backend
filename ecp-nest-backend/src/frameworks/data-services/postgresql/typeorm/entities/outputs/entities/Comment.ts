@@ -1,4 +1,8 @@
-import { PrimaryGeneratedColumn } from 'typeorm';
+import {
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import {
   Column,
   Entity,
@@ -8,6 +12,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from './User';
+import { Review } from './Review';
 
 @Index('comment_pkey', ['id'], { unique: true })
 @Index('comment_user_id_idx', ['userId'], {})
@@ -23,27 +28,29 @@ export class Comment {
   @Column('text', { name: 'content' })
   content: string;
 
-  @Column('boolean', { name: 'visible', nullable: true, default: () => 'true' })
-  visible: boolean | null;
+  @Column('boolean', { name: 'visible', default: true })
+  visible: boolean;
 
   @Column('varying character', { name: 'comment_parent_id', nullable: true })
-  commentParentId: string;
+  commentParentId: string | null;
 
-  @Column('timestamp without time zone', {
-    name: 'created_at',
-    default: () => Date.now(),
-  })
-  createdAt: Date | null;
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
 
-  @Column('timestamp without time zone', { name: 'updated_at', nullable: true })
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date | null;
 
-  @OneToMany(() => Comment, (comment) => comment.comment)
-  comments: Comment[];
+  // Relations
+  @ManyToOne(() => Review)
+  @JoinColumn([{ name: 'id', referencedColumnName: 'comment_id' }])
+  review: Review;
 
   @ManyToOne(() => User, (user) => user.comment)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
+
+  @OneToMany(() => Comment, (comment) => comment.comment)
+  comments: Comment[];
 
   @ManyToOne(() => Comment, (comment) => comment.comments)
   @JoinColumn([{ name: 'comment_parent_id', referencedColumnName: 'id' }])

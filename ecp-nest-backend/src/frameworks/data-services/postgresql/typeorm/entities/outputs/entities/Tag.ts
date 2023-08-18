@@ -1,20 +1,26 @@
-import { Column, Entity, Index, OneToMany } from "typeorm";
-import { ProductTag } from "./ProductTag";
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProductTag } from './ProductTag';
 
-@Index("tag_code_idx", ["code"], {})
-@Index("tag_pkey", ["id"], { unique: true })
-@Index("tag_value_idx", ["value"], {})
-@Entity("tag", { schema: "public" })
+@Index('tag_pkey', ['id'], { unique: true })
+@Index('tag_code_idx', ['code'], {})
+@Entity('tag', { schema: 'public' })
 export class Tag {
-  @Column("character varying", { primary: true, name: "id" })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column("character varying", { name: "code" })
+  @Column('character varying', { name: 'code', unique: true })
   code: string;
 
-  @Column("character varying", { name: "value" })
+  @Column('character varying', { name: 'value' })
   value: string;
 
+  // Relations
   @OneToMany(() => ProductTag, (productTag) => productTag.tag)
-  productTags: ProductTag[];
+  productTag: ProductTag[];
 }

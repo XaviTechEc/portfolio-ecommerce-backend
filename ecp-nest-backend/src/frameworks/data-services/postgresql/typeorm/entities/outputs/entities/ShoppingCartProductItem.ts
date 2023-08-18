@@ -1,5 +1,13 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ShoppingCart } from './ShoppingCart';
+import { ProductItem } from './ProductItem';
 
 @Index('shopping_cart_product_item_pkey', ['id'], { unique: true })
 @Index(
@@ -14,7 +22,7 @@ import { ShoppingCart } from './ShoppingCart';
 )
 @Entity('shopping_cart_product_item', { schema: 'public' })
 export class ShoppingCartProductItem {
-  @Column('character varying', { primary: true, name: 'id', generated: 'uuid' })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('character varying', { name: 'shopping_cart_id' })
@@ -23,13 +31,21 @@ export class ShoppingCartProductItem {
   @Column('character varying', { name: 'product_item_id' })
   productItemId: string;
 
-  @Column('integer', { name: 'quantity', default: () => '1' })
+  @Column('smallint', { name: 'quantity' })
   quantity: number;
 
+  // Relations
   @ManyToOne(
     () => ShoppingCart,
-    (shoppingCart) => shoppingCart.shoppingCartProductItems,
+    (shoppingCart) => shoppingCart.shoppingCartProductItem,
   )
   @JoinColumn([{ name: 'shopping_cart_id', referencedColumnName: 'id' }])
   shoppingCart: ShoppingCart;
+
+  @ManyToOne(
+    () => ProductItem,
+    (productItem) => productItem.shoppingCartProductItem,
+  )
+  @JoinColumn([{ name: 'product_item_id', referencedColumnName: 'id' }])
+  productItem: ProductItem;
 }

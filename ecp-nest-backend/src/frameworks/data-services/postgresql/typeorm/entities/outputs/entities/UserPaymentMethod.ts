@@ -1,11 +1,19 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PaymentMethod } from './PaymentMethod';
 import { User } from './User';
+import { ShopOrder } from './ShopOrder';
 
 @Index('user_payment_method_pkey', ['id'], { unique: true })
 @Entity('user_payment_method', { schema: 'public' })
 export class UserPaymentMethod {
-  @Column('character varying', { primary: true, name: 'id' })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('character varying', { name: 'user_id' })
@@ -17,7 +25,7 @@ export class UserPaymentMethod {
   @Column('character varying', { name: 'account_number' })
   accountNumber: string;
 
-  @Column('timestamp without time zone', {
+  @Column('timestamptz', {
     name: 'expiry_date',
     nullable: true,
   })
@@ -25,10 +33,14 @@ export class UserPaymentMethod {
 
   @Column('boolean', {
     name: 'is_default',
-    nullable: true,
-    default: () => 'true',
+    default: true,
   })
-  isDefault: boolean | null;
+  isDefault: boolean;
+
+  // Relations
+  @ManyToOne(() => ShopOrder, (shopOrder) => shopOrder.userPaymentMethodId)
+  @JoinColumn([{ name: 'id', referencedColumnName: 'user_payment_method_id' }])
+  shopOrder: ShopOrder;
 
   @ManyToOne(() => User, (user) => user.userPaymentMethod)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
