@@ -5,20 +5,20 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 
 import { Repository } from 'typeorm';
 import { PostgresGenericRepository } from './postgres-generic-repository';
-import { UserEntity } from './typeorm/entities/users/user.entity';
+import { User } from './typeorm/entities/users/user.entity';
 
 @Injectable()
 export class PostgresDataServices
   implements IDataSourcesService, OnApplicationBootstrap
 {
-  users: PostgresGenericRepository<UserEntity>;
+  users: PostgresGenericRepository<User>;
 
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   onApplicationBootstrap() {
-    this.users = new PostgresGenericRepository<UserEntity>(this.userRepository);
+    this.users = new PostgresGenericRepository<User>(this.userRepository);
   }
 }
