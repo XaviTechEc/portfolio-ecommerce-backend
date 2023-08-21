@@ -11,13 +11,13 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { User } from './User';
-import { Review } from './Review';
+import { User } from './User.entity';
+import { Review } from './Review.entity';
 
 @Index('comment_pkey', ['id'], { unique: true })
 @Index('comment_user_id_idx', ['userId'], {})
 @Index('comment_visible_idx', ['visible'], {})
-@Entity('comment', { schema: 'public' })
+@Entity('comment')
 export class Comment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -31,7 +31,7 @@ export class Comment {
   @Column('boolean', { name: 'visible', default: true })
   visible: boolean;
 
-  @Column('varying character', { name: 'comment_parent_id', nullable: true })
+  @Column('character varying', { name: 'comment_parent_id', nullable: true })
   commentParentId: string | null;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
@@ -41,9 +41,8 @@ export class Comment {
   updatedAt: Date | null;
 
   // Relations
-  @ManyToOne(() => Review)
-  @JoinColumn([{ name: 'id', referencedColumnName: 'comment_id' }])
-  review: Review;
+  @OneToMany(() => Review, (review) => review.comment)
+  review: Review[];
 
   @ManyToOne(() => User, (user) => user.comment)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])

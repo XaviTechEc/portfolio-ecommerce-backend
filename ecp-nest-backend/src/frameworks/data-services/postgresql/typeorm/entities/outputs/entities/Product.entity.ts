@@ -9,33 +9,33 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ProductImage } from './ProductImage';
-import { ProductCategory } from './ProductCategory';
-import { User } from './User';
-import { ProductTag } from './ProductTag';
-import { ProductPromotion } from './ProductPromotion';
-import { ProductItem } from './ProductItem';
+
+import { ProductCategory } from './ProductCategory.entity';
+import { User } from './User.entity';
+import { ProductTag } from './ProductTag.entity';
+import { ProductPromotion } from './ProductPromotion.entity';
+import { ProductItem } from './ProductItem.entity';
 
 @Index('product_pkey', ['id'], { unique: true })
-@Entity('product', { schema: 'public' })
+@Entity('product')
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varying character', { name: 'title' })
+  @Column('character varying', { name: 'title' })
   title: string;
 
-  @Column('varying character', { name: 'subtitle' })
+  @Column('character varying', { name: 'subtitle' })
   subtitle: string;
 
   @Column('text', { name: 'description' })
   description: string;
 
-  @Column('varying character', { name: 'created_by' })
-  createdBy: Date;
+  @Column('character varying', { name: 'img_url', nullable: true })
+  imgUrl: string | null;
 
-  @Column('varying character', { name: 'updated_by', nullable: true })
-  updatedBy: Date | null;
+  @Column('character varying', { name: 'created_by' })
+  createdBy: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
@@ -44,9 +44,6 @@ export class Product {
   updatedAt: Date | null;
 
   // Relations
-  @OneToMany(() => ProductImage, (productImage) => productImage.product)
-  productImage: ProductImage[];
-
   @OneToMany(
     () => ProductCategory,
     (productCategory) => productCategory.product,
@@ -54,10 +51,7 @@ export class Product {
   productCategory: ProductCategory[];
 
   @ManyToOne(() => User, (user) => user.product)
-  @JoinColumn([
-    { name: 'created_by', referencedColumnName: 'id' },
-    { name: 'updated_by', referencedColumnName: 'id' },
-  ])
+  @JoinColumn([{ name: 'created_by', referencedColumnName: 'id' }])
   user: User;
 
   @OneToMany(() => ProductTag, (productTag) => productTag.product)

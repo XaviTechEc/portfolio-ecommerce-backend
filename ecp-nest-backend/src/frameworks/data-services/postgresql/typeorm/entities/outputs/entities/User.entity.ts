@@ -9,22 +9,22 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserAddress } from './UserAddress';
-import { Review } from './Review';
-import { ShoppingCart } from './ShoppingCart';
-import { ShopOrder } from './ShopOrder';
-import { Comment } from './Comment';
-import { UserPaymentMethod } from './UserPaymentMethod';
-import { ProductImage } from './ProductImage';
-import { Product } from './Product';
+import { UserAddress } from './UserAddress.entity';
+import { Review } from './Review.entity';
+import { ShoppingCart } from './ShoppingCart.entity';
+import { ShopOrder } from './ShopOrder.entity';
+import { Comment } from './Comment.entity';
+
+import { Product } from './Product.entity';
 import { UserType, Role, Gender } from 'src/core/enums';
-import { Category } from './Category';
+import { Category } from './Category.entity';
+import { UserPaymentMethod } from './UserPaymentMethod.entity';
 
 @Index('user_pkey', ['id'], { unique: true })
 @Index('user_id_user_username_idx', ['id', 'username'], { unique: true })
-@Index('user_email_idx', ['username'], {})
+@Index('user_username_idx', ['username'], { unique: true })
 @Index('user_email_idx', ['email'], {})
-@Entity('user', { schema: 'public' })
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -63,7 +63,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: Gender,
-    name: 'role',
+    name: 'gender',
     nullable: true,
   })
   gender: Gender | null;
@@ -111,11 +111,8 @@ export class User {
   @OneToMany(() => Product, (product) => product.user)
   product: Product[];
 
-  @OneToMany(() => ProductImage, (productImage) => productImage.user)
-  productImage: ProductImage[];
-
   @OneToMany(() => Category, (category) => category.user)
-  category: Category;
+  category: Category[];
 
   @BeforeInsert()
   checkFields() {

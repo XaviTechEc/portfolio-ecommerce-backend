@@ -6,10 +6,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ShopOrder } from './ShopOrder';
+import { ShopOrder } from './ShopOrder.entity';
 
 @Index('order_status_pkey', ['id'], { unique: true })
-@Entity('order_status', { schema: 'public' })
+@Entity('order_status')
 export class OrderStatus {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -5,11 +5,11 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { CategoryPromotion } from './CategoryPromotion';
-import { ProductPromotion } from './ProductPromotion';
+import { CategoryPromotion } from './CategoryPromotion.entity';
+import { ProductPromotion } from './ProductPromotion.entity';
 
 @Index('promotion_pkey', ['id'], { unique: true })
-@Entity('promotion', { schema: 'public' })
+@Entity('promotion')
 export class Promotion {
   @PrimaryGeneratedColumn('uuid')
   id: string;

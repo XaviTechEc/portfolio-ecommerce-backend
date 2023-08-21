@@ -43,4 +43,8 @@ export class EnvironmentConfigService {
   getHostApi(): string {
     return this.configService.get<string>('HOST_API');
   }
+
+  getDataSchema(): string {
+    return this.configService.get<string>('DATA_SCHEMA');
+  }
 }

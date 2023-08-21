@@ -5,15 +5,15 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ShopOrder } from './ShopOrder';
+import { ShopOrder } from './ShopOrder.entity';
 
 @Index('shipping_method_pkey', ['id'], { unique: true })
-@Entity('shipping_method', { schema: 'public' })
+@Entity('shipping_method')
 export class ShippingMethod {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varying character', { name: 'name' })
+  @Column('character varying', { name: 'name' })
   name: string;
 
   @Column('real', { name: 'price', default: 0 })

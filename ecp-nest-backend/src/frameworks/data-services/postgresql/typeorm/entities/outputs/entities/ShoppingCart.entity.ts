@@ -7,11 +7,11 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ShoppingCartProductItem } from './ShoppingCartProductItem';
-import { User } from './User';
+import { ShoppingCartProductItem } from './ShoppingCartProductItem.entity';
+import { User } from './User.entity';
 
 @Index('shopping_cart_pkey', ['id'], { unique: true })
-@Entity('shopping_cart', { schema: 'public' })
+@Entity('shopping_cart')
 export class ShoppingCart {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -4,14 +4,15 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PaymentMethod } from './PaymentMethod';
-import { User } from './User';
-import { ShopOrder } from './ShopOrder';
+import { PaymentMethod } from './PaymentMethod.entity';
+import { ShopOrder } from './ShopOrder.entity';
+import { User } from './User.entity';
 
 @Index('user_payment_method_pkey', ['id'], { unique: true })
-@Entity('user_payment_method', { schema: 'public' })
+@Entity('user_payment_method')
 export class UserPaymentMethod {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -38,9 +39,8 @@ export class UserPaymentMethod {
   isDefault: boolean;
 
   // Relations
-  @ManyToOne(() => ShopOrder, (shopOrder) => shopOrder.userPaymentMethodId)
-  @JoinColumn([{ name: 'id', referencedColumnName: 'user_payment_method_id' }])
-  shopOrder: ShopOrder;
+  @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.userPaymentMethod)
+  shopOrder: ShopOrder[];
 
   @ManyToOne(() => User, (user) => user.userPaymentMethod)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
@@ -48,7 +48,7 @@ export class UserPaymentMethod {
 
   @ManyToOne(
     () => PaymentMethod,
-    (paymentMethod) => paymentMethod.userPaymentMethods,
+    (paymentMethod) => paymentMethod.userPaymentMethod,
   )
   @JoinColumn([{ name: 'payment_method_id', referencedColumnName: 'id' }])
   paymentMethod: PaymentMethod;

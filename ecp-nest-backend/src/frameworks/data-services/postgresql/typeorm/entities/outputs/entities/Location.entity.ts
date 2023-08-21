@@ -2,16 +2,16 @@ import {
   Column,
   Entity,
   Index,
-  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Address } from './Address';
-import { ShopOrder } from './ShopOrder';
+
+import { Address } from './Address.entity';
+import { ShopOrder } from './ShopOrder.entity';
 
 @Index('location_pkey', ['id'], { unique: true })
-@Index('location_lat_location_lng_idx', {})
-@Entity('location', { schema: 'public' })
+@Index('location_lat_lng_idx', ['lat', 'lng'], {})
+@Entity('location')
 export class Location {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -23,10 +23,8 @@ export class Location {
   lng: number;
 
   @OneToOne(() => Address, (address) => address.location)
-  @JoinColumn([{ name: 'id', referencedColumnName: 'location_id' }])
   address: Address;
 
   @OneToOne(() => ShopOrder, (shopOrder) => shopOrder.location)
-  @JoinColumn([{ name: 'id', referencedColumnName: 'last_location_id' }])
   shopOrder: ShopOrder;
 }

@@ -1,13 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { Address } from './Address';
-import { User } from './User';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
-@Entity('user_address', { schema: 'public' })
+import { User } from './User.entity';
+import { Address } from './Address.entity';
+
+@Entity('user_address')
 export class UserAddress {
-  @Column('character varying', { name: 'user_id' })
+  @PrimaryColumn('character varying', { name: 'user_id' })
   userId: string;
 
-  @Column('character varying', { name: 'address_id' })
+  @PrimaryColumn('character varying', { name: 'address_id' })
   addressId: string;
 
   @Column('boolean', {

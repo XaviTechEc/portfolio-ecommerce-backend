@@ -5,7 +5,7 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 
 import { Repository } from 'typeorm';
 import { PostgresGenericRepository } from './postgres-generic-repository';
-import { User } from './typeorm/entities/users/user.entity';
+import { User } from './typeorm/entities/outputs/entities';
 
 @Injectable()
 export class PostgresDataServices

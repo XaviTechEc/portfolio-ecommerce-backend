@@ -5,12 +5,12 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Address } from './Address';
+import { Address } from './Address.entity';
 
 @Index('country_code_idx', ['code'], { unique: true })
 @Index('country_code_key', ['code'], { unique: true })
 @Index('country_pkey', ['id'], { unique: true })
-@Entity('country', { schema: 'public' })
+@Entity('country')
 export class Country {
   @PrimaryGeneratedColumn('uuid')
   id: string;

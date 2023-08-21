@@ -8,12 +8,13 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Country } from './Country';
-import { UserAddress } from './UserAddress';
-import { ShopOrder } from './ShopOrder';
+import { Country } from './Country.entity';
+import { UserAddress } from './UserAddress.entity';
+import { ShopOrder } from './ShopOrder.entity';
+import { Location } from './Location.entity';
 
 @Index('address_pkey', ['id'], { unique: true })
-@Entity('address', { schema: 'public' })
+@Entity('address')
 export class Address {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -39,7 +40,7 @@ export class Address {
   @Column('character varying', { name: 'postal_code' })
   postalCode: string;
 
-  @Column('varying character', { name: 'country_id' })
+  @Column('character varying', { name: 'country_id' })
   countryId: string;
 
   @Column('character varying', {
@@ -57,7 +58,7 @@ export class Address {
   @JoinColumn([{ name: 'country_id', referencedColumnName: 'id' }])
   country: Country;
 
-  @OneToOne(() => Location, (location) => location)
+  @OneToOne(() => Location, (location) => location.address)
   @JoinColumn([{ name: 'location_id', referencedColumnName: 'id' }])
   location: Location;
 

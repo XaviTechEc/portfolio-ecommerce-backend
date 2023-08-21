@@ -7,25 +7,23 @@ import {
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
-import { Product } from './Product';
-import { ShoppingCartProductItem } from './ShoppingCartProductItem';
-import { OrderLine } from './OrderLine';
-import { ProductImage } from './ProductImage';
-import { ProductConfiguration } from './ProductConfiguration';
+import { Product } from './Product.entity';
+import { ShoppingCartProductItem } from './ShoppingCartProductItem.entity';
+import { OrderLine } from './OrderLine.entity';
+import { ProductConfiguration } from './ProductConfiguration.entity';
 
 @Index('product_item_pkey', ['id'], { unique: true })
-@Index('product_item_product_id_idx', ['product_id'], { unique: true })
 @Index('product_item_sku_idx', ['sku'], { unique: true })
 @Index('product_item_slug_idx', ['slug'], {})
-@Entity('product_item', { schema: 'public' })
+@Entity('product_item')
 export class ProductItem {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column('varying character', { name: 'product_id' })
+  @Column('character varying', { name: 'product_id' })
   productId: string;
 
-  @Column('varying character', { name: 'sku', unique: true })
+  @Column('character varying', { name: 'sku', unique: true })
   sku: string;
 
   @Column('smallint', { name: 'quantity_in_stock', default: 0 })
@@ -34,12 +32,13 @@ export class ProductItem {
   @Column('real', { name: 'price' })
   price: number;
 
-  @Column('varying character', { name: 'slug', unique: true })
+  @Column('character varying', { name: 'img_url', nullable: true })
+  imgUrl: string | null;
+
+  @Column('character varying', { name: 'slug', unique: true })
   slug: string;
 
   // Relations
-  @OneToMany(() => ProductImage, (productImage) => productImage.productItem)
-  productImage: ProductImage[];
 
   @OneToMany(
     () => ShoppingCartProductItem,

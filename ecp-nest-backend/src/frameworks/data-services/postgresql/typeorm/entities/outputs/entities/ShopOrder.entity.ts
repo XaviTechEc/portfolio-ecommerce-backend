@@ -10,37 +10,37 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './User';
-import { Address } from './Address';
-import { Location } from './Location';
-import { OrderLine } from './OrderLine';
-import { ShippingMethod } from './ShippingMethod';
-import { OrderStatus } from './OrderStatus';
-import { UserPaymentMethod } from './UserPaymentMethod';
+import { User } from './User.entity';
+
+import { Location } from './Location.entity';
+import { OrderLine } from './OrderLine.entity';
+import { ShippingMethod } from './ShippingMethod.entity';
+import { OrderStatus } from './OrderStatus.entity';
+import { Address } from './Address.entity';
+import { UserPaymentMethod } from './UserPaymentMethod.entity';
 
 @Index('shop_order_pkey', ['id'], { unique: true })
-@Index('shop_order_user_id_idx', ['user_id'], { unique: true })
-@Entity({ name: 'shop_order', schema: 'public' })
+@Entity('shop_order')
 export class ShopOrder {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varying character', { name: 'user_id' })
+  @Column('character varying', { name: 'user_id' })
   userId: string;
 
-  @Column('varying character', { name: 'user_payment_method_id' })
+  @Column('character varying', { name: 'user_payment_method_id' })
   userPaymentMethodId: string;
 
-  @Column('varying character', { name: 'shipping_address_id' })
+  @Column('character varying', { name: 'shipping_address_id' })
   shippingAddressId: string;
 
-  @Column('varying character', { name: 'shipping_method_id' })
+  @Column('character varying', { name: 'shipping_method_id' })
   shippingMethodId: string;
 
   @Column('real', { name: 'order_total' })
   orderTotal: number;
 
-  @Column('varying character', { name: 'order_status_id' })
+  @Column('character varying', { name: 'order_status_id' })
   orderStatusId: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
@@ -49,7 +49,7 @@ export class ShopOrder {
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date | null;
 
-  @Column('varying character', { name: 'last_location_id', nullable: true })
+  @Column('character varying', { name: 'last_location_id', nullable: true })
   lastLocationId: string | null;
 
   // Relations
@@ -72,11 +72,12 @@ export class ShopOrder {
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
 
-  @OneToMany(
+  @ManyToOne(
     () => UserPaymentMethod,
     (userPaymentMethod) => userPaymentMethod.shopOrder,
   )
-  userPaymentMethod: UserPaymentMethod[];
+  @JoinColumn([{ name: 'user_payment_method_id', referencedColumnName: 'id' }])
+  userPaymentMethod: UserPaymentMethod;
 
   @ManyToOne(() => Address, (address) => address.shopOrder)
   @JoinColumn([{ name: 'shipping_address_id', referencedColumnName: 'id' }])

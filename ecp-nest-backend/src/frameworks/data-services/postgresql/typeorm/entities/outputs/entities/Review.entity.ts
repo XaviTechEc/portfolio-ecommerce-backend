@@ -7,11 +7,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
 } from 'typeorm';
-import { User } from './User';
-import { OrderLine } from './OrderLine';
-import { Comment } from './Comment';
+import { User } from './User.entity';
+import { OrderLine } from './OrderLine.entity';
+import { Comment } from './Comment.entity';
 
 @Index('review_pkey', ['id'], { unique: true })
 @Index(
@@ -21,7 +20,7 @@ import { Comment } from './Comment';
 )
 @Index('review_ordered_product_id_idx', ['orderedProductId'], {})
 @Index('review_visible_idx', ['visible'], {})
-@Entity('review', { schema: 'public' })
+@Entity('review')
 export class Review {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -56,6 +55,7 @@ export class Review {
   @JoinColumn([{ name: 'ordered_product_id', referencedColumnName: 'id' }])
   orderLine: OrderLine;
 
-  @OneToMany(() => Comment, (comment) => comment.review)
+  @ManyToOne(() => Comment, (comment) => comment.review)
+  @JoinColumn([{ name: 'comment_id', referencedColumnName: 'id' }])
   comment: Comment[];
 }

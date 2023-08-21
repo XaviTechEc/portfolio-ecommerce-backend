@@ -1,13 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { VariationOption } from './VariationOption';
-import { ProductItem } from './ProductItem';
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { ProductItem } from './ProductItem.entity';
+import { VariationOption } from './VariationOption.entity';
 
-@Entity('product_configuration', { schema: 'public' })
+@Entity('product_configuration')
 export class ProductConfiguration {
-  @Column('character varying', { name: 'product_item_id' })
+  @PrimaryColumn('character varying', { name: 'product_item_id' })
   productItemId: string;
 
-  @Column('character varying', { name: 'variation_option_id' })
+  @PrimaryColumn('character varying', { name: 'variation_option_id' })
   variationOptionId: string;
 
   // Relations

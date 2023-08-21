@@ -1,13 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { Promotion } from './Promotion';
-import { Product } from './Product';
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Promotion } from './Promotion.entity';
+import { Product } from './Product.entity';
 
-@Entity('product_promotion', { schema: 'public' })
+@Entity('product_promotion')
 export class ProductPromotion {
-  @Column('character varying', { name: 'product_id' })
+  @PrimaryColumn('character varying', { name: 'product_id' })
   productId: string;
 
-  @Column('character varying', { name: 'promotion_id' })
+  @PrimaryColumn('character varying', { name: 'promotion_id' })
   promotionId: string;
 
   // Relations

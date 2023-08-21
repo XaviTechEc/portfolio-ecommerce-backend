@@ -1,9 +1,10 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { UserPaymentMethod } from './UserPaymentMethod';
+
 import { PaymentMethods } from 'src/core/enums';
+import { UserPaymentMethod } from './UserPaymentMethod.entity';
 
 @Index('payment_method_pkey', ['id'], { unique: true })
-@Entity('payment_method', { schema: 'public' })
+@Entity('payment_method')
 export class PaymentMethod {
   @Column('character varying', { primary: true, name: 'id' })
   id: string;
@@ -20,5 +21,5 @@ export class PaymentMethod {
     () => UserPaymentMethod,
     (userPaymentMethod) => userPaymentMethod.paymentMethod,
   )
-  userPaymentMethods: UserPaymentMethod[];
+  userPaymentMethod: UserPaymentMethod[];
 }

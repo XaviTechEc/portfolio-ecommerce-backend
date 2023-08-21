@@ -7,16 +7,16 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Category } from './Category';
-import { VariationOption } from './VariationOption';
+import { Category } from './Category.entity';
+import { VariationOption } from './VariationOption.entity';
 
 @Index('variation_pkey', ['id'], { unique: true })
-@Entity('variation', { schema: 'public' })
+@Entity('variation')
 export class Variation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varying character', { name: 'category_id' })
+  @Column('character varying', { name: 'category_id' })
   categoryId: string;
 
   @Column('character varying', { name: 'name' })

@@ -5,10 +5,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Category } from './Category';
+import { Category } from './Category.entity';
 
 @Index('season_pkey', ['id'], { unique: true })
-@Entity('season', { schema: 'public' })
+@Entity('season')
 export class Season {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -7,20 +7,20 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Review } from './Review';
-import { ProductItem } from './ProductItem';
-import { ShopOrder } from './ShopOrder';
+import { Review } from './Review.entity';
+import { ProductItem } from './ProductItem.entity';
+import { ShopOrder } from './ShopOrder.entity';
 
 @Index('order_line_pkey', ['id'], { unique: true })
-@Entity('order_line', { schema: 'public ' })
+@Entity('order_line')
 export class OrderLine {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varying character', { name: 'product_item_id' })
+  @Column('character varying', { name: 'product_item_id' })
   productItemId: string;
 
-  @Column('varying character', { name: 'shop_order_id' })
+  @Column('character varying', { name: 'shop_order_id' })
   shopOrderId: string;
 
   @Column('smallint', { name: 'quantity' })

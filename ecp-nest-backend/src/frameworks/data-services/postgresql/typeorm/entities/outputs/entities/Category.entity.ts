@@ -7,14 +7,14 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Season } from './Season';
-import { CategoryPromotion } from './CategoryPromotion';
-import { ProductCategory } from './ProductCategory';
-import { Variation } from './Variation';
-import { User } from './User';
+import { Season } from './Season.entity';
+import { CategoryPromotion } from './CategoryPromotion.entity';
+import { ProductCategory } from './ProductCategory.entity';
+import { Variation } from './Variation.entity';
+import { User } from './User.entity';
 
 @Index('category_pkey', ['id'], { unique: true })
-@Entity('category', { schema: 'public' })
+@Entity('category')
 export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -25,10 +25,10 @@ export class Category {
   @Column('text', { name: 'description' })
   description: string;
 
-  @Column('varying character', { name: 'season_id' })
+  @Column('character varying', { name: 'season_id' })
   seasonId: string;
 
-  @Column('varying character', { name: 'parent_category_id', nullable: true })
+  @Column('character varying', { name: 'parent_category_id', nullable: true })
   parentCategoryId: string | null;
 
   @Column('boolean', { name: 'active', default: true })

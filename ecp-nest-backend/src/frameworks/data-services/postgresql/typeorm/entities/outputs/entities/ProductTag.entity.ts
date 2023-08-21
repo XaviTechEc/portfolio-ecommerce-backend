@@ -1,13 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { Tag } from './Tag';
-import { Product } from './Product';
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Product } from './Product.entity';
+import { Tag } from './Tag.entity';
 
-@Entity('product_tag', { schema: 'public' })
+@Entity('product_tag')
 export class ProductTag {
-  @Column('character varying', { name: 'product_id' })
+  @PrimaryColumn('character varying', { name: 'product_id' })
   productId: string;
 
-  @Column('character varying', { name: 'tag_id' })
+  @PrimaryColumn('character varying', { name: 'tag_id' })
   tagId: string;
 
   // Relations

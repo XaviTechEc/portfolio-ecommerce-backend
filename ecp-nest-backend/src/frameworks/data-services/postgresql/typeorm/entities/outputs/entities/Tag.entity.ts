@@ -5,11 +5,11 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ProductTag } from './ProductTag';
+import { ProductTag } from './ProductTag.entity';
 
 @Index('tag_pkey', ['id'], { unique: true })
 @Index('tag_code_idx', ['code'], {})
-@Entity('tag', { schema: 'public' })
+@Entity('tag')
 export class Tag {
   @PrimaryGeneratedColumn('uuid')
   id: string;
