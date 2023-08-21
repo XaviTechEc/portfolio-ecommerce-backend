@@ -51,8 +51,8 @@ Table review {
   id varchar [pk, not null]
   user_id varchar [not null]
   ordered_product_id varchar [not null]
-  rating_value integer [not null]
-  visible boolean [default: true]
+  rating_value smallint [not null]
+  visible boolean [default: true, not null]
   comment_id varchar
 
   created_at timestamp [default: 'now()']
@@ -69,7 +69,7 @@ Table comment {
   id varchar [pk]
   user_id varchar [not null]
   content text [not null]
-  visible boolean [default: true]
+  visible boolean [default: true, not null]
 
   comment_parent_id varchar
 
@@ -87,7 +87,7 @@ Table comment {
 Table user_address { 
   user_id varchar [not null]
   address_id varchar [not null]
-  is_default boolean [default: true]
+  is_default boolean
 }
 
 Table address { 
@@ -95,7 +95,7 @@ Table address {
   unit_number integer
   street_number varchar 
   address_line1 varchar [not null]
-  address_line2 varchar [not null]
+  address_line2 varchar
   city varchar [not null]
   region varchar [not null]
   postal_code varchar [not null]
@@ -111,7 +111,7 @@ Table location {
 }
 
 Table country { 
-  id integer [pk, increment, not null] 
+  id varchar [pk, not null] 
   code varchar [not null, unique]
   long_name varchar [not null]
   
@@ -131,7 +131,7 @@ Table user_payment_method {
   provider varchar [not null]
   account_number varchar [not null] 
   expiry_date timestamp 
-  is_default boolean [default: true]
+  is_default boolean [default: true, not null]
 }
 
 
@@ -154,10 +154,9 @@ Table shopping_cart {
 } 
 
 Table shopping_cart_product_item {
-  id varchar [pk, not null]
   shopping_cart_id varchar [not null]
   product_item_id varchar [not null]
-  quantity integer [not null, default: 1]
+  quantity integer [not null]
 
   indexes {
     (shopping_cart_id, product_item_id) [unique]
@@ -176,7 +175,6 @@ Table product {
 
 
   created_by varchar [not null]
-  updated_by varchar [not null]
 
   created_at timestamp [default: 'now()']
   updated_at timestamp
@@ -187,10 +185,11 @@ Table product {
 
 }
 
+
 Table product_image {
   id varchar [pk, not null]
   product_id varchar [not null]
-  visible boolean [default: true]
+  visible boolean [default: true, not null]
 
   uploaded_by varchar [not null]
   uploaded_at timestamp [default: 'now()']
@@ -205,7 +204,7 @@ Table  product_item {
   product_id varchar [not null]
   SKU varchar [not null]
   quantity_in_stock integer [default: 1]
-  price number [default: 0]
+  price real [default: 0]
   
   slug text [not null]
 
@@ -228,7 +227,7 @@ Table product_promotion {
 Table promotion { 
   id varchar [pk, not null]
   description text [not null]
-  percentage_discount integer [default: 0]
+  percentage_discount smallint
   start_date timestamp [default: 'now()']
   end_date timestamp 
 }
@@ -245,7 +244,6 @@ Table tag {
 
   indexes {
     (code)
-    (value)
   }
 }
 
@@ -290,10 +288,8 @@ Table product_configuration {
 
 Table season {
   id varchar [pk, not null]
-
   description text [not null]
-
-  start_date timestamp [default: 'now()']
+  start_date timestamp
   end_date timestamp 
 }
 
@@ -303,7 +299,7 @@ Table order_line {
   product_item_id varchar [not null]
   shop_order_id varchar [not null]
   quantity integer [not null]
-  total_price number [not null]
+  total_price real [not null]
 }
 
 Table shop_order { 
@@ -312,7 +308,7 @@ Table shop_order {
   user_payment_method_id varchar [not null]
   shipping_address_id varchar [not null]
   shipping_method_id varchar [not null]
-  order_total number [not null]
+  order_total real [not null]
   order_status_id varchar [not null]
 
   created_at timestamp [default: 'now()']
@@ -328,7 +324,7 @@ Table shop_order {
 Table shipping_method { 
   id varchar [pk, not null]
   name varchar [not null]
-  price number [not null, default: 0]
+  price real [not null, default: 0]
 }
 
 enum status_value {
@@ -340,7 +336,7 @@ enum status_value {
 
 Table order_status { 
   id varchar [pk, not null]
-  status_value status_value
+  status_value status_value [default: 'processing']
 }
 
 
@@ -352,7 +348,7 @@ Ref: "country"."id" < "address"."country_id"
 
 Ref: "address"."location_id" - "location"."id"
 
-Ref: "review"."comment_id" < "comment"."id"
+Ref: "review"."comment_id" > "comment"."id"
 
 Ref: "user"."id" < "review"."user_id"
 
@@ -384,7 +380,7 @@ Ref: "category"."id" < "variation"."category_id"
 
 Ref: "variation"."id" < "variation_option"."variation_id"
 
-Ref: "product_item"."product_id" < "product_configuration"."product_item_id"
+Ref: "product_item"."id" < "product_configuration"."product_item_id"
 
 Ref: "variation_option"."id" < "product_configuration"."variation_option_id"
 
@@ -394,7 +390,7 @@ Ref: "shopping_cart"."id" < "shopping_cart_product_item"."shopping_cart_id"
 
 Ref: "product_item"."id" < "shopping_cart_product_item"."product_item_id"
 
-Ref: "shop_order"."order_status_id" < "order_status"."id"
+Ref: "shop_order"."order_status_id" > "order_status"."id"
 
 Ref: "shop_order"."shipping_method_id" < "shipping_method"."id"
 
@@ -423,4 +419,8 @@ Ref: "category"."id" < "category_promotion"."category_id"
 Ref: "promotion"."id" < "category_promotion"."promotion_id"
 
 Ref: "season"."id" < "category"."season_id"
+
+Ref: "user"."id" < "product"."created_by"
+
+Ref: "user"."id" < "category"."created_by"
 ```
