@@ -6,10 +6,10 @@ export class User {
   password: string;
   fullName: string;
   phone?: string;
-  type: UserType;
+  userType: UserType;
   role: Role;
   gender: Gender;
   imgUrl?: string;
-  isActive: boolean;
+  active: boolean;
   lastConnection?: Date;
 }

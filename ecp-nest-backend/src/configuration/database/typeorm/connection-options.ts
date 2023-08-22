@@ -15,7 +15,7 @@ export const getTypeOrmModuleOptions = (
       './../../../frameworks/data-services/postgresql/typeorm/entities/**/*.entity{.ts,.js}',
   ],
   schema: envConfigService.getDataSchema(),
-  logging: true,
+  // logging: true,
   autoLoadEntities: true,
-  synchronize: true,
+  synchronize: true, //! Danger: Only dev mode
 });
