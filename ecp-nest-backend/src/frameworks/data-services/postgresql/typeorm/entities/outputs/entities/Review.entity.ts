@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from './User.entity';
 import { OrderLine } from './OrderLine.entity';
@@ -37,9 +38,6 @@ export class Review {
   @Column('boolean', { name: 'visible', default: true })
   visible: boolean;
 
-  @Column('character varying', { name: 'comment_id', nullable: true })
-  commentId: string | null;
-
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
 
@@ -55,7 +53,6 @@ export class Review {
   @JoinColumn([{ name: 'ordered_product_id', referencedColumnName: 'id' }])
   orderLine: OrderLine;
 
-  @ManyToOne(() => Comment, (comment) => comment.review)
-  @JoinColumn([{ name: 'comment_id', referencedColumnName: 'id' }])
+  @OneToMany(() => Comment, (comment) => comment.review)
   comment: Comment[];
 }

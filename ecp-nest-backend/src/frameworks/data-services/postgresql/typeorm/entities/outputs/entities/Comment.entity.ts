@@ -31,6 +31,9 @@ export class Comment {
   @Column('boolean', { name: 'visible', default: true })
   visible: boolean;
 
+  @Column('character varying', { name: 'review_id' })
+  reviewId: string;
+
   @Column('character varying', { name: 'comment_parent_id', nullable: true })
   commentParentId: string | null;
 
@@ -41,8 +44,9 @@ export class Comment {
   updatedAt: Date | null;
 
   // Relations
-  @OneToMany(() => Review, (review) => review.comment)
-  review: Review[];
+  @ManyToOne(() => Review, (review) => review.comment)
+  @JoinColumn([{ name: 'review_id', referencedColumnName: 'id' }])
+  review: Review;
 
   @ManyToOne(() => User, (user) => user.comment)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
