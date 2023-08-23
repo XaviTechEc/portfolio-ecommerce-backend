@@ -1,4 +1,4 @@
 export enum UserType {
-  email,
-  google,
+  EMAIL = 'email',
+  GOOGLE = 'google',
 }

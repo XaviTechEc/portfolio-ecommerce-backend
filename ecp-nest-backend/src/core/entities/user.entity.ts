@@ -5,11 +5,11 @@ export class User {
   email: string;
   password: string;
   fullName: string;
-  phone?: string;
+  phoneNumber?: string;
   userType: UserType;
   role: Role;
   gender: Gender;
-  imgUrl?: string;
+  avatarImg?: string;
   active: boolean;
   lastConnection?: Date;
 }

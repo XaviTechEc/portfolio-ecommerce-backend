@@ -13,7 +13,7 @@ export class PaymentMethod {
     type: 'enum',
     name: 'value',
     enum: PaymentMethods,
-    default: PaymentMethods.creditCard,
+    default: PaymentMethods.CREDIT_CARD,
   })
   value: PaymentMethods;
 
