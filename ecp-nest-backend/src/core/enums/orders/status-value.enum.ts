@@ -1,6 +1,6 @@
 export enum StatusValue {
-  placed,
-  processing,
-  in_progress,
-  delivered,
+  PLACED = 'placed',
+  PROCESSING = 'processing',
+  IN_PROGRESS = 'in_progress',
+  DELIVERED = 'delivered',
 }

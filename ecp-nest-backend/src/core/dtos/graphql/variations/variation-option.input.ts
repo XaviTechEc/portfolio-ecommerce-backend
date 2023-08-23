@@ -3,14 +3,14 @@ import { IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
 
 export class CreateVariationOptionInput {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   variationId: string;
 
   @Field(() => String)
+  @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @IsNotEmpty()
   value: string;
 }
 
@@ -18,7 +18,7 @@ export class UpdateVariationOptionInput extends PartialType(
   CreateVariationOptionInput,
 ) {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   id: string;
 }

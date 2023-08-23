@@ -3,18 +3,18 @@ import { IsBoolean, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 export class CreateProductImageInput {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   productId: string;
 
   @Field(() => Boolean, { nullable: true, defaultValue: true })
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   visible?: string;
 
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   uploadedBy: string;
 }
 
@@ -22,7 +22,7 @@ export class UpdateProductImageInput extends PartialType(
   CreateProductImageInput,
 ) {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   id: string;
 }

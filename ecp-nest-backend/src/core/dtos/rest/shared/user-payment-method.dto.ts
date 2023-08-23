@@ -6,24 +6,33 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateUserPaymentMethodDto {
-  @IsString()
   @IsNotEmpty()
+  @IsUUID()
+  userId: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  paymentMethodId: string;
+
+  @IsNotEmpty()
+  @IsString()
   @IsOptional()
   provider?: string;
 
-  @IsCreditCard()
   @IsOptional()
+  @IsCreditCard()
   accountNumber?: string;
 
-  @IsDate()
   @IsOptional()
+  @IsDate()
   expiryDate?: Date;
 
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isDefault?: boolean;
 }
 

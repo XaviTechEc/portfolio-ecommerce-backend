@@ -10,26 +10,26 @@ import {
 @InputType()
 export class CreateSeasonInput {
   @Field(() => String)
+  @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @IsNotEmpty()
   description: string;
 
   @Field(() => Date, { nullable: true })
-  @IsDate()
   @IsOptional()
+  @IsDate()
   startDate?: Date;
 
   @Field(() => Date, { nullable: true })
-  @IsDate()
   @IsOptional()
+  @IsDate()
   endDate?: Date;
 }
 
 @InputType()
 export class UpdateSeasonInput extends PartialType(CreateSeasonInput) {
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   id: string;
 }

@@ -10,35 +10,35 @@ import {
 @InputType()
 export class CreateCommentInput {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   userId: string;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   content: string;
 
   @Field(() => Boolean, { nullable: true, defaultValue: true })
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   visible?: boolean;
 
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   reviewId: string;
 
   @Field(() => ID, { nullable: true })
-  @IsUUID()
   @IsOptional()
+  @IsUUID()
   commentParentId?: string;
 }
 
 @InputType()
 export class UpdateCommentInput extends PartialType(CreateCommentInput) {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   id: string;
 }

@@ -5,6 +5,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsOptional,
+  IsPositive,
   IsUUID,
   Max,
   Min,
@@ -13,31 +14,33 @@ import {
 @InputType()
 export class CreateReviewInput {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   userId: string;
 
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   orderedProductId: string;
 
   @Field(() => Int)
+  @IsNotEmpty()
   @IsInt()
+  @IsPositive()
   @Min(1)
   @Max(5)
   ratingValue: number;
 
   @Field(() => Boolean, { nullable: true, defaultValue: true })
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   visible?: boolean;
 }
 
 @InputType()
 export class UpdateReviewInput extends PartialType(CreateReviewInput) {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   id: string;
 }

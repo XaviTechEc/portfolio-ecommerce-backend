@@ -20,8 +20,8 @@ export class CreateAddressInput {
   streetNumber?: string;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   addressLine1: string;
 
   @Field(() => String, { nullable: true })
@@ -30,8 +30,8 @@ export class CreateAddressInput {
   addressLine2?: string;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   city: string;
 
   @Field(() => String, { nullable: true })
@@ -39,29 +39,29 @@ export class CreateAddressInput {
   region?: string;
 
   @Field(() => String)
-  @IsPostalCode()
   @IsNotEmpty()
+  @IsPostalCode()
   postalCode: string;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   countryId: string;
 
   @Field(() => String, { nullable: true })
-  @IsString()
   @IsOptional()
+  @IsString()
   reference?: string;
 
   @Field(() => String, { nullable: true })
-  @IsString()
   @IsOptional()
+  @IsString()
   locationId?: string;
 }
 
 export class UpdateAddressInput extends PartialType(CreateAddressInput) {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   id: string;
 }

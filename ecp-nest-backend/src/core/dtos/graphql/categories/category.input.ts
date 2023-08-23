@@ -10,42 +10,42 @@ import {
 @InputType()
 export class CreateCategoryInput {
   @Field(() => String)
+  @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @IsNotEmpty()
   value: string;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   @MinLength(3)
   description: string;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   seasonId: string;
 
   @Field(() => String, { nullable: true })
-  @IsString()
   @IsOptional()
+  @IsString()
   parentCategoryId?: string;
 
   @Field(() => Boolean, { nullable: true, defaultValue: true })
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   active?: boolean;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   createdBy: string;
 }
 
 @InputType()
 export class UpdateCategoryInput extends PartialType(CreateCategoryInput) {
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   id: string;
 }

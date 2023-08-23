@@ -4,6 +4,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsOptional,
+  IsPositive,
   IsString,
   IsUUID,
   Max,
@@ -14,33 +15,34 @@ import {
 @InputType()
 export class CreatePromotionInput {
   @Field(() => String)
+  @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @IsNotEmpty()
   description: string;
 
   @Field(() => Int, { nullable: true, defaultValue: 0 })
+  @IsOptional()
   @IsInt()
+  @IsPositive()
   @Min(0)
   @Max(100)
-  @IsOptional()
   percentageDiscount?: number;
 
   @Field(() => Date, { nullable: true })
-  @IsDate()
   @IsOptional()
+  @IsDate()
   startDate?: Date;
 
   @Field(() => Date, { nullable: true })
-  @IsDate()
   @IsOptional()
+  @IsDate()
   endDate?: Date;
 }
 
 @InputType()
 export class UpdatePromotionInput extends PartialType(CreatePromotionInput) {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   id: string;
 }

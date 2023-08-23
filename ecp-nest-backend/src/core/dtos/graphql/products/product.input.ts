@@ -4,32 +4,32 @@ import { IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
 @InputType()
 export class CreateProductInput {
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   @MinLength(3)
   title: string;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   @MinLength(3)
   subtitle: string;
 
   @Field(() => String)
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   description: string;
 
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   createdBy: string;
 }
 
 @InputType()
 export class UpdateProductInput extends PartialType(CreateProductInput) {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   id: string;
 }

@@ -3,20 +3,20 @@ import { IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
 
 export class CreateVariationInput {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   categoryId: string;
 
   @Field(() => String)
+  @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @IsNotEmpty()
   name: string;
 }
 
 export class UpdateVariationInput extends PartialType(CreateVariationInput) {
   @Field(() => ID)
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   id: string;
 }
