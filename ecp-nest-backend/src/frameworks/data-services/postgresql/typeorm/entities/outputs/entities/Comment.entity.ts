@@ -29,7 +29,7 @@ export class Comment {
   content: string;
 
   @Column('boolean', { name: 'visible', default: true })
-  visible: boolean;
+  visible?: boolean;
 
   @Column('character varying', { name: 'review_id' })
   reviewId: string;
