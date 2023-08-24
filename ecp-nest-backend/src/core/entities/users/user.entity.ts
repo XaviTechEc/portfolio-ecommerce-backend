@@ -1,6 +1,6 @@
 import { Gender, Role, UserType } from 'src/core/enums';
 
-export class User {
+export class IUser {
   username: string;
   email: string;
   password: string;

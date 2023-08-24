@@ -47,7 +47,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserType,
-    default: UserType.email,
+    default: UserType.EMAIL,
     name: 'user_type',
   })
   userType: UserType;
@@ -55,7 +55,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: Role,
-    default: Role.client,
+    default: Role.CLIENT,
     name: 'role',
   })
   role: Role;

@@ -18,7 +18,7 @@ export class OrderStatus {
     type: 'enum',
     name: 'status_value',
     enum: StatusValue,
-    default: StatusValue.processing,
+    default: StatusValue.IN_PROGRESS,
   })
   statusValue: StatusValue;
 
