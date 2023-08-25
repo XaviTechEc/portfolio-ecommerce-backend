@@ -1,6 +1,7 @@
 import {
   IAddress,
   ICategory,
+  IComment,
   ICountry,
   ILocation,
   IOrderLine,
@@ -25,4 +26,5 @@ export abstract class IDataSourcesService {
   abstract shopOrders: IGenericDataMethodsRepository<IShopOrder>;
   abstract shoppingCarts: IGenericDataMethodsRepository<IShoppingCart>;
   abstract categories: IGenericDataMethodsRepository<ICategory>;
+  abstract comments: IGenericDataMethodsRepository<IComment>;
 }
