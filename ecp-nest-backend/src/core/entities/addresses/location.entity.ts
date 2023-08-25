@@ -1,5 +1,5 @@
 export class ILocation {
   id: string;
-  lat: string;
-  lng: string;
+  lat: number;
+  lng: number;
 }
