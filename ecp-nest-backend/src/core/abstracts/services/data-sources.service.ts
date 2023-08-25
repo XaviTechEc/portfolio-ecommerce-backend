@@ -11,6 +11,7 @@ import {
   IProductItem,
   IPromotion,
   IReview,
+  ISeason,
   IShippingMethod,
   IShopOrder,
   IShoppingCart,
@@ -37,4 +38,5 @@ export abstract class IDataSourcesService {
   abstract productItems: IGenericDataMethodsRepository<IProductItem>;
   abstract promotions: IGenericDataMethodsRepository<IPromotion>;
   abstract reviews: IGenericDataMethodsRepository<IReview>;
+  abstract seasons: IGenericDataMethodsRepository<ISeason>;
 }
