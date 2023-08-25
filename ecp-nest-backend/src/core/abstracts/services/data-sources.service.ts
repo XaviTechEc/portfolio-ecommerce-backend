@@ -8,6 +8,7 @@ import {
   IOrderStatus,
   IPaymentMethod,
   IProduct,
+  IProductItem,
   IShippingMethod,
   IShopOrder,
   IShoppingCart,
@@ -18,7 +19,6 @@ import { IGenericDataMethodsRepository } from '../repositories/shared/generic-da
 
 export abstract class IDataSourcesService {
   abstract users: IGenericDataMethodsRepository<IUser>;
-  abstract products: IGenericDataMethodsRepository<IProduct>;
   abstract addresses: IGenericDataMethodsRepository<IAddress>;
   abstract countries: IGenericDataMethodsRepository<ICountry>;
   abstract locations: IGenericDataMethodsRepository<ILocation>;
@@ -31,4 +31,6 @@ export abstract class IDataSourcesService {
   abstract comments: IGenericDataMethodsRepository<IComment>;
   abstract paymentMethods: IGenericDataMethodsRepository<IPaymentMethod>;
   abstract userPaymentMethods: IGenericDataMethodsRepository<IUserPaymentMethod>;
+  abstract products: IGenericDataMethodsRepository<IProduct>;
+  abstract productItems: IGenericDataMethodsRepository<IProductItem>;
 }

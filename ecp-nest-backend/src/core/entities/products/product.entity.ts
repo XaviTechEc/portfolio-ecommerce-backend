@@ -3,7 +3,7 @@ export class IProduct {
   title: string;
   subtitle: string;
   description: string;
-  createdBy: Date;
+  createdBy: string;
   updatedBy?: Date;
   imgUrl?: string;
   createdAt: Date;

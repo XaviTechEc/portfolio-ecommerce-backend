@@ -5,6 +5,7 @@ import { CartUseCasesModule } from './cart/cart-use-cases.module';
 import { CategoriesUseCasesModule } from './categories/categories-use-cases.module';
 import { CommentsUseCasesModule } from './comments/comments-use-cases.module';
 import { PaymentsUseCasesModule } from './payments/payments-use-cases.module';
+import { ProductsUseCasesModule } from './products/products-use-cases.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { PaymentsUseCasesModule } from './payments/payments-use-cases.module';
     CategoriesUseCasesModule,
     CommentsUseCasesModule,
     PaymentsUseCasesModule,
+    ProductsUseCasesModule,
   ],
   exports: [
     UserUseCasesModule,
@@ -22,6 +24,7 @@ import { PaymentsUseCasesModule } from './payments/payments-use-cases.module';
     CategoriesUseCasesModule,
     CommentsUseCasesModule,
     PaymentsUseCasesModule,
+    ProductsUseCasesModule,
   ],
 })
 export class UseCasesModule {}
