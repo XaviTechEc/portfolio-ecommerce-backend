@@ -1,5 +1,6 @@
 import {
   IAddress,
+  ICategory,
   ICountry,
   ILocation,
   IOrderLine,
@@ -23,4 +24,5 @@ export abstract class IDataSourcesService {
   abstract shippingMethods: IGenericDataMethodsRepository<IShippingMethod>;
   abstract shopOrders: IGenericDataMethodsRepository<IShopOrder>;
   abstract shoppingCarts: IGenericDataMethodsRepository<IShoppingCart>;
+  abstract categories: IGenericDataMethodsRepository<ICategory>;
 }
