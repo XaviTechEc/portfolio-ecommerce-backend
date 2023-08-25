@@ -15,7 +15,7 @@ export class CreateShopOrderInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  shippingAddressId: string;
+  shoppingAddressId: string;
 
   @Field(() => ID)
   @IsNotEmpty()

@@ -8,7 +8,9 @@ export class CreateShoppingCartInput {
   userId: string;
 }
 
-export class UpdateNameInput extends PartialType(CreateShoppingCartInput) {
+export class UpdateShoppingCartInput extends PartialType(
+  CreateShoppingCartInput,
+) {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()

@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { ICountriesRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import { ICountry } from 'src/core/entities';
-import { CountryFactoryService } from './country-factory.service';
+
 import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';
+import { CountryFactoryService } from './factory/country-factory.service';
 
 @Injectable()
 export class CountryUseCases implements ICountriesRepository {

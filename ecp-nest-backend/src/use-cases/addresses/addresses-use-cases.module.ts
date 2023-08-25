@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AddressFactoryService } from './factory/address-factory.service';
-import { AddressesUseCases } from './address-use-cases';
 import { DataServicesModule } from 'src/services/data-services/data-services.module';
-import { CountryFactoryService } from './country-factory.service';
+import { AddressesUseCases } from './address-use-cases';
 import { CountryUseCases } from './country-use-cases';
-import { LocationFactoryService } from './location-factory.service';
+import {
+  AddressFactoryService,
+  CountryFactoryService,
+  LocationFactoryService,
+} from './factory';
 import { LocationUseCases } from './location-use-cases';
 
 @Module({

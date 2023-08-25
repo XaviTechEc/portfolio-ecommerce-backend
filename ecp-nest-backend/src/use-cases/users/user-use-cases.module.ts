@@ -5,7 +5,7 @@ import { DataServicesModule } from 'src/services/data-services/data-services.mod
 
 @Module({
   imports: [DataServicesModule],
-  providers: [UserFactoryService, UserUseCases],
   exports: [UserFactoryService, UserUseCases],
+  providers: [UserFactoryService, UserUseCases],
 })
 export class UserUseCasesModule {}
