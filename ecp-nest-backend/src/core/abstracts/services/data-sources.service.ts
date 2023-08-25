@@ -9,6 +9,7 @@ import {
   IPaymentMethod,
   IProduct,
   IProductItem,
+  IPromotion,
   IShippingMethod,
   IShopOrder,
   IShoppingCart,
@@ -33,4 +34,5 @@ export abstract class IDataSourcesService {
   abstract userPaymentMethods: IGenericDataMethodsRepository<IUserPaymentMethod>;
   abstract products: IGenericDataMethodsRepository<IProduct>;
   abstract productItems: IGenericDataMethodsRepository<IProductItem>;
+  abstract promotions: IGenericDataMethodsRepository<IPromotion>;
 }
