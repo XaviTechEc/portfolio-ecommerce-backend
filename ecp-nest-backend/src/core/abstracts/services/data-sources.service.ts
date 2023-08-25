@@ -1,6 +1,7 @@
-import { User } from 'src/core/entities';
-import { IGenericDataMethodsRepository } from '../repositories/generic-data-methods.repository';
+import { IProduct, IUser } from 'src/core/entities';
+import { IGenericDataMethodsRepository } from '../repositories/shared/generic-data-methods.repository';
 
 export abstract class IDataSourcesService {
-  abstract users: IGenericDataMethodsRepository<User>;
+  abstract users: IGenericDataMethodsRepository<IUser>;
+  abstract products: IGenericDataMethodsRepository<IProduct>;
 }

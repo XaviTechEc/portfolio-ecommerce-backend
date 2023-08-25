@@ -1,4 +1,4 @@
-import { IGenericDataMethodsRepository } from 'src/core/abstracts/repositories/generic-data-methods.repository';
+import { IGenericDataMethodsRepository } from 'src/core/abstracts/repositories/shared/generic-data-methods.repository';
 
 import { Repository } from 'typeorm';
 

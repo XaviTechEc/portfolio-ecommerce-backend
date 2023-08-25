@@ -11,6 +11,10 @@ export class UserUseCases implements IUsersRepository {
     private userFactoryService: UserFactoryService,
   ) {}
 
+  getUserBy(fields: Partial<IUser>): Promise<IUser> {
+    return this.dataServices.users.getOneBy(fields);
+  }
+
   getAllUsers(): Promise<IUser[]> {
     return this.dataServices.users.getAll();
   }
