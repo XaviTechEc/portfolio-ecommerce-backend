@@ -1,12 +1,14 @@
+import { CreatePaymentMethodDto, UpdatePaymentMethodDto } from 'src/core/dtos';
 import { IPaymentMethod } from 'src/core/entities';
 
 export abstract class IPaymentMethodsRepository {
   abstract getPaymentMethodById(id: string): Promise<IPaymentMethod>;
   abstract createPaymentMethod(
-    createPaymentMethodInput: any,
+    createPaymentMethodInput: CreatePaymentMethodDto,
   ): Promise<IPaymentMethod>;
   abstract updatePaymentMethod(
-    updatePaymentMethodInput: any,
+    id: string,
+    updatePaymentMethodInput: UpdatePaymentMethodDto,
   ): Promise<IPaymentMethod>;
   abstract removePaymentMethod(id: string): Promise<IPaymentMethod>;
 }

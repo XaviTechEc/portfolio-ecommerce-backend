@@ -6,11 +6,13 @@ import {
   ILocation,
   IOrderLine,
   IOrderStatus,
+  IPaymentMethod,
   IProduct,
   IShippingMethod,
   IShopOrder,
   IShoppingCart,
   IUser,
+  IUserPaymentMethod,
 } from 'src/core/entities';
 import { IGenericDataMethodsRepository } from '../repositories/shared/generic-data-methods.repository';
 
@@ -27,4 +29,6 @@ export abstract class IDataSourcesService {
   abstract shoppingCarts: IGenericDataMethodsRepository<IShoppingCart>;
   abstract categories: IGenericDataMethodsRepository<ICategory>;
   abstract comments: IGenericDataMethodsRepository<IComment>;
+  abstract paymentMethods: IGenericDataMethodsRepository<IPaymentMethod>;
+  abstract userPaymentMethods: IGenericDataMethodsRepository<IUserPaymentMethod>;
 }

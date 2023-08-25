@@ -5,7 +5,7 @@ import { PaymentMethod } from 'src/core/enums';
 export class CreatePaymentMethodDto {
   @IsNotEmpty()
   @IsEnum(PaymentMethod)
-  value: string;
+  value: PaymentMethod;
 }
 
 export class UpdatePaymentMethodDto extends PartialType(

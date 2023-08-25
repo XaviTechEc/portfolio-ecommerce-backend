@@ -1,3 +1,7 @@
+import {
+  CreateUserPaymentMethodDto,
+  UpdateUserPaymentMethodDto,
+} from 'src/core/dtos';
 import { IUserPaymentMethod } from 'src/core/entities';
 
 export abstract class IUserPaymentMethodsRepository {
@@ -7,12 +11,13 @@ export abstract class IUserPaymentMethodsRepository {
   ): Promise<IUserPaymentMethod[]>;
   abstract getOneUserPaymentMethodBy(
     fields: Partial<IUserPaymentMethod>,
-  ): Promise<IUserPaymentMethod[]>;
+  ): Promise<IUserPaymentMethod>;
   abstract createUserPaymentMethod(
-    createUserPaymentMethodInput: any,
+    createUserPaymentMethodInput: CreateUserPaymentMethodDto,
   ): Promise<IUserPaymentMethod>;
   abstract updateUserPaymentMethod(
-    updateUserPaymentMethodInput: any,
+    id: string,
+    updateUserPaymentMethodInput: UpdateUserPaymentMethodDto,
   ): Promise<IUserPaymentMethod>;
-  abstract removeUserPaymentMethod(id: string): Promise<boolean>;
+  abstract removeUserPaymentMethod(id: string): Promise<IUserPaymentMethod>;
 }

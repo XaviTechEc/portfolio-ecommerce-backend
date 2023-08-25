@@ -1,7 +1,7 @@
 export class IUserPaymentMethod {
   id: string;
   userId: string;
-  paymentMethod: string;
+  paymentMethodId: string;
   provider: string;
   accountNumber: string;
   expiryDate?: Date;
