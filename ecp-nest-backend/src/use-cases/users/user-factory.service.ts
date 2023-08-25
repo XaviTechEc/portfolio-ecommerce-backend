@@ -11,7 +11,6 @@ export class UserFactoryService {
     newUser.email = createUserDto.email;
     newUser.password = createUserDto.password;
     newUser.fullName = createUserDto.fullName;
-
     return newUser;
   }
 
@@ -27,7 +26,6 @@ export class UserFactoryService {
     newUser.gender = updateUserDto.gender;
     newUser.avatarImg = updateUserDto.avatarImg;
     newUser.active = updateUserDto.active;
-
     return newUser;
   }
 }

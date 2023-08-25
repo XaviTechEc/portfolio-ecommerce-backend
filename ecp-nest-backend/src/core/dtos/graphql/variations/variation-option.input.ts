@@ -1,6 +1,7 @@
-import { Field, ID, PartialType } from '@nestjs/graphql';
+import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
 
+@InputType()
 export class CreateVariationOptionInput {
   @Field(() => ID)
   @IsNotEmpty()
@@ -13,7 +14,7 @@ export class CreateVariationOptionInput {
   @MinLength(3)
   value: string;
 }
-
+@InputType()
 export class UpdateVariationOptionInput extends PartialType(
   CreateVariationOptionInput,
 ) {

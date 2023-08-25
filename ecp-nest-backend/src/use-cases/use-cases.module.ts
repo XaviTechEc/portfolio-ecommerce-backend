@@ -9,10 +9,11 @@ import { ProductsUseCasesModule } from './products/products-use-cases.module';
 import { PromotionsUseCasesModule } from './promotions/promotions-use-cases.module';
 import { ReviewsUseCasesModule } from './reviews/reviews-use-cases.module';
 import { SeasonsUseCasesModule } from './seasons/seasons-use-cases.module';
+import { TagsUseCasesModule } from './tags/tags-use-cases.module';
+import { VariationsUseCasesModule } from './variations/variations-use-cases.module';
 
 @Module({
   imports: [
-    UserUseCasesModule,
     AddressesUseCaseModule,
     CartUseCasesModule,
     CategoriesUseCasesModule,
@@ -22,9 +23,11 @@ import { SeasonsUseCasesModule } from './seasons/seasons-use-cases.module';
     PromotionsUseCasesModule,
     ReviewsUseCasesModule,
     SeasonsUseCasesModule,
+    TagsUseCasesModule,
+    UserUseCasesModule,
+    VariationsUseCasesModule,
   ],
   exports: [
-    UserUseCasesModule,
     AddressesUseCaseModule,
     CartUseCasesModule,
     CategoriesUseCasesModule,
@@ -34,6 +37,9 @@ import { SeasonsUseCasesModule } from './seasons/seasons-use-cases.module';
     PromotionsUseCasesModule,
     ReviewsUseCasesModule,
     SeasonsUseCasesModule,
+    TagsUseCasesModule,
+    UserUseCasesModule,
+    VariationsUseCasesModule,
   ],
 })
 export class UseCasesModule {}

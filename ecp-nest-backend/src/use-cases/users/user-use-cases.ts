@@ -32,4 +32,8 @@ export class UserUseCases implements IUsersRepository {
     const user = this.userFactoryService.updateUser(updateUserDto);
     return this.dataServices.users.updateOneById(id, user);
   }
+
+  removeUser(id: string): Promise<IUser> {
+    return this.dataServices.users.deleteOneById(id);
+  }
 }

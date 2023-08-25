@@ -15,8 +15,11 @@ import {
   IShippingMethod,
   IShopOrder,
   IShoppingCart,
+  ITag,
   IUser,
   IUserPaymentMethod,
+  IVariation,
+  IVariationOption,
 } from 'src/core/entities';
 import { IGenericDataMethodsRepository } from '../repositories/shared/generic-data-methods.repository';
 
@@ -39,4 +42,7 @@ export abstract class IDataSourcesService {
   abstract promotions: IGenericDataMethodsRepository<IPromotion>;
   abstract reviews: IGenericDataMethodsRepository<IReview>;
   abstract seasons: IGenericDataMethodsRepository<ISeason>;
+  abstract tags: IGenericDataMethodsRepository<ITag>;
+  abstract variationOptions: IGenericDataMethodsRepository<IVariationOption>;
+  abstract variations: IGenericDataMethodsRepository<IVariation>;
 }
