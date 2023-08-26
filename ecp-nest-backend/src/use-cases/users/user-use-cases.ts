@@ -3,6 +3,7 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { UserFactoryService } from './user-factory.service';
 import { IUser } from 'src/core/entities';
 import { IUsersRepository } from 'src/core/abstracts/repositories/users/users.repository';
+import { CreateUserDto, UpdateUserDto } from 'src/core/dtos';
 
 @Injectable()
 export class UserUseCases implements IUsersRepository {
@@ -23,12 +24,12 @@ export class UserUseCases implements IUsersRepository {
     return this.dataServices.users.getOneById(id);
   }
 
-  createUser(createUserDto: any): Promise<IUser> {
+  createUser(createUserDto: CreateUserDto): Promise<IUser> {
     const user = this.userFactoryService.createUser(createUserDto);
     return this.dataServices.users.create(user);
   }
 
-  updateUser(id: string, updateUserDto: any): Promise<IUser> {
+  updateUser(id: string, updateUserDto: UpdateUserDto): Promise<IUser> {
     const user = this.userFactoryService.updateUser(updateUserDto);
     return this.dataServices.users.updateOneById(id, user);
   }
