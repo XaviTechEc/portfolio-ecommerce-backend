@@ -1,6 +1,6 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 
-import { PaymentMethods } from 'src/core/enums';
+import { PaymentMethod as PaymentMth } from 'src/core/enums';
 import { UserPaymentMethod } from './UserPaymentMethod.entity';
 
 @Index('payment_method_pkey', ['id'], { unique: true })
@@ -12,10 +12,10 @@ export class PaymentMethod {
   @Column({
     type: 'enum',
     name: 'value',
-    enum: PaymentMethods,
-    default: PaymentMethods.CREDIT_CARD,
+    enum: PaymentMth,
+    default: PaymentMth.CREDIT_CARD,
   })
-  value: PaymentMethods;
+  value: PaymentMth;
 
   @OneToMany(
     () => UserPaymentMethod,
