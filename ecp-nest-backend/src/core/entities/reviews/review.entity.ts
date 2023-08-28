@@ -5,5 +5,5 @@ export class IReview {
   ratingValue: number;
   visible?: boolean;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 }

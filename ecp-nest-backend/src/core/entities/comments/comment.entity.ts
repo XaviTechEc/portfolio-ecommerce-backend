@@ -6,5 +6,5 @@ export class IComment {
   reviewId: string;
   commentParentId: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 }
