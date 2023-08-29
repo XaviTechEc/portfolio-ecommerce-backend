@@ -11,7 +11,7 @@ import { ShoppingCart } from './ShoppingCart.entity';
 
 @Index(
   'shopping_cart_product_item_shopping_cart_id_product_item_id_idx',
-  ['productItemId', 'shoppingCartId'],
+  ['productItem', 'shoppingCart'],
   { unique: true },
 )
 @Index('shopping_cart_product_item_shopping_cart_id_idx', ['shoppingCart'], {})

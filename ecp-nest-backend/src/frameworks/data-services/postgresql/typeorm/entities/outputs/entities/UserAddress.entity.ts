@@ -1,10 +1,16 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
-import { Address } from './Address.entity';
 import { User } from './User.entity';
+import { Address } from './Address.entity';
 
 @Entity('user_address')
 export class UserAddress {
+  @PrimaryColumn('character varying', { name: 'user_id' })
+  userId: string;
+
+  @PrimaryColumn('character varying', { name: 'address_id' })
+  addressId: string;
+
   @Column('boolean', {
     name: 'is_default',
     nullable: true,

@@ -9,7 +9,7 @@ export class IUser {
   phoneNumber?: string;
   userType: UserType;
   role: Role;
-  gender: Gender;
+  gender?: Gender;
   avatarImg?: string;
   active?: boolean;
   lastConnection?: Date;

@@ -72,7 +72,7 @@ export class User {
   avatarImg?: string;
 
   @Column('boolean', { name: 'active', default: true })
-  active: boolean;
+  active?: boolean;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;

@@ -15,7 +15,7 @@ import { User } from './User.entity';
 import { Review } from './Review.entity';
 
 @Index('comment_pkey', ['id'], { unique: true })
-@Index('comment_user_id_idx', ['userId'], {})
+@Index('comment_user_id_idx', ['user'], {})
 @Index('comment_visible_idx', ['visible'], {})
 @Entity('comment')
 export class Comment {

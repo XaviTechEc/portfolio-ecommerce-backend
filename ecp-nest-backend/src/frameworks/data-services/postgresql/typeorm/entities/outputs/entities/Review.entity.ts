@@ -14,12 +14,10 @@ import { OrderLine } from './OrderLine.entity';
 import { Comment } from './Comment.entity';
 
 @Index('review_pkey', ['id'], { unique: true })
-@Index(
-  'review_user_id_ordered_product_id_idx',
-  ['orderedProductId', 'userId'],
-  { unique: true },
-)
-@Index('review_ordered_product_id_idx', ['orderedProductId'], {})
+@Index('review_user_id_ordered_product_id_idx', ['orderLine', 'user'], {
+  unique: true,
+})
+@Index('review_ordered_product_id_idx', ['orderLine'], {})
 @Index('review_visible_idx', ['visible'], {})
 @Entity('review')
 export class Review {
