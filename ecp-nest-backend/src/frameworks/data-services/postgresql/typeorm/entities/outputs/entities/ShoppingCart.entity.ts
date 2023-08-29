@@ -1,10 +1,9 @@
 import {
-  Column,
   Entity,
   Index,
-  OneToMany,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ShoppingCartProductItem } from './ShoppingCartProductItem.entity';
@@ -15,9 +14,6 @@ import { User } from './User.entity';
 export class ShoppingCart {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column('character varying', { name: 'user_id' })
-  userId: string;
 
   // Relations
   @OneToMany(

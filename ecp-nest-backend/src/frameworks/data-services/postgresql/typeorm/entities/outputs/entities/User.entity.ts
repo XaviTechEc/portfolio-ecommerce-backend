@@ -42,7 +42,7 @@ export class User {
   fullName: string;
 
   @Column('character varying', { name: 'phone_number', nullable: true })
-  phoneNumber: string | null;
+  phoneNumber?: string;
 
   @Column({
     type: 'enum',
@@ -66,25 +66,25 @@ export class User {
     name: 'gender',
     nullable: true,
   })
-  gender: Gender | null;
+  gender?: Gender;
 
   @Column('character varying', { name: 'avatar_img', nullable: true })
-  avatarImg: string | null;
+  avatarImg?: string;
 
   @Column('boolean', { name: 'active', default: true })
-  active: boolean;
+  active?: boolean;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date | null;
+  updatedAt?: Date;
 
   @Column('timestamptz', {
     name: 'last_connection',
     nullable: true,
   })
-  lastConnection: Date | null;
+  lastConnection?: Date;
 
   // Relations
   @OneToMany(() => UserAddress, (userAddress) => userAddress.user)

@@ -4,28 +4,22 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ShoppingCart } from './ShoppingCart.entity';
 import { ProductItem } from './ProductItem.entity';
+import { ShoppingCart } from './ShoppingCart.entity';
 
 @Index(
   'shopping_cart_product_item_shopping_cart_id_product_item_id_idx',
-  ['productItemId', 'shoppingCartId'],
+  ['productItem', 'shoppingCart'],
   { unique: true },
 )
-@Index(
-  'shopping_cart_product_item_shopping_cart_id_idx',
-  ['shoppingCartId'],
-  {},
-)
+@Index('shopping_cart_product_item_shopping_cart_id_idx', ['shoppingCart'], {})
+@Index('shopping_cart_product_item_product_item_id_idx', ['productItem'], {})
 @Entity('shopping_cart_product_item')
 export class ShoppingCartProductItem {
-  @PrimaryColumn('character varying', { name: 'shopping_cart_id' })
-  shoppingCartId: string;
-
-  @PrimaryColumn('character varying', { name: 'product_item_id' })
-  productItemId: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column('smallint', { name: 'quantity' })
   quantity: number;

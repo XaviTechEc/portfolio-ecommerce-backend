@@ -8,7 +8,6 @@ export * from './graphql/cart/shop-order.input';
 export * from './graphql/cart/shopping-cart.input';
 export * from './graphql/categories/category.input';
 export * from './graphql/comments/comment.input';
-export * from './graphql/products/product-image.input';
 export * from './graphql/products/product-item.input';
 export * from './graphql/products/product.input';
 export * from './graphql/promotions/promotion.input';

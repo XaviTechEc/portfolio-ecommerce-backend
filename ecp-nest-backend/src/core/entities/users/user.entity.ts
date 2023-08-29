@@ -9,8 +9,10 @@ export class IUser {
   phoneNumber?: string;
   userType: UserType;
   role: Role;
-  gender: Gender;
+  gender?: Gender;
   avatarImg?: string;
-  active: boolean;
+  active?: boolean;
   lastConnection?: Date;
+  createdAt: Date;
+  updatedAt?: Date;
 }

@@ -25,17 +25,8 @@ export class Category {
   @Column('text', { name: 'description' })
   description: string;
 
-  @Column('character varying', { name: 'season_id' })
-  seasonId: string;
-
-  @Column('character varying', { name: 'parent_category_id', nullable: true })
-  parentCategoryId: string | null;
-
   @Column('boolean', { name: 'active', default: true })
   active: boolean;
-
-  @Column('character varying', { name: 'created_by' })
-  createdBy: string;
 
   // Relations
   @OneToMany(

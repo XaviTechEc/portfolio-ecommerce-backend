@@ -15,15 +15,12 @@ import { User } from './User.entity';
 import { Review } from './Review.entity';
 
 @Index('comment_pkey', ['id'], { unique: true })
-@Index('comment_user_id_idx', ['userId'], {})
+@Index('comment_user_id_idx', ['user'], {})
 @Index('comment_visible_idx', ['visible'], {})
 @Entity('comment')
 export class Comment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column('character varying', { name: 'user_id' })
-  userId: string;
 
   @Column('text', { name: 'content' })
   content: string;
@@ -31,17 +28,11 @@ export class Comment {
   @Column('boolean', { name: 'visible', default: true })
   visible?: boolean;
 
-  @Column('character varying', { name: 'review_id' })
-  reviewId: string;
-
-  @Column('character varying', { name: 'comment_parent_id', nullable: true })
-  commentParentId: string | null;
-
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date | null;
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @ManyToOne(() => Review, (review) => review.comment)
@@ -57,5 +48,5 @@ export class Comment {
 
   @ManyToOne(() => Comment, (comment) => comment.comments)
   @JoinColumn([{ name: 'comment_parent_id', referencedColumnName: 'id' }])
-  comment: Comment;
+  comment?: Comment;
 }

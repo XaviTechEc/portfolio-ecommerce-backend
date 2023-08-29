@@ -6,7 +6,7 @@ import { IComment } from 'src/core/entities';
 export class CommentFactoryService {
   createComment(createCommentInput: CreateCommentInput) {
     const newComment = new IComment();
-    newComment.userId = createCommentInput.userId;
+    newComment.user = createCommentInput.userId;
     newComment.content = createCommentInput.content;
     newComment.visible = createCommentInput.visible;
     newComment.reviewId = createCommentInput.reviewId;
@@ -15,7 +15,7 @@ export class CommentFactoryService {
   }
   updateComment(updateCommentInput: UpdateCommentInput) {
     const newComment = new IComment();
-    newComment.userId = updateCommentInput.userId;
+    newComment.user = updateCommentInput.userId;
     newComment.content = updateCommentInput.content;
     newComment.visible = updateCommentInput.visible;
     newComment.reviewId = updateCommentInput.reviewId;

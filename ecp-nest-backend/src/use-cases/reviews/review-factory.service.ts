@@ -6,16 +6,16 @@ import { IReview } from 'src/core/entities';
 export class ReviewFactoryService {
   createReview(createReviewInput: CreateReviewInput) {
     const newReview = new IReview();
-    newReview.userId = createReviewInput.userId;
-    newReview.orderedProductId = createReviewInput.orderedProductId;
+    newReview.user = createReviewInput.userId;
+    newReview.orderedProduct = createReviewInput.orderedProductId;
     newReview.ratingValue = createReviewInput.ratingValue;
     newReview.visible = createReviewInput.visible;
     return newReview;
   }
   updateReview(updateReviewInput: UpdateReviewInput) {
     const newReview = new IReview();
-    newReview.userId = updateReviewInput.userId;
-    newReview.orderedProductId = updateReviewInput.orderedProductId;
+    newReview.user = updateReviewInput.userId;
+    newReview.orderedProduct = updateReviewInput.orderedProductId;
     newReview.ratingValue = updateReviewInput.ratingValue;
     newReview.visible = updateReviewInput.visible;
     return newReview;

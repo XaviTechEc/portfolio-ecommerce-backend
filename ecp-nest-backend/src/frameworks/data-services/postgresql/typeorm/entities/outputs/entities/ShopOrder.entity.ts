@@ -25,32 +25,17 @@ export class ShopOrder {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'user_id' })
-  userId: string;
-
-  @Column('character varying', { name: 'user_payment_method_id' })
-  userPaymentMethodId: string;
-
-  @Column('character varying', { name: 'shipping_address_id' })
-  shippingAddressId: string;
-
-  @Column('character varying', { name: 'shipping_method_id' })
-  shippingMethodId: string;
-
   @Column('real', { name: 'order_total' })
   orderTotal: number;
 
-  @Column('character varying', { name: 'order_status_id' })
-  orderStatusId: string;
+  @Column('character varying', { name: 'last_location_id', nullable: true })
+  lastLocationId?: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date | null;
-
-  @Column('character varying', { name: 'last_location_id', nullable: true })
-  lastLocationId: string | null;
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(() => OrderLine, (orderLine) => orderLine.shopOrder)

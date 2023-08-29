@@ -17,12 +17,6 @@ export class OrderLine {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'product_item_id' })
-  productItemId: string;
-
-  @Column('character varying', { name: 'shop_order_id' })
-  shopOrderId: string;
-
   @Column('smallint', { name: 'quantity' })
   quantity: number;
 
