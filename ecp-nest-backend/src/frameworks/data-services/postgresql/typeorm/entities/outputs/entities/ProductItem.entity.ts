@@ -20,9 +20,6 @@ export class ProductItem {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'product_id' })
-  productId: string;
-
   @Column('character varying', { name: 'sku', unique: true })
   sku: string;
 
@@ -33,13 +30,12 @@ export class ProductItem {
   price: number;
 
   @Column('character varying', { name: 'img_url', nullable: true })
-  imgUrl: string | null;
+  imgUrl?: string;
 
   @Column('character varying', { name: 'slug', unique: true })
   slug: string;
 
   // Relations
-
   @OneToMany(
     () => ShoppingCartProductItem,
     (shoppingCartProductItem) => shoppingCartProductItem.productItem,

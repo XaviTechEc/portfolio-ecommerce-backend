@@ -1,5 +1,7 @@
-import { Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { CategoryType } from '../categories/category.type';
 
+@ObjectType()
 export class SeasonType {
   @Field(() => String)
   id: string;
@@ -12,4 +14,8 @@ export class SeasonType {
 
   @Field(() => Date, { nullable: true })
   endDate?: Date;
+
+  // Relations
+  @Field(() => CategoryType)
+  categories: CategoryType[];
 }

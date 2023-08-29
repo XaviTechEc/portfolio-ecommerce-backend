@@ -7,24 +7,28 @@ export class CommentType {
   @Field(() => ID)
   id: string;
 
-  @Field(() => UserObjType)
-  user: UserObjType;
-
   @Field(() => String)
   content: string;
 
-  @Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true, defaultValue: true })
   visible?: boolean;
-
-  @Field(() => ReviewType)
-  review: ReviewType;
-
-  @Field(() => CommentType)
-  commentParent: CommentType;
 
   @Field(() => Date)
   createdAt: Date;
 
   @Field(() => Date, { nullable: true })
   updatedAt?: Date;
+
+  // Relations
+  @Field(() => ReviewType)
+  review: ReviewType;
+
+  @Field(() => UserObjType)
+  user: UserObjType;
+
+  @Field(() => [CommentType], { nullable: true })
+  comments: CommentType[];
+
+  @Field(() => CommentType)
+  commentParent?: CommentType;
 }

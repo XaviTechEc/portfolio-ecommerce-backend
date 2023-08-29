@@ -26,23 +26,17 @@ export class Review {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'user_id' })
-  userId: string;
-
-  @Column('character varying', { name: 'ordered_product_id' })
-  orderedProductId: string;
-
   @Column('smallint', { name: 'rating_value' })
   ratingValue: number;
 
-  @Column('boolean', { name: 'visible', default: true })
-  visible: boolean;
+  @Column('boolean', { name: 'visible', nullable: true, default: true })
+  visible?: boolean;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date | null;
+  updatedAt?: Date;
 
   // Relations
   @ManyToOne(() => User, (user) => user.review)

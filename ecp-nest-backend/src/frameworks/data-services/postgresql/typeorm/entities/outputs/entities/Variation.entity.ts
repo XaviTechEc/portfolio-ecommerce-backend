@@ -16,9 +16,6 @@ export class Variation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'category_id' })
-  categoryId: string;
-
   @Column('character varying', { name: 'name' })
   name: string;
 

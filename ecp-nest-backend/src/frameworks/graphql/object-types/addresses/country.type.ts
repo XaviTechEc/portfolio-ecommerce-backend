@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { AddressType } from './address.type';
 
 @ObjectType()
 export class CountryType {
@@ -10,4 +11,8 @@ export class CountryType {
 
   @Field(() => String)
   longName: string;
+
+  // Relations
+  @Field(() => [AddressType])
+  addresses: AddressType[];
 }

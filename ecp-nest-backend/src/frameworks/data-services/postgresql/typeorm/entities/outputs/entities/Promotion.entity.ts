@@ -22,16 +22,16 @@ export class Promotion {
     nullable: true,
     default: 0,
   })
-  percentageDiscount: number | null;
+  percentageDiscount?: number;
 
   @Column('timestamptz', {
     name: 'start_date',
     nullable: true,
   })
-  startDate: Date | null;
+  startDate?: Date;
 
   @Column('timestamptz', { name: 'end_date', nullable: true })
-  endDate: Date | null;
+  endDate?: Date;
 
   // Relations
   @OneToMany(

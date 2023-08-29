@@ -1,6 +1,8 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { CountryType } from './country.type';
 import { LocationType } from './location.type';
+import { UserAddressType } from '../shared/user-address.type';
+import { ShopOrderType } from '../cart/shop-order.type';
 
 @ObjectType()
 export class AddressType {
@@ -28,12 +30,19 @@ export class AddressType {
   @Field(() => String)
   postalCode: string;
 
-  @Field(() => CountryType)
-  country: CountryType;
-
   @Field(() => String, { nullable: true })
   reference?: string;
 
+  // Relations
+  @Field(() => CountryType)
+  country: CountryType;
+
   @Field(() => LocationType, { nullable: true })
   location?: LocationType;
+
+  @Field(() => [UserAddressType])
+  userAddresses: UserAddressType[];
+
+  @Field(() => [ShopOrderType])
+  shopOrders: ShopOrderType[];
 }

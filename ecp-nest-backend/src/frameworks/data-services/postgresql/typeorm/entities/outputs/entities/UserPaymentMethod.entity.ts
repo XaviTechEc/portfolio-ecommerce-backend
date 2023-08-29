@@ -17,9 +17,6 @@ export class UserPaymentMethod {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'user_id' })
-  userId: string;
-
   @Column('character varying', { name: 'provider' })
   provider: string;
 
@@ -30,7 +27,7 @@ export class UserPaymentMethod {
     name: 'expiry_date',
     nullable: true,
   })
-  expiryDate: Date | null;
+  expiryDate?: Date;
 
   @Column('boolean', {
     name: 'is_default',

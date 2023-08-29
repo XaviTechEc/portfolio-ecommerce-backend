@@ -1,4 +1,5 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
+import { ShopOrderType } from './shop-order.type';
 
 @ObjectType()
 export class ShippingMethodType {
@@ -8,6 +9,10 @@ export class ShippingMethodType {
   @Field(() => String)
   name: string;
 
-  @Field(() => Float)
+  @Field(() => Float, { defaultValue: 0 })
   price: number;
+
+  // Relations
+  @Field(() => [ShopOrderType])
+  shopOrders: ShopOrderType[];
 }

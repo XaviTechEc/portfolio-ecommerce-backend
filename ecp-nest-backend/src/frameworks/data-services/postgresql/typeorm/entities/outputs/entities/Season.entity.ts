@@ -20,10 +20,10 @@ export class Season {
     name: 'start_date',
     nullable: true,
   })
-  startDate: Date | null;
+  startDate?: Date;
 
   @Column('timestamptz', { name: 'end_date', nullable: true })
-  endDate: Date | null;
+  endDate?: Date;
 
   // Relations
   @OneToMany(() => Category, (category) => category.season)

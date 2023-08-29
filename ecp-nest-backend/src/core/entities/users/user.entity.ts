@@ -11,6 +11,8 @@ export class IUser {
   role: Role;
   gender: Gender;
   avatarImg?: string;
-  active: boolean;
+  active?: boolean;
   lastConnection?: Date;
+  createdAt: Date;
+  updatedAt?: Date;
 }

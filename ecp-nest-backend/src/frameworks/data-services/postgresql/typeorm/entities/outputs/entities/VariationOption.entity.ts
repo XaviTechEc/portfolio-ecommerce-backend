@@ -16,9 +16,6 @@ export class VariationOption {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'variation_id' })
-  variationId: string;
-
   @Column('character varying', { name: 'value' })
   value: string;
 

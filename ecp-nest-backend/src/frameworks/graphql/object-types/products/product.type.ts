@@ -1,5 +1,9 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { UserObjType } from '../users/user.type';
+import { ProductCategoryType } from '../shared/product-category.type';
+import { ProductPromotionType } from '../shared/product-promotion.type';
+import { ProductItemType } from './product-item.type';
+import { ProductTagType } from '../shared/product-tag.type';
 
 @ObjectType()
 export class ProductType {
@@ -15,18 +19,28 @@ export class ProductType {
   @Field(() => String)
   description: string;
 
-  @Field(() => UserObjType)
-  createdBy: UserObjType;
-
-  @Field(() => UserObjType, { nullable: true })
-  updatedBy?: UserObjType;
-
   @Field(() => String, { nullable: true })
   imgUrl?: string;
 
   @Field(() => Date)
   createdAt: Date;
 
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   updatedAt?: Date;
+
+  // Relations
+  @Field(() => [ProductCategoryType])
+  productCategories: ProductCategoryType[];
+
+  @Field(() => UserObjType)
+  createdBy: UserObjType;
+
+  @Field(() => [ProductTagType])
+  productTags: ProductTagType[];
+
+  @Field(() => [ProductPromotionType])
+  productPromotions: ProductPromotionType[];
+
+  @Field(() => [ProductItemType])
+  productItems: ProductItemType[];
 }

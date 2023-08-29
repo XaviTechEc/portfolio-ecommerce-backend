@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { StatusValue } from 'src/core/enums';
+import { ShopOrderType } from './shop-order.type';
 
 @ObjectType()
 export class OrderStatusType {
@@ -8,4 +9,8 @@ export class OrderStatusType {
 
   @Field(() => StatusValue)
   statusValue: StatusValue;
+
+  // Relations
+  @Field(() => [ShopOrderType])
+  shopOrders: ShopOrderType[];
 }

@@ -4,6 +4,7 @@ import { PromotionType } from '../promotions/promotion.type';
 
 @ObjectType()
 export class CategoryPromotionType {
+  // Relations
   @Field(() => CategoryType)
   category: CategoryType;
 

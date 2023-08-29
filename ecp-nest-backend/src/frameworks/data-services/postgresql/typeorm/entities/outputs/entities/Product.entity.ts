@@ -32,16 +32,13 @@ export class Product {
   description: string;
 
   @Column('character varying', { name: 'img_url', nullable: true })
-  imgUrl: string | null;
-
-  @Column('character varying', { name: 'created_by' })
-  createdBy: Date;
+  imgUrl?: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date | null;
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(

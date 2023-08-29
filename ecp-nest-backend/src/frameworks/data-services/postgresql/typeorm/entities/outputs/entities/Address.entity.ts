@@ -20,38 +20,32 @@ export class Address {
   id: string;
 
   @Column('integer', { name: 'unit_number', nullable: true })
-  unitNumber: number | null;
+  unitNumber?: number;
 
   @Column('character varying', { name: 'street_number', nullable: true })
-  streetNumber: string | null;
+  streetNumber?: string;
 
   @Column('character varying', { name: 'address_line1' })
   addressLine1: string;
 
   @Column('character varying', { name: 'address_line2', nullable: true })
-  addressLine2: string | null;
+  addressLine2?: string;
 
   @Column('character varying', { name: 'city' })
   city: string;
 
-  @Column('character varying', { name: 'region' })
-  region: string;
+  @Column('character varying', { name: 'region', nullable: true })
+  region?: string;
 
   @Column('character varying', { name: 'postal_code' })
   postalCode: string;
-
-  @Column('character varying', { name: 'country_id' })
-  countryId: string;
 
   @Column('character varying', {
     name: 'reference',
     nullable: true,
     default: 'no-ref',
   })
-  reference: string | null;
-
-  @Column('character varying', { name: 'location_id', nullable: true })
-  locationId: string | null;
+  reference?: string;
 
   // Relations
   @ManyToOne(() => Country, (country) => country.addresses)
@@ -60,7 +54,7 @@ export class Address {
 
   @OneToOne(() => Location, (location) => location.address)
   @JoinColumn([{ name: 'location_id', referencedColumnName: 'id' }])
-  location: Location;
+  location?: Location;
 
   @OneToMany(() => UserAddress, (userAddress) => userAddress.address)
   userAddresses: UserAddress[];

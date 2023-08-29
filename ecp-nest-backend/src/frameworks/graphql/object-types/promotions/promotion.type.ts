@@ -1,4 +1,6 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { ProductPromotionType } from '../shared/product-promotion.type';
+import { CategoryPromotionType } from '../shared/category-promotion.type';
 
 @ObjectType()
 export class PromotionType {
@@ -8,7 +10,7 @@ export class PromotionType {
   @Field(() => String)
   description: string;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int, { nullable: true, defaultValue: 0 })
   percentageDiscount?: number;
 
   @Field(() => Date, { nullable: true })
@@ -16,4 +18,11 @@ export class PromotionType {
 
   @Field(() => Date, { nullable: true })
   endDate?: Date;
+
+  // Relations
+  @Field(() => [ProductPromotionType])
+  productPromotions: ProductPromotionType[];
+
+  @Field(() => [CategoryPromotionType])
+  categoryPromotions: CategoryPromotionType[];
 }
