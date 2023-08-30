@@ -10,7 +10,7 @@ export class CountriesRepository<T> implements ICountriesRepository<T> {
     this._repository = repository;
   }
 
-  getAllCountries(args: IGenericArgs<T>): Promise<T[]> {
+  getAllCountries(args?: IGenericArgs<T>): Promise<T[]> {
     throw new Error('Method not implemented.');
   }
   getCountryById(id: string): Promise<T> {
