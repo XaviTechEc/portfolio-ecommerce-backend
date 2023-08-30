@@ -16,12 +16,12 @@ export class CreateReviewInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  userId: string;
+  user: any;
 
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  orderedProductId: string;
+  orderLine: any;
 
   @Field(() => Int)
   @IsNotEmpty()

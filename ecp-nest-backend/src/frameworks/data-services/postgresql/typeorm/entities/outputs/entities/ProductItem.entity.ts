@@ -27,7 +27,7 @@ export class ProductItem {
   quantityInStock: number;
 
   @Column('real', { name: 'price' })
-  price: number;
+  price?: number;
 
   @Column('character varying', { name: 'img_url', nullable: true })
   imgUrl?: string;

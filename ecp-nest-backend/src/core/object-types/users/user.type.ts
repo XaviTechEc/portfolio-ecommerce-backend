@@ -50,7 +50,7 @@ export class UserObjType {
   @Field(() => Date, { nullable: true })
   updatedAt?: Date;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Date, { nullable: true })
   lastConnection?: Date;
 
   // Relations

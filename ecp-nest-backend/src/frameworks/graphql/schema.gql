@@ -2,6 +2,300 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AddressType {
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  country: CountryType!
+  id: ID!
+  location: LocationType
+  postalCode: String!
+  reference: String
+  region: String
+  shopOrders: [ShopOrderType!]!
+  streetNumber: String
+  unitNumber: Int
+  userAddresses: [UserAddressType!]!
+}
+
+type CategoryPromotionType {
+  category: CategoryType!
+  promotion: PromotionType!
+}
+
+type CategoryType {
+  active: Boolean
+  categories: [CategoryType!]
+  categoryPromotions: [CategoryPromotionType!]!
+  createdBy: UserObjType!
+  description: String!
+  id: ID!
+  parentCategory: CategoryType
+  productCategories: [ProductCategoryType!]!
+  season: SeasonType!
+  value: String!
+  variations: [VariationType!]!
+}
+
+type CommentType {
+  commentParent: CommentType!
+  comments: [CommentType!]
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  review: ReviewType!
+  updatedAt: DateTime
+  user: UserObjType!
+  visible: Boolean
+}
+
+type CountryType {
+  addresses: [AddressType!]!
+  code: String!
+  id: ID!
+  longName: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+}
+
+type LocationType {
+  address: AddressType!
+  id: ID!
+  lat: String!
+  lng: String!
+  shopOrder: ShopOrderType!
+}
+
+type OrderLineType {
+  id: ID!
+  productItem: ProductItemType!
+  quantity: Float!
+  reviews: [ReviewType!]!
+  shopOrder: ShopOrderType!
+  totalPrice: Float!
+}
+
+type OrderStatusType {
+  id: ID!
+  shopOrders: [ShopOrderType!]!
+  statusValue: StatusValue!
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  OTHER
+}
+
+type PaymentMethodType {
+  id: ID!
+  userPaymentMethods: [UserPaymentMethodType!]!
+  value: PaymentMethod!
+}
+
+type ProductCategoryType {
+  category: CategoryType!
+  product: ProductType!
+}
+
+type ProductConfigurationType {
+  productItem: ProductItemType!
+  variationOption: VariationOptionType!
+}
+
+type ProductItemType {
+  id: ID!
+  imgUrl: String
+  orderLines: [OrderLineType!]!
+  price: Float
+  product: ProductType!
+  productConfigurations: [ProductConfigurationType!]!
+  quantityInStock: Float
+  shoppingCartProductItems: [ShoppingCartProductItemType!]!
+  sku: String!
+  slug: String!
+}
+
+type ProductPromotionType {
+  product: ProductType!
+  promotion: PromotionType!
+}
+
+type ProductTagType {
+  product: ProductType!
+  tag: TagType!
+}
+
+type ProductType {
+  createdAt: DateTime!
+  createdBy: UserObjType!
+  description: String!
+  id: ID!
+  imgUrl: String
+  productCategories: [ProductCategoryType!]!
+  productItems: [ProductItemType!]!
+  productPromotions: [ProductPromotionType!]!
+  productTags: [ProductTagType!]!
+  subtitle: String!
+  title: String!
+  updatedAt: DateTime
+}
+
+type PromotionType {
+  categoryPromotions: [CategoryPromotionType!]!
+  description: String!
+  endDate: DateTime
+  id: ID!
+  percentageDiscount: Int
+  productPromotions: [ProductPromotionType!]!
+  startDate: DateTime
+}
+
 type Query {
-  sayHello: String!
+  review(id: ID!): ReviewType!
+  reviews(limit: Int = 10, offset: Int = 0, searchFields: [String!], searchTerm: String): [ReviewType!]!
+  reviewsBy(limit: Int = 10, offset: Int = 0): [ReviewType!]!
+}
+
+type ReviewType {
+  comments: [CommentType!]!
+  createdAt: DateTime!
+  id: ID!
+  orderLine: OrderLineType!
+  ratingValue: Int!
+  updatedAt: DateTime
+  user: UserObjType!
+  visible: Boolean
+}
+
+enum Role {
+  ADMIN
+  CLIENT
+  SUPER_ADMIN
+}
+
+type SeasonType {
+  categories: CategoryType!
+  description: String!
+  endDate: DateTime
+  id: String!
+  startDate: DateTime
+}
+
+type ShippingMethodType {
+  id: ID!
+  name: String!
+  price: Float!
+  shopOrders: [ShopOrderType!]!
+}
+
+type ShopOrderType {
+  createdAt: DateTime!
+  id: ID!
+  lastLocations: [LocationType!]
+  orderLines: [OrderLineType!]!
+  orderStatus: OrderStatusType!
+  orderTotal: Float!
+  shippingAddress: AddressType!
+  shippingMethod: ShippingMethodType!
+  updatedAt: DateTime
+  user: UserObjType!
+  userPaymentMethod: UserPaymentMethodType!
+}
+
+type ShoppingCartProductItemType {
+  id: ID!
+  productItem: ProductItemType!
+  quantity: Float!
+  shoppingCart: ShoppingCartType!
+}
+
+type ShoppingCartType {
+  id: ID!
+  shoppingCartProductItems: [ShoppingCartProductItemType!]!
+  user: UserObjType!
+}
+
+enum StatusValue {
+  DELIVERED
+  IN_PROGRESS
+  PLACED
+  PROCESSING
+}
+
+type TagType {
+  code: String!
+  id: ID!
+  productTags: [ProductTagType!]!
+  value: String!
+}
+
+type UserAddressType {
+  address: AddressType!
+  isDefault: Boolean
+  user: UserObjType!
+}
+
+type UserObjType {
+  active: Boolean!
+  avatarImg: String
+  categories: [CategoryType!]!
+  comments: [CommentType!]!
+  createdAt: DateTime!
+  email: String!
+  fullName: String!
+  gender: Gender!
+  id: ID!
+  lastConnection: DateTime
+  password: String!
+  phoneNumber: String
+  products: [ProductType!]!
+  reviews: [ReviewType!]!
+  role: Role!
+  shopOrders: [ShopOrderType!]!
+  shoppingCarts: [ShoppingCartType!]!
+  updatedAt: DateTime
+  userAddresses: [UserAddressType!]!
+  userPaymentMethods: [UserPaymentMethodType!]!
+  userType: UserType!
+  username: String!
+}
+
+type UserPaymentMethodType {
+  accountNumber: String!
+  expiryDate: DateTime
+  id: ID!
+  isDefault: Boolean
+  paymentMethod: PaymentMethodType!
+  provider: String!
+  shopOrders: [ShopOrderType!]!
+  user: UserObjType!
+}
+
+enum UserType {
+  EMAIL
+  GOOGLE
+}
+
+type VariationOptionType {
+  id: ID!
+  productConfigurations: [ProductConfigurationType!]!
+  value: String!
+  variation: VariationType!
+}
+
+type VariationType {
+  category: CategoryType!
+  id: ID!
+  name: String!
+  variationOptions: [VariationOptionType!]!
 }

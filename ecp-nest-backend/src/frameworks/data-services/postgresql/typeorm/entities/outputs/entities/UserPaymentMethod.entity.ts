@@ -33,7 +33,7 @@ export class UserPaymentMethod {
     name: 'is_default',
     default: true,
   })
-  isDefault: boolean;
+  isDefault?: boolean;
 
   // Relations
   @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.userPaymentMethod)

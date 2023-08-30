@@ -1,7 +1,8 @@
-import { Field } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { UserObjType } from '../users/user.type';
 import { AddressType } from '../addresses/address.type';
 
+@ObjectType()
 export class UserAddressType {
   @Field(() => Boolean, { nullable: true })
   isDefault?: boolean;

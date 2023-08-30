@@ -4,34 +4,16 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { CreateReviewInput, UpdateReviewInput } from 'src/core/dtos';
 import { IReview } from 'src/core/entities';
 import { ReviewFactoryService } from './review-factory.service';
+import { PaginationArgs, SearchArgs } from 'src/common/graphql/args';
+import { IGenericArgs } from 'src/core/abstracts/generic-data-methods.repository';
 
 @Injectable()
-export class ReviewUseCases implements IReviewsRepository {
+export class ReviewUseCases implements IReviewsRepository<IReview> {
   constructor(
     private dataService: IDataSourcesService,
     private reviewFactoryService: ReviewFactoryService,
   ) {}
-  getAllReviews(): Promise<IReview[]> {
-    return this.dataService.reviews.getAll();
-  }
-  getReviewById(id: string): Promise<IReview> {
-    return this.dataService.reviews.getOneById(id);
-  }
-  getReviewsBy(fields: Partial<IReview>): Promise<IReview[]> {
-    return this.dataService.reviews.getAllBy(fields);
-  }
-  createReview(createReviewInput: CreateReviewInput): Promise<IReview> {
-    const review = this.reviewFactoryService.createReview(createReviewInput);
-    return this.dataService.reviews.create(review);
-  }
-  updateReview(
-    id: string,
-    updateReviewInput: UpdateReviewInput,
-  ): Promise<IReview> {
-    const review = this.reviewFactoryService.updateReview(updateReviewInput);
-    return this.dataService.reviews.updateOneById(id, review);
-  }
-  removeReview(id: string): Promise<IReview> {
-    return this.dataService.reviews.deleteOneById(id);
+  getAllReviews(args: IGenericArgs<IReview>): Promise<IReview[]> {
+    throw new Error('Method not implemented.');
   }
 }

@@ -28,9 +28,6 @@ export class ShopOrder {
   @Column('real', { name: 'order_total' })
   orderTotal: number;
 
-  @Column('character varying', { name: 'last_location_id', nullable: true })
-  lastLocationId?: string;
-
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
 

@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Country } from './Country.entity';
-import { UserAddress } from './UserAddress.entity';
-import { ShopOrder } from './ShopOrder.entity';
 import { Location } from './Location.entity';
+import { ShopOrder } from './ShopOrder.entity';
+import { UserAddress } from './UserAddress.entity';
 
 @Index('address_pkey', ['id'], { unique: true })
 @Entity('address')

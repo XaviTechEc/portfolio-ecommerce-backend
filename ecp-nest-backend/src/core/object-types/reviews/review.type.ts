@@ -20,7 +20,7 @@ export class ReviewType {
   @Field(() => Date, { nullable: true })
   updatedAt?: Date;
 
-  // Relations
+  // Relations;
   @Field(() => UserObjType)
   user: UserObjType;
 
