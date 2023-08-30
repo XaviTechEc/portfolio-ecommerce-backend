@@ -13,12 +13,12 @@ export class CreateOrderLineInput {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  productItemId: string;
+  productItemId: any;
 
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  shopOrderId: string;
+  shopOrderId: any;
 
   @Field(() => Int)
   @IsNotEmpty()

@@ -6,16 +6,16 @@ import { IOrderLine } from 'src/core/entities';
 export class OrderLineFactoryService {
   createOrderLine(createOrderLineInput: CreateOrderLineInput) {
     const newOrderLine = new IOrderLine();
-    newOrderLine.productItemId = createOrderLineInput.productItemId;
-    newOrderLine.shopOrderId = createOrderLineInput.shopOrderId;
+    newOrderLine.productItem = createOrderLineInput.productItemId;
+    newOrderLine.shopOrder = createOrderLineInput.shopOrderId;
     newOrderLine.quantity = createOrderLineInput.quantity;
     newOrderLine.totalPrice = createOrderLineInput.totalPrice;
     return newOrderLine;
   }
   updateOrderLine(updateOrderLineInput: UpdateOrderLineInput) {
     const newOrderLine = new IOrderLine();
-    newOrderLine.productItemId = updateOrderLineInput.productItemId;
-    newOrderLine.shopOrderId = updateOrderLineInput.shopOrderId;
+    newOrderLine.productItem = updateOrderLineInput.productItemId;
+    newOrderLine.shopOrder = updateOrderLineInput.shopOrderId;
     newOrderLine.quantity = updateOrderLineInput.quantity;
     newOrderLine.totalPrice = updateOrderLineInput.totalPrice;
     return newOrderLine;

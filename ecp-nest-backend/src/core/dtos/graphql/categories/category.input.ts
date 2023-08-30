@@ -24,12 +24,12 @@ export class CreateCategoryInput {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  seasonId: string;
+  seasonId: any;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  parentCategoryId?: string;
+  parentCategoryId?: any;
 
   @Field(() => Boolean, { nullable: true, defaultValue: true })
   @IsOptional()
@@ -39,7 +39,7 @@ export class CreateCategoryInput {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  createdBy: string;
+  createdBy: any;
 }
 
 @InputType()

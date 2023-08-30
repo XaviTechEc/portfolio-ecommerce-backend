@@ -6,24 +6,24 @@ import { IShopOrder } from 'src/core/entities';
 export class ShopOrderFactoryService {
   createShopOrder(createShopOrderInput: CreateShopOrderInput) {
     const newShopOrder = new IShopOrder();
-    newShopOrder.userId = createShopOrderInput.userId;
-    newShopOrder.userPaymentMethodId = createShopOrderInput.userPaymentMethodId;
-    newShopOrder.shoppingAddressId = createShopOrderInput.shoppingAddressId;
-    newShopOrder.shippingMethodId = createShopOrderInput.shippingMethodId;
+    newShopOrder.user = createShopOrderInput.userId;
+    newShopOrder.userPaymentMethod = createShopOrderInput.userPaymentMethodId;
+    newShopOrder.address = createShopOrderInput.shoppingAddressId;
+    newShopOrder.shippingMethod = createShopOrderInput.shippingMethodId;
     newShopOrder.orderTotal = createShopOrderInput.orderTotal;
-    newShopOrder.orderStatusId = createShopOrderInput.orderStatusId;
-    newShopOrder.lastLocationId = createShopOrderInput.lastLocationId;
+    newShopOrder.orderStatus = createShopOrderInput.orderStatusId;
+    newShopOrder.location = createShopOrderInput.lastLocationId;
     return newShopOrder;
   }
   updateShopOrder(updateShopOrderInput: UpdateShopOrderInput) {
     const newShopOrder = new IShopOrder();
-    newShopOrder.userId = updateShopOrderInput.userId;
-    newShopOrder.userPaymentMethodId = updateShopOrderInput.userPaymentMethodId;
-    newShopOrder.shoppingAddressId = updateShopOrderInput.shoppingAddressId;
-    newShopOrder.shippingMethodId = updateShopOrderInput.shippingMethodId;
+    newShopOrder.user = updateShopOrderInput.userId;
+    newShopOrder.userPaymentMethod = updateShopOrderInput.userPaymentMethodId;
+    newShopOrder.address = updateShopOrderInput.shoppingAddressId;
+    newShopOrder.shippingMethod = updateShopOrderInput.shippingMethodId;
     newShopOrder.orderTotal = updateShopOrderInput.orderTotal;
-    newShopOrder.orderStatusId = updateShopOrderInput.orderStatusId;
-    newShopOrder.lastLocationId = updateShopOrderInput.lastLocationId;
+    newShopOrder.orderStatus = updateShopOrderInput.orderStatusId;
+    newShopOrder.location = updateShopOrderInput.lastLocationId;
     return newShopOrder;
   }
 }

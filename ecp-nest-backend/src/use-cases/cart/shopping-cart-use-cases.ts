@@ -7,38 +7,36 @@ import {
 } from 'src/core/dtos';
 import { IShoppingCart } from 'src/core/entities';
 import { ShoppingCartFactoryService } from './factory/shopping-cart-factory.service';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class ShoppingCartUseCases implements IShoppingCartsRepository {
+export class ShoppingCartUseCases
+  implements IShoppingCartsRepository<IShoppingCart>
+{
   constructor(
     private dataService: IDataSourcesService,
     private shoppingCartFactoryService: ShoppingCartFactoryService,
   ) {}
-
-  getShoppingCartById(id: string): Promise<IShoppingCart> {
-    return this.dataService.shoppingCarts.getOneById(id);
+  getAllShoppingCarts(
+    args: IGenericArgs<IShoppingCart>,
+  ): Promise<IShoppingCart[]> {
+    throw new Error('Method not implemented.');
   }
-
+  getShoppingCartById(id: string): Promise<IShoppingCart> {
+    throw new Error('Method not implemented.');
+  }
   createShoppingCart(
     createShoppingCartInput: CreateShoppingCartInput,
   ): Promise<IShoppingCart> {
-    const shoppingCart = this.shoppingCartFactoryService.createShoppingCart(
-      createShoppingCartInput,
-    );
-    return this.dataService.shoppingCarts.create(shoppingCart);
+    throw new Error('Method not implemented.');
   }
-
   updateShoppingCart(
     id: string,
     updateShoppingCartInput: UpdateShoppingCartInput,
   ): Promise<IShoppingCart> {
-    const shoppingCart = this.shoppingCartFactoryService.updateShoppingCart(
-      updateShoppingCartInput,
-    );
-    return this.dataService.shoppingCarts.updateOneById(id, shoppingCart);
+    throw new Error('Method not implemented.');
   }
-
   removeShoppingCart(id: string): Promise<IShoppingCart> {
-    return this.dataService.shoppingCarts.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

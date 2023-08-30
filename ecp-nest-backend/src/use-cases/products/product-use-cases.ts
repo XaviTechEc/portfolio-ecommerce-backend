@@ -4,39 +4,42 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { ProductFactoryService } from './factory';
 import { CreateProductInput, UpdateProductInput } from 'src/core/dtos';
 import { IProduct } from 'src/core/entities';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class ProductUseCases implements IProductsRepository {
+export class ProductUseCases implements IProductsRepository<IProduct> {
   constructor(
     private dataService: IDataSourcesService,
     private productFactoryService: ProductFactoryService,
   ) {}
-  getAllProducts(): Promise<IProduct[]> {
-    return this.dataService.products.getAll();
+  getAllProducts(args?: IGenericArgs<IProduct>): Promise<IProduct[]> {
+    throw new Error('Method not implemented.');
   }
-  getAllProductsBy(fields: Partial<IProduct>): Promise<IProduct[]> {
-    return this.dataService.products.getAllBy(fields);
+  getAllProductsBy(
+    fields: Partial<IProduct>,
+    args?: IGenericArgs<IProduct>,
+  ): Promise<IProduct[]> {
+    throw new Error('Method not implemented.');
+  }
+  getOneProductBy(
+    fields: Partial<IProduct>,
+    args?: IGenericArgs<IProduct>,
+  ): Promise<IProduct> {
+    throw new Error('Method not implemented.');
   }
   getProductById(id: string): Promise<IProduct> {
-    return this.dataService.products.getOneById(id);
-  }
-  getOneProductBy(fields: Partial<IProduct>): Promise<IProduct> {
-    return this.dataService.products.getOneBy(fields);
+    throw new Error('Method not implemented.');
   }
   createProduct(createProductInput: CreateProductInput): Promise<IProduct> {
-    const product =
-      this.productFactoryService.createProduct(createProductInput);
-    return this.dataService.products.create(product);
+    throw new Error('Method not implemented.');
   }
   updateProduct(
     id: string,
     updateProductInput: UpdateProductInput,
   ): Promise<IProduct> {
-    const product =
-      this.productFactoryService.updateProduct(updateProductInput);
-    return this.dataService.products.updateOneById(id, product);
+    throw new Error('Method not implemented.');
   }
   removeProduct(id: string): Promise<IProduct> {
-    return this.dataService.products.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

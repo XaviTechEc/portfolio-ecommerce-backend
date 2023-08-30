@@ -5,22 +5,22 @@ export class CreateShopOrderInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  userId: string;
+  userId: any;
 
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  userPaymentMethodId: string;
+  userPaymentMethodId: any;
 
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  shoppingAddressId: string;
+  shoppingAddressId: any;
 
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  shippingMethodId: string;
+  shippingMethodId: any;
 
   @Field(() => Float)
   @IsNotEmpty()
@@ -30,12 +30,12 @@ export class CreateShopOrderInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  orderStatusId: string;
+  orderStatusId: any;
 
   @Field(() => ID, { nullable: true })
   @IsNotEmpty()
   @IsUUID()
-  lastLocationId?: string;
+  lastLocationId?: any;
 }
 
 export class UpdateShopOrderInput extends PartialType(CreateShopOrderInput) {

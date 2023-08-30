@@ -7,40 +7,36 @@ import {
 } from 'src/core/dtos';
 import { IShippingMethod } from 'src/core/entities';
 import { ShippingMethodFactoryService } from './factory/shipping-method-factory.service';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class ShippingMethodUseCases implements IShippingMethodsRepository {
+export class ShippingMethodUseCases
+  implements IShippingMethodsRepository<IShippingMethod>
+{
   constructor(
     private dataService: IDataSourcesService,
     private shippingMethodFactoryService: ShippingMethodFactoryService,
   ) {}
-  getAllShippingMethods(): Promise<IShippingMethod[]> {
-    return this.dataService.shippingMethods.getAll();
+  getAllShippingMethods(
+    args?: IGenericArgs<IShippingMethod>,
+  ): Promise<IShippingMethod[]> {
+    throw new Error('Method not implemented.');
   }
   getShippingMethodById(id: string): Promise<IShippingMethod> {
-    return this.dataService.shippingMethods.getOneById(id);
+    throw new Error('Method not implemented.');
   }
   createShippingMethod(
     createShippingMethodInput: CreateShippingMethodInput,
   ): Promise<IShippingMethod> {
-    const shippingMethod =
-      this.shippingMethodFactoryService.createShippingMethod(
-        createShippingMethodInput,
-      );
-    return this.dataService.shippingMethods.create(shippingMethod);
+    throw new Error('Method not implemented.');
   }
   updateShippingMethod(
     id: string,
     updateShippingMethodInput: UpdateShippingMethodInput,
   ): Promise<IShippingMethod> {
-    const shippingMethod =
-      this.shippingMethodFactoryService.updateShippingMethod(
-        updateShippingMethodInput,
-      );
-
-    return this.dataService.shippingMethods.updateOneById(id, shippingMethod);
+    throw new Error('Method not implemented.');
   }
   removeShippingMethod(id: string): Promise<IShippingMethod> {
-    return this.dataService.shippingMethods.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

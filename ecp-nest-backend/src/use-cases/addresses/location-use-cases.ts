@@ -7,32 +7,24 @@ import { CreateLocationInput, UpdateLocationInput } from 'src/core/dtos';
 import { LocationFactoryService } from './factory/location-factory.service';
 
 @Injectable()
-export class LocationUseCases implements ILocationsRepository {
+export class LocationUseCases implements ILocationsRepository<ILocation> {
   constructor(
     private dataService: IDataSourcesService,
     private locationFactoryService: LocationFactoryService,
   ) {}
-
   getLocationById(id: string): Promise<ILocation> {
-    return this.dataService.locations.getOneById(id);
+    throw new Error('Method not implemented.');
   }
-
   createLocation(createLocationInput: CreateLocationInput): Promise<ILocation> {
-    const location =
-      this.locationFactoryService.createLocation(createLocationInput);
-    return this.dataService.locations.create(location);
+    throw new Error('Method not implemented.');
   }
-
   updateLocation(
     id: string,
     updateLocationInput: UpdateLocationInput,
   ): Promise<ILocation> {
-    const location =
-      this.locationFactoryService.updateLocation(updateLocationInput);
-    return this.dataService.locations.updateOneById(id, location);
+    throw new Error('Method not implemented.');
   }
-
   removeLocation(id: string): Promise<ILocation> {
-    return this.dataService.locations.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

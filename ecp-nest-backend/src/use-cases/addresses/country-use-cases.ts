@@ -5,38 +5,30 @@ import { ICountry } from 'src/core/entities';
 
 import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';
 import { CountryFactoryService } from './factory/country-factory.service';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class CountryUseCases implements ICountriesRepository {
+export class CountryUseCases implements ICountriesRepository<ICountry> {
   constructor(
     private dataService: IDataSourcesService,
     private countryFactoryService: CountryFactoryService,
   ) {}
-
-  getAllCountries(): Promise<ICountry[]> {
-    return this.dataService.countries.getAll();
+  getAllCountries(args?: IGenericArgs<ICountry>): Promise<ICountry[]> {
+    throw new Error('Method not implemented.');
   }
-
   getCountryById(id: string): Promise<ICountry> {
-    return this.dataService.countries.getOneById(id);
+    throw new Error('Method not implemented.');
   }
-
   createCountry(createCountryInput: CreateCountryInput): Promise<ICountry> {
-    const country =
-      this.countryFactoryService.createCountry(createCountryInput);
-    return this.dataService.countries.create(country);
+    throw new Error('Method not implemented.');
   }
-
   updateCountry(
     id: string,
     updateCountryInput: UpdateCountryInput,
   ): Promise<ICountry> {
-    const country =
-      this.countryFactoryService.updateCountry(updateCountryInput);
-    return this.dataService.countries.updateOneById(id, country);
+    throw new Error('Method not implemented.');
   }
-
   removeCountry(id: string): Promise<ICountry> {
-    return this.dataService.countries.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

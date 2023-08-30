@@ -4,37 +4,27 @@ import { UserFactoryService } from './user-factory.service';
 import { IUser } from 'src/core/entities';
 import { IUsersRepository } from 'src/core/abstracts/repositories/users/users.repository';
 import { CreateUserDto, UpdateUserDto } from 'src/core/dtos';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class UserUseCases implements IUsersRepository {
+export class UserUseCases implements IUsersRepository<IUser> {
   constructor(
     private dataServices: IDataSourcesService,
     private userFactoryService: UserFactoryService,
   ) {}
-
-  getUserBy(fields: Partial<IUser>): Promise<IUser> {
-    return this.dataServices.users.getOneBy(fields);
+  getAllUsers(args?: IGenericArgs<IUser>): Promise<IUser[]> {
+    throw new Error('Method not implemented.');
   }
-
-  getAllUsers(): Promise<IUser[]> {
-    return this.dataServices.users.getAll();
-  }
-
   getUserById(id: string): Promise<IUser> {
-    return this.dataServices.users.getOneById(id);
+    throw new Error('Method not implemented.');
   }
-
   createUser(createUserDto: CreateUserDto): Promise<IUser> {
-    const user = this.userFactoryService.createUser(createUserDto);
-    return this.dataServices.users.create(user);
+    throw new Error('Method not implemented.');
   }
-
   updateUser(id: string, updateUserDto: UpdateUserDto): Promise<IUser> {
-    const user = this.userFactoryService.updateUser(updateUserDto);
-    return this.dataServices.users.updateOneById(id, user);
+    throw new Error('Method not implemented.');
   }
-
   removeUser(id: string): Promise<IUser> {
-    return this.dataServices.users.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

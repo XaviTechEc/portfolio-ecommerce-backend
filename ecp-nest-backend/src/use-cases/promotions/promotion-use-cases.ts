@@ -4,35 +4,32 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { PromotionFactoryService } from './promotion-factory.service';
 import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
 import { IPromotion } from 'src/core/entities';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class PromotionUseCases implements IPromotionsRepository {
+export class PromotionUseCases implements IPromotionsRepository<IPromotion> {
   constructor(
     private dataService: IDataSourcesService,
     private promotionFactoryService: PromotionFactoryService,
   ) {}
-  getAllPromotions(): Promise<IPromotion[]> {
-    return this.dataService.promotions.getAll();
+  getAllPromotions(args?: IGenericArgs<IPromotion>): Promise<IPromotion[]> {
+    throw new Error('Method not implemented.');
   }
   getPromotionById(id: string): Promise<IPromotion> {
-    return this.dataService.promotions.getOneById(id);
+    throw new Error('Method not implemented.');
   }
   createPromotion(
     createPromotionInput: CreatePromotionInput,
   ): Promise<IPromotion> {
-    const promotion =
-      this.promotionFactoryService.createPromotion(createPromotionInput);
-    return this.dataService.promotions.create(promotion);
+    throw new Error('Method not implemented.');
   }
   updatePromotion(
     id: string,
     updatePromotionInput: UpdatePromotionInput,
   ): Promise<IPromotion> {
-    const promotion =
-      this.promotionFactoryService.updatePromotion(updatePromotionInput);
-    return this.dataService.promotions.updateOneById(id, promotion);
+    throw new Error('Method not implemented.');
   }
   removePromotion(id: string): Promise<IPromotion> {
-    return this.dataService.promotions.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

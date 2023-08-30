@@ -7,50 +7,42 @@ import {
 } from 'src/core/dtos';
 import { IVariationOption } from 'src/core/entities';
 import { VariationOptionFactoryService } from './factory/variation-option-factory.service';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class VariationOptionUseCases implements IVariationOptionsRepository {
+export class VariationOptionUseCases
+  implements IVariationOptionsRepository<IVariationOption>
+{
   constructor(
     private dataService: IDataSourcesService,
     private variationOptionFactoryService: VariationOptionFactoryService,
   ) {}
-
-  getAllVariationOptions(): Promise<IVariationOption[]> {
-    return this.dataService.variationOptions.getAll();
+  getAllVariationOptions(
+    args?: IGenericArgs<IVariationOption>,
+  ): Promise<IVariationOption[]> {
+    throw new Error('Method not implemented.');
   }
-
-  getVariationOptionById(id: string): Promise<IVariationOption> {
-    return this.dataService.variationOptions.getOneById(id);
-  }
-
   getOneVariationOptionBy(
     fields: Partial<IVariationOption>,
+    args?: IGenericArgs<IVariationOption>,
   ): Promise<IVariationOption> {
-    return this.dataService.variationOptions.getOneBy(fields);
+    throw new Error('Method not implemented.');
   }
-
+  getVariationOptionById(id: string): Promise<IVariationOption> {
+    throw new Error('Method not implemented.');
+  }
   createVariationOption(
     createVariationOptionInput: CreateVariationOptionInput,
   ): Promise<IVariationOption> {
-    const variationOption =
-      this.variationOptionFactoryService.createVariationOption(
-        createVariationOptionInput,
-      );
-    return this.dataService.variationOptions.create(variationOption);
+    throw new Error('Method not implemented.');
   }
-
   updateVariationOption(
     id: string,
     updateVariationOptionInput: UpdateVariationOptionInput,
   ): Promise<IVariationOption> {
-    const variationOption =
-      this.variationOptionFactoryService.updateVariationOption(
-        updateVariationOptionInput,
-      );
-    return this.dataService.variationOptions.updateOneById(id, variationOption);
+    throw new Error('Method not implemented.');
   }
-
   removeVariationOption(id: string): Promise<IVariationOption> {
-    return this.dataService.variationOptions.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

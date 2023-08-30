@@ -4,40 +4,32 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { CreateVariationInput, UpdateVariationInput } from 'src/core/dtos';
 import { IVariation } from 'src/core/entities';
 import { VariationFactoryService } from './factory/variation-factory.service';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class VariationUseCases implements IVariationsRepository {
+export class VariationUseCases implements IVariationsRepository<IVariation> {
   constructor(
     private dataService: IDataSourcesService,
     private variationFactoryService: VariationFactoryService,
   ) {}
-
-  getAllVariations(): Promise<IVariation[]> {
-    return this.dataService.variations.getAll();
+  getAllVariations(args?: IGenericArgs<IVariation>): Promise<IVariation[]> {
+    throw new Error('Method not implemented.');
   }
-
   getVariationById(id: string): Promise<IVariation> {
-    return this.dataService.variations.getOneById(id);
+    throw new Error('Method not implemented.');
   }
-
   createVariation(
     createVariationInput: CreateVariationInput,
   ): Promise<IVariation> {
-    const variation =
-      this.variationFactoryService.createVariation(createVariationInput);
-    return this.dataService.variations.create(variation);
+    throw new Error('Method not implemented.');
   }
-
   updateVariation(
     id: string,
     updateVariationInput: UpdateVariationInput,
   ): Promise<IVariation> {
-    const variation =
-      this.variationFactoryService.updateVariation(updateVariationInput);
-    return this.dataService.variations.updateOneById(id, variation);
+    throw new Error('Method not implemented.');
   }
-
   removeVariation(id: string): Promise<IVariation> {
-    return this.dataService.variations.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

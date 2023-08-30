@@ -5,7 +5,7 @@ export class CreateShoppingCartInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  userId: string;
+  userId: any;
 }
 
 export class UpdateShoppingCartInput extends PartialType(

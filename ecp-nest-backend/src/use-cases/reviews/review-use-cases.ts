@@ -6,6 +6,7 @@ import { IReview } from 'src/core/entities';
 import { ReviewFactoryService } from './review-factory.service';
 import { PaginationArgs, SearchArgs } from 'src/common/graphql/args';
 import { IGenericArgs } from 'src/core/abstracts/generic-data-methods.repository';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
 export class ReviewUseCases implements IReviewsRepository<IReview> {
@@ -14,6 +15,27 @@ export class ReviewUseCases implements IReviewsRepository<IReview> {
     private reviewFactoryService: ReviewFactoryService,
   ) {}
   getAllReviews(args?: IGenericArgs<IReview>): Promise<IReview[]> {
-    return this.dataService.reviews.getAllReviews(args);
+    throw new Error('Method not implemented.');
+  }
+  getReviewsBy(
+    fields: Partial<IReview>,
+    args?: IGenericArgs<IReview>,
+  ): Promise<IReview[]> {
+    throw new Error('Method not implemented.');
+  }
+  getReviewById(id: string): Promise<IReview> {
+    throw new Error('Method not implemented.');
+  }
+  createReview(createReviewInput: CreateReviewInput): Promise<IReview> {
+    throw new Error('Method not implemented.');
+  }
+  updateReview(
+    id: string,
+    updateReviewInput: UpdateReviewInput,
+  ): Promise<IReview> {
+    throw new Error('Method not implemented.');
+  }
+  removeReview(id: string): Promise<IReview> {
+    throw new Error('Method not implemented.');
   }
 }

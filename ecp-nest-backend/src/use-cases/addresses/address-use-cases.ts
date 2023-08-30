@@ -4,42 +4,39 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { IAddress } from 'src/core/entities';
 import { AddressFactoryService } from './factory/address-factory.service';
 import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class AddressesUseCases implements IAddressesRepository {
+export class AddressesUseCases implements IAddressesRepository<IAddress> {
   constructor(
     private dataServices: IDataSourcesService,
     private addressFactoryService: AddressFactoryService,
   ) {}
-
+  getAddressesBy(
+    fields: Partial<IAddress>,
+    args?: IGenericArgs<IAddress>,
+  ): Promise<IAddress[]> {
+    throw new Error('Method not implemented.');
+  }
+  getOneAddressBy(
+    fields: Partial<IAddress>,
+    args?: IGenericArgs<IAddress>,
+  ): Promise<IAddress> {
+    throw new Error('Method not implemented.');
+  }
   getAddressById(id: string): Promise<IAddress> {
-    return this.dataServices.addresses.getOneById(id);
+    throw new Error('Method not implemented.');
   }
-
-  getAddressesBy(fields: Partial<IAddress>): Promise<IAddress[]> {
-    return this.dataServices.addresses.getAllBy(fields);
-  }
-
-  getOneAddressesBy(fields: Partial<IAddress>): Promise<IAddress> {
-    return this.dataServices.addresses.getOneBy(fields);
-  }
-
   createAddress(createAddressInput: CreateAddressInput): Promise<IAddress> {
-    const address =
-      this.addressFactoryService.createAddress(createAddressInput);
-    return this.dataServices.addresses.create(address);
+    throw new Error('Method not implemented.');
   }
-
   updateAddress(
     id: string,
     updateAddressInput: UpdateAddressInput,
   ): Promise<IAddress> {
-    const address =
-      this.addressFactoryService.updateAddress(updateAddressInput);
-    return this.dataServices.addresses.updateOneById(id, address);
+    throw new Error('Method not implemented.');
   }
-
   removeAddress(id: string): Promise<IAddress> {
-    return this.dataServices.addresses.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

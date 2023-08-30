@@ -4,42 +4,36 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { OrderStatusFactoryService } from './factory/order-status-factory.service';
 import { CreateOrderStatusInput, UpdateOrderStatusInput } from 'src/core/dtos';
 import { IOrderStatus } from 'src/core/entities';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class OrderStatusUseCases implements IOrderStatusRepository {
+export class OrderStatusUseCases
+  implements IOrderStatusRepository<IOrderStatus>
+{
   constructor(
     private dataService: IDataSourcesService,
     private orderStatusFactoryService: OrderStatusFactoryService,
   ) {}
-
-  getAllOrderStatus(): Promise<IOrderStatus[]> {
-    return this.dataService.orderStatus.getAll();
+  getAllOrderStatus(
+    args?: IGenericArgs<IOrderStatus>,
+  ): Promise<IOrderStatus[]> {
+    throw new Error('Method not implemented.');
   }
-
   getOrderStatusById(id: string): Promise<IOrderStatus> {
-    return this.dataService.orderStatus.getOneById(id);
+    throw new Error('Method not implemented.');
   }
-
   createOrderStatus(
     createOrderStatusInput: CreateOrderStatusInput,
   ): Promise<IOrderStatus> {
-    const orderStatus = this.orderStatusFactoryService.createOrderStatus(
-      createOrderStatusInput,
-    );
-    return this.dataService.orderStatus.create(orderStatus);
+    throw new Error('Method not implemented.');
   }
-
   updateOrderStatus(
     id: string,
     updateOrderStatusInput: UpdateOrderStatusInput,
   ): Promise<IOrderStatus> {
-    const orderStatus = this.orderStatusFactoryService.updateOrderStatus(
-      updateOrderStatusInput,
-    );
-    return this.dataService.orderStatus.updateOneById(id, orderStatus);
+    throw new Error('Method not implemented.');
   }
-
   removeOrderStatus(id: string): Promise<IOrderStatus> {
-    return this.dataService.orderStatus.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

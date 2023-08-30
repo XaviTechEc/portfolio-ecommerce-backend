@@ -11,7 +11,7 @@ export class VariationOptionFactoryService {
     createVariationOptionInput: CreateVariationOptionInput,
   ) {
     const newVariationOption = new IVariationOption();
-    newVariationOption.variationId = createVariationOptionInput.variationId;
+    newVariationOption.variation = createVariationOptionInput.variationId;
     newVariationOption.value = createVariationOptionInput.value;
     return newVariationOption;
   }
@@ -19,7 +19,7 @@ export class VariationOptionFactoryService {
     updateVariationOptionInput: UpdateVariationOptionInput,
   ) {
     const newVariationOption = new IVariationOption();
-    newVariationOption.variationId = updateVariationOptionInput.variationId;
+    newVariationOption.variation = updateVariationOptionInput.variationId;
     newVariationOption.value = updateVariationOptionInput.value;
     return newVariationOption;
   }

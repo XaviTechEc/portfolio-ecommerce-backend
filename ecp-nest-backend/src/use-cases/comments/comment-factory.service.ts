@@ -9,8 +9,8 @@ export class CommentFactoryService {
     newComment.user = createCommentInput.userId;
     newComment.content = createCommentInput.content;
     newComment.visible = createCommentInput.visible;
-    newComment.reviewId = createCommentInput.reviewId;
-    newComment.commentParentId = createCommentInput.commentParentId;
+    newComment.review = createCommentInput.reviewId;
+    newComment.comment = createCommentInput.commentParentId;
     return newComment;
   }
   updateComment(updateCommentInput: UpdateCommentInput) {
@@ -18,8 +18,8 @@ export class CommentFactoryService {
     newComment.user = updateCommentInput.userId;
     newComment.content = updateCommentInput.content;
     newComment.visible = updateCommentInput.visible;
-    newComment.reviewId = updateCommentInput.reviewId;
-    newComment.commentParentId = updateCommentInput.commentParentId;
+    newComment.review = updateCommentInput.reviewId;
+    newComment.comment = updateCommentInput.commentParentId;
     return newComment;
   }
 }

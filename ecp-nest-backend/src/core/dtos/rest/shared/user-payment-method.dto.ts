@@ -12,11 +12,11 @@ import {
 export class CreateUserPaymentMethodDto {
   @IsNotEmpty()
   @IsUUID()
-  userId: string;
+  userId: any;
 
   @IsNotEmpty()
   @IsUUID()
-  paymentMethodId: string;
+  paymentMethodId: any;
 
   @IsNotEmpty()
   @IsString()

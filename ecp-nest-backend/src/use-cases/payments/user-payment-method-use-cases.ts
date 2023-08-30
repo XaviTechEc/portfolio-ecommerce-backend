@@ -7,51 +7,48 @@ import {
 } from 'src/core/dtos';
 import { IUserPaymentMethod } from 'src/core/entities';
 import { UserPaymentMethodFactoryService } from './factory/user-payment-method-factory.service';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
 export class UserPaymentMethodUseCases
-  implements IUserPaymentMethodsRepository
+  implements IUserPaymentMethodsRepository<IUserPaymentMethod>
 {
   constructor(
     private dataService: IDataSourcesService,
     private userPaymentMethodFactoryService: UserPaymentMethodFactoryService,
   ) {}
-  getAllUserPaymentMethods(): Promise<IUserPaymentMethod[]> {
-    return this.dataService.userPaymentMethods.getAll();
+  getAllUserPaymentMethods(
+    args?: IGenericArgs<IUserPaymentMethod>,
+  ): Promise<IUserPaymentMethod[]> {
+    throw new Error('Method not implemented.');
   }
   getAllUserPaymentMethodsBy(
     fields: Partial<IUserPaymentMethod>,
+    args?: IGenericArgs<IUserPaymentMethod>,
   ): Promise<IUserPaymentMethod[]> {
-    return this.dataService.userPaymentMethods.getAllBy(fields);
+    throw new Error('Method not implemented.');
   }
   getOneUserPaymentMethodBy(
     fields: Partial<IUserPaymentMethod>,
+    args?: IGenericArgs<IUserPaymentMethod>,
   ): Promise<IUserPaymentMethod> {
-    return this.dataService.userPaymentMethods.getOneBy(fields);
+    throw new Error('Method not implemented.');
+  }
+  getUserPaymentMethodById(id: string): Promise<IUserPaymentMethod> {
+    throw new Error('Method not implemented.');
   }
   createUserPaymentMethod(
     createUserPaymentMethodInput: CreateUserPaymentMethodDto,
   ): Promise<IUserPaymentMethod> {
-    const userPaymentMethod =
-      this.userPaymentMethodFactoryService.createUserPaymentMethod(
-        createUserPaymentMethodInput,
-      );
-    return this.dataService.userPaymentMethods.create(userPaymentMethod);
+    throw new Error('Method not implemented.');
   }
   updateUserPaymentMethod(
     id: string,
     updateUserPaymentMethodInput: UpdateUserPaymentMethodDto,
   ): Promise<IUserPaymentMethod> {
-    const userPaymentMethod =
-      this.userPaymentMethodFactoryService.updateUserPaymentMethod(
-        updateUserPaymentMethodInput,
-      );
-    return this.dataService.userPaymentMethods.updateOneById(
-      id,
-      userPaymentMethod,
-    );
+    throw new Error('Method not implemented.');
   }
   removeUserPaymentMethod(id: string): Promise<IUserPaymentMethod> {
-    return this.dataService.userPaymentMethods.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }

@@ -29,7 +29,7 @@ export class CreateProductInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  createdBy: string;
+  createdBy: any;
 
   @Field(() => String)
   @IsOptional()

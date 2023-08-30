@@ -4,28 +4,27 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { CreateTagInput, UpdateTagInput } from 'src/core/dtos';
 import { ITag } from 'src/core/entities';
 import { TagFactoryService } from './tag-factory.service';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
 
 @Injectable()
-export class TagUseCases implements ITagsRepository {
+export class TagUseCases implements ITagsRepository<ITag> {
   constructor(
     private dataService: IDataSourcesService,
     private tagFactoryService: TagFactoryService,
   ) {}
-  getAllTags(): Promise<ITag[]> {
-    return this.dataService.tags.getAll();
+  getAllTags(args?: IGenericArgs<ITag>): Promise<ITag[]> {
+    throw new Error('Method not implemented.');
   }
   getTagById(id: string): Promise<ITag> {
-    return this.dataService.tags.getOneById(id);
+    throw new Error('Method not implemented.');
   }
   createTag(createTagInput: CreateTagInput): Promise<ITag> {
-    const tag = this.tagFactoryService.createTag(createTagInput);
-    return this.dataService.tags.create(tag);
+    throw new Error('Method not implemented.');
   }
   updateTag(id: string, updateTagInput: UpdateTagInput): Promise<ITag> {
-    const tag = this.tagFactoryService.updateTag(updateTagInput);
-    return this.dataService.tags.updateOneById(id, tag);
+    throw new Error('Method not implemented.');
   }
   removeTag(id: string): Promise<ITag> {
-    return this.dataService.tags.deleteOneById(id);
+    throw new Error('Method not implemented.');
   }
 }
