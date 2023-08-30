@@ -1,11 +1,10 @@
 import { CreateUserDto, UpdateUserDto } from 'src/core/dtos';
-import { IUser } from 'src/core/entities';
+import { IGenericArgs } from '../../generic-args.repository';
 
-export abstract class IUsersRepository {
-  abstract getAllUsers(options: any): Promise<IUser[]>;
-  abstract getUserById(id: string): Promise<IUser>;
-  abstract getUserBy(fields: Partial<IUser>): Promise<IUser>;
-  abstract createUser(createUserDto: CreateUserDto): Promise<IUser>;
-  abstract updateUser(id: string, updateUserDto: UpdateUserDto): Promise<IUser>;
-  abstract removeUser(id: string): Promise<IUser>;
+export abstract class IUsersRepository<T> {
+  abstract getAllUsers(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getUserById(id: string): Promise<T>;
+  abstract createUser(createUserDto: CreateUserDto): Promise<T>;
+  abstract updateUser(id: string, updateUserDto: UpdateUserDto): Promise<T>;
+  abstract removeUser(id: string): Promise<T>;
 }

@@ -1,15 +1,13 @@
 import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';
-import { ICountry } from 'src/core/entities';
+import { IGenericArgs } from '../../generic-args.repository';
 
-export abstract class ICountriesRepository {
-  abstract getAllCountries(): Promise<ICountry[]>;
-  abstract getCountryById(id: string): Promise<ICountry>;
-  abstract createCountry(
-    createCountryInput: CreateCountryInput,
-  ): Promise<ICountry>;
+export abstract class ICountriesRepository<T> {
+  abstract getAllCountries(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getCountryById(id: string): Promise<T>;
+  abstract createCountry(createCountryInput: CreateCountryInput): Promise<T>;
   abstract updateCountry(
     id: string,
     updateCountryInput: UpdateCountryInput,
-  ): Promise<ICountry>;
-  abstract removeCountry(id: string): Promise<ICountry>;
+  ): Promise<T>;
+  abstract removeCountry(id: string): Promise<T>;
 }

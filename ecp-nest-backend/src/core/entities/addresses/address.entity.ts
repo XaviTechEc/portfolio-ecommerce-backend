@@ -1,3 +1,6 @@
+import { ICountry } from './country.entity';
+import { ILocation } from './location.entity';
+
 export class IAddress {
   id: string;
   unitNumber?: number;
@@ -7,7 +10,7 @@ export class IAddress {
   city: string;
   region?: string;
   postalCode: string;
-  countryId: string;
   reference?: string;
-  locationId?: string;
+  country: ICountry;
+  location?: ILocation;
 }

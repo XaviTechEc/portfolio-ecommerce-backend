@@ -1,15 +1,16 @@
 import { CreateCommentInput, UpdateCommentInput } from 'src/core/dtos';
-import { IComment } from 'src/core/entities';
+import { IGenericArgs } from '../../generic-args.repository';
 
-export abstract class ICommentsRepository {
-  abstract getCommentById(id: string): Promise<IComment>;
-  abstract getCommentsBy(fields: Partial<IComment>): Promise<IComment[]>;
-  abstract createComment(
-    createCommentInput: CreateCommentInput,
-  ): Promise<IComment>;
+export abstract class ICommentsRepository<T> {
+  abstract getCommentById(id: string): Promise<T>;
+  abstract getCommentsBy(
+    fields: Partial<T>,
+    args?: IGenericArgs<T>,
+  ): Promise<T[]>;
+  abstract createComment(createCommentInput: CreateCommentInput): Promise<T>;
   abstract updateComment(
     id: string,
     updateCommentInput: UpdateCommentInput,
-  ): Promise<IComment>;
-  abstract removeComment(id: string): Promise<IComment>;
+  ): Promise<T>;
+  abstract removeComment(id: string): Promise<T>;
 }

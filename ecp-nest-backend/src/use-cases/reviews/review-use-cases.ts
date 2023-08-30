@@ -13,7 +13,7 @@ export class ReviewUseCases implements IReviewsRepository<IReview> {
     private dataService: IDataSourcesService,
     private reviewFactoryService: ReviewFactoryService,
   ) {}
-  getAllReviews(args: IGenericArgs<IReview>): Promise<IReview[]> {
-    throw new Error('Method not implemented.');
+  getAllReviews(args?: IGenericArgs<IReview>): Promise<IReview[]> {
+    return this.dataService.reviews.getAllReviews(args);
   }
 }

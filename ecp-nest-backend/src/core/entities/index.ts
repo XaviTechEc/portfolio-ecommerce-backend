@@ -19,7 +19,7 @@ export * from './shared/product-category.entity';
 export * from './shared/product-configuration.entity';
 export * from './shared/product-promotion.entity';
 export * from './shared/product-tag.entity';
-export * from './shared/shopping-cart-product-item';
+export * from './shared/shopping-cart-product-item.entity';
 export * from './shared/user-address.entity';
 export * from './shared/user-payment-method.entity';
 export * from './tags/tag.entity';

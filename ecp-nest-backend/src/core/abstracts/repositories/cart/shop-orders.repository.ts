@@ -1,20 +1,24 @@
 import { CreateShopOrderInput, UpdateShopOrderInput } from 'src/core/dtos';
-import { IShopOrder } from 'src/core/entities';
+import { IGenericArgs } from '../../generic-args.repository';
 
-export abstract class IShopOrdersRepository {
-  abstract getAllShopOrders(): Promise<IShopOrder[]>;
+export abstract class IShopOrdersRepository<T> {
+  abstract getAllShopOrders(args?: IGenericArgs<T>): Promise<T[]>;
   abstract getAllShopOrdersBy(
-    fields: Partial<IShopOrder>,
-  ): Promise<IShopOrder[]>;
+    fields: Partial<T>,
+    args?: IGenericArgs<T>,
+  ): Promise<T[]>;
 
-  abstract getShopOrderById(id: string): Promise<IShopOrder>;
-  abstract getOneShopOrderBy(fields: Partial<IShopOrder>): Promise<IShopOrder>;
+  abstract getShopOrderById(id: string): Promise<T>;
+  abstract getOneShopOrderBy(
+    fields: Partial<T>,
+    args?: IGenericArgs<T>,
+  ): Promise<T>;
   abstract createShopOrder(
     createShopOrderInput: CreateShopOrderInput,
-  ): Promise<IShopOrder>;
+  ): Promise<T>;
   abstract updateShopOrder(
     id: string,
     updateShopOrderInput: UpdateShopOrderInput,
-  ): Promise<IShopOrder>;
-  abstract removeShopOrder(id: string): Promise<IShopOrder>;
+  ): Promise<T>;
+  abstract removeShopOrder(id: string): Promise<T>;
 }

@@ -1,7 +1,5 @@
-import {
-  IGenericArgs,
-  IGenericDataMethodsRepository,
-} from 'src/core/abstracts/generic-data-methods.repository';
+import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericDataMethodsRepository } from 'src/core/abstracts/generic-data-methods.repository';
 import { Repository } from 'typeorm';
 
 export class PostgresGenericRepository<T>
@@ -13,30 +11,7 @@ export class PostgresGenericRepository<T>
     this._repository = repository;
   }
   async getAll(args?: IGenericArgs<T>): Promise<T[]> {
-    const { paginationArgs, searchArgs } = args;
-    let query = this._repository.createQueryBuilder();
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      query = query.skip(offset).limit(limit);
-    }
-    if (searchArgs) {
-    }
-
-    return await query.getMany();
-  }
-
-  getAllBy(
-    fields: Partial<T> | Partial<T>[],
-    args?: IGenericArgs<T>,
-  ): Promise<T[]> {
-    throw new Error('Method not implemented.');
-  }
-
-  getOneBy(
-    fields: Partial<T> | Partial<T>[],
-    args?: IGenericArgs<T>,
-  ): Promise<T> {
-    throw new Error('Method not implemented.');
+    return this._repository.find(); // TODO
   }
 
   async create(data: T): Promise<T> {

@@ -1,15 +1,15 @@
 import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
-import { IPromotion } from 'src/core/entities';
+import { IGenericArgs } from '../../generic-args.repository';
 
-export abstract class IPromotionsRepository {
-  abstract getAllPromotions(): Promise<IPromotion[]>;
-  abstract getPromotionById(id: string): Promise<IPromotion>;
+export abstract class IPromotionsRepository<T> {
+  abstract getAllPromotions(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getPromotionById(id: string): Promise<T>;
   abstract createPromotion(
     createPromotionInput: CreatePromotionInput,
-  ): Promise<IPromotion>;
+  ): Promise<T>;
   abstract updatePromotion(
     id: string,
     updatePromotionInput: UpdatePromotionInput,
-  ): Promise<IPromotion>;
-  abstract removePromotion(id: string): Promise<IPromotion>;
+  ): Promise<T>;
+  abstract removePromotion(id: string): Promise<T>;
 }

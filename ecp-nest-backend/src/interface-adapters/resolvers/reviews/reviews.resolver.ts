@@ -15,16 +15,16 @@ export class ReviewsResolver {
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs<IReview>,
   ) {
-    return this.reviewUseCases.getAllReviews(paginationArgs, searchArgs);
+    return this.reviewUseCases.getAllReviews();
   }
 
-  @Query(() => ReviewType, { name: 'review' })
-  getReviewById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
-    return this.reviewUseCases.getReviewById(id);
-  }
+  // @Query(() => ReviewType, { name: 'review' })
+  // getReviewById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
+  //   return this.reviewUseCases.getReviewById(id);
+  // }
 
-  @Query(() => [ReviewType], { name: 'reviewsBy' })
-  getReviewsBy(@Args() paginationArgs: PaginationArgs) {
-    return this.reviewUseCases.getReviewsBy({});
-  }
+  // @Query(() => [ReviewType], { name: 'reviewsBy' })
+  // getReviewsBy(@Args() paginationArgs: PaginationArgs) {
+  //   return this.reviewUseCases.getReviewsBy({});
+  // }
 }

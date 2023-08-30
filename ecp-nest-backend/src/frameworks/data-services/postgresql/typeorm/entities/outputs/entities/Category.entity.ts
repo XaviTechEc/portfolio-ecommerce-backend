@@ -26,7 +26,7 @@ export class Category {
   description: string;
 
   @Column('boolean', { name: 'active', default: true })
-  active: boolean;
+  active?: boolean;
 
   // Relations
   @OneToMany(
@@ -44,7 +44,7 @@ export class Category {
 
   @ManyToOne(() => Category, (category) => category.category)
   @JoinColumn([{ name: 'parent_category_id', referencedColumnName: 'id' }])
-  parentCategory: Category;
+  parentCategory?: Category;
 
   @OneToMany(
     () => CategoryPromotion,
