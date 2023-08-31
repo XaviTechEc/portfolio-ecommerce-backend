@@ -16,6 +16,7 @@ export * from './graphql/seasons/season.input';
 export * from './graphql/tags/tag.input';
 export * from './graphql/variations/variation-option.input';
 export * from './graphql/variations/variation.input';
+export * from './rest/images/image.dto';
 export * from './rest/payments/payment-method.dto';
 export * from './rest/shared/category-promotion.dto';
 export * from './rest/shared/product-category.dto';

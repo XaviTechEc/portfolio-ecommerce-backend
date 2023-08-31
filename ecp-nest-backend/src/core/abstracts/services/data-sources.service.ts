@@ -4,6 +4,7 @@ import {
   ICategoryPromotion,
   IComment,
   ICountry,
+  IImage,
   ILocation,
   IOrderLine,
   IOrderStatus,
@@ -19,6 +20,7 @@ import {
   ISeason,
   IShippingMethod,
   IShopOrder,
+  IShopOrderLocation,
   IShoppingCart,
   IShoppingCartProductItem,
   ITag,
@@ -33,6 +35,7 @@ import {
   ICategoriesRepository,
   ICommentsRepository,
   ICountriesRepository,
+  IImageRepository,
   ILocationsRepository,
   IOrderLinesRepository,
   IOrderStatusRepository,
@@ -72,6 +75,9 @@ export abstract class IDataSourcesService {
   // // Comments
   // abstract comments: ICommentsRepository<IComment>;
 
+  // // Images
+  // abstract images: IImageRepository<IImage>;
+
   // // Payments
   // abstract paymentMethods: IPaymentMethodsRepository<IPaymentMethod>;
   // abstract userPaymentMethods: IUserPaymentMethodsRepository<IUserPaymentMethod>;
@@ -95,6 +101,7 @@ export abstract class IDataSourcesService {
   // abstract productConfigurations: IGenericDataMethodsRepository<IProductConfiguration>;
   // abstract productPromotions: IGenericDataMethodsRepository<IProductPromotion>;
   // abstract productTags: IGenericDataMethodsRepository<IProductTag>;
+  // abstract shopOrderLocations: IGenericDataMethodsRepository<IShopOrderLocation>;
   // abstract shoppingCartProductItems: IGenericDataMethodsRepository<IShoppingCartProductItem>;
   // abstract userAddresses: IGenericDataMethodsRepository<IUserAddress>;
 

@@ -12,6 +12,7 @@ import { CategoryPromotion } from './CategoryPromotion.entity';
 import { ProductCategory } from './ProductCategory.entity';
 import { Variation } from './Variation.entity';
 import { User } from './User.entity';
+import { Image } from './Image.entity';
 
 @Index('category_pkey', ['id'], { unique: true })
 @Entity('category')
@@ -58,4 +59,7 @@ export class Category {
   @ManyToOne(() => Season, (season) => season.category)
   @JoinColumn([{ name: 'season_id', referencedColumnName: 'id' }])
   season: Season;
+
+  @OneToMany(() => Image, (image) => image.product)
+  image: Image[];
 }

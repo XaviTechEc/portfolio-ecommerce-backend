@@ -4,7 +4,6 @@ import {
   IsNotEmpty,
   IsNumber,
   IsPositive,
-  IsString,
   IsUUID,
   Min,
 } from 'class-validator';
@@ -12,12 +11,12 @@ import {
 export class CreateOrderLineInput {
   @Field(() => String)
   @IsNotEmpty()
-  @IsString()
+  @IsUUID()
   productItemId: any;
 
   @Field(() => String)
   @IsNotEmpty()
-  @IsString()
+  @IsUUID()
   shopOrderId: any;
 
   @Field(() => Int)

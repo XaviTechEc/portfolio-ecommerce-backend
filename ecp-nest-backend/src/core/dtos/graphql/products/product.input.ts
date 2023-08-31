@@ -1,11 +1,5 @@
 import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUUID,
-  MinLength,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateProductInput {
@@ -30,11 +24,6 @@ export class CreateProductInput {
   @IsNotEmpty()
   @IsUUID()
   createdBy: any;
-
-  @Field(() => String)
-  @IsOptional()
-  @IsString()
-  imgUrl?: string;
 }
 
 @InputType()
@@ -43,9 +32,4 @@ export class UpdateProductInput extends PartialType(CreateProductInput) {
   @IsNotEmpty()
   @IsUUID()
   id: string;
-
-  @Field(() => ID)
-  @IsOptional()
-  @IsUUID()
-  updatedBy?: string;
 }

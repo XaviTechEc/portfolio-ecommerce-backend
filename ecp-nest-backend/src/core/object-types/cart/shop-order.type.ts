@@ -1,11 +1,11 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 import { UserObjType } from '../users/user.type';
-import { LocationType } from '../addresses/location.type';
 import { UserPaymentMethodType } from '../shared/user-payment-method.entity.type';
 import { AddressType } from '../addresses/address.type';
 import { ShippingMethodType } from './shipping-method.type';
 import { OrderStatusType } from './order-status.type';
 import { OrderLineType } from './order-line.type';
+import { ShopOrderLocation } from '../shared/shop-order-location.type';
 
 @ObjectType()
 export class ShopOrderType {
@@ -31,9 +31,6 @@ export class ShopOrderType {
   @Field(() => OrderStatusType)
   orderStatus: OrderStatusType;
 
-  @Field(() => [LocationType], { nullable: true })
-  lastLocations?: LocationType[];
-
   @Field(() => UserObjType)
   user: UserObjType;
 
@@ -42,4 +39,7 @@ export class ShopOrderType {
 
   @Field(() => AddressType)
   shippingAddress: AddressType;
+
+  @Field(() => [ShopOrderLocation])
+  shopOrderLocations: ShopOrderLocation[];
 }

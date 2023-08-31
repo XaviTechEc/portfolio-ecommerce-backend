@@ -4,6 +4,7 @@ import { ProductCategoryType } from '../shared/product-category.type';
 import { UserObjType } from '../users/user.type';
 import { CategoryPromotionType } from '../shared/category-promotion.type';
 import { VariationType } from '../variations/variation.entity.type';
+import { ImageType } from '../images/image.type';
 
 @ObjectType()
 export class CategoryType {
@@ -40,4 +41,7 @@ export class CategoryType {
 
   @Field(() => SeasonType)
   season: SeasonType;
+
+  @Field(() => [ImageType])
+  images: ImageType[];
 }

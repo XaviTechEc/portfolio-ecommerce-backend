@@ -11,6 +11,7 @@ import { ReviewsUseCasesModule } from './reviews/reviews-use-cases.module';
 import { SeasonsUseCasesModule } from './seasons/seasons-use-cases.module';
 import { TagsUseCasesModule } from './tags/tags-use-cases.module';
 import { VariationsUseCasesModule } from './variations/variations-use-cases.module';
+import { ImagesUseCasesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { VariationsUseCasesModule } from './variations/variations-use-cases.modu
     // CartUseCasesModule,
     // CategoriesUseCasesModule,
     // CommentsUseCasesModule,
+    // ImagesUseCasesModule
     // PaymentsUseCasesModule,
     // ProductsUseCasesModule,
     // PromotionsUseCasesModule,
@@ -32,6 +34,7 @@ import { VariationsUseCasesModule } from './variations/variations-use-cases.modu
     // CartUseCasesModule,
     // CategoriesUseCasesModule,
     // CommentsUseCasesModule,
+    // ImagesUseCasesModule
     // PaymentsUseCasesModule,
     // ProductsUseCasesModule,
     // PromotionsUseCasesModule,

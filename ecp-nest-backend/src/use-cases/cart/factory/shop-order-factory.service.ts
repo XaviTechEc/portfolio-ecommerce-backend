@@ -12,7 +12,6 @@ export class ShopOrderFactoryService {
     newShopOrder.shippingMethod = createShopOrderInput.shippingMethodId;
     newShopOrder.orderTotal = createShopOrderInput.orderTotal;
     newShopOrder.orderStatus = createShopOrderInput.orderStatusId;
-    newShopOrder.location = createShopOrderInput.lastLocationId;
     return newShopOrder;
   }
   updateShopOrder(updateShopOrderInput: UpdateShopOrderInput) {
@@ -23,7 +22,6 @@ export class ShopOrderFactoryService {
     newShopOrder.shippingMethod = updateShopOrderInput.shippingMethodId;
     newShopOrder.orderTotal = updateShopOrderInput.orderTotal;
     newShopOrder.orderStatus = updateShopOrderInput.orderStatusId;
-    newShopOrder.location = updateShopOrderInput.lastLocationId;
     return newShopOrder;
   }
 }

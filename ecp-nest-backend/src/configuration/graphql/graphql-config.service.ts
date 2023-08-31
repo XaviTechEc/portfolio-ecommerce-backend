@@ -13,6 +13,9 @@ export class GqlConfigService implements GqlOptionsFactory {
       autoSchemaFile: join(process.cwd(), 'src/frameworks/graphql/schema.gql'),
       sortSchema: true,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      buildSchemaOptions: {
+        dateScalarMode: 'timestamp',
+      },
     };
   }
 }

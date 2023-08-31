@@ -10,6 +10,7 @@ import {
   CategoryPromotion,
   Comment,
   Country,
+  Image,
   Location,
   OrderLine,
   OrderStatus,
@@ -25,6 +26,7 @@ import {
   Season,
   ShippingMethod,
   ShopOrder,
+  ShopOrderLocation,
   ShoppingCart,
   ShoppingCartProductItem,
   Tag,
@@ -56,6 +58,7 @@ import { TagsRepository } from './typeorm/repositories/tags/tags.repository';
 import { VariationOptionsRepository } from './typeorm/repositories/variations/variation-options.repository';
 import { VariationsRepository } from './typeorm/repositories/variations/variations.repository';
 import { UsersRepository } from './typeorm/repositories/users/users.repository';
+import { ImagesRepository } from './typeorm/repositories/images/images.repository';
 
 @Injectable()
 export class PostgresDataServices
@@ -78,6 +81,9 @@ export class PostgresDataServices
 
   // // Comments
   // comments: CommentsRepository<Comment>;
+
+  // Images
+  // images: ImagesRepository;
 
   // // Payments
   // paymentMethods: PaymentMethodsRepository<PaymentMethod>;
@@ -102,6 +108,7 @@ export class PostgresDataServices
   // productConfigurations: PostgresGenericRepository<ProductConfiguration>;
   // productPromotions: PostgresGenericRepository<ProductPromotion>;
   // productTags: PostgresGenericRepository<ProductTag>;
+  // shopOrderLocations: PostgresGenericRepository<ShopOrderLocation>;
   // shoppingCartProductItems: PostgresGenericRepository<ShoppingCartProductItem>;
   // userAddresses: PostgresGenericRepository<UserAddress>;
 
@@ -119,8 +126,8 @@ export class PostgresDataServices
     // Addresses
     @InjectRepository(Address)
     private addressesRepository: Repository<Address>, // @InjectRepository(Country)
-  ) // private countriesRepository: Repository<Country>,
-  // @InjectRepository(Location)
+    // private countriesRepository: Repository<Country>,
+  ) // @InjectRepository(Location)
   // private locationsRepository: Repository<Location>,
 
   // // Cart
@@ -142,6 +149,10 @@ export class PostgresDataServices
   // // Comments
   // @InjectRepository(Comment)
   // private commentsRepository: Repository<Comment>,
+
+  // // Images
+  // @InjectRepository(Image)
+  // private imagesRepository: Repository<Image>,
 
   // // Payments
   // @InjectRepository(PaymentMethod)
@@ -230,6 +241,9 @@ export class PostgresDataServices
 
     // // Comments
     // this.comments = new CommentsRepository<Comment>(this.commentsRepository);
+
+    // // Images
+    // this.images = new ImagesRepository(this.imagesRepository);
 
     // // Payments
     // this.paymentMethods = new PaymentMethodsRepository<PaymentMethod>(

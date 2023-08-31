@@ -11,6 +11,7 @@ import { Product } from './Product.entity';
 import { ShoppingCartProductItem } from './ShoppingCartProductItem.entity';
 import { OrderLine } from './OrderLine.entity';
 import { ProductConfiguration } from './ProductConfiguration.entity';
+import { Image } from './Image.entity';
 
 @Index('product_item_pkey', ['id'], { unique: true })
 @Index('product_item_sku_idx', ['sku'], { unique: true })
@@ -28,9 +29,6 @@ export class ProductItem {
 
   @Column('real', { name: 'price' })
   price?: number;
-
-  @Column('character varying', { name: 'img_url', nullable: true })
-  imgUrl?: string;
 
   @Column('character varying', { name: 'slug', unique: true })
   slug: string;
@@ -54,4 +52,7 @@ export class ProductItem {
     (productConfiguration) => productConfiguration.productItem,
   )
   productConfiguration: ProductConfiguration[];
+
+  @OneToMany(() => Image, (image) => image.product)
+  image: Image[];
 }

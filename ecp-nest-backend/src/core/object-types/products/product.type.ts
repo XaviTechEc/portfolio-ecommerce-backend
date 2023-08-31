@@ -4,6 +4,7 @@ import { ProductCategoryType } from '../shared/product-category.type';
 import { ProductPromotionType } from '../shared/product-promotion.type';
 import { ProductItemType } from './product-item.type';
 import { ProductTagType } from '../shared/product-tag.type';
+import { ImageType } from '../images/image.type';
 
 @ObjectType()
 export class ProductType {
@@ -18,9 +19,6 @@ export class ProductType {
 
   @Field(() => String)
   description: string;
-
-  @Field(() => String, { nullable: true })
-  imgUrl?: string;
 
   @Field(() => Date)
   createdAt: Date;
@@ -43,4 +41,7 @@ export class ProductType {
 
   @Field(() => [ProductItemType])
   productItems: ProductItemType[];
+
+  @Field(() => [ImageType])
+  images: ImageType[];
 }

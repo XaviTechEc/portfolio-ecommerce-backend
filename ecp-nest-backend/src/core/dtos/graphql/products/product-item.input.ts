@@ -38,11 +38,6 @@ export class CreateProductItemInput {
   price?: number;
 
   @Field(() => String)
-  @IsOptional()
-  @IsString()
-  imgUrl?: string;
-
-  @Field(() => String)
   @IsNotEmpty()
   @IsString()
   @MinLength(3)

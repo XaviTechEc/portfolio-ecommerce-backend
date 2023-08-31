@@ -30,6 +30,7 @@ type CategoryType {
   createdBy: UserObjType!
   description: String!
   id: ID!
+  images: [ImageType!]!
   parentCategory: CategoryType
   productCategories: [ProductCategoryType!]!
   season: SeasonType!
@@ -41,10 +42,10 @@ type CommentType {
   commentParent: CommentType!
   comments: [CommentType!]
   content: String!
-  createdAt: DateTime!
+  createdAt: Timestamp!
   id: ID!
   review: ReviewType!
-  updatedAt: DateTime
+  updatedAt: Timestamp
   user: UserObjType!
   visible: Boolean
 }
@@ -56,15 +57,22 @@ type CountryType {
   longName: String!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 enum Gender {
   FEMALE
   MALE
   OTHER
+}
+
+type ImageType {
+  category: CategoryType
+  createdAt: Timestamp!
+  extension: String!
+  id: ID!
+  product: ProductType
+  productItem: ProductItemType
+  updatedAt: Timestamp
+  url: String!
+  user: UserObjType!
 }
 
 type LocationType {
@@ -72,7 +80,7 @@ type LocationType {
   id: ID!
   lat: String!
   lng: String!
-  shopOrder: ShopOrderType!
+  shopOrderLocations: [ShopOrderLocation!]!
 }
 
 type OrderLineType {
@@ -114,7 +122,7 @@ type ProductConfigurationType {
 
 type ProductItemType {
   id: ID!
-  imgUrl: String
+  images: [ImageType!]!
   orderLines: [OrderLineType!]!
   price: Float
   product: ProductType!
@@ -136,28 +144,28 @@ type ProductTagType {
 }
 
 type ProductType {
-  createdAt: DateTime!
+  createdAt: Timestamp!
   createdBy: UserObjType!
   description: String!
   id: ID!
-  imgUrl: String
+  images: [ImageType!]!
   productCategories: [ProductCategoryType!]!
   productItems: [ProductItemType!]!
   productPromotions: [ProductPromotionType!]!
   productTags: [ProductTagType!]!
   subtitle: String!
   title: String!
-  updatedAt: DateTime
+  updatedAt: Timestamp
 }
 
 type PromotionType {
   categoryPromotions: [CategoryPromotionType!]!
   description: String!
-  endDate: DateTime
+  endDate: Timestamp
   id: ID!
   percentageDiscount: Int
   productPromotions: [ProductPromotionType!]!
-  startDate: DateTime
+  startDate: Timestamp
 }
 
 type Query {
@@ -166,11 +174,11 @@ type Query {
 
 type ReviewType {
   comments: [CommentType!]!
-  createdAt: DateTime!
+  createdAt: Timestamp!
   id: ID!
   orderLine: OrderLineType!
   ratingValue: Int!
-  updatedAt: DateTime
+  updatedAt: Timestamp
   user: UserObjType!
   visible: Boolean
 }
@@ -184,9 +192,9 @@ enum Role {
 type SeasonType {
   categories: CategoryType!
   description: String!
-  endDate: DateTime
+  endDate: Timestamp
   id: String!
-  startDate: DateTime
+  startDate: Timestamp
 }
 
 type ShippingMethodType {
@@ -196,16 +204,21 @@ type ShippingMethodType {
   shopOrders: [ShopOrderType!]!
 }
 
+type ShopOrderLocation {
+  location: LocationType!
+  shopOrder: ShopOrderType!
+}
+
 type ShopOrderType {
-  createdAt: DateTime!
+  createdAt: Timestamp!
   id: ID!
-  lastLocations: [LocationType!]
   orderLines: [OrderLineType!]!
   orderStatus: OrderStatusType!
   orderTotal: Float!
   shippingAddress: AddressType!
   shippingMethod: ShippingMethodType!
-  updatedAt: DateTime
+  shopOrderLocations: [ShopOrderLocation!]!
+  updatedAt: Timestamp
   user: UserObjType!
   userPaymentMethod: UserPaymentMethodType!
 }
@@ -237,6 +250,11 @@ type TagType {
   value: String!
 }
 
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
 type UserAddressType {
   address: AddressType!
   isDefault: Boolean
@@ -248,12 +266,12 @@ type UserObjType {
   avatarImg: String
   categories: [CategoryType!]!
   comments: [CommentType!]!
-  createdAt: DateTime!
+  createdAt: Timestamp!
   email: String!
   fullName: String!
   gender: Gender!
   id: ID!
-  lastConnection: DateTime
+  lastConnection: Timestamp
   password: String!
   phoneNumber: String
   products: [ProductType!]!
@@ -261,7 +279,7 @@ type UserObjType {
   role: Role!
   shopOrders: [ShopOrderType!]!
   shoppingCarts: [ShoppingCartType!]!
-  updatedAt: DateTime
+  updatedAt: Timestamp
   userAddresses: [UserAddressType!]!
   userPaymentMethods: [UserPaymentMethodType!]!
   userType: UserType!
@@ -270,7 +288,7 @@ type UserObjType {
 
 type UserPaymentMethodType {
   accountNumber: String!
-  expiryDate: DateTime
+  expiryDate: Timestamp
   id: ID!
   isDefault: Boolean
   paymentMethod: PaymentMethodType!
