@@ -46,7 +46,7 @@ export class CreateAddressInput {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  countryId: string;
+  country: any;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
@@ -56,7 +56,7 @@ export class CreateAddressInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  locationId?: string;
+  location?: any;
 }
 
 export class UpdateAddressInput extends PartialType(CreateAddressInput) {

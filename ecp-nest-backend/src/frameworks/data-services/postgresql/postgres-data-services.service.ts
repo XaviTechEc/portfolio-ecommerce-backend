@@ -62,238 +62,240 @@ export class PostgresDataServices
   implements IDataSourcesService, OnApplicationBootstrap
 {
   // Addresses
-  addresses: AddressesRepository<Address>;
-  countries: CountriesRepository<Country>;
-  locations: LocationsRepository<Location>;
+  addresses: AddressesRepository;
+  // countries: CountriesRepository<Country>;
+  // locations: LocationsRepository<Location>;
 
-  // Cart
-  orderLines: OrderLinesRepository<OrderLine>;
-  orderStatus: OrderStatusRepository<OrderStatus>;
-  shippingMethods: ShippingMethodsRepository<ShippingMethod>;
-  shopOrders: ShopOrdersRepository<ShopOrder>;
-  shoppingCarts: ShoppingCartsRepository<ShoppingCart>;
+  // // Cart
+  // orderLines: OrderLinesRepository<OrderLine>;
+  // orderStatus: OrderStatusRepository<OrderStatus>;
+  // shippingMethods: ShippingMethodsRepository<ShippingMethod>;
+  // shopOrders: ShopOrdersRepository<ShopOrder>;
+  // shoppingCarts: ShoppingCartsRepository<ShoppingCart>;
 
-  // Categories
-  categories: CategoriesRepository<Category>;
+  // // Categories
+  // categories: CategoriesRepository<Category>;
 
-  // Comments
-  comments: CommentsRepository<Comment>;
+  // // Comments
+  // comments: CommentsRepository<Comment>;
 
-  // Payments
-  paymentMethods: PaymentMethodsRepository<PaymentMethod>;
-  userPaymentMethods: UserPaymentMethodsRepository<UserPaymentMethod>;
+  // // Payments
+  // paymentMethods: PaymentMethodsRepository<PaymentMethod>;
+  // userPaymentMethods: UserPaymentMethodsRepository<UserPaymentMethod>;
 
-  // Products
-  productItems: ProductItemsRepository<ProductItem>;
-  products: ProductsRepository<Product>;
+  // // Products
+  // productItems: ProductItemsRepository<ProductItem>;
+  // products: ProductsRepository<Product>;
 
-  // Promotions
-  promotions: PromotionsRepository<Promotion>;
+  // // Promotions
+  // promotions: PromotionsRepository<Promotion>;
 
-  // Reviews
-  reviews: ReviewsRepository<Review>;
+  // // Reviews
+  // reviews: ReviewsRepository<Review>;
 
-  // Seasons
-  seasons: SeasonsRepository<Season>;
+  // // Seasons
+  // seasons: SeasonsRepository<Season>;
 
-  // Shared
-  categoryPromotions: PostgresGenericRepository<CategoryPromotion>;
-  productCategories: PostgresGenericRepository<ProductCategory>;
-  productConfigurations: PostgresGenericRepository<ProductConfiguration>;
-  productPromotions: PostgresGenericRepository<ProductPromotion>;
-  productTags: PostgresGenericRepository<ProductTag>;
-  shoppingCartProductItems: PostgresGenericRepository<ShoppingCartProductItem>;
-  userAddresses: PostgresGenericRepository<UserAddress>;
+  // // Shared
+  // categoryPromotions: PostgresGenericRepository<CategoryPromotion>;
+  // productCategories: PostgresGenericRepository<ProductCategory>;
+  // productConfigurations: PostgresGenericRepository<ProductConfiguration>;
+  // productPromotions: PostgresGenericRepository<ProductPromotion>;
+  // productTags: PostgresGenericRepository<ProductTag>;
+  // shoppingCartProductItems: PostgresGenericRepository<ShoppingCartProductItem>;
+  // userAddresses: PostgresGenericRepository<UserAddress>;
 
-  // Tags
-  tags: TagsRepository<Tag>;
+  // // Tags
+  // tags: TagsRepository<Tag>;
 
-  // Users
-  users: UsersRepository<User>;
+  // // Users
+  // users: UsersRepository<User>;
 
-  // Variations
-  variations: VariationsRepository<Variation>;
-  variationOptions: VariationOptionsRepository<VariationOption>;
+  // // Variations
+  // variations: VariationsRepository<Variation>;
+  // variationOptions: VariationOptionsRepository<VariationOption>;
 
   constructor(
     // Addresses
     @InjectRepository(Address)
-    private addressesRepository: Repository<Address>,
-    @InjectRepository(Country)
-    private countriesRepository: Repository<Country>,
-    @InjectRepository(Location)
-    private locationsRepository: Repository<Location>,
+    private addressesRepository: Repository<Address>, // @InjectRepository(Country)
+  ) // private countriesRepository: Repository<Country>,
+  // @InjectRepository(Location)
+  // private locationsRepository: Repository<Location>,
 
-    // Cart
-    @InjectRepository(OrderLine)
-    private orderLinesRepository: Repository<OrderLine>,
-    @InjectRepository(OrderStatus)
-    private orderStatusRepository: Repository<OrderStatus>,
-    @InjectRepository(ShippingMethod)
-    private shippingMethodsRepository: Repository<ShippingMethod>,
-    @InjectRepository(ShopOrder)
-    private shopOrdersRepository: Repository<ShopOrder>,
-    @InjectRepository(ShoppingCart)
-    private shoppingCartsRepository: Repository<ShoppingCart>,
+  // // Cart
+  // @InjectRepository(OrderLine)
+  // private orderLinesRepository: Repository<OrderLine>,
+  // @InjectRepository(OrderStatus)
+  // private orderStatusRepository: Repository<OrderStatus>,
+  // @InjectRepository(ShippingMethod)
+  // private shippingMethodsRepository: Repository<ShippingMethod>,
+  // @InjectRepository(ShopOrder)
+  // private shopOrdersRepository: Repository<ShopOrder>,
+  // @InjectRepository(ShoppingCart)
+  // private shoppingCartsRepository: Repository<ShoppingCart>,
 
-    // Categories
-    @InjectRepository(Category)
-    private categoriesRepository: Repository<Category>,
+  // // Categories
+  // @InjectRepository(Category)
+  // private categoriesRepository: Repository<Category>,
 
-    // Comments
-    @InjectRepository(Comment)
-    private commentsRepository: Repository<Comment>,
+  // // Comments
+  // @InjectRepository(Comment)
+  // private commentsRepository: Repository<Comment>,
 
-    // Payments
-    @InjectRepository(PaymentMethod)
-    private paymentMethodsRepository: Repository<PaymentMethod>,
-    @InjectRepository(UserPaymentMethod)
-    private userPaymentMethodsRepository: Repository<UserPaymentMethod>,
+  // // Payments
+  // @InjectRepository(PaymentMethod)
+  // private paymentMethodsRepository: Repository<PaymentMethod>,
+  // @InjectRepository(UserPaymentMethod)
+  // private userPaymentMethodsRepository: Repository<UserPaymentMethod>,
 
-    // Products
-    private productItemsRepository: Repository<ProductItem>,
-    private productsRepository: Repository<Product>,
+  // // Products
+  // @InjectRepository(ProductItem)
+  // private productItemsRepository: Repository<ProductItem>,
+  // @InjectRepository(Product)
+  // private productsRepository: Repository<Product>,
 
-    // Promotions
-    private promotionsRepository: Repository<Promotion>,
+  // // Promotions
+  // @InjectRepository(Promotion)
+  // private promotionsRepository: Repository<Promotion>,
 
-    // Reviews
-    @InjectRepository(Review)
-    private reviewsRepository: Repository<Review>,
+  // // Reviews
+  // @InjectRepository(Review)
+  // private reviewsRepository: Repository<Review>,
 
-    // Seasons
-    @InjectRepository(Season)
-    private seasonsRepository: Repository<Season>,
+  // // Seasons
+  // @InjectRepository(Season)
+  // private seasonsRepository: Repository<Season>,
 
-    // Shared
-    @InjectRepository(CategoryPromotion)
-    private categoryPromotionsRepository: Repository<CategoryPromotion>,
-    @InjectRepository(ProductCategory)
-    private productCategoriesRepository: Repository<ProductCategory>,
-    @InjectRepository(ProductConfiguration)
-    private productConfigurationsRepository: Repository<ProductConfiguration>,
-    @InjectRepository(ProductPromotion)
-    private productPromotionsRepository: Repository<ProductPromotion>,
-    @InjectRepository(ProductTag)
-    private productTagsRepository: Repository<ProductTag>,
-    @InjectRepository(ShoppingCartProductItem)
-    private shoppingCartProductItemsRepository: Repository<ShoppingCartProductItem>,
-    @InjectRepository(UserAddress)
-    private userAddressesRepository: Repository<UserAddress>,
+  // // Shared
+  // @InjectRepository(CategoryPromotion)
+  // private categoryPromotionsRepository: Repository<CategoryPromotion>,
+  // @InjectRepository(ProductCategory)
+  // private productCategoriesRepository: Repository<ProductCategory>,
+  // @InjectRepository(ProductConfiguration)
+  // private productConfigurationsRepository: Repository<ProductConfiguration>,
+  // @InjectRepository(ProductPromotion)
+  // private productPromotionsRepository: Repository<ProductPromotion>,
+  // @InjectRepository(ProductTag)
+  // private productTagsRepository: Repository<ProductTag>,
+  // @InjectRepository(ShoppingCartProductItem)
+  // private shoppingCartProductItemsRepository: Repository<ShoppingCartProductItem>,
+  // @InjectRepository(UserAddress)
+  // private userAddressesRepository: Repository<UserAddress>,
 
-    // Tags
-    @InjectRepository(Tag)
-    private tagsRepository: Repository<Tag>,
+  // // Tags
+  // @InjectRepository(Tag)
+  // private tagsRepository: Repository<Tag>,
 
-    // Users
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+  // // Users
+  // @InjectRepository(User)
+  // private usersRepository: Repository<User>,
 
-    // Variations
-    @InjectRepository(Variation)
-    private variationsRepository: Repository<Variation>,
-    @InjectRepository(VariationOption)
-    private variationOptionsRepository: Repository<VariationOption>,
-  ) {}
+  // // Variations
+  // @InjectRepository(Variation)
+  // private variationsRepository: Repository<Variation>,
+  // @InjectRepository(VariationOption)
+  // private variationOptionsRepository: Repository<VariationOption>,
+  {}
 
   onApplicationBootstrap() {
     // Addresses
-    this.addresses = new AddressesRepository<Address>(this.addressesRepository);
-    this.countries = new CountriesRepository<Country>(this.countriesRepository);
-    this.locations = new LocationsRepository<Location>(
-      this.locationsRepository,
-    );
+    this.addresses = new AddressesRepository(this.addressesRepository);
+    // this.countries = new CountriesRepository<Country>(this.countriesRepository);
+    // this.locations = new LocationsRepository<Location>(
+    //   this.locationsRepository,
+    // );
 
-    // Cart
-    this.orderLines = new OrderLinesRepository<OrderLine>(
-      this.orderLinesRepository,
-    );
-    this.orderStatus = new OrderStatusRepository<OrderStatus>(
-      this.orderStatusRepository,
-    );
-    this.shippingMethods = new ShippingMethodsRepository<ShippingMethod>(
-      this.shippingMethodsRepository,
-    );
-    this.shopOrders = new ShopOrdersRepository<ShopOrder>(
-      this.shopOrdersRepository,
-    );
-    this.shoppingCarts = new ShoppingCartsRepository<ShoppingCart>(
-      this.shoppingCartsRepository,
-    );
+    // // Cart
+    // this.orderLines = new OrderLinesRepository<OrderLine>(
+    //   this.orderLinesRepository,
+    // );
+    // this.orderStatus = new OrderStatusRepository<OrderStatus>(
+    //   this.orderStatusRepository,
+    // );
+    // this.shippingMethods = new ShippingMethodsRepository<ShippingMethod>(
+    //   this.shippingMethodsRepository,
+    // );
+    // this.shopOrders = new ShopOrdersRepository<ShopOrder>(
+    //   this.shopOrdersRepository,
+    // );
+    // this.shoppingCarts = new ShoppingCartsRepository<ShoppingCart>(
+    //   this.shoppingCartsRepository,
+    // );
 
-    // Categories
-    this.categories = new CategoriesRepository<Category>(
-      this.categoriesRepository,
-    );
+    // // Categories
+    // this.categories = new CategoriesRepository<Category>(
+    //   this.categoriesRepository,
+    // );
 
-    // Comments
-    this.comments = new CommentsRepository<Comment>(this.commentsRepository);
+    // // Comments
+    // this.comments = new CommentsRepository<Comment>(this.commentsRepository);
 
-    // Payments
-    this.paymentMethods = new PaymentMethodsRepository<PaymentMethod>(
-      this.paymentMethodsRepository,
-    );
-    this.userPaymentMethods =
-      new UserPaymentMethodsRepository<UserPaymentMethod>(
-        this.userPaymentMethodsRepository,
-      );
+    // // Payments
+    // this.paymentMethods = new PaymentMethodsRepository<PaymentMethod>(
+    //   this.paymentMethodsRepository,
+    // );
+    // this.userPaymentMethods =
+    //   new UserPaymentMethodsRepository<UserPaymentMethod>(
+    //     this.userPaymentMethodsRepository,
+    //   );
 
-    // Products
-    this.productItems = new ProductItemsRepository<ProductItem>(
-      this.productItemsRepository,
-    );
-    this.products = new ProductsRepository<Product>(this.productsRepository);
+    // // Products
+    // this.productItems = new ProductItemsRepository<ProductItem>(
+    //   this.productItemsRepository,
+    // );
+    // this.products = new ProductsRepository<Product>(this.productsRepository);
 
-    // Promotions
-    this.promotions = new PromotionsRepository<Promotion>(
-      this.promotionsRepository,
-    );
+    // // Promotions
+    // this.promotions = new PromotionsRepository<Promotion>(
+    //   this.promotionsRepository,
+    // );
 
-    // Reviews
-    this.reviews = new ReviewsRepository<Review>(this.reviewsRepository);
+    // // Reviews
+    // this.reviews = new ReviewsRepository<Review>(this.reviewsRepository);
 
-    // Seasons
-    this.seasons = new SeasonsRepository<Season>(this.seasonsRepository);
+    // // Seasons
+    // this.seasons = new SeasonsRepository<Season>(this.seasonsRepository);
 
-    // Shared
-    this.categoryPromotions = new PostgresGenericRepository<CategoryPromotion>(
-      this.categoryPromotionsRepository,
-    );
-    this.productCategories = new PostgresGenericRepository<ProductCategory>(
-      this.productCategoriesRepository,
-    );
-    this.productConfigurations =
-      new PostgresGenericRepository<ProductConfiguration>(
-        this.productConfigurationsRepository,
-      );
-    this.productPromotions = new PostgresGenericRepository<ProductPromotion>(
-      this.productPromotionsRepository,
-    );
+    // // Shared
+    // this.categoryPromotions = new PostgresGenericRepository<CategoryPromotion>(
+    //   this.categoryPromotionsRepository,
+    // );
+    // this.productCategories = new PostgresGenericRepository<ProductCategory>(
+    //   this.productCategoriesRepository,
+    // );
+    // this.productConfigurations =
+    //   new PostgresGenericRepository<ProductConfiguration>(
+    //     this.productConfigurationsRepository,
+    //   );
+    // this.productPromotions = new PostgresGenericRepository<ProductPromotion>(
+    //   this.productPromotionsRepository,
+    // );
 
-    this.productTags = new PostgresGenericRepository<ProductTag>(
-      this.productTagsRepository,
-    );
-    this.shoppingCartProductItems =
-      new PostgresGenericRepository<ShoppingCartProductItem>(
-        this.shoppingCartProductItemsRepository,
-      );
-    this.userAddresses = new PostgresGenericRepository<UserAddress>(
-      this.userAddressesRepository,
-    );
+    // this.productTags = new PostgresGenericRepository<ProductTag>(
+    //   this.productTagsRepository,
+    // );
+    // this.shoppingCartProductItems =
+    //   new PostgresGenericRepository<ShoppingCartProductItem>(
+    //     this.shoppingCartProductItemsRepository,
+    //   );
+    // this.userAddresses = new PostgresGenericRepository<UserAddress>(
+    //   this.userAddressesRepository,
+    // );
 
-    // Tags
-    this.tags = new TagsRepository<Tag>(this.tagsRepository);
+    // // Tags
+    // this.tags = new TagsRepository<Tag>(this.tagsRepository);
 
-    // Users
-    this.users = new UsersRepository<User>(this.usersRepository);
+    // // Users
+    // this.users = new UsersRepository<User>(this.usersRepository);
 
-    // Variations
-    this.variations = new VariationsRepository<Variation>(
-      this.variationsRepository,
-    );
+    // // Variations
+    // this.variations = new VariationsRepository<Variation>(
+    //   this.variationsRepository,
+    // );
 
-    this.variationOptions = new VariationOptionsRepository<VariationOption>(
-      this.variationOptionsRepository,
-    );
+    // this.variationOptions = new VariationOptionsRepository<VariationOption>(
+    //   this.variationOptionsRepository,
+    // );
   }
 }

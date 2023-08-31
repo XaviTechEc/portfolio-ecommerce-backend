@@ -161,9 +161,7 @@ type PromotionType {
 }
 
 type Query {
-  review(id: ID!): ReviewType!
-  reviews(limit: Int = 10, offset: Int = 0, searchFields: [String!], searchTerm: String): [ReviewType!]!
-  reviewsBy(limit: Int = 10, offset: Int = 0): [ReviewType!]!
+  addresses(limit: Int = 10, offset: Int = 0, searchFields: [String!], searchTerm: String): [AddressType!]!
 }
 
 type ReviewType {

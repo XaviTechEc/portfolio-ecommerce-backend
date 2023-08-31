@@ -14,6 +14,8 @@ export class AddressFactoryService {
     newAddress.region = createAddressInput.region;
     newAddress.postalCode = createAddressInput.postalCode;
     newAddress.reference = createAddressInput.reference;
+    newAddress.country = createAddressInput.country;
+    newAddress.location = createAddressInput.location;
     return newAddress;
   }
 
@@ -27,6 +29,8 @@ export class AddressFactoryService {
     newAddress.region = updateAddressInput.region;
     newAddress.postalCode = updateAddressInput.postalCode;
     newAddress.reference = updateAddressInput.reference;
+    newAddress.country = updateAddressInput.country;
+    newAddress.location = updateAddressInput.location;
     return newAddress;
   }
 }

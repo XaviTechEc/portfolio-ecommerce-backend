@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UseCasesModule } from 'src/use-cases/use-cases.module';
-import { ReviewsResolver } from './resolvers/reviews/reviews.resolver';
+import { AddressResolver } from './resolvers/addresses/address.resolver';
 
 @Module({
   imports: [UseCasesModule],
   controllers: [],
-  providers: [ReviewsResolver],
+  providers: [AddressResolver],
 })
 export class InterfaceAdaptersModule {}

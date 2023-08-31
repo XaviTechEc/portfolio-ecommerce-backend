@@ -2,10 +2,7 @@ import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
 import { IGenericArgs } from '../../generic-args.repository';
 
 export abstract class IAddressesRepository<T> {
-  abstract getAddressesBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T[]>;
+  abstract getAddressesBy(args?: IGenericArgs<T>): Promise<T[]>;
   abstract getOneAddressBy(
     fields: Partial<T>,
     args?: IGenericArgs<T>,

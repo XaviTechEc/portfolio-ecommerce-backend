@@ -56,55 +56,55 @@ import { IGenericDataMethodsRepository } from '../generic-data-methods.repositor
 export abstract class IDataSourcesService {
   // Addresses
   abstract addresses: IAddressesRepository<IAddress>;
-  abstract countries: ICountriesRepository<ICountry>;
-  abstract locations: ILocationsRepository<ILocation>;
+  // abstract countries: ICountriesRepository<ICountry>;
+  // abstract locations: ILocationsRepository<ILocation>;
 
-  // Cart
-  abstract orderLines: IOrderLinesRepository<IOrderLine>;
-  abstract orderStatus: IOrderStatusRepository<IOrderStatus>;
-  abstract shippingMethods: IShippingMethodsRepository<IShippingMethod>;
-  abstract shopOrders: IShopOrdersRepository<IShopOrder>;
-  abstract shoppingCarts: IShoppingCartsRepository<IShoppingCart>;
+  // // Cart
+  // abstract orderLines: IOrderLinesRepository<IOrderLine>;
+  // abstract orderStatus: IOrderStatusRepository<IOrderStatus>;
+  // abstract shippingMethods: IShippingMethodsRepository<IShippingMethod>;
+  // abstract shopOrders: IShopOrdersRepository<IShopOrder>;
+  // abstract shoppingCarts: IShoppingCartsRepository<IShoppingCart>;
 
-  // Categories
-  abstract categories: ICategoriesRepository<ICategory>;
+  // // Categories
+  // abstract categories: ICategoriesRepository<ICategory>;
 
-  // Comments
-  abstract comments: ICommentsRepository<IComment>;
+  // // Comments
+  // abstract comments: ICommentsRepository<IComment>;
 
-  // Payments
-  abstract paymentMethods: IPaymentMethodsRepository<IPaymentMethod>;
-  abstract userPaymentMethods: IUserPaymentMethodsRepository<IUserPaymentMethod>;
+  // // Payments
+  // abstract paymentMethods: IPaymentMethodsRepository<IPaymentMethod>;
+  // abstract userPaymentMethods: IUserPaymentMethodsRepository<IUserPaymentMethod>;
 
-  // Products
-  abstract productItems: IProductItemsRepository<IProductItem>;
-  abstract products: IProductsRepository<IProduct>;
+  // // Products
+  // abstract productItems: IProductItemsRepository<IProductItem>;
+  // abstract products: IProductsRepository<IProduct>;
 
-  // Promotions
-  abstract promotions: IPromotionsRepository<IPromotion>;
+  // // Promotions
+  // abstract promotions: IPromotionsRepository<IPromotion>;
 
-  // Reviews
-  abstract reviews: IReviewsRepository<IReview>;
+  // // Reviews
+  // abstract reviews: IReviewsRepository<IReview>;
 
-  // Seasons
-  abstract seasons: ISeasonsRepository<ISeason>;
+  // // Seasons
+  // abstract seasons: ISeasonsRepository<ISeason>;
 
-  // Shared
-  abstract categoryPromotions: IGenericDataMethodsRepository<ICategoryPromotion>;
-  abstract productCategories: IGenericDataMethodsRepository<IProductCategory>;
-  abstract productConfigurations: IGenericDataMethodsRepository<IProductConfiguration>;
-  abstract productPromotions: IGenericDataMethodsRepository<IProductPromotion>;
-  abstract productTags: IGenericDataMethodsRepository<IProductTag>;
-  abstract shoppingCartProductItems: IGenericDataMethodsRepository<IShoppingCartProductItem>;
-  abstract userAddresses: IGenericDataMethodsRepository<IUserAddress>;
+  // // Shared
+  // abstract categoryPromotions: IGenericDataMethodsRepository<ICategoryPromotion>;
+  // abstract productCategories: IGenericDataMethodsRepository<IProductCategory>;
+  // abstract productConfigurations: IGenericDataMethodsRepository<IProductConfiguration>;
+  // abstract productPromotions: IGenericDataMethodsRepository<IProductPromotion>;
+  // abstract productTags: IGenericDataMethodsRepository<IProductTag>;
+  // abstract shoppingCartProductItems: IGenericDataMethodsRepository<IShoppingCartProductItem>;
+  // abstract userAddresses: IGenericDataMethodsRepository<IUserAddress>;
 
-  // Tags
-  abstract tags: ITagsRepository<ITag>;
+  // // Tags
+  // abstract tags: ITagsRepository<ITag>;
 
-  // Users
-  abstract users: IUsersRepository<IUser>;
+  // // Users
+  // abstract users: IUsersRepository<IUser>;
 
-  // Variations
-  abstract variations: IVariationsRepository<IVariation>;
-  abstract variationOptions: IVariationOptionsRepository<IVariationOption>;
+  // // Variations
+  // abstract variations: IVariationsRepository<IVariation>;
+  // abstract variationOptions: IVariationOptionsRepository<IVariationOption>;
 }

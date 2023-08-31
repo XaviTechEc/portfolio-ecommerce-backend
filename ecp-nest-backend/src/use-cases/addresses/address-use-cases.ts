@@ -12,31 +12,32 @@ export class AddressesUseCases implements IAddressesRepository<IAddress> {
     private dataServices: IDataSourcesService,
     private addressFactoryService: AddressFactoryService,
   ) {}
-  getAddressesBy(
-    fields: Partial<IAddress>,
-    args?: IGenericArgs<IAddress>,
-  ): Promise<IAddress[]> {
-    throw new Error('Method not implemented.');
+  getAddressesBy(args?: IGenericArgs<IAddress>): Promise<IAddress[]> {
+    return this.dataServices.addresses.getAddressesBy(args);
   }
   getOneAddressBy(
     fields: Partial<IAddress>,
     args?: IGenericArgs<IAddress>,
   ): Promise<IAddress> {
-    throw new Error('Method not implemented.');
+    return this.dataServices.addresses.getOneAddressBy(fields, args);
   }
   getAddressById(id: string): Promise<IAddress> {
-    throw new Error('Method not implemented.');
+    return this.dataServices.addresses.getAddressById(id);
   }
   createAddress(createAddressInput: CreateAddressInput): Promise<IAddress> {
-    throw new Error('Method not implemented.');
+    const newAddress =
+      this.addressFactoryService.createAddress(createAddressInput);
+    return this.dataServices.addresses.createAddress(newAddress);
   }
   updateAddress(
     id: string,
     updateAddressInput: UpdateAddressInput,
   ): Promise<IAddress> {
-    throw new Error('Method not implemented.');
+    const newAddress =
+      this.addressFactoryService.updateAddress(updateAddressInput);
+    return this.dataServices.addresses.updateAddress(id, newAddress);
   }
   removeAddress(id: string): Promise<IAddress> {
-    throw new Error('Method not implemented.');
+    return this.dataServices.addresses.removeAddress(id);
   }
 }
