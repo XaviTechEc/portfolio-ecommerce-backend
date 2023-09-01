@@ -7,12 +7,12 @@ export class CreateProductPromotionInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  productId: any;
+  product: any;
 
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  promotionId: any;
+  promotion: any;
 }
 
 @InputType()

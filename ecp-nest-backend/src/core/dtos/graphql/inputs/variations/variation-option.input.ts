@@ -6,7 +6,7 @@ export class CreateVariationOptionInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  variationId: any;
+  variation: any;
 
   @Field(() => String)
   @IsNotEmpty()

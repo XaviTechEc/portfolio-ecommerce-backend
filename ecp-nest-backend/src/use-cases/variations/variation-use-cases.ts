@@ -13,23 +13,27 @@ export class VariationUseCases implements IVariationsRepository<IVariation> {
     private variationFactoryService: VariationFactoryService,
   ) {}
   getAllVariations(args?: IGenericArgs<IVariation>): Promise<IVariation[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.variations.getAllVariations(args);
   }
   getVariationById(id: string): Promise<IVariation> {
-    throw new Error('Method not implemented.');
+    return this.dataService.variations.getVariationById(id);
   }
   createVariation(
     createVariationInput: CreateVariationInput,
   ): Promise<IVariation> {
-    throw new Error('Method not implemented.');
+    const variation =
+      this.variationFactoryService.createVariation(createVariationInput);
+    return this.dataService.variations.createVariation(variation);
   }
   updateVariation(
     id: string,
     updateVariationInput: UpdateVariationInput,
   ): Promise<IVariation> {
-    throw new Error('Method not implemented.');
+    const variation =
+      this.variationFactoryService.updateVariation(updateVariationInput);
+    return this.dataService.variations.updateVariation(id, variation);
   }
   removeVariation(id: string): Promise<IVariation> {
-    throw new Error('Method not implemented.');
+    return this.dataService.variations.removeVariation(id);
   }
 }

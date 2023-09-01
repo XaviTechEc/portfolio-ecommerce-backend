@@ -12,6 +12,7 @@ import { SeasonsUseCasesModule } from './seasons/seasons-use-cases.module';
 import { TagsUseCasesModule } from './tags/tags-use-cases.module';
 import { VariationsUseCasesModule } from './variations/variations-use-cases.module';
 import { ImagesUseCasesModule } from './images/images.module';
+import { SharedUseCasesModule } from './shared/shared-use-cases.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ImagesUseCasesModule } from './images/images.module';
     // TagsUseCasesModule,
     // UserUseCasesModule,
     // VariationsUseCasesModule,
+    // SharedUseCasesModule,
   ],
   exports: [
     AddressesUseCaseModule,
@@ -43,6 +45,7 @@ import { ImagesUseCasesModule } from './images/images.module';
     // TagsUseCasesModule,
     // UserUseCasesModule,
     // VariationsUseCasesModule,
+    // SharedUseCasesModule,
   ],
 })
 export class UseCasesModule {}

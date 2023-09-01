@@ -7,12 +7,12 @@ export class CreateUserAddressInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  user: string;
+  user: any;
 
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  address: string;
+  address: any;
 
   @Field(() => Boolean)
   @IsNotEmpty()

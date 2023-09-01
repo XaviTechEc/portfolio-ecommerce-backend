@@ -33,6 +33,7 @@ import {
 import {
   IAddressesRepository,
   ICategoriesRepository,
+  ICategoryPromotionRepository,
   ICommentsRepository,
   ICountriesRepository,
   IImageRepository,
@@ -40,21 +41,27 @@ import {
   IOrderLinesRepository,
   IOrderStatusRepository,
   IPaymentMethodsRepository,
+  IProductCategoryRepository,
+  IProductConfigurationRepository,
   IProductItemsRepository,
+  IProductPromotionRepository,
+  IProductTagRepository,
   IProductsRepository,
   IPromotionsRepository,
   IReviewsRepository,
   ISeasonsRepository,
   IShippingMethodsRepository,
+  IShopOrderLocationRepository,
   IShopOrdersRepository,
+  IShoppingCartProductItemRepository,
   IShoppingCartsRepository,
   ITagsRepository,
+  IUserAddressRepository,
   IUserPaymentMethodsRepository,
   IUsersRepository,
   IVariationOptionsRepository,
   IVariationsRepository,
 } from '../repositories';
-import { IGenericDataMethodsRepository } from '../generic-data-methods.repository';
 
 export abstract class IDataSourcesService {
   // Addresses
@@ -80,7 +87,6 @@ export abstract class IDataSourcesService {
 
   // Payments
   abstract paymentMethods: IPaymentMethodsRepository<IPaymentMethod>;
-  abstract userPaymentMethods: IUserPaymentMethodsRepository<IUserPaymentMethod>;
 
   // Products
   abstract productItems: IProductItemsRepository<IProductItem>;
@@ -95,23 +101,24 @@ export abstract class IDataSourcesService {
   // Seasons
   abstract seasons: ISeasonsRepository<ISeason>;
 
-  // // Shared
-  // abstract categoryPromotions: IGenericDataMethodsRepository<ICategoryPromotion>;
-  // abstract productCategories: IGenericDataMethodsRepository<IProductCategory>;
-  // abstract productConfigurations: IGenericDataMethodsRepository<IProductConfiguration>;
-  // abstract productPromotions: IGenericDataMethodsRepository<IProductPromotion>;
-  // abstract productTags: IGenericDataMethodsRepository<IProductTag>;
-  // abstract shopOrderLocations: IGenericDataMethodsRepository<IShopOrderLocation>;
-  // abstract shoppingCartProductItems: IGenericDataMethodsRepository<IShoppingCartProductItem>;
-  // abstract userAddresses: IGenericDataMethodsRepository<IUserAddress>;
+  // Shared
+  abstract categoryPromotions: ICategoryPromotionRepository<ICategoryPromotion>;
+  abstract productCategories: IProductCategoryRepository<IProductCategory>;
+  abstract productConfigurations: IProductConfigurationRepository<IProductConfiguration>;
+  abstract productPromotions: IProductPromotionRepository<IProductPromotion>;
+  abstract productTags: IProductTagRepository<IProductTag>;
+  abstract shopOrderLocations: IShopOrderLocationRepository<IShopOrderLocation>;
+  abstract shoppingCartProductItems: IShoppingCartProductItemRepository<IShoppingCartProductItem>;
+  abstract userAddresses: IUserAddressRepository<IUserAddress>;
+  abstract userPaymentMethods: IUserPaymentMethodsRepository<IUserPaymentMethod>;
 
-  // // Tags
-  // abstract tags: ITagsRepository<ITag>;
+  Tags;
+  abstract tags: ITagsRepository<ITag>;
 
-  // // Users
-  // abstract users: IUsersRepository<IUser>;
+  // Users
+  abstract users: IUsersRepository<IUser>;
 
-  // // Variations
-  // abstract variations: IVariationsRepository<IVariation>;
-  // abstract variationOptions: IVariationOptionsRepository<IVariationOption>;
+  // Variations
+  abstract variations: IVariationsRepository<IVariation>;
+  abstract variationOptions: IVariationOptionsRepository<IVariationOption>;
 }

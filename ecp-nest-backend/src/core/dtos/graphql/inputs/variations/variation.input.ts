@@ -6,7 +6,7 @@ export class CreateVariationInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  categoryId: any;
+  category: any;
 
   @Field(() => String)
   @IsNotEmpty()

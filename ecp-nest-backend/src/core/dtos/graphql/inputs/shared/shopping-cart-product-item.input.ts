@@ -25,4 +25,9 @@ export class CreateShoppingCartProductItemInput {
 @InputType()
 export class UpdateShoppingCartProductItemInput extends PartialType(
   CreateShoppingCartProductItemInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

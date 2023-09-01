@@ -1,4 +1,4 @@
 export class ICategoryPromotion {
-  categoryId: string;
-  promotionId: string;
+  category: string;
+  promotion: string;
 }

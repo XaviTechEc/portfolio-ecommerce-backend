@@ -13,18 +13,20 @@ export class UserUseCases implements IUsersRepository<IUser> {
     private userFactoryService: UserFactoryService,
   ) {}
   getAllUsers(args?: IGenericArgs<IUser>): Promise<IUser[]> {
-    throw new Error('Method not implemented.');
+    return this.dataServices.users.getAllUsers(args);
   }
   getUserById(id: string): Promise<IUser> {
-    throw new Error('Method not implemented.');
+    return this.dataServices.users.getUserById(id);
   }
   createUser(createUserDto: CreateUserDto): Promise<IUser> {
-    throw new Error('Method not implemented.');
+    const user = this.userFactoryService.createUser(createUserDto);
+    return this.dataServices.users.createUser(user);
   }
   updateUser(id: string, updateUserDto: UpdateUserDto): Promise<IUser> {
-    throw new Error('Method not implemented.');
+    const user = this.userFactoryService.updateUser(updateUserDto);
+    return this.dataServices.users.updateUser(id, user);
   }
   removeUser(id: string): Promise<IUser> {
-    throw new Error('Method not implemented.');
+    return this.dataServices.users.removeUser(id);
   }
 }

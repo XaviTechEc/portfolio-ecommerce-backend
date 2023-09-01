@@ -15,7 +15,7 @@ export * from './products/product.repository';
 export * from './promotions/promotions.repository';
 export * from './reviews/reviews.repository';
 export * from './seasons/seasons.repository';
-export * from './shared/user-payment-methods.repository';
+export * from './shared';
 export * from './tags/tags.repository';
 export * from './users/users.repository';
 export * from './variations/variation-options.repository';

@@ -20,29 +20,38 @@ export class VariationOptionUseCases
   getAllVariationOptions(
     args?: IGenericArgs<IVariationOption>,
   ): Promise<IVariationOption[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.variationOptions.getAllVariationOptions(args);
   }
   getOneVariationOptionBy(
     fields: Partial<IVariationOption>,
     args?: IGenericArgs<IVariationOption>,
   ): Promise<IVariationOption> {
-    throw new Error('Method not implemented.');
+    return this.dataService.variationOptions.getOneVariationOptionBy(
+      fields,
+      args,
+    );
   }
   getVariationOptionById(id: string): Promise<IVariationOption> {
-    throw new Error('Method not implemented.');
+    return this.dataService.variationOptions.getVariationOptionById(id);
   }
   createVariationOption(
     createVariationOptionInput: CreateVariationOptionInput,
   ): Promise<IVariationOption> {
-    throw new Error('Method not implemented.');
+    const vo = this.variationOptionFactoryService.createVariationOption(
+      createVariationOptionInput,
+    );
+    return this.dataService.variationOptions.createVariationOption(vo);
   }
   updateVariationOption(
     id: string,
     updateVariationOptionInput: UpdateVariationOptionInput,
   ): Promise<IVariationOption> {
-    throw new Error('Method not implemented.');
+    const vo = this.variationOptionFactoryService.updateVariationOption(
+      updateVariationOptionInput,
+    );
+    return this.dataService.variationOptions.updateVariationOption(id, vo);
   }
   removeVariationOption(id: string): Promise<IVariationOption> {
-    throw new Error('Method not implemented.');
+    return this.dataService.variationOptions.removeVariationOption(id);
   }
 }

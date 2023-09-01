@@ -6,13 +6,13 @@ import { IVariation } from 'src/core/entities';
 export class VariationFactoryService {
   createVariation(createVariationInput: CreateVariationInput) {
     const newVariation = new IVariation();
-    newVariation.category = createVariationInput.categoryId;
+    newVariation.category = createVariationInput.category;
     newVariation.name = createVariationInput.name;
     return newVariation;
   }
   updateVariation(updateVariationInput: UpdateVariationInput) {
     const newVariation = new IVariation();
-    newVariation.category = updateVariationInput.categoryId;
+    newVariation.category = updateVariationInput.category;
     newVariation.name = updateVariationInput.name;
     return newVariation;
   }

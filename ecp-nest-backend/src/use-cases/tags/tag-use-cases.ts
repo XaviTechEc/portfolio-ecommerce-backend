@@ -13,18 +13,20 @@ export class TagUseCases implements ITagsRepository<ITag> {
     private tagFactoryService: TagFactoryService,
   ) {}
   getAllTags(args?: IGenericArgs<ITag>): Promise<ITag[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.tags.getAllTags(args);
   }
   getTagById(id: string): Promise<ITag> {
-    throw new Error('Method not implemented.');
+    return this.dataService.tags.getTagById(id);
   }
   createTag(createTagInput: CreateTagInput): Promise<ITag> {
-    throw new Error('Method not implemented.');
+    const tag = this.tagFactoryService.createTag(createTagInput);
+    return this.dataService.tags.createTag(tag);
   }
   updateTag(id: string, updateTagInput: UpdateTagInput): Promise<ITag> {
-    throw new Error('Method not implemented.');
+    const tag = this.tagFactoryService.updateTag(updateTagInput);
+    return this.dataService.tags.updateTag(id, tag);
   }
   removeTag(id: string): Promise<ITag> {
-    throw new Error('Method not implemented.');
+    return this.dataService.tags.removeTag(id);
   }
 }
