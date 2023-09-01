@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IUserPaymentMethodsRepository } from 'src/core/abstracts/repositories';
 import {
   CreateUserPaymentMethodDto,

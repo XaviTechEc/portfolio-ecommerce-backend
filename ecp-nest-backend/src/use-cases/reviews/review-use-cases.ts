@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IReviewsRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import { CreateReviewInput, UpdateReviewInput } from 'src/core/dtos';

@@ -6,22 +6,22 @@ import { IShopOrder } from 'src/core/entities';
 export class ShopOrderFactoryService {
   createShopOrder(createShopOrderInput: CreateShopOrderInput) {
     const newShopOrder = new IShopOrder();
-    newShopOrder.user = createShopOrderInput.userId;
-    newShopOrder.userPaymentMethod = createShopOrderInput.userPaymentMethodId;
-    newShopOrder.address = createShopOrderInput.shoppingAddressId;
-    newShopOrder.shippingMethod = createShopOrderInput.shippingMethodId;
+    newShopOrder.user = createShopOrderInput.user;
+    newShopOrder.userPaymentMethod = createShopOrderInput.userPaymentMethod;
+    newShopOrder.address = createShopOrderInput.address;
+    newShopOrder.shippingMethod = createShopOrderInput.shippingMethod;
     newShopOrder.orderTotal = createShopOrderInput.orderTotal;
-    newShopOrder.orderStatus = createShopOrderInput.orderStatusId;
+    newShopOrder.orderStatus = createShopOrderInput.orderStatus;
     return newShopOrder;
   }
   updateShopOrder(updateShopOrderInput: UpdateShopOrderInput) {
     const newShopOrder = new IShopOrder();
-    newShopOrder.user = updateShopOrderInput.userId;
-    newShopOrder.userPaymentMethod = updateShopOrderInput.userPaymentMethodId;
-    newShopOrder.address = updateShopOrderInput.shoppingAddressId;
-    newShopOrder.shippingMethod = updateShopOrderInput.shippingMethodId;
+    newShopOrder.user = updateShopOrderInput.user;
+    newShopOrder.userPaymentMethod = updateShopOrderInput.userPaymentMethod;
+    newShopOrder.address = updateShopOrderInput.address;
+    newShopOrder.shippingMethod = updateShopOrderInput.shippingMethod;
     newShopOrder.orderTotal = updateShopOrderInput.orderTotal;
-    newShopOrder.orderStatus = updateShopOrderInput.orderStatusId;
+    newShopOrder.orderStatus = updateShopOrderInput.orderStatus;
     return newShopOrder;
   }
 }

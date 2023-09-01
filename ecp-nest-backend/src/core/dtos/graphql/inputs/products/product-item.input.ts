@@ -1,4 +1,4 @@
-import { Field, Float, ID, Int, PartialType } from '@nestjs/graphql';
+import { Field, Float, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 import {
   IsInt,
   IsNotEmpty,
@@ -11,6 +11,7 @@ import {
   MinLength,
 } from 'class-validator';
 
+@InputType()
 export class CreateProductItemInput {
   @Field(() => ID)
   @IsNotEmpty()
@@ -44,6 +45,7 @@ export class CreateProductItemInput {
   slug: string;
 }
 
+@InputType()
 export class UpdateProductItemInput extends PartialType(
   CreateProductItemInput,
 ) {

@@ -12,7 +12,7 @@ export class CreateCommentInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  userId: any;
+  user: any;
 
   @Field(() => String)
   @IsNotEmpty()
@@ -27,12 +27,12 @@ export class CreateCommentInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  reviewId: any;
+  review: any;
 
   @Field(() => ID, { nullable: true })
   @IsOptional()
   @IsUUID()
-  commentParentId?: any;
+  commentParent?: any;
 }
 
 @InputType()

@@ -1,5 +1,5 @@
 import { CreateReviewInput, UpdateReviewInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../generic-args.repository';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class IReviewsRepository<T> {
   abstract getAllReviews(args?: IGenericArgs<T>): Promise<T[]>;

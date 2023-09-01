@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IGenericDataMethodsRepository } from 'src/core/abstracts/generic-data-methods.repository';
 import { Repository } from 'typeorm';
 

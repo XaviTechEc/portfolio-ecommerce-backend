@@ -59,24 +59,24 @@ import { IGenericDataMethodsRepository } from '../generic-data-methods.repositor
 export abstract class IDataSourcesService {
   // Addresses
   abstract addresses: IAddressesRepository<IAddress>;
-  // abstract countries: ICountriesRepository<ICountry>;
-  // abstract locations: ILocationsRepository<ILocation>;
+  abstract countries: ICountriesRepository<ICountry>;
+  abstract locations: ILocationsRepository<ILocation>;
 
   // // Cart
-  // abstract orderLines: IOrderLinesRepository<IOrderLine>;
-  // abstract orderStatus: IOrderStatusRepository<IOrderStatus>;
-  // abstract shippingMethods: IShippingMethodsRepository<IShippingMethod>;
-  // abstract shopOrders: IShopOrdersRepository<IShopOrder>;
-  // abstract shoppingCarts: IShoppingCartsRepository<IShoppingCart>;
+  abstract orderLines: IOrderLinesRepository<IOrderLine>;
+  abstract orderStatus: IOrderStatusRepository<IOrderStatus>;
+  abstract shippingMethods: IShippingMethodsRepository<IShippingMethod>;
+  abstract shopOrders: IShopOrdersRepository<IShopOrder>;
+  abstract shoppingCarts: IShoppingCartsRepository<IShoppingCart>;
 
-  // // Categories
-  // abstract categories: ICategoriesRepository<ICategory>;
+  // Categories
+  abstract categories: ICategoriesRepository<ICategory>;
 
-  // // Comments
-  // abstract comments: ICommentsRepository<IComment>;
+  // Comments
+  abstract comments: ICommentsRepository<IComment>;
 
-  // // Images
-  // abstract images: IImageRepository<IImage>;
+  // Images
+  abstract images: IImageRepository<IImage>;
 
   // // Payments
   // abstract paymentMethods: IPaymentMethodsRepository<IPaymentMethod>;

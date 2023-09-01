@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IOrderLinesRepository } from 'src/core/abstracts/repositories';
 import { CreateOrderLineInput, UpdateOrderLineInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';

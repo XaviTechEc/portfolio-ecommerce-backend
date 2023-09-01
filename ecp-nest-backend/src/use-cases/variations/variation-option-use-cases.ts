@@ -7,7 +7,7 @@ import {
 } from 'src/core/dtos';
 import { IVariationOption } from 'src/core/entities';
 import { VariationOptionFactoryService } from './factory/variation-option-factory.service';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class VariationOptionUseCases

@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { ICategoriesRepository } from 'src/core/abstracts/repositories';
 import { CreateCategoryInput, UpdateCategoryInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';

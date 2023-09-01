@@ -1,6 +1,6 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import { Args, ID, Query, Resolver } from '@nestjs/graphql';
-import { PaginationArgs, SearchArgs } from 'src/common/graphql/args';
+import { PaginationArgs, SearchArgs } from 'src/core/dtos/graphql/args';
 import { IReview } from 'src/core/entities';
 import { ReviewType } from 'src/core/object-types/reviews/review.type';
 

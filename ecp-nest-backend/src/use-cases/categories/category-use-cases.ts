@@ -4,7 +4,7 @@ import { CategoryFactoryService } from './category-factory.service';
 import { ICategoriesRepository } from 'src/core/abstracts/repositories';
 import { CreateCategoryInput, UpdateCategoryInput } from 'src/core/dtos';
 import { ICategory } from 'src/core/entities';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class CategoryUseCases implements ICategoriesRepository<ICategory> {
@@ -13,33 +13,37 @@ export class CategoryUseCases implements ICategoriesRepository<ICategory> {
     private categoryFactoryService: CategoryFactoryService,
   ) {}
   getAllCategories(args?: IGenericArgs<ICategory>): Promise<ICategory[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.categories.getAllCategories(args);
   }
   getAllCategoriesBy(
     fields: Partial<ICategory>,
     args?: IGenericArgs<ICategory>,
   ): Promise<ICategory[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.categories.getAllCategoriesBy(fields, args);
   }
   getOneCategoryBy(
     fields: Partial<ICategory>,
     args?: IGenericArgs<ICategory>,
   ): Promise<ICategory> {
-    throw new Error('Method not implemented.');
+    return this.dataService.categories.getOneCategoryBy(fields, args);
   }
   getCategoryById(id: string): Promise<ICategory> {
-    throw new Error('Method not implemented.');
+    return this.dataService.categories.getCategoryById(id);
   }
   createCategory(createCategoryInput: CreateCategoryInput): Promise<ICategory> {
-    throw new Error('Method not implemented.');
+    const category =
+      this.categoryFactoryService.createCategory(createCategoryInput);
+    return this.dataService.categories.createCategory(category);
   }
   updateCategory(
     id: string,
     updateCategoryInput: UpdateCategoryInput,
   ): Promise<ICategory> {
-    throw new Error('Method not implemented.');
+    const category =
+      this.categoryFactoryService.updateCategory(updateCategoryInput);
+    return this.dataService.categories.updateCategory(id, category);
   }
   removeCategory(id: string): Promise<ICategory> {
-    throw new Error('Method not implemented.');
+    return this.dataService.categories.removeCategory(id);
   }
 }

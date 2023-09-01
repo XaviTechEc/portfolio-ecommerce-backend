@@ -1,5 +1,5 @@
 import { CreateCategoryInput, UpdateCategoryInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../generic-args.repository';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class ICategoriesRepository<T> {
   abstract getAllCategories(args?: IGenericArgs<T>): Promise<T[]>;

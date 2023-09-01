@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IPromotionsRepository } from 'src/core/abstracts/repositories';
 import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';

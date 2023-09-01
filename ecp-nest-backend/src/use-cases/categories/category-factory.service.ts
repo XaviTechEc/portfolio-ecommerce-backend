@@ -8,20 +8,20 @@ export class CategoryFactoryService {
     const newCategory = new ICategory();
     newCategory.value = createCategoryInput.value;
     newCategory.description = createCategoryInput.description;
-    newCategory.season = createCategoryInput.seasonId;
-    newCategory.parentCategory = createCategoryInput.parentCategoryId;
+    newCategory.season = createCategoryInput.season;
+    newCategory.parentCategory = createCategoryInput.parentCategory;
     newCategory.active = createCategoryInput.active;
-    newCategory.user = createCategoryInput.createdBy;
+    newCategory.user = createCategoryInput.user;
     return newCategory;
   }
   updateCategory(updateCategoryInput: UpdateCategoryInput) {
     const newCategory = new ICategory();
     newCategory.value = updateCategoryInput.value;
     newCategory.description = updateCategoryInput.description;
-    newCategory.season = updateCategoryInput.seasonId;
-    newCategory.parentCategory = updateCategoryInput.parentCategoryId;
+    newCategory.season = updateCategoryInput.season;
+    newCategory.parentCategory = updateCategoryInput.parentCategory;
     newCategory.active = updateCategoryInput.active;
-    newCategory.user = updateCategoryInput.createdBy;
+    newCategory.user = updateCategoryInput.user;
     return newCategory;
   }
 }

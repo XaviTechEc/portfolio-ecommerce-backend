@@ -1,5 +1,5 @@
 import { CreateTagInput, UpdateTagInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../generic-args.repository';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class ITagsRepository<T> {
   abstract getAllTags(args?: IGenericArgs<T>): Promise<T[]>;

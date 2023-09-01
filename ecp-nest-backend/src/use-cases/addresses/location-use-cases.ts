@@ -13,18 +13,22 @@ export class LocationUseCases implements ILocationsRepository<ILocation> {
     private locationFactoryService: LocationFactoryService,
   ) {}
   getLocationById(id: string): Promise<ILocation> {
-    throw new Error('Method not implemented.');
+    return this.dataService.locations.getLocationById(id);
   }
   createLocation(createLocationInput: CreateLocationInput): Promise<ILocation> {
-    throw new Error('Method not implemented.');
+    const location =
+      this.locationFactoryService.createLocation(createLocationInput);
+    return this.dataService.locations.createLocation(location);
   }
   updateLocation(
     id: string,
     updateLocationInput: UpdateLocationInput,
   ): Promise<ILocation> {
-    throw new Error('Method not implemented.');
+    const location =
+      this.locationFactoryService.updateLocation(updateLocationInput);
+    return this.dataService.locations.updateLocation(id, location);
   }
   removeLocation(id: string): Promise<ILocation> {
-    throw new Error('Method not implemented.');
+    return this.dataService.locations.removeLocation(id);
   }
 }

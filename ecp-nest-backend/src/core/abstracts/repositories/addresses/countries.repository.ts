@@ -1,5 +1,8 @@
-import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../generic-args.repository';
+import {
+  CreateCountryInput,
+  IGenericArgs,
+  UpdateCountryInput,
+} from 'src/core/dtos';
 
 export abstract class ICountriesRepository<T> {
   abstract getAllCountries(args?: IGenericArgs<T>): Promise<T[]>;

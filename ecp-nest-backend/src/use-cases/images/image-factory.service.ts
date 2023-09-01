@@ -8,20 +8,20 @@ export class ImageFactoryService {
     const newImage = new IImage();
     newImage.url = createImageDto.url;
     newImage.extension = createImageDto.extension;
-    newImage.product = createImageDto.productId;
-    newImage.productItem = createImageDto.productItemId;
-    newImage.category = createImageDto.categoryId;
-    newImage.user = createImageDto.uploadedBy;
+    newImage.product = createImageDto.product;
+    newImage.productItem = createImageDto.productItem;
+    newImage.category = createImageDto.category;
+    newImage.user = createImageDto.user;
     return newImage;
   }
   updateImage(updateImageDto: UpdateImageDto) {
     const newImage = new IImage();
     newImage.url = updateImageDto.url;
     newImage.extension = updateImageDto.extension;
-    newImage.product = updateImageDto.productId;
-    newImage.productItem = updateImageDto.productItemId;
-    newImage.category = updateImageDto.categoryId;
-    newImage.user = updateImageDto.uploadedBy;
+    newImage.product = updateImageDto.product;
+    newImage.productItem = updateImageDto.productItem;
+    newImage.category = updateImageDto.category;
+    newImage.user = updateImageDto.user;
     return newImage;
   }
 }

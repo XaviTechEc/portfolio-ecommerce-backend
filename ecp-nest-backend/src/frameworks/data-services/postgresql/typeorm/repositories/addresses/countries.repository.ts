@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { ICountriesRepository } from 'src/core/abstracts/repositories';
 import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';

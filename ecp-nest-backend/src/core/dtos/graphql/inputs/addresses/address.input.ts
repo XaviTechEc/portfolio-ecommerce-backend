@@ -1,4 +1,4 @@
-import { Field, ID, Int, PartialType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 import {
   IsInt,
   IsNotEmpty,
@@ -8,6 +8,7 @@ import {
   IsUUID,
 } from 'class-validator';
 
+@InputType()
 export class CreateAddressInput {
   @Field(() => Int, { nullable: true })
   @IsInt()
@@ -43,22 +44,23 @@ export class CreateAddressInput {
   @IsPostalCode()
   postalCode: string;
 
-  @Field(() => String)
+  @Field(() => ID)
   @IsNotEmpty()
-  @IsString()
+  @IsUUID()
   country: any;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  @IsString()
+  @IsUUID()
   reference?: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  @IsString()
+  @IsUUID()
   location?: any;
 }
 
+@InputType()
 export class UpdateAddressInput extends PartialType(CreateAddressInput) {
   @Field(() => ID)
   @IsNotEmpty()

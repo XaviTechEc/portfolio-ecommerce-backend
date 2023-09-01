@@ -1,4 +1,4 @@
-import { Field, Float, ID, Int, PartialType } from '@nestjs/graphql';
+import { Field, Float, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 import {
   IsInt,
   IsNotEmpty,
@@ -8,16 +8,17 @@ import {
   Min,
 } from 'class-validator';
 
+@InputType()
 export class CreateOrderLineInput {
-  @Field(() => String)
+  @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  productItemId: any;
+  productItem: any;
 
-  @Field(() => String)
+  @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  shopOrderId: any;
+  shopOrder: any;
 
   @Field(() => Int)
   @IsNotEmpty()
@@ -34,6 +35,7 @@ export class CreateOrderLineInput {
   totalPrice: number;
 }
 
+@InputType()
 export class UpdateOrderLineInput extends PartialType(CreateOrderLineInput) {
   @Field(() => ID)
   @IsNotEmpty()

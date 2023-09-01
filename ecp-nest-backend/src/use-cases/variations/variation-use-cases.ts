@@ -4,7 +4,7 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { CreateVariationInput, UpdateVariationInput } from 'src/core/dtos';
 import { IVariation } from 'src/core/entities';
 import { VariationFactoryService } from './factory/variation-factory.service';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class VariationUseCases implements IVariationsRepository<IVariation> {

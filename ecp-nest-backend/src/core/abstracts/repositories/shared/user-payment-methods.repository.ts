@@ -2,7 +2,7 @@ import {
   CreateUserPaymentMethodDto,
   UpdateUserPaymentMethodDto,
 } from 'src/core/dtos';
-import { IGenericArgs } from '../../generic-args.repository';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class IUserPaymentMethodsRepository<T> {
   abstract getAllUserPaymentMethods(args?: IGenericArgs<T>): Promise<T[]>;

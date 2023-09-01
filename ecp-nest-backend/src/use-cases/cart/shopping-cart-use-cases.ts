@@ -7,7 +7,7 @@ import {
 } from 'src/core/dtos';
 import { IShoppingCart } from 'src/core/entities';
 import { ShoppingCartFactoryService } from './factory/shopping-cart-factory.service';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class ShoppingCartUseCases
@@ -20,23 +20,29 @@ export class ShoppingCartUseCases
   getAllShoppingCarts(
     args: IGenericArgs<IShoppingCart>,
   ): Promise<IShoppingCart[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.shoppingCarts.getAllShoppingCarts(args);
   }
   getShoppingCartById(id: string): Promise<IShoppingCart> {
-    throw new Error('Method not implemented.');
+    return this.dataService.shoppingCarts.getShoppingCartById(id);
   }
   createShoppingCart(
     createShoppingCartInput: CreateShoppingCartInput,
   ): Promise<IShoppingCart> {
-    throw new Error('Method not implemented.');
+    const shoppingCart = this.shoppingCartFactoryService.createShoppingCart(
+      createShoppingCartInput,
+    );
+    return this.dataService.shoppingCarts.createShoppingCart(shoppingCart);
   }
   updateShoppingCart(
     id: string,
     updateShoppingCartInput: UpdateShoppingCartInput,
   ): Promise<IShoppingCart> {
-    throw new Error('Method not implemented.');
+    const shoppingCart = this.shoppingCartFactoryService.updateShoppingCart(
+      updateShoppingCartInput,
+    );
+    return this.dataService.shoppingCarts.updateShoppingCart(id, shoppingCart);
   }
   removeShoppingCart(id: string): Promise<IShoppingCart> {
-    throw new Error('Method not implemented.');
+    return this.dataService.shoppingCarts.removeShoppingCart(id);
   }
 }

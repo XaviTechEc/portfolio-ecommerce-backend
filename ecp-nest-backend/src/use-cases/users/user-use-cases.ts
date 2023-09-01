@@ -4,7 +4,7 @@ import { UserFactoryService } from './user-factory.service';
 import { IUser } from 'src/core/entities';
 import { IUsersRepository } from 'src/core/abstracts/repositories/users/users.repository';
 import { CreateUserDto, UpdateUserDto } from 'src/core/dtos';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class UserUseCases implements IUsersRepository<IUser> {

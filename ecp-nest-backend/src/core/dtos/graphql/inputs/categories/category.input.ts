@@ -1,9 +1,10 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 import {
   IsBoolean,
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   MinLength,
 } from 'class-validator';
 
@@ -21,15 +22,15 @@ export class CreateCategoryInput {
   @MinLength(3)
   description: string;
 
-  @Field(() => String)
+  @Field(() => ID)
   @IsNotEmpty()
-  @IsString()
-  seasonId: any;
+  @IsUUID()
+  season: any;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
-  @IsString()
-  parentCategoryId?: any;
+  @IsUUID()
+  parentCategory?: any;
 
   @Field(() => Boolean, { nullable: true, defaultValue: true })
   @IsOptional()
@@ -38,8 +39,8 @@ export class CreateCategoryInput {
 
   @Field(() => String)
   @IsNotEmpty()
-  @IsString()
-  createdBy: any;
+  @IsUUID()
+  user: any;
 }
 
 @InputType()

@@ -1,5 +1,5 @@
 import { CreateCommentInput, UpdateCommentInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../generic-args.repository';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class ICommentsRepository<T> {
   abstract getCommentById(id: string): Promise<T>;

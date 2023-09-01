@@ -4,7 +4,7 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { ProductItemFactoryService } from './factory/product-item-factory.service';
 import { CreateProductItemInput, UpdateProductItemInput } from 'src/core/dtos';
 import { IProductItem } from 'src/core/entities';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class ProductItemUseCases

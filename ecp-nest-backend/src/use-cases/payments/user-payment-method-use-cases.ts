@@ -7,7 +7,7 @@ import {
 } from 'src/core/dtos';
 import { IUserPaymentMethod } from 'src/core/entities';
 import { UserPaymentMethodFactoryService } from './factory/user-payment-method-factory.service';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class UserPaymentMethodUseCases

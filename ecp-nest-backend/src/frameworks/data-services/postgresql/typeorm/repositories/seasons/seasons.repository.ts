@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { ISeasonsRepository } from 'src/core/abstracts/repositories';
 import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';

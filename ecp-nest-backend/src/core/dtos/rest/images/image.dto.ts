@@ -12,19 +12,19 @@ export class CreateImageDto {
 
   @IsOptional()
   @IsUUID()
-  productId?: any;
+  product?: any;
 
   @IsOptional()
   @IsUUID()
-  productItemId?: any;
+  productItem?: any;
 
   @IsOptional()
   @IsUUID()
-  categoryId?: any;
+  category?: any;
 
   @IsNotEmpty()
   @IsUUID()
-  uploadedBy: any;
+  user: any;
 }
 
 export class UpdateImageDto extends PartialType(CreateImageDto) {}

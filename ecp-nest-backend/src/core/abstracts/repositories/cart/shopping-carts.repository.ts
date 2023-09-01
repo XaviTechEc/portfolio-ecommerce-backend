@@ -2,7 +2,7 @@ import {
   CreateShoppingCartInput,
   UpdateShoppingCartInput,
 } from 'src/core/dtos';
-import { IGenericArgs } from '../../generic-args.repository';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class IShoppingCartsRepository<T> {
   abstract getAllShoppingCarts(args: IGenericArgs<T>): Promise<T[]>;

@@ -9,12 +9,12 @@ import { IShoppingCart } from 'src/core/entities';
 export class ShoppingCartFactoryService {
   createShoppingCart(createShoppingCartInput: CreateShoppingCartInput) {
     const newShoppingCart = new IShoppingCart();
-    newShoppingCart.user = createShoppingCartInput.userId;
+    newShoppingCart.user = createShoppingCartInput.user;
     return newShoppingCart;
   }
   updateShoppingCart(updateShoppingCartInput: UpdateShoppingCartInput) {
     const newShoppingCart = new IShoppingCart();
-    newShoppingCart.user = updateShoppingCartInput.userId;
+    newShoppingCart.user = updateShoppingCartInput.user;
     return newShoppingCart;
   }
 }

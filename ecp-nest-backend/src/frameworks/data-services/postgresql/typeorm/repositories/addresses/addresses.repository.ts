@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IAddressesRepository } from 'src/core/abstracts/repositories';
 import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
@@ -10,7 +10,7 @@ export class AddressesRepository implements IAddressesRepository<Address> {
   constructor(repository: Repository<Address>) {
     this._repository = repository;
   }
-  async getAddressesBy(args?: IGenericArgs<Address>): Promise<Address[]> {
+  async getAllAddresses(args?: IGenericArgs<Address>): Promise<Address[]> {
     let qb = this._repository.createQueryBuilder();
     qb = qb.where({});
 
@@ -41,36 +41,7 @@ export class AddressesRepository implements IAddressesRepository<Address> {
     const addressesFound = await qb.getMany();
     return addressesFound;
   }
-  async getOneAddressBy(
-    fields: Partial<Address>,
-    args?: IGenericArgs<Address>,
-  ): Promise<Address> {
-    let qb = this._repository.createQueryBuilder('address');
-    qb = qb.where({ ...fields });
 
-    if (args) {
-      const { searchArgs } = args;
-      if (searchArgs) {
-        const { searchTerm, searchFields } = searchArgs;
-        if (searchTerm) {
-          if (!searchFields || searchFields.length === 0) {
-            throw new BadRequestException('Search fields are required');
-          }
-          searchFields.forEach((sf) => {
-            if (!sf) return;
-            qb = qb.orWhere(`LOWER(${sf}) LIKE LOWER(:searchTerm)`, {
-              searchTerm: `%${searchTerm}%`,
-            });
-          });
-        }
-      }
-    }
-    const addressFound = await qb.getOne();
-    if (!addressFound) {
-      throw new NotFoundException();
-    }
-    return addressFound;
-  }
   async getAddressById(id: string): Promise<Address> {
     return this._repository.findOneBy({ id });
   }

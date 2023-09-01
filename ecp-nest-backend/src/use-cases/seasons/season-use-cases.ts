@@ -4,7 +4,7 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
 import { ISeason } from 'src/core/entities';
 import { SeasonFactoryService } from './season-factory.service';
-import { IGenericArgs } from 'src/core/abstracts/generic-args.repository';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class SeasonUseCases implements ISeasonsRepository<ISeason> {
