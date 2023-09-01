@@ -20,35 +20,47 @@ export class UserPaymentMethodUseCases
   getAllUserPaymentMethods(
     args?: IGenericArgs<IUserPaymentMethod>,
   ): Promise<IUserPaymentMethod[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.userPaymentMethods.getAllUserPaymentMethods(args);
   }
   getAllUserPaymentMethodsBy(
     fields: Partial<IUserPaymentMethod>,
     args?: IGenericArgs<IUserPaymentMethod>,
   ): Promise<IUserPaymentMethod[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.userPaymentMethods.getAllUserPaymentMethodsBy(
+      fields,
+      args,
+    );
   }
   getOneUserPaymentMethodBy(
     fields: Partial<IUserPaymentMethod>,
     args?: IGenericArgs<IUserPaymentMethod>,
   ): Promise<IUserPaymentMethod> {
-    throw new Error('Method not implemented.');
+    return this.dataService.userPaymentMethods.getOneUserPaymentMethodBy(
+      fields,
+      args,
+    );
   }
   getUserPaymentMethodById(id: string): Promise<IUserPaymentMethod> {
-    throw new Error('Method not implemented.');
+    return this.dataService.userPaymentMethods.getUserPaymentMethodById(id);
   }
   createUserPaymentMethod(
     createUserPaymentMethodInput: CreateUserPaymentMethodDto,
   ): Promise<IUserPaymentMethod> {
-    throw new Error('Method not implemented.');
+    const upm = this.userPaymentMethodFactoryService.createUserPaymentMethod(
+      createUserPaymentMethodInput,
+    );
+    return this.dataService.userPaymentMethods.createUserPaymentMethod(upm);
   }
   updateUserPaymentMethod(
     id: string,
     updateUserPaymentMethodInput: UpdateUserPaymentMethodDto,
   ): Promise<IUserPaymentMethod> {
-    throw new Error('Method not implemented.');
+    const upm = this.userPaymentMethodFactoryService.updateUserPaymentMethod(
+      updateUserPaymentMethodInput,
+    );
+    return this.dataService.userPaymentMethods.updateUserPaymentMethod(id, upm);
   }
   removeUserPaymentMethod(id: string): Promise<IUserPaymentMethod> {
-    throw new Error('Method not implemented.');
+    return this.dataService.userPaymentMethods.removeUserPaymentMethod(id);
   }
 }

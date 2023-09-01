@@ -11,9 +11,9 @@ export class UserPaymentMethodFactoryService {
     createUserPaymentMethodDto: CreateUserPaymentMethodDto,
   ) {
     const newUserPaymentMethod = new IUserPaymentMethod();
-    newUserPaymentMethod.user = createUserPaymentMethodDto.userId;
+    newUserPaymentMethod.user = createUserPaymentMethodDto.user;
     newUserPaymentMethod.paymentMethod =
-      createUserPaymentMethodDto.paymentMethodId;
+      createUserPaymentMethodDto.paymentMethod;
     newUserPaymentMethod.provider = createUserPaymentMethodDto.provider;
     newUserPaymentMethod.accountNumber =
       createUserPaymentMethodDto.accountNumber;
@@ -25,9 +25,9 @@ export class UserPaymentMethodFactoryService {
     updateUserPaymentMethodDto: UpdateUserPaymentMethodDto,
   ) {
     const newUserPaymentMethod = new IUserPaymentMethod();
-    newUserPaymentMethod.user = updateUserPaymentMethodDto.userId;
+    newUserPaymentMethod.user = updateUserPaymentMethodDto.user;
     newUserPaymentMethod.paymentMethod =
-      updateUserPaymentMethodDto.paymentMethodId;
+      updateUserPaymentMethodDto.paymentMethod;
     newUserPaymentMethod.provider = updateUserPaymentMethodDto.provider;
     newUserPaymentMethod.accountNumber =
       updateUserPaymentMethodDto.accountNumber;

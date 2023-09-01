@@ -13,21 +13,24 @@ export class SeasonUseCases implements ISeasonsRepository<ISeason> {
     private seasonFactoryService: SeasonFactoryService,
   ) {}
   getAllSeasons(args?: IGenericArgs<ISeason>): Promise<ISeason[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.seasons.getAllSeasons(args);
   }
   getSeasonById(id: string): Promise<ISeason> {
-    throw new Error('Method not implemented.');
+    return this.dataService.seasons.getSeasonById(id);
   }
   createSeason(createSeasonInput: CreateSeasonInput): Promise<ISeason> {
-    throw new Error('Method not implemented.');
+    const season = this.seasonFactoryService.createSeason(createSeasonInput);
+    return this.dataService.seasons.createSeason(season);
   }
   updateSeason(
     id: string,
     updateSeasonInput: UpdateSeasonInput,
   ): Promise<ISeason> {
-    throw new Error('Method not implemented.');
+    const season = this.seasonFactoryService.updateSeason(updateSeasonInput);
+
+    return this.dataService.seasons.updateSeason(id, season);
   }
   removeSeason(id: string): Promise<ISeason> {
-    throw new Error('Method not implemented.');
+    return this.dataService.seasons.removeSeason(id);
   }
 }

@@ -6,7 +6,7 @@ import { IProductItem } from 'src/core/entities';
 export class ProductItemFactoryService {
   createProductItem(createProductItemInput: CreateProductItemInput) {
     const newProductItem = new IProductItem();
-    newProductItem.product = createProductItemInput.productId;
+    newProductItem.product = createProductItemInput.product;
     newProductItem.sku = createProductItemInput.sku;
     newProductItem.quantityInStock = createProductItemInput.quantityInStock;
     newProductItem.price = createProductItemInput.price;
@@ -15,7 +15,7 @@ export class ProductItemFactoryService {
   }
   updateProductItem(updateProductItemInput: UpdateProductItemInput) {
     const newProductItem = new IProductItem();
-    newProductItem.product = updateProductItemInput.productId;
+    newProductItem.product = updateProductItemInput.product;
     newProductItem.sku = updateProductItemInput.sku;
     newProductItem.quantityInStock = updateProductItemInput.quantityInStock;
     newProductItem.price = updateProductItemInput.price;

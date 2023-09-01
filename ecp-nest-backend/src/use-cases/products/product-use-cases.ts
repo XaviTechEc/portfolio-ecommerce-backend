@@ -13,33 +13,37 @@ export class ProductUseCases implements IProductsRepository<IProduct> {
     private productFactoryService: ProductFactoryService,
   ) {}
   getAllProducts(args?: IGenericArgs<IProduct>): Promise<IProduct[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.products.getAllProducts(args);
   }
   getAllProductsBy(
     fields: Partial<IProduct>,
     args?: IGenericArgs<IProduct>,
   ): Promise<IProduct[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.products.getAllProductsBy(fields, args);
   }
   getOneProductBy(
     fields: Partial<IProduct>,
     args?: IGenericArgs<IProduct>,
   ): Promise<IProduct> {
-    throw new Error('Method not implemented.');
+    return this.dataService.products.getOneProductBy(fields, args);
   }
   getProductById(id: string): Promise<IProduct> {
-    throw new Error('Method not implemented.');
+    return this.dataService.products.getProductById(id);
   }
   createProduct(createProductInput: CreateProductInput): Promise<IProduct> {
-    throw new Error('Method not implemented.');
+    const product =
+      this.productFactoryService.createProduct(createProductInput);
+    return this.dataService.products.createProduct(product);
   }
   updateProduct(
     id: string,
     updateProductInput: UpdateProductInput,
   ): Promise<IProduct> {
-    throw new Error('Method not implemented.');
+    const product =
+      this.productFactoryService.updateProduct(updateProductInput);
+    return this.dataService.products.updateProduct(id, product);
   }
   removeProduct(id: string): Promise<IProduct> {
-    throw new Error('Method not implemented.');
+    return this.dataService.products.removeProduct(id);
   }
 }

@@ -17,35 +17,42 @@ export class ProductItemUseCases
   getAllProductItems(
     args?: IGenericArgs<IProductItem>,
   ): Promise<IProductItem[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.productItems.getAllProductItems(args);
   }
   getAllProductItemsBy(
     fields: Partial<IProductItem>,
     args?: IGenericArgs<IProductItem>,
   ): Promise<IProductItem[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.productItems.getAllProductItemsBy(fields, args);
   }
   getProductItemById(id: string): Promise<IProductItem> {
-    throw new Error('Method not implemented.');
+    return this.dataService.productItems.getProductItemById(id);
   }
   getOneProductItemBy(
     fields: Partial<IProductItem>,
     args?: IGenericArgs<IProductItem>,
   ): Promise<IProductItem> {
-    throw new Error('Method not implemented.');
+    return this.dataService.productItems.getOneProductItemBy(fields, args);
   }
   createProductItem(
     createProductItemInput: CreateProductItemInput,
   ): Promise<IProductItem> {
-    throw new Error('Method not implemented.');
+    const productItem = this.productItemFactoryService.createProductItem(
+      createProductItemInput,
+    );
+    return this.dataService.productItems.createProductItem(productItem);
   }
   updateProductItem(
     id: string,
     updateProductItemInput: UpdateProductItemInput,
   ): Promise<IProductItem> {
-    throw new Error('Method not implemented.');
+    const productItem = this.productItemFactoryService.updateProductItem(
+      updateProductItemInput,
+    );
+
+    return this.dataService.productItems.updateProductItem(id, productItem);
   }
   removeProductItem(id: string): Promise<IProductItem> {
-    throw new Error('Method not implemented.');
+    return this.dataService.productItems.removeProductItem(id);
   }
 }

@@ -16,7 +16,7 @@ export class CreateProductItemInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  productId: any;
+  product: any;
 
   @Field(() => String)
   @IsNotEmpty()

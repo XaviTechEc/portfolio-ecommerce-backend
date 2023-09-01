@@ -23,7 +23,7 @@ export class CreateProductInput {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
-  createdBy: any;
+  user: any;
 }
 
 @InputType()

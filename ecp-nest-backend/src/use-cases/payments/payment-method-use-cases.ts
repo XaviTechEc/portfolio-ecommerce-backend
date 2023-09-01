@@ -14,20 +14,29 @@ export class PaymentMethodUseCases
     private paymentMethodFactoryService: PaymentMethodFactoryService,
   ) {}
   getPaymentMethodById(id: string): Promise<IPaymentMethod> {
-    throw new Error('Method not implemented.');
+    return this.dataService.paymentMethods.getPaymentMethodById(id);
   }
   createPaymentMethod(
     createPaymentMethodInput: CreatePaymentMethodDto,
   ): Promise<IPaymentMethod> {
-    throw new Error('Method not implemented.');
+    const paymentMethod = this.paymentMethodFactoryService.createPaymentMethod(
+      createPaymentMethodInput,
+    );
+    return this.dataService.paymentMethods.createPaymentMethod(paymentMethod);
   }
   updatePaymentMethod(
     id: string,
     updatePaymentMethodInput: UpdatePaymentMethodDto,
   ): Promise<IPaymentMethod> {
-    throw new Error('Method not implemented.');
+    const paymentMethod = this.paymentMethodFactoryService.updatePaymentMethod(
+      updatePaymentMethodInput,
+    );
+    return this.dataService.paymentMethods.updatePaymentMethod(
+      id,
+      paymentMethod,
+    );
   }
   removePaymentMethod(id: string): Promise<IPaymentMethod> {
-    throw new Error('Method not implemented.');
+    return this.dataService.paymentMethods.removePaymentMethod(id);
   }
 }

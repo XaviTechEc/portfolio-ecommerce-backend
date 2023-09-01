@@ -78,22 +78,22 @@ export abstract class IDataSourcesService {
   // Images
   abstract images: IImageRepository<IImage>;
 
-  // // Payments
-  // abstract paymentMethods: IPaymentMethodsRepository<IPaymentMethod>;
-  // abstract userPaymentMethods: IUserPaymentMethodsRepository<IUserPaymentMethod>;
+  // Payments
+  abstract paymentMethods: IPaymentMethodsRepository<IPaymentMethod>;
+  abstract userPaymentMethods: IUserPaymentMethodsRepository<IUserPaymentMethod>;
 
-  // // Products
-  // abstract productItems: IProductItemsRepository<IProductItem>;
-  // abstract products: IProductsRepository<IProduct>;
+  // Products
+  abstract productItems: IProductItemsRepository<IProductItem>;
+  abstract products: IProductsRepository<IProduct>;
 
-  // // Promotions
-  // abstract promotions: IPromotionsRepository<IPromotion>;
+  // Promotions
+  abstract promotions: IPromotionsRepository<IPromotion>;
 
-  // // Reviews
-  // abstract reviews: IReviewsRepository<IReview>;
+  // Reviews
+  abstract reviews: IReviewsRepository<IReview>;
 
-  // // Seasons
-  // abstract seasons: ISeasonsRepository<ISeason>;
+  // Seasons
+  abstract seasons: ISeasonsRepository<ISeason>;
 
   // // Shared
   // abstract categoryPromotions: IGenericDataMethodsRepository<ICategoryPromotion>;

@@ -13,23 +13,27 @@ export class PromotionUseCases implements IPromotionsRepository<IPromotion> {
     private promotionFactoryService: PromotionFactoryService,
   ) {}
   getAllPromotions(args?: IGenericArgs<IPromotion>): Promise<IPromotion[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.promotions.getAllPromotions(args);
   }
   getPromotionById(id: string): Promise<IPromotion> {
-    throw new Error('Method not implemented.');
+    return this.dataService.promotions.getPromotionById(id);
   }
   createPromotion(
     createPromotionInput: CreatePromotionInput,
   ): Promise<IPromotion> {
-    throw new Error('Method not implemented.');
+    const promotion =
+      this.promotionFactoryService.createPromotion(createPromotionInput);
+    return this.dataService.promotions.createPromotion(promotion);
   }
   updatePromotion(
     id: string,
     updatePromotionInput: UpdatePromotionInput,
   ): Promise<IPromotion> {
-    throw new Error('Method not implemented.');
+    const promotion =
+      this.promotionFactoryService.updatePromotion(updatePromotionInput);
+    return this.dataService.promotions.updatePromotion(id, promotion);
   }
   removePromotion(id: string): Promise<IPromotion> {
-    throw new Error('Method not implemented.');
+    return this.dataService.promotions.removePromotion(id);
   }
 }

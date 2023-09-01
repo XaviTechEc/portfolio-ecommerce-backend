@@ -13,27 +13,29 @@ export class ReviewUseCases implements IReviewsRepository<IReview> {
     private reviewFactoryService: ReviewFactoryService,
   ) {}
   getAllReviews(args?: IGenericArgs<IReview>): Promise<IReview[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.reviews.getAllReviews(args);
   }
   getReviewsBy(
     fields: Partial<IReview>,
     args?: IGenericArgs<IReview>,
   ): Promise<IReview[]> {
-    throw new Error('Method not implemented.');
+    return this.dataService.reviews.getReviewsBy(fields, args);
   }
   getReviewById(id: string): Promise<IReview> {
-    throw new Error('Method not implemented.');
+    return this.dataService.reviews.getReviewById(id);
   }
   createReview(createReviewInput: CreateReviewInput): Promise<IReview> {
-    throw new Error('Method not implemented.');
+    const review = this.reviewFactoryService.createReview(createReviewInput);
+    return this.dataService.reviews.createReview(review);
   }
   updateReview(
     id: string,
     updateReviewInput: UpdateReviewInput,
   ): Promise<IReview> {
-    throw new Error('Method not implemented.');
+    const review = this.reviewFactoryService.updateReview(updateReviewInput);
+    return this.dataService.reviews.updateReview(id, review);
   }
   removeReview(id: string): Promise<IReview> {
-    throw new Error('Method not implemented.');
+    return this.dataService.reviews.removeReview(id);
   }
 }

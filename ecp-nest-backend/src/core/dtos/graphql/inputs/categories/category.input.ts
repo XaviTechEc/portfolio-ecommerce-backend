@@ -37,7 +37,7 @@ export class CreateCategoryInput {
   @IsBoolean()
   active?: boolean;
 
-  @Field(() => String)
+  @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
   user: any;
