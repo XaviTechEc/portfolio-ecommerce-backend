@@ -1,3 +1,4 @@
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { PartialType } from '@nestjs/swagger';
 import {
   IsBoolean,
@@ -9,33 +10,41 @@ import {
   IsUUID,
 } from 'class-validator';
 
-export class CreateUserPaymentMethodDto {
+@InputType()
+export class CreateUserPaymentMethodInput {
+  @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
   user: any;
 
+  @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
   paymentMethod: any;
 
+  @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  @IsString()
   @IsOptional()
+  @IsString()
   provider?: string;
 
+  @Field(() => Date, { nullable: true })
   @IsOptional()
   @IsCreditCard()
   accountNumber?: string;
 
+  @Field(() => Date, { nullable: true })
   @IsOptional()
   @IsDate()
   expiryDate?: Date;
 
+  @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()
   isDefault?: boolean;
 }
 
-export class UpdateUserPaymentMethodDto extends PartialType(
-  CreateUserPaymentMethodDto,
+@InputType()
+export class UpdateUserPaymentMethodInput extends PartialType(
+  CreateUserPaymentMethodInput,
 ) {}

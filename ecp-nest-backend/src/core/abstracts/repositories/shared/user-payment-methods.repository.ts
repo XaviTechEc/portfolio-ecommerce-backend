@@ -1,6 +1,6 @@
 import {
-  CreateUserPaymentMethodDto,
-  UpdateUserPaymentMethodDto,
+  CreateUserPaymentMethodInput,
+  UpdateUserPaymentMethodInput,
 } from 'src/core/dtos';
 import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
@@ -17,11 +17,11 @@ export abstract class IUserPaymentMethodsRepository<T> {
 
   abstract getUserPaymentMethodById(id: string): Promise<T>;
   abstract createUserPaymentMethod(
-    createUserPaymentMethodInput: CreateUserPaymentMethodDto,
+    createUserPaymentMethodInput: CreateUserPaymentMethodInput,
   ): Promise<T>;
   abstract updateUserPaymentMethod(
     id: string,
-    updateUserPaymentMethodInput: UpdateUserPaymentMethodDto,
+    updateUserPaymentMethodInput: UpdateUserPaymentMethodInput,
   ): Promise<T>;
   abstract removeUserPaymentMethod(id: string): Promise<T>;
 }
