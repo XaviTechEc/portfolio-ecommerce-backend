@@ -17,7 +17,7 @@ export class OrderLineUseCases implements IOrderLinesRepository<IOrderLine> {
   }
   getAllOrderLinesBy(
     fields: Partial<IOrderLine>,
-    args: IGenericArgs<IOrderLine>,
+    args?: IGenericArgs<IOrderLine>,
   ): Promise<IOrderLine[]> {
     return this.dataService.orderLines.getAllOrderLinesBy(fields, args);
   }
@@ -26,7 +26,7 @@ export class OrderLineUseCases implements IOrderLinesRepository<IOrderLine> {
   }
   getOneOrderLineBy(
     fields: Partial<IOrderLine>,
-    args: IGenericArgs<IOrderLine>,
+    args?: IGenericArgs<IOrderLine>,
   ): Promise<IOrderLine> {
     return this.dataService.orderLines.getOneOrderLineBy(fields, args);
   }
