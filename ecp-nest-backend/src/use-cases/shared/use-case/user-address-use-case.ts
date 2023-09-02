@@ -22,8 +22,8 @@ export class UserAddressUseCases
   ): Promise<IUserAddress[]> {
     return this.dataService.userAddresses.getAllUserAddress(args);
   }
-  getOneUserAddressById(id: string): Promise<IUserAddress> {
-    return this.dataService.userAddresses.getOneUserAddressById(id);
+  getUserAddressById(id: string): Promise<IUserAddress> {
+    return this.dataService.userAddresses.getUserAddressById(id);
   }
   createUserAddress(
     createUserAddressInput: CreateUserAddressInput,
@@ -33,19 +33,16 @@ export class UserAddressUseCases
     );
     return this.dataService.userAddresses.createUserAddress(userAddress);
   }
-  updateOneUserAddressById(
+  updateUserAddress(
     id: string,
     updateUserAddressInput: UpdateUserAddressInput,
   ): Promise<IUserAddress> {
     const userAddress = this.userAddressFactoryService.updateUserAddress(
       updateUserAddressInput,
     );
-    return this.dataService.userAddresses.updateOneUserAddressById(
-      id,
-      userAddress,
-    );
+    return this.dataService.userAddresses.updateUserAddress(id, userAddress);
   }
-  deleteOneUserAddressById(id: string): Promise<IUserAddress> {
-    return this.dataService.userAddresses.deleteOneUserAddressById(id);
+  removeUserAddress(id: string): Promise<IUserAddress> {
+    return this.dataService.userAddresses.removeUserAddress(id);
   }
 }

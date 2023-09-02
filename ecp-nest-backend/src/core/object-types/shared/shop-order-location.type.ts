@@ -3,7 +3,7 @@ import { ShopOrderType } from '../cart/shop-order.type';
 import { LocationType } from '../addresses/location.type';
 
 @ObjectType()
-export class ShopOrderLocation {
+export class ShopOrderLocationType {
   @Field(() => ShopOrderType)
   shopOrder: ShopOrderType;
 

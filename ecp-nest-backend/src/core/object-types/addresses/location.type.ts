@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { AddressType } from './address.type';
-import { ShopOrderLocation } from '../shared/shop-order-location.type';
+import { ShopOrderLocationType } from '../shared/shop-order-location.type';
 
 @ObjectType()
 export class LocationType {
@@ -17,6 +17,6 @@ export class LocationType {
   @Field(() => AddressType)
   address: AddressType;
 
-  @Field(() => [ShopOrderLocation])
-  shopOrderLocations: ShopOrderLocation[];
+  @Field(() => [ShopOrderLocationType])
+  shopOrderLocations: ShopOrderLocationType[];
 }

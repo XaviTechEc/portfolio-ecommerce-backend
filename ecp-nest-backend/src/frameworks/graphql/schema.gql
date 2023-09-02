@@ -57,6 +57,19 @@ type CountryType {
   longName: String!
 }
 
+input CreateAddressInput {
+  addressLine1: String!
+  addressLine2: String
+  city: String!
+  country: ID!
+  location: String
+  postalCode: String!
+  reference: String
+  region: String
+  streetNumber: String
+  unitNumber: Int
+}
+
 enum Gender {
   FEMALE
   MALE
@@ -80,7 +93,13 @@ type LocationType {
   id: ID!
   lat: String!
   lng: String!
-  shopOrderLocations: [ShopOrderLocation!]!
+  shopOrderLocations: [ShopOrderLocationType!]!
+}
+
+type Mutation {
+  createAddress(createAddressInput: CreateAddressInput!): AddressType!
+  removeAddress(id: ID!): AddressType!
+  updateAddress(updateAddressInput: UpdateAddressInput!): AddressType!
 }
 
 type OrderLineType {
@@ -95,7 +114,7 @@ type OrderLineType {
 type OrderStatusType {
   id: ID!
   shopOrders: [ShopOrderType!]!
-  statusValue: StatusValue!
+  statusValue: StatusVal!
 }
 
 enum PaymentMethod {
@@ -169,6 +188,7 @@ type PromotionType {
 }
 
 type Query {
+  address(id: ID!): AddressType!
   addresses(limit: Int = 10, offset: Int = 0, searchFields: [String!], searchTerm: String): [AddressType!]!
 }
 
@@ -204,7 +224,7 @@ type ShippingMethodType {
   shopOrders: [ShopOrderType!]!
 }
 
-type ShopOrderLocation {
+type ShopOrderLocationType {
   location: LocationType!
   shopOrder: ShopOrderType!
 }
@@ -217,7 +237,7 @@ type ShopOrderType {
   orderTotal: Float!
   shippingAddress: AddressType!
   shippingMethod: ShippingMethodType!
-  shopOrderLocations: [ShopOrderLocation!]!
+  shopOrderLocations: [ShopOrderLocationType!]!
   updatedAt: Timestamp
   user: UserObjType!
   userPaymentMethod: UserPaymentMethodType!
@@ -236,7 +256,7 @@ type ShoppingCartType {
   user: UserObjType!
 }
 
-enum StatusValue {
+enum StatusVal {
   DELIVERED
   IN_PROGRESS
   PLACED
@@ -254,6 +274,20 @@ type TagType {
 `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
 """
 scalar Timestamp
+
+input UpdateAddressInput {
+  addressLine1: String
+  addressLine2: String
+  city: String
+  country: ID
+  id: ID!
+  location: String
+  postalCode: String
+  reference: String
+  region: String
+  streetNumber: String
+  unitNumber: Int
+}
 
 type UserAddressType {
   address: AddressType!

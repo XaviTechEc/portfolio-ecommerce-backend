@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { IUserPaymentMethodsRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import {
-  CreateUserPaymentMethodDto,
-  UpdateUserPaymentMethodDto,
+  IGenericArgs,
+  CreateUserPaymentMethodInput,
+  UpdateUserPaymentMethodInput,
 } from 'src/core/dtos';
 import { IUserPaymentMethod } from 'src/core/entities';
-import { UserPaymentMethodFactoryService } from './factory/user-payment-method-factory.service';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+import { UserPaymentMethodFactoryService } from './factory';
 
 @Injectable()
 export class UserPaymentMethodUseCases
@@ -31,11 +31,11 @@ export class UserPaymentMethodUseCases
       args,
     );
   }
-  getOneUserPaymentMethodBy(
+  getUserPaymentMethodBy(
     fields: Partial<IUserPaymentMethod>,
     args?: IGenericArgs<IUserPaymentMethod>,
   ): Promise<IUserPaymentMethod> {
-    return this.dataService.userPaymentMethods.getOneUserPaymentMethodBy(
+    return this.dataService.userPaymentMethods.getUserPaymentMethodBy(
       fields,
       args,
     );
@@ -44,7 +44,7 @@ export class UserPaymentMethodUseCases
     return this.dataService.userPaymentMethods.getUserPaymentMethodById(id);
   }
   createUserPaymentMethod(
-    createUserPaymentMethodInput: CreateUserPaymentMethodDto,
+    createUserPaymentMethodInput: CreateUserPaymentMethodInput,
   ): Promise<IUserPaymentMethod> {
     const upm = this.userPaymentMethodFactoryService.createUserPaymentMethod(
       createUserPaymentMethodInput,
@@ -53,7 +53,7 @@ export class UserPaymentMethodUseCases
   }
   updateUserPaymentMethod(
     id: string,
-    updateUserPaymentMethodInput: UpdateUserPaymentMethodDto,
+    updateUserPaymentMethodInput: UpdateUserPaymentMethodInput,
   ): Promise<IUserPaymentMethod> {
     const upm = this.userPaymentMethodFactoryService.updateUserPaymentMethod(
       updateUserPaymentMethodInput,

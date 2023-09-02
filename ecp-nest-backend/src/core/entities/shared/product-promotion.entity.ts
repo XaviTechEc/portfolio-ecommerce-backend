@@ -1,4 +1,8 @@
+import { IProduct } from '../products/product.entity';
+import { IPromotion } from '../promotions/promotion.entity';
+
 export class IProductPromotion {
-  product: string;
-  promotion: string;
+  id: string;
+  product: IProduct;
+  promotion: IPromotion;
 }

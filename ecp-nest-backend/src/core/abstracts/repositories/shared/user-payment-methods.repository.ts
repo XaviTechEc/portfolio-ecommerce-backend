@@ -10,7 +10,7 @@ export abstract class IUserPaymentMethodsRepository<T> {
     fields: Partial<T>,
     args?: IGenericArgs<T>,
   ): Promise<T[]>;
-  abstract getOneUserPaymentMethodBy(
+  abstract getUserPaymentMethodBy(
     fields: Partial<T>,
     args?: IGenericArgs<T>,
   ): Promise<T>;

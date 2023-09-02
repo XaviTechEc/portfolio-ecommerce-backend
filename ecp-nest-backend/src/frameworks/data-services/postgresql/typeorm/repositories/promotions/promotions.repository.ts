@@ -2,29 +2,32 @@ import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository
 import { IPromotionsRepository } from 'src/core/abstracts/repositories';
 import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
+import { Promotion } from '../../entities/outputs/entities';
 
-export class PromotionsRepository<T> implements IPromotionsRepository<T> {
-  private _repository: Repository<T>;
+export class PromotionsRepository implements IPromotionsRepository<Promotion> {
+  private _repository: Repository<Promotion>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: Repository<Promotion>) {
     this._repository = repository;
   }
-  getAllPromotions(args?: IGenericArgs<T>): Promise<T[]> {
+  getAllPromotions(args?: IGenericArgs<Promotion>): Promise<Promotion[]> {
     throw new Error('Method not implemented.');
   }
-  getPromotionById(id: string): Promise<T> {
+  getPromotionById(id: string): Promise<Promotion> {
     throw new Error('Method not implemented.');
   }
-  createPromotion(createPromotionInput: CreatePromotionInput): Promise<T> {
+  createPromotion(
+    createPromotionInput: CreatePromotionInput,
+  ): Promise<Promotion> {
     throw new Error('Method not implemented.');
   }
   updatePromotion(
     id: string,
     updatePromotionInput: UpdatePromotionInput,
-  ): Promise<T> {
+  ): Promise<Promotion> {
     throw new Error('Method not implemented.');
   }
-  removePromotion(id: string): Promise<T> {
+  removePromotion(id: string): Promise<Promotion> {
     throw new Error('Method not implemented.');
   }
 }

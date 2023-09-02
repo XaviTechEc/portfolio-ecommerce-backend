@@ -1,9 +1,18 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Location } from './Location.entity';
 import { ShopOrder } from './ShopOrder.entity';
 
 @Entity('shop_order_location')
 export class ShopOrderLocation {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @PrimaryColumn('character varying', { name: 'shop_order_id' })
   shopOrderId: string;
 

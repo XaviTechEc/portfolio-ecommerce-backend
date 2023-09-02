@@ -1,6 +1,7 @@
-import { Field, ID, PartialType } from '@nestjs/graphql';
+import { Field, ID, PartialType, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
+@InputType()
 export class CreateImageInput {
   @Field(() => ID)
   @IsNotEmpty()
@@ -33,6 +34,7 @@ export class CreateImageInput {
   user: any;
 }
 
+@InputType()
 export class UpdateImageInput extends PartialType(CreateImageInput) {
   @Field(() => ID)
   @IsNotEmpty()

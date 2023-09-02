@@ -1,9 +1,18 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Category } from './Category.entity';
 import { Promotion } from './Promotion.entity';
 
 @Entity('category_promotion')
 export class CategoryPromotion {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @PrimaryColumn('character varying', { name: 'category_id' })
   categoryId: string;
 

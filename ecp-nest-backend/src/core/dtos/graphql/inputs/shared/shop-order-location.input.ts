@@ -18,4 +18,9 @@ export class CreateShopOrderLocationInput {
 @InputType()
 export class UpdateShopOrderLocationInput extends PartialType(
   CreateShopOrderLocationInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

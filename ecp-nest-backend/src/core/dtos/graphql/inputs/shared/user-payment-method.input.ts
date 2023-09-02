@@ -47,4 +47,9 @@ export class CreateUserPaymentMethodInput {
 @InputType()
 export class UpdateUserPaymentMethodInput extends PartialType(
   CreateUserPaymentMethodInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

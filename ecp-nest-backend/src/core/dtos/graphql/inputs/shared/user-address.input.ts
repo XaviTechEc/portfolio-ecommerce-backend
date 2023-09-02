@@ -17,10 +17,15 @@ export class CreateUserAddressInput {
   @Field(() => Boolean)
   @IsNotEmpty()
   @IsBoolean()
-  isDefault: boolean;
+  isDefault?: boolean;
 }
 
 @InputType()
 export class UpdateUserAddressInput extends PartialType(
   CreateUserAddressInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

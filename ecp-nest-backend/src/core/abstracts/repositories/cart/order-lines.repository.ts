@@ -5,12 +5,12 @@ export abstract class IOrderLinesRepository<T> {
   abstract getAllOrderLines(args?: IGenericArgs<T>): Promise<T[]>;
   abstract getAllOrderLinesBy(
     fields: Partial<T>,
-    args: IGenericArgs<T>,
+    args?: IGenericArgs<T>,
   ): Promise<T[]>;
   abstract getOrderLineById(id: string): Promise<T>;
   abstract getOneOrderLineBy(
     fields: Partial<T>,
-    args: IGenericArgs<T>,
+    args?: IGenericArgs<T>,
   ): Promise<T>;
   abstract createOrderLine(
     createOrderLineInput: CreateOrderLineInput,

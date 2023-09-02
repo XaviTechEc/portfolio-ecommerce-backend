@@ -5,31 +5,36 @@ import {
   UpdateShoppingCartInput,
 } from 'src/core/dtos';
 import { Repository } from 'typeorm';
+import { ShoppingCart } from '../../entities/outputs/entities';
 
-export class ShoppingCartsRepository<T> implements IShoppingCartsRepository<T> {
-  private _repository: Repository<T>;
+export class ShoppingCartsRepository
+  implements IShoppingCartsRepository<ShoppingCart>
+{
+  private _repository: Repository<ShoppingCart>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: Repository<ShoppingCart>) {
     this._repository = repository;
   }
-  getAllShoppingCarts(args: IGenericArgs<T>): Promise<T[]> {
+  getAllShoppingCarts(
+    args: IGenericArgs<ShoppingCart>,
+  ): Promise<ShoppingCart[]> {
     throw new Error('Method not implemented.');
   }
-  getShoppingCartById(id: string): Promise<T> {
+  getShoppingCartById(id: string): Promise<ShoppingCart> {
     throw new Error('Method not implemented.');
   }
   createShoppingCart(
     createShoppingCartInput: CreateShoppingCartInput,
-  ): Promise<T> {
+  ): Promise<ShoppingCart> {
     throw new Error('Method not implemented.');
   }
   updateShoppingCart(
     id: string,
     updateShoppingCartInput: UpdateShoppingCartInput,
-  ): Promise<T> {
+  ): Promise<ShoppingCart> {
     throw new Error('Method not implemented.');
   }
-  removeShoppingCart(id: string): Promise<T> {
+  removeShoppingCart(id: string): Promise<ShoppingCart> {
     throw new Error('Method not implemented.');
   }
 }

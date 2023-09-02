@@ -22,8 +22,8 @@ export class ProductPromotionUseCases
   ): Promise<IProductPromotion[]> {
     return this.dataService.productPromotions.getAllProductPromotion(args);
   }
-  getOneProductPromotionById(id: string): Promise<IProductPromotion> {
-    return this.dataService.productPromotions.getOneProductPromotionById(id);
+  getProductPromotionById(id: string): Promise<IProductPromotion> {
+    return this.dataService.productPromotions.getProductPromotionById(id);
   }
   createProductPromotion(
     createProductPromotionInput: CreateProductPromotionInput,
@@ -36,7 +36,7 @@ export class ProductPromotionUseCases
       productPromotion,
     );
   }
-  updateOneProductPromotionById(
+  updateProductPromotion(
     id: string,
     updateProductPromotionInput: UpdateProductPromotionInput,
   ): Promise<IProductPromotion> {
@@ -44,12 +44,12 @@ export class ProductPromotionUseCases
       this.productPromotionFactoryService.updateProductPromotion(
         updateProductPromotionInput,
       );
-    return this.dataService.productPromotions.updateOneProductPromotionById(
+    return this.dataService.productPromotions.updateProductPromotion(
       id,
       productPromotion,
     );
   }
-  deleteOneProductPromotionById(id: string): Promise<IProductPromotion> {
-    return this.dataService.productPromotions.deleteOneProductPromotionById(id);
+  removeProductPromotion(id: string): Promise<IProductPromotion> {
+    return this.dataService.productPromotions.removeProductPromotion(id);
   }
 }

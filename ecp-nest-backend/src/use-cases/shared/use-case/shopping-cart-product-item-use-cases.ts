@@ -24,10 +24,10 @@ export class ShoppingCartProductItemUseCases
       args,
     );
   }
-  getOneShoppingCartProductItemById(
+  getShoppingCartProductItemById(
     id: string,
   ): Promise<IShoppingCartProductItem> {
-    return this.dataService.shoppingCartProductItems.getOneShoppingCartProductItemById(
+    return this.dataService.shoppingCartProductItems.getShoppingCartProductItemById(
       id,
     );
   }
@@ -42,7 +42,7 @@ export class ShoppingCartProductItemUseCases
       shoppingCartProductItem,
     );
   }
-  updateOneShoppingCartProductItemById(
+  updateShoppingCartProductItem(
     id: string,
     updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput,
   ): Promise<IShoppingCartProductItem> {
@@ -50,15 +50,13 @@ export class ShoppingCartProductItemUseCases
       this.shoppingCartProductItemFactoryService.updateShoppingCartProductItem(
         updateShoppingCartProductItemInput,
       );
-    return this.dataService.shoppingCartProductItems.updateOneShoppingCartProductItemById(
+    return this.dataService.shoppingCartProductItems.updateShoppingCartProductItem(
       id,
       shoppingCartProductItem,
     );
   }
-  deleteOneShoppingCartProductItemById(
-    id: string,
-  ): Promise<IShoppingCartProductItem> {
-    return this.dataService.shoppingCartProductItems.deleteOneShoppingCartProductItemById(
+  removeShoppingCartProductItem(id: string): Promise<IShoppingCartProductItem> {
+    return this.dataService.shoppingCartProductItems.removeShoppingCartProductItem(
       id,
     );
   }

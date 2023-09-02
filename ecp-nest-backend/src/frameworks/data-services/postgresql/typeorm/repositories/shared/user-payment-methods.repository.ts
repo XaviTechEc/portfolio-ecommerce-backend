@@ -1,49 +1,52 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IUserPaymentMethodsRepository } from 'src/core/abstracts/repositories';
-import {
-  CreateUserPaymentMethodDto,
-  UpdateUserPaymentMethodDto,
-} from 'src/core/dtos';
 import { Repository } from 'typeorm';
+import { UserPaymentMethod } from '../../entities/outputs/entities';
+import {
+  IGenericArgs,
+  CreateUserPaymentMethodInput,
+  UpdateUserPaymentMethodInput,
+} from 'src/core/dtos';
 
-export class UserPaymentMethodsRepository<T>
-  implements IUserPaymentMethodsRepository<T>
+export class UserPaymentMethodsRepository
+  implements IUserPaymentMethodsRepository<UserPaymentMethod>
 {
-  private _repository: Repository<T>;
+  private _repository: Repository<UserPaymentMethod>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: Repository<UserPaymentMethod>) {
     this._repository = repository;
   }
-  getAllUserPaymentMethods(args?: IGenericArgs<T>): Promise<T[]> {
+  getAllUserPaymentMethods(
+    args?: IGenericArgs<UserPaymentMethod>,
+  ): Promise<UserPaymentMethod[]> {
     throw new Error('Method not implemented.');
   }
   getAllUserPaymentMethodsBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T[]> {
+    fields: Partial<UserPaymentMethod>,
+    args?: IGenericArgs<UserPaymentMethod>,
+  ): Promise<UserPaymentMethod[]> {
     throw new Error('Method not implemented.');
   }
-  getOneUserPaymentMethodBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T> {
+  getUserPaymentMethodBy(
+    fields: Partial<UserPaymentMethod>,
+    args?: IGenericArgs<UserPaymentMethod>,
+  ): Promise<UserPaymentMethod> {
     throw new Error('Method not implemented.');
   }
-  getUserPaymentMethodById(id: string): Promise<T> {
+  getUserPaymentMethodById(id: string): Promise<UserPaymentMethod> {
     throw new Error('Method not implemented.');
   }
   createUserPaymentMethod(
-    createUserPaymentMethodInput: CreateUserPaymentMethodDto,
-  ): Promise<T> {
+    createUserPaymentMethodInput: CreateUserPaymentMethodInput,
+  ): Promise<UserPaymentMethod> {
     throw new Error('Method not implemented.');
   }
   updateUserPaymentMethod(
     id: string,
-    updateUserPaymentMethodInput: UpdateUserPaymentMethodDto,
-  ): Promise<T> {
+    updateUserPaymentMethodInput: UpdateUserPaymentMethodInput,
+  ): Promise<UserPaymentMethod> {
     throw new Error('Method not implemented.');
   }
-  removeUserPaymentMethod(id: string): Promise<T> {
+  removeUserPaymentMethod(id: string): Promise<UserPaymentMethod> {
     throw new Error('Method not implemented.');
   }
 }

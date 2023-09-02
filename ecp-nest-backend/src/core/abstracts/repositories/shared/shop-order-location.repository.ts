@@ -6,13 +6,13 @@ import {
 
 export abstract class IShopOrderLocationRepository<T> {
   abstract getAllShopOrderLocation(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getOneShopOrderLocationById(id: string): Promise<T>;
+  abstract getShopOrderLocationById(id: string): Promise<T>;
   abstract createShopOrderLocation(
     createShopOrderLocationInput: CreateShopOrderLocationInput,
   ): Promise<T>;
-  abstract updateOneShopOrderLocationById(
+  abstract updateShopOrderLocation(
     id: string,
     updateShopOrderLocationInput: UpdateShopOrderLocationInput,
   ): Promise<T>;
-  abstract deleteOneShopOrderLocationById(id: string): Promise<T>;
+  abstract removeShopOrderLocation(id: string): Promise<T>;
 }

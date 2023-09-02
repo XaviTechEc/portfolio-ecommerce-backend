@@ -5,39 +5,42 @@ import {
   UpdateVariationOptionInput,
 } from 'src/core/dtos';
 import { Repository } from 'typeorm';
+import { VariationOption } from '../../entities/outputs/entities';
 
-export class VariationOptionsRepository<T>
-  implements IVariationOptionsRepository<T>
+export class VariationOptionsRepository
+  implements IVariationOptionsRepository<VariationOption>
 {
-  private _repository: Repository<T>;
+  private _repository: Repository<VariationOption>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: Repository<VariationOption>) {
     this._repository = repository;
   }
-  getAllVariationOptions(args?: IGenericArgs<T>): Promise<T[]> {
+  getAllVariationOptions(
+    args?: IGenericArgs<VariationOption>,
+  ): Promise<VariationOption[]> {
     throw new Error('Method not implemented.');
   }
   getOneVariationOptionBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T> {
+    fields: Partial<VariationOption>,
+    args?: IGenericArgs<VariationOption>,
+  ): Promise<VariationOption> {
     throw new Error('Method not implemented.');
   }
-  getVariationOptionById(id: string): Promise<T> {
+  getVariationOptionById(id: string): Promise<VariationOption> {
     throw new Error('Method not implemented.');
   }
   createVariationOption(
     createVariationOptionInput: CreateVariationOptionInput,
-  ): Promise<T> {
+  ): Promise<VariationOption> {
     throw new Error('Method not implemented.');
   }
   updateVariationOption(
     id: string,
     updateVariationOptionInput: UpdateVariationOptionInput,
-  ): Promise<T> {
+  ): Promise<VariationOption> {
     throw new Error('Method not implemented.');
   }
-  removeVariationOption(id: string): Promise<T> {
+  removeVariationOption(id: string): Promise<VariationOption> {
     throw new Error('Method not implemented.');
   }
 }
