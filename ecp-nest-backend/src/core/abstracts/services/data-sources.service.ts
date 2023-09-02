@@ -112,7 +112,7 @@ export abstract class IDataSourcesService {
   abstract userAddresses: IUserAddressRepository<IUserAddress>;
   abstract userPaymentMethods: IUserPaymentMethodsRepository<IUserPaymentMethod>;
 
-  Tags;
+  // Tags
   abstract tags: ITagsRepository<ITag>;
 
   // Users

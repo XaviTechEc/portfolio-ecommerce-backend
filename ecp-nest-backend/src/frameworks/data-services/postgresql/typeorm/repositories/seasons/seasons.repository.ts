@@ -2,26 +2,30 @@ import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository
 import { ISeasonsRepository } from 'src/core/abstracts/repositories';
 import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
+import { Season } from '../../entities/outputs/entities';
 
-export class SeasonsRepository<T> implements ISeasonsRepository<T> {
-  private _repository: Repository<T>;
+export class SeasonsRepository implements ISeasonsRepository<Season> {
+  private _repository: Repository<Season>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: Repository<Season>) {
     this._repository = repository;
   }
-  getAllSeasons(args?: IGenericArgs<T>): Promise<T[]> {
+  getAllSeasons(args?: IGenericArgs<Season>): Promise<Season[]> {
     throw new Error('Method not implemented.');
   }
-  getSeasonById(id: string): Promise<T> {
+  getSeasonById(id: string): Promise<Season> {
     throw new Error('Method not implemented.');
   }
-  createSeason(createSeasonInput: CreateSeasonInput): Promise<T> {
+  createSeason(createSeasonInput: CreateSeasonInput): Promise<Season> {
     throw new Error('Method not implemented.');
   }
-  updateSeason(id: string, updateSeasonInput: UpdateSeasonInput): Promise<T> {
+  updateSeason(
+    id: string,
+    updateSeasonInput: UpdateSeasonInput,
+  ): Promise<Season> {
     throw new Error('Method not implemented.');
   }
-  removeSeason(id: string): Promise<T> {
+  removeSeason(id: string): Promise<Season> {
     throw new Error('Method not implemented.');
   }
 }

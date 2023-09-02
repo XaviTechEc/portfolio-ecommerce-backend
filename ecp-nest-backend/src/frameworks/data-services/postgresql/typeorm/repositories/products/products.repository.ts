@@ -2,35 +2,42 @@ import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository
 import { IProductsRepository } from 'src/core/abstracts/repositories';
 import { CreateProductInput, UpdateProductInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
+import { Product } from '../../entities/outputs/entities';
 
-export class ProductsRepository<T> implements IProductsRepository<T> {
-  private _repository: Repository<T>;
+export class ProductsRepository implements IProductsRepository<Product> {
+  private _repository: Repository<Product>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: Repository<Product>) {
     this._repository = repository;
   }
-  getAllProducts(args?: IGenericArgs<T>): Promise<T[]> {
+  getAllProducts(args?: IGenericArgs<Product>): Promise<Product[]> {
     throw new Error('Method not implemented.');
   }
-  getAllProductsBy(fields: Partial<T>, args?: IGenericArgs<T>): Promise<T[]> {
+  getAllProductsBy(
+    fields: Partial<Product>,
+    args?: IGenericArgs<Product>,
+  ): Promise<Product[]> {
     throw new Error('Method not implemented.');
   }
-  getOneProductBy(fields: Partial<T>, args?: IGenericArgs<T>): Promise<T> {
+  getOneProductBy(
+    fields: Partial<Product>,
+    args?: IGenericArgs<Product>,
+  ): Promise<Product> {
     throw new Error('Method not implemented.');
   }
-  getProductById(id: string): Promise<T> {
+  getProductById(id: string): Promise<Product> {
     throw new Error('Method not implemented.');
   }
-  createProduct(createProductInput: CreateProductInput): Promise<T> {
+  createProduct(createProductInput: CreateProductInput): Promise<Product> {
     throw new Error('Method not implemented.');
   }
   updateProduct(
     id: string,
     updateProductInput: UpdateProductInput,
-  ): Promise<T> {
+  ): Promise<Product> {
     throw new Error('Method not implemented.');
   }
-  removeProduct(id: string): Promise<T> {
+  removeProduct(id: string): Promise<Product> {
     throw new Error('Method not implemented.');
   }
 }

@@ -1,4 +1,7 @@
+import { IProduct } from '../products/product.entity';
+import { ITag } from '../tags/tag.entity';
+
 export class IProductTag {
-  product: string;
-  tag: string;
+  product: IProduct;
+  tag: ITag;
 }

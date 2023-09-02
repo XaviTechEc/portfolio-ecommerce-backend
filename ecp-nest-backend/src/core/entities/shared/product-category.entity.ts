@@ -1,4 +1,7 @@
+import { ICategory } from '../categories/category.entity';
+import { IProduct } from '../products/product.entity';
+
 export class IProductCategory {
-  product: string;
-  category: string;
+  product: IProduct;
+  category: ICategory;
 }

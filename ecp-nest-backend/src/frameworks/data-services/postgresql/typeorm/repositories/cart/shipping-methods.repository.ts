@@ -5,34 +5,36 @@ import {
   UpdateShippingMethodInput,
 } from 'src/core/dtos';
 import { Repository } from 'typeorm';
+import { ShippingMethod } from '../../entities/outputs/entities';
 
-export class ShippingMethodsRepository<T>
-  implements IShippingMethodsRepository<T>
+export class ShippingMethodsRepository
+  implements IShippingMethodsRepository<ShippingMethod>
 {
-  private _repository: Repository<T>;
+  private _repository: Repository<ShippingMethod>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: Repository<ShippingMethod>) {
     this._repository = repository;
   }
-
-  getAllShippingMethods(args?: IGenericArgs<T>): Promise<T[]> {
+  getAllShippingMethods(
+    args?: IGenericArgs<ShippingMethod>,
+  ): Promise<ShippingMethod[]> {
     throw new Error('Method not implemented.');
   }
-  getShippingMethodById(id: string): Promise<T> {
+  getShippingMethodById(id: string): Promise<ShippingMethod> {
     throw new Error('Method not implemented.');
   }
   createShippingMethod(
     createShippingMethodInput: CreateShippingMethodInput,
-  ): Promise<T> {
+  ): Promise<ShippingMethod> {
     throw new Error('Method not implemented.');
   }
   updateShippingMethod(
     id: string,
     updateShippingMethodInput: UpdateShippingMethodInput,
-  ): Promise<T> {
+  ): Promise<ShippingMethod> {
     throw new Error('Method not implemented.');
   }
-  removeShippingMethod(id: string): Promise<T> {
+  removeShippingMethod(id: string): Promise<ShippingMethod> {
     throw new Error('Method not implemented.');
   }
 }

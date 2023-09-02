@@ -1,27 +1,27 @@
 import { ILocationsRepository } from 'src/core/abstracts/repositories';
 import { CreateLocationInput, UpdateLocationInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
+import { Location } from '../../entities/outputs/entities';
 
-export class LocationsRepository<T> implements ILocationsRepository<T> {
-  private _repository: Repository<T>;
+export class LocationsRepository implements ILocationsRepository<Location> {
+  private _repository: Repository<Location>;
 
-  constructor(repository: Repository<T>) {
+  constructor(repository: Repository<Location>) {
     this._repository = repository;
   }
-
-  getLocationById(id: string): Promise<T> {
+  getLocationById(id: string): Promise<Location> {
     throw new Error('Method not implemented.');
   }
-  createLocation(createLocationInput: CreateLocationInput): Promise<T> {
+  createLocation(createLocationInput: CreateLocationInput): Promise<Location> {
     throw new Error('Method not implemented.');
   }
   updateLocation(
     id: string,
     updateLocationInput: UpdateLocationInput,
-  ): Promise<T> {
+  ): Promise<Location> {
     throw new Error('Method not implemented.');
   }
-  removeLocation(id: string): Promise<T> {
+  removeLocation(id: string): Promise<Location> {
     throw new Error('Method not implemented.');
   }
 }
