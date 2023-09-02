@@ -17,7 +17,7 @@ export class CreateUserAddressInput {
   @Field(() => Boolean)
   @IsNotEmpty()
   @IsBoolean()
-  isDefault: boolean;
+  isDefault?: boolean;
 }
 
 @InputType()

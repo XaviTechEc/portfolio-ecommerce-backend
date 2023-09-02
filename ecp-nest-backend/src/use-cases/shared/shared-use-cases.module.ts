@@ -3,13 +3,14 @@ import { DataServicesModule } from 'src/services/data-services/data-services.mod
 import {
   CategoryPromotionFactoryService,
   ProductCategoryFactoryService,
+  ProductConfigurationFactoryService,
   ProductPromotionFactoryService,
   ProductTagFactoryService,
   ShopOrderLocationFactoryService,
   ShoppingCartProductItemFactoryService,
   UserAddressFactoryService,
 } from './factory';
-import { ProductConfiguration } from 'src/frameworks/data-services/postgresql/typeorm/entities/outputs/entities';
+
 import {
   CategoryPromotionUseCases,
   ProductCategoryUseCases,
@@ -26,7 +27,7 @@ import {
   exports: [
     CategoryPromotionFactoryService,
     ProductCategoryFactoryService,
-    ProductConfiguration,
+    ProductConfigurationFactoryService,
     ProductPromotionFactoryService,
     ProductTagFactoryService,
     ShopOrderLocationFactoryService,
@@ -44,7 +45,7 @@ import {
   providers: [
     CategoryPromotionFactoryService,
     ProductCategoryFactoryService,
-    ProductConfiguration,
+    ProductConfigurationFactoryService,
     ProductPromotionFactoryService,
     ProductTagFactoryService,
     ShopOrderLocationFactoryService,

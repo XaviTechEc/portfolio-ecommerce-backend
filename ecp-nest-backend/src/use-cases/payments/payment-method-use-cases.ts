@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { IPaymentMethodsRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
-import { CreatePaymentMethodDto, UpdatePaymentMethodDto } from 'src/core/dtos';
 import { IPaymentMethod } from 'src/core/entities';
 import { PaymentMethodFactoryService } from './factory/payment-method-factory.service';
+import {
+  CreatePaymentMethodInput,
+  UpdatePaymentMethodInput,
+} from 'src/core/dtos';
 
 @Injectable()
 export class PaymentMethodUseCases
@@ -17,7 +20,7 @@ export class PaymentMethodUseCases
     return this.dataService.paymentMethods.getPaymentMethodById(id);
   }
   createPaymentMethod(
-    createPaymentMethodInput: CreatePaymentMethodDto,
+    createPaymentMethodInput: CreatePaymentMethodInput,
   ): Promise<IPaymentMethod> {
     const paymentMethod = this.paymentMethodFactoryService.createPaymentMethod(
       createPaymentMethodInput,
@@ -26,7 +29,7 @@ export class PaymentMethodUseCases
   }
   updatePaymentMethod(
     id: string,
-    updatePaymentMethodInput: UpdatePaymentMethodDto,
+    updatePaymentMethodInput: UpdatePaymentMethodInput,
   ): Promise<IPaymentMethod> {
     const paymentMethod = this.paymentMethodFactoryService.updatePaymentMethod(
       updatePaymentMethodInput,

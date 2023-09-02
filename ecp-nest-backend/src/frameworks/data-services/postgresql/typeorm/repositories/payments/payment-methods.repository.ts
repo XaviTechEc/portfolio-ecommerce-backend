@@ -1,7 +1,11 @@
 import { IPaymentMethodsRepository } from 'src/core/abstracts/repositories';
-import { CreatePaymentMethodDto, UpdatePaymentMethodDto } from 'src/core/dtos';
+
 import { Repository } from 'typeorm';
 import { PaymentMethod } from '../../entities/outputs/entities';
+import {
+  CreatePaymentMethodInput,
+  UpdatePaymentMethodInput,
+} from 'src/core/dtos';
 
 export class PaymentMethodsRepository
   implements IPaymentMethodsRepository<PaymentMethod>
@@ -14,10 +18,13 @@ export class PaymentMethodsRepository
   getPaymentMethodById(id: string): Promise<PaymentMethod> {
     throw new Error('Method not implemented.');
   }
-  createPaymentMethod(data: PaymentMethod): Promise<PaymentMethod> {
+  createPaymentMethod(data: CreatePaymentMethodInput): Promise<PaymentMethod> {
     throw new Error('Method not implemented.');
   }
-  updatePaymentMethod(id: string, data: PaymentMethod): Promise<PaymentMethod> {
+  updatePaymentMethod(
+    id: string,
+    data: UpdatePaymentMethodInput,
+  ): Promise<PaymentMethod> {
     throw new Error('Method not implemented.');
   }
   removePaymentMethod(id: string): Promise<PaymentMethod> {

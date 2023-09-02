@@ -27,14 +27,14 @@ export class AddressResolver {
 
   @Mutation(() => AddressType)
   createAddress(
-    @Args() createAddressInput: CreateAddressInput,
+    @Args('createAddressInput') createAddressInput: CreateAddressInput,
   ): Promise<IAddress> {
     return this.addressUseCases.createAddress(createAddressInput);
   }
 
   @Mutation(() => AddressType)
   updateAddress(
-    @Args() updateAddressInput: UpdateAddressInput,
+    @Args('updateAddressInput') updateAddressInput: UpdateAddressInput,
   ): Promise<IAddress> {
     return this.addressUseCases.updateAddress(
       updateAddressInput.id,

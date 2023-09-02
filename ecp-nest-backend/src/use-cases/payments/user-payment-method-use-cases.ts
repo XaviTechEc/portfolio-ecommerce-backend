@@ -31,11 +31,11 @@ export class UserPaymentMethodUseCases
       args,
     );
   }
-  getOneUserPaymentMethodBy(
+  getUserPaymentMethodBy(
     fields: Partial<IUserPaymentMethod>,
     args?: IGenericArgs<IUserPaymentMethod>,
   ): Promise<IUserPaymentMethod> {
-    return this.dataService.userPaymentMethods.getOneUserPaymentMethodBy(
+    return this.dataService.userPaymentMethods.getUserPaymentMethodBy(
       fields,
       args,
     );
