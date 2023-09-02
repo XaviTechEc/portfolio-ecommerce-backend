@@ -1,4 +1,6 @@
+import { IUser } from '../users/user.entity';
+
 export class IShoppingCart {
   id: string;
-  userId: string;
+  user: IUser;
 }

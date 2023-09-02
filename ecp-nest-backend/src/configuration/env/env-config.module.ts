@@ -6,6 +6,7 @@ import { EnvironmentConfigService } from './env-config.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      cache: true,
       envFilePath: './development.env',
       isGlobal: true,
       validate,

@@ -4,29 +4,36 @@ import { CategoryFactoryService } from './category-factory.service';
 import { ICategoriesRepository } from 'src/core/abstracts/repositories';
 import { CreateCategoryInput, UpdateCategoryInput } from 'src/core/dtos';
 import { ICategory } from 'src/core/entities';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
-export class CategoryUseCases implements ICategoriesRepository {
+export class CategoryUseCases implements ICategoriesRepository<ICategory> {
   constructor(
     private dataService: IDataSourcesService,
     private categoryFactoryService: CategoryFactoryService,
   ) {}
-  getAllCategories(): Promise<ICategory[]> {
-    return this.dataService.categories.getAll();
+  getAllCategories(args?: IGenericArgs<ICategory>): Promise<ICategory[]> {
+    return this.dataService.categories.getAllCategories(args);
   }
-  getAllCategoriesBy(fields: Partial<ICategory>): Promise<ICategory[]> {
-    return this.dataService.categories.getAllBy(fields);
+  getAllCategoriesBy(
+    fields: Partial<ICategory>,
+    args?: IGenericArgs<ICategory>,
+  ): Promise<ICategory[]> {
+    return this.dataService.categories.getAllCategoriesBy(fields, args);
+  }
+  getOneCategoryBy(
+    fields: Partial<ICategory>,
+    args?: IGenericArgs<ICategory>,
+  ): Promise<ICategory> {
+    return this.dataService.categories.getOneCategoryBy(fields, args);
   }
   getCategoryById(id: string): Promise<ICategory> {
-    return this.dataService.categories.getOneById(id);
-  }
-  getOneCategoryBy(fields: Partial<ICategory>): Promise<ICategory> {
-    return this.dataService.categories.getOneBy(fields);
+    return this.dataService.categories.getCategoryById(id);
   }
   createCategory(createCategoryInput: CreateCategoryInput): Promise<ICategory> {
     const category =
       this.categoryFactoryService.createCategory(createCategoryInput);
-    return this.dataService.categories.create(category);
+    return this.dataService.categories.createCategory(category);
   }
   updateCategory(
     id: string,
@@ -34,9 +41,9 @@ export class CategoryUseCases implements ICategoriesRepository {
   ): Promise<ICategory> {
     const category =
       this.categoryFactoryService.updateCategory(updateCategoryInput);
-    return this.dataService.categories.updateOneById(id, category);
+    return this.dataService.categories.updateCategory(id, category);
   }
   removeCategory(id: string): Promise<ICategory> {
-    return this.dataService.categories.deleteOneById(id);
+    return this.dataService.categories.removeCategory(id);
   }
 }

@@ -1,15 +1,15 @@
 import { CreateOrderStatusInput, UpdateOrderStatusInput } from 'src/core/dtos';
-import { IOrderStatus } from 'src/core/entities';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
-export abstract class IOrderStatusRepository {
-  abstract getAllOrderStatus(): Promise<IOrderStatus[]>;
-  abstract getOrderStatusById(id: string): Promise<IOrderStatus>;
+export abstract class IOrderStatusRepository<T> {
+  abstract getAllOrderStatus(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getOrderStatusById(id: string): Promise<T>;
   abstract createOrderStatus(
     createOrderStatusInput: CreateOrderStatusInput,
-  ): Promise<IOrderStatus>;
+  ): Promise<T>;
   abstract updateOrderStatus(
     id: string,
     updateOrderStatusInput: UpdateOrderStatusInput,
-  ): Promise<IOrderStatus>;
-  abstract removeOrderStatus(id: string): Promise<IOrderStatus>;
+  ): Promise<T>;
+  abstract removeOrderStatus(id: string): Promise<T>;
 }

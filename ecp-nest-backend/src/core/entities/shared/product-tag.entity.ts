@@ -1,4 +1,4 @@
 export class IProductTag {
-  productId: string;
-  tagId: string;
+  product: string;
+  tag: string;
 }

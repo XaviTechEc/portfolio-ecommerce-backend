@@ -1,4 +1,4 @@
 export class IProductCategory {
-  productId: string;
-  categoryId: string;
+  product: string;
+  category: string;
 }

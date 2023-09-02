@@ -4,31 +4,38 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { ShopOrderFactoryService } from './factory/shop-order-factory.service';
 import { CreateShopOrderInput, UpdateShopOrderInput } from 'src/core/dtos';
 import { IShopOrder } from 'src/core/entities';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
-export class ShopOrderUseCases implements IShopOrdersRepository {
+export class ShopOrderUseCases implements IShopOrdersRepository<IShopOrder> {
   constructor(
     private dataService: IDataSourcesService,
     private shopOrderFactoryService: ShopOrderFactoryService,
   ) {}
-  getAllShopOrders(): Promise<IShopOrder[]> {
-    return this.dataService.shopOrders.getAll();
+  getAllShopOrders(args?: IGenericArgs<IShopOrder>): Promise<IShopOrder[]> {
+    return this.dataService.shopOrders.getAllShopOrders(args);
   }
-  getAllShopOrdersBy(fields: Partial<IShopOrder>): Promise<IShopOrder[]> {
-    return this.dataService.shopOrders.getAllBy(fields);
+  getAllShopOrdersBy(
+    fields: Partial<IShopOrder>,
+    args?: IGenericArgs<IShopOrder>,
+  ): Promise<IShopOrder[]> {
+    return this.dataService.shopOrders.getAllShopOrdersBy(fields, args);
   }
   getShopOrderById(id: string): Promise<IShopOrder> {
-    return this.dataService.shopOrders.getOneById(id);
+    return this.dataService.shopOrders.getShopOrderById(id);
   }
-  getOneShopOrderBy(fields: Partial<IShopOrder>): Promise<IShopOrder> {
-    return this.dataService.shopOrders.getOneBy(fields);
+  getOneShopOrderBy(
+    fields: Partial<IShopOrder>,
+    args?: IGenericArgs<IShopOrder>,
+  ): Promise<IShopOrder> {
+    return this.dataService.shopOrders.getOneShopOrderBy(fields, args);
   }
   createShopOrder(
     createShopOrderInput: CreateShopOrderInput,
   ): Promise<IShopOrder> {
     const shopOrder =
       this.shopOrderFactoryService.createShopOrder(createShopOrderInput);
-    return this.dataService.shopOrders.create(shopOrder);
+    return this.dataService.shopOrders.createShopOrder(shopOrder);
   }
   updateShopOrder(
     id: string,
@@ -36,10 +43,9 @@ export class ShopOrderUseCases implements IShopOrdersRepository {
   ): Promise<IShopOrder> {
     const shopOrder =
       this.shopOrderFactoryService.updateShopOrder(updateShopOrderInput);
-
-    return this.dataService.shopOrders.updateOneById(id, shopOrder);
+    return this.dataService.shopOrders.updateShopOrder(id, shopOrder);
   }
   removeShopOrder(id: string): Promise<IShopOrder> {
-    return this.dataService.shopOrders.deleteOneById(id);
+    return this.dataService.shopOrders.removeShopOrder(id);
   }
 }

@@ -2,12 +2,13 @@ import {
   Column,
   Entity,
   Index,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Address } from './Address.entity';
-import { ShopOrder } from './ShopOrder.entity';
+import { ShopOrderLocation } from './ShopOrderLocation.entity';
 
 @Index('location_pkey', ['id'], { unique: true })
 @Index('location_lat_lng_idx', ['lat', 'lng'], {})
@@ -25,6 +26,9 @@ export class Location {
   @OneToOne(() => Address, (address) => address.location)
   address: Address;
 
-  @OneToOne(() => ShopOrder, (shopOrder) => shopOrder.location)
-  shopOrder: ShopOrder;
+  @OneToMany(
+    () => ShopOrderLocation,
+    (shopOrderLocation) => shopOrderLocation.location,
+  )
+  shopOrderLocation: ShopOrderLocation[];
 }

@@ -2,20 +2,21 @@ import {
   CreateVariationOptionInput,
   UpdateVariationOptionInput,
 } from 'src/core/dtos';
-import { IVariationOption } from 'src/core/entities';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
-export abstract class IVariationOptionsRepository {
-  abstract getAllVariationOptions(): Promise<IVariationOption[]>;
-  abstract getVariationOptionById(id: string): Promise<IVariationOption>;
+export abstract class IVariationOptionsRepository<T> {
+  abstract getAllVariationOptions(args?: IGenericArgs<T>): Promise<T[]>;
   abstract getOneVariationOptionBy(
-    fields: Partial<IVariationOption>,
-  ): Promise<IVariationOption>;
+    fields: Partial<T>,
+    args?: IGenericArgs<T>,
+  ): Promise<T>;
+  abstract getVariationOptionById(id: string): Promise<T>;
   abstract createVariationOption(
     createVariationOptionInput: CreateVariationOptionInput,
-  ): Promise<IVariationOption>;
+  ): Promise<T>;
   abstract updateVariationOption(
     id: string,
     updateVariationOptionInput: UpdateVariationOptionInput,
-  ): Promise<IVariationOption>;
-  abstract removeVariationOption(id: string): Promise<IVariationOption>;
+  ): Promise<T>;
+  abstract removeVariationOption(id: string): Promise<T>;
 }

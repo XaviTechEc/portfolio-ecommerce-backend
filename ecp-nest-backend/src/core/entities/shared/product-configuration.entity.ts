@@ -1,4 +1,4 @@
 export class IProductConfiguration {
-  productItemId: string;
-  variationOptionId: string;
+  productItem: string;
+  variationOption: string;
 }

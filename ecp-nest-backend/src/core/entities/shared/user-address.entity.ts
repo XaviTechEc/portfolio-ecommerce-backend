@@ -1,5 +1,8 @@
+import { IAddress } from '../addresses/address.entity';
+import { IUser } from '../users/user.entity';
+
 export class IUserAddress {
-  userId: string;
-  addressId: string;
   isDefault: boolean;
+  user: IUser;
+  address: IAddress;
 }

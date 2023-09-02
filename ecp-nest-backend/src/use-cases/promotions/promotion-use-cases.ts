@@ -4,25 +4,26 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { PromotionFactoryService } from './promotion-factory.service';
 import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
 import { IPromotion } from 'src/core/entities';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
-export class PromotionUseCases implements IPromotionsRepository {
+export class PromotionUseCases implements IPromotionsRepository<IPromotion> {
   constructor(
     private dataService: IDataSourcesService,
     private promotionFactoryService: PromotionFactoryService,
   ) {}
-  getAllPromotions(): Promise<IPromotion[]> {
-    return this.dataService.promotions.getAll();
+  getAllPromotions(args?: IGenericArgs<IPromotion>): Promise<IPromotion[]> {
+    return this.dataService.promotions.getAllPromotions(args);
   }
   getPromotionById(id: string): Promise<IPromotion> {
-    return this.dataService.promotions.getOneById(id);
+    return this.dataService.promotions.getPromotionById(id);
   }
   createPromotion(
     createPromotionInput: CreatePromotionInput,
   ): Promise<IPromotion> {
     const promotion =
       this.promotionFactoryService.createPromotion(createPromotionInput);
-    return this.dataService.promotions.create(promotion);
+    return this.dataService.promotions.createPromotion(promotion);
   }
   updatePromotion(
     id: string,
@@ -30,9 +31,9 @@ export class PromotionUseCases implements IPromotionsRepository {
   ): Promise<IPromotion> {
     const promotion =
       this.promotionFactoryService.updatePromotion(updatePromotionInput);
-    return this.dataService.promotions.updateOneById(id, promotion);
+    return this.dataService.promotions.updatePromotion(id, promotion);
   }
   removePromotion(id: string): Promise<IPromotion> {
-    return this.dataService.promotions.deleteOneById(id);
+    return this.dataService.promotions.removePromotion(id);
   }
 }

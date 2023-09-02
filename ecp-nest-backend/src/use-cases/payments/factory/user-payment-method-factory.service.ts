@@ -1,38 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import {
-  CreateUserPaymentMethodDto,
-  UpdateUserPaymentMethodDto,
+  CreateUserPaymentMethodInput,
+  UpdateUserPaymentMethodInput,
 } from 'src/core/dtos';
 import { IUserPaymentMethod } from 'src/core/entities';
 
 @Injectable()
 export class UserPaymentMethodFactoryService {
   createUserPaymentMethod(
-    createUserPaymentMethodDto: CreateUserPaymentMethodDto,
+    createUserPaymentMethodInput: CreateUserPaymentMethodInput,
   ) {
     const newUserPaymentMethod = new IUserPaymentMethod();
-    newUserPaymentMethod.userId = createUserPaymentMethodDto.userId;
-    newUserPaymentMethod.paymentMethodId =
-      createUserPaymentMethodDto.paymentMethodId;
-    newUserPaymentMethod.provider = createUserPaymentMethodDto.provider;
+    newUserPaymentMethod.user = createUserPaymentMethodInput.user;
+    newUserPaymentMethod.paymentMethod =
+      createUserPaymentMethodInput.paymentMethod;
+    newUserPaymentMethod.provider = createUserPaymentMethodInput.provider;
     newUserPaymentMethod.accountNumber =
-      createUserPaymentMethodDto.accountNumber;
-    newUserPaymentMethod.expiryDate = createUserPaymentMethodDto.expiryDate;
-    newUserPaymentMethod.isDefault = createUserPaymentMethodDto.isDefault;
+      createUserPaymentMethodInput.accountNumber;
+    newUserPaymentMethod.expiryDate = createUserPaymentMethodInput.expiryDate;
+    newUserPaymentMethod.isDefault = createUserPaymentMethodInput.isDefault;
     return newUserPaymentMethod;
   }
   updateUserPaymentMethod(
-    updateUserPaymentMethodDto: UpdateUserPaymentMethodDto,
+    updateUserPaymentMethodInput: UpdateUserPaymentMethodInput,
   ) {
     const newUserPaymentMethod = new IUserPaymentMethod();
-    newUserPaymentMethod.userId = updateUserPaymentMethodDto.userId;
-    newUserPaymentMethod.paymentMethodId =
-      updateUserPaymentMethodDto.paymentMethodId;
-    newUserPaymentMethod.provider = updateUserPaymentMethodDto.provider;
+    newUserPaymentMethod.user = updateUserPaymentMethodInput.user;
+    newUserPaymentMethod.paymentMethod =
+      updateUserPaymentMethodInput.paymentMethod;
+    newUserPaymentMethod.provider = updateUserPaymentMethodInput.provider;
     newUserPaymentMethod.accountNumber =
-      updateUserPaymentMethodDto.accountNumber;
-    newUserPaymentMethod.expiryDate = updateUserPaymentMethodDto.expiryDate;
-    newUserPaymentMethod.isDefault = updateUserPaymentMethodDto.isDefault;
+      updateUserPaymentMethodInput.accountNumber;
+    newUserPaymentMethod.expiryDate = updateUserPaymentMethodInput.expiryDate;
+    newUserPaymentMethod.isDefault = updateUserPaymentMethodInput.isDefault;
     return newUserPaymentMethod;
   }
 }

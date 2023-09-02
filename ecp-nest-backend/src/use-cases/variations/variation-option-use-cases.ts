@@ -7,50 +7,51 @@ import {
 } from 'src/core/dtos';
 import { IVariationOption } from 'src/core/entities';
 import { VariationOptionFactoryService } from './factory/variation-option-factory.service';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
-export class VariationOptionUseCases implements IVariationOptionsRepository {
+export class VariationOptionUseCases
+  implements IVariationOptionsRepository<IVariationOption>
+{
   constructor(
     private dataService: IDataSourcesService,
     private variationOptionFactoryService: VariationOptionFactoryService,
   ) {}
-
-  getAllVariationOptions(): Promise<IVariationOption[]> {
-    return this.dataService.variationOptions.getAll();
+  getAllVariationOptions(
+    args?: IGenericArgs<IVariationOption>,
+  ): Promise<IVariationOption[]> {
+    return this.dataService.variationOptions.getAllVariationOptions(args);
   }
-
-  getVariationOptionById(id: string): Promise<IVariationOption> {
-    return this.dataService.variationOptions.getOneById(id);
-  }
-
   getOneVariationOptionBy(
     fields: Partial<IVariationOption>,
+    args?: IGenericArgs<IVariationOption>,
   ): Promise<IVariationOption> {
-    return this.dataService.variationOptions.getOneBy(fields);
+    return this.dataService.variationOptions.getOneVariationOptionBy(
+      fields,
+      args,
+    );
   }
-
+  getVariationOptionById(id: string): Promise<IVariationOption> {
+    return this.dataService.variationOptions.getVariationOptionById(id);
+  }
   createVariationOption(
     createVariationOptionInput: CreateVariationOptionInput,
   ): Promise<IVariationOption> {
-    const variationOption =
-      this.variationOptionFactoryService.createVariationOption(
-        createVariationOptionInput,
-      );
-    return this.dataService.variationOptions.create(variationOption);
+    const vo = this.variationOptionFactoryService.createVariationOption(
+      createVariationOptionInput,
+    );
+    return this.dataService.variationOptions.createVariationOption(vo);
   }
-
   updateVariationOption(
     id: string,
     updateVariationOptionInput: UpdateVariationOptionInput,
   ): Promise<IVariationOption> {
-    const variationOption =
-      this.variationOptionFactoryService.updateVariationOption(
-        updateVariationOptionInput,
-      );
-    return this.dataService.variationOptions.updateOneById(id, variationOption);
+    const vo = this.variationOptionFactoryService.updateVariationOption(
+      updateVariationOptionInput,
+    );
+    return this.dataService.variationOptions.updateVariationOption(id, vo);
   }
-
   removeVariationOption(id: string): Promise<IVariationOption> {
-    return this.dataService.variationOptions.deleteOneById(id);
+    return this.dataService.variationOptions.removeVariationOption(id);
   }
 }

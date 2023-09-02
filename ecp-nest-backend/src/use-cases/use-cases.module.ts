@@ -11,35 +11,41 @@ import { ReviewsUseCasesModule } from './reviews/reviews-use-cases.module';
 import { SeasonsUseCasesModule } from './seasons/seasons-use-cases.module';
 import { TagsUseCasesModule } from './tags/tags-use-cases.module';
 import { VariationsUseCasesModule } from './variations/variations-use-cases.module';
+import { ImagesUseCasesModule } from './images/images.module';
+import { SharedUseCasesModule } from './shared/shared-use-cases.module';
 
 @Module({
   imports: [
     AddressesUseCaseModule,
-    CartUseCasesModule,
-    CategoriesUseCasesModule,
-    CommentsUseCasesModule,
-    PaymentsUseCasesModule,
-    ProductsUseCasesModule,
-    PromotionsUseCasesModule,
-    ReviewsUseCasesModule,
-    SeasonsUseCasesModule,
-    TagsUseCasesModule,
-    UserUseCasesModule,
-    VariationsUseCasesModule,
+    // CartUseCasesModule,
+    // CategoriesUseCasesModule,
+    // CommentsUseCasesModule,
+    // ImagesUseCasesModule
+    // PaymentsUseCasesModule,
+    // ProductsUseCasesModule,
+    // PromotionsUseCasesModule,
+    // ReviewsUseCasesModule,
+    // SeasonsUseCasesModule,
+    // TagsUseCasesModule,
+    // UserUseCasesModule,
+    // VariationsUseCasesModule,
+    // SharedUseCasesModule,
   ],
   exports: [
     AddressesUseCaseModule,
-    CartUseCasesModule,
-    CategoriesUseCasesModule,
-    CommentsUseCasesModule,
-    PaymentsUseCasesModule,
-    ProductsUseCasesModule,
-    PromotionsUseCasesModule,
-    ReviewsUseCasesModule,
-    SeasonsUseCasesModule,
-    TagsUseCasesModule,
-    UserUseCasesModule,
-    VariationsUseCasesModule,
+    // CartUseCasesModule,
+    // CategoriesUseCasesModule,
+    // CommentsUseCasesModule,
+    // ImagesUseCasesModule
+    // PaymentsUseCasesModule,
+    // ProductsUseCasesModule,
+    // PromotionsUseCasesModule,
+    // ReviewsUseCasesModule,
+    // SeasonsUseCasesModule,
+    // TagsUseCasesModule,
+    // UserUseCasesModule,
+    // VariationsUseCasesModule,
+    // SharedUseCasesModule,
   ],
 })
 export class UseCasesModule {}

@@ -19,6 +19,7 @@ import { Product } from './Product.entity';
 import { UserType, Role, Gender } from 'src/core/enums';
 import { Category } from './Category.entity';
 import { UserPaymentMethod } from './UserPaymentMethod.entity';
+import { Image } from './Image.entity';
 
 @Index('user_pkey', ['id'], { unique: true })
 @Index('user_id_user_username_idx', ['id', 'username'], { unique: true })
@@ -113,6 +114,9 @@ export class User {
 
   @OneToMany(() => Category, (category) => category.user)
   category: Category[];
+
+  @OneToMany(() => Image, (image) => image.product)
+  image: Image[];
 
   @BeforeInsert()
   checkFields() {

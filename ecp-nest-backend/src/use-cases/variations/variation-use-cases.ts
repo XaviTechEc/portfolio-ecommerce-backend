@@ -4,40 +4,36 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { CreateVariationInput, UpdateVariationInput } from 'src/core/dtos';
 import { IVariation } from 'src/core/entities';
 import { VariationFactoryService } from './factory/variation-factory.service';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
-export class VariationUseCases implements IVariationsRepository {
+export class VariationUseCases implements IVariationsRepository<IVariation> {
   constructor(
     private dataService: IDataSourcesService,
     private variationFactoryService: VariationFactoryService,
   ) {}
-
-  getAllVariations(): Promise<IVariation[]> {
-    return this.dataService.variations.getAll();
+  getAllVariations(args?: IGenericArgs<IVariation>): Promise<IVariation[]> {
+    return this.dataService.variations.getAllVariations(args);
   }
-
   getVariationById(id: string): Promise<IVariation> {
-    return this.dataService.variations.getOneById(id);
+    return this.dataService.variations.getVariationById(id);
   }
-
   createVariation(
     createVariationInput: CreateVariationInput,
   ): Promise<IVariation> {
     const variation =
       this.variationFactoryService.createVariation(createVariationInput);
-    return this.dataService.variations.create(variation);
+    return this.dataService.variations.createVariation(variation);
   }
-
   updateVariation(
     id: string,
     updateVariationInput: UpdateVariationInput,
   ): Promise<IVariation> {
     const variation =
       this.variationFactoryService.updateVariation(updateVariationInput);
-    return this.dataService.variations.updateOneById(id, variation);
+    return this.dataService.variations.updateVariation(id, variation);
   }
-
   removeVariation(id: string): Promise<IVariation> {
-    return this.dataService.variations.deleteOneById(id);
+    return this.dataService.variations.removeVariation(id);
   }
 }

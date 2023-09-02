@@ -4,42 +4,34 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { IAddress } from 'src/core/entities';
 import { AddressFactoryService } from './factory/address-factory.service';
 import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
-export class AddressesUseCases implements IAddressesRepository {
+export class AddressesUseCases implements IAddressesRepository<IAddress> {
   constructor(
     private dataServices: IDataSourcesService,
     private addressFactoryService: AddressFactoryService,
   ) {}
-
+  getAllAddresses(args?: IGenericArgs<IAddress>): Promise<IAddress[]> {
+    return this.dataServices.addresses.getAllAddresses(args);
+  }
   getAddressById(id: string): Promise<IAddress> {
-    return this.dataServices.addresses.getOneById(id);
+    return this.dataServices.addresses.getAddressById(id);
   }
-
-  getAddressesBy(fields: Partial<IAddress>): Promise<IAddress[]> {
-    return this.dataServices.addresses.getAllBy(fields);
-  }
-
-  getOneAddressesBy(fields: Partial<IAddress>): Promise<IAddress> {
-    return this.dataServices.addresses.getOneBy(fields);
-  }
-
   createAddress(createAddressInput: CreateAddressInput): Promise<IAddress> {
-    const address =
+    const newAddress =
       this.addressFactoryService.createAddress(createAddressInput);
-    return this.dataServices.addresses.create(address);
+    return this.dataServices.addresses.createAddress(newAddress);
   }
-
   updateAddress(
     id: string,
     updateAddressInput: UpdateAddressInput,
   ): Promise<IAddress> {
-    const address =
+    const newAddress =
       this.addressFactoryService.updateAddress(updateAddressInput);
-    return this.dataServices.addresses.updateOneById(id, address);
+    return this.dataServices.addresses.updateAddress(id, newAddress);
   }
-
   removeAddress(id: string): Promise<IAddress> {
-    return this.dataServices.addresses.deleteOneById(id);
+    return this.dataServices.addresses.removeAddress(id);
   }
 }

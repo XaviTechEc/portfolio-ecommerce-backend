@@ -6,13 +6,15 @@ import { IPaymentMethod } from 'src/core/entities';
 import { PaymentMethodFactoryService } from './factory/payment-method-factory.service';
 
 @Injectable()
-export class PaymentMethodUseCases implements IPaymentMethodsRepository {
+export class PaymentMethodUseCases
+  implements IPaymentMethodsRepository<IPaymentMethod>
+{
   constructor(
     private dataService: IDataSourcesService,
     private paymentMethodFactoryService: PaymentMethodFactoryService,
   ) {}
   getPaymentMethodById(id: string): Promise<IPaymentMethod> {
-    return this.dataService.paymentMethods.getOneById(id);
+    return this.dataService.paymentMethods.getPaymentMethodById(id);
   }
   createPaymentMethod(
     createPaymentMethodInput: CreatePaymentMethodDto,
@@ -20,7 +22,7 @@ export class PaymentMethodUseCases implements IPaymentMethodsRepository {
     const paymentMethod = this.paymentMethodFactoryService.createPaymentMethod(
       createPaymentMethodInput,
     );
-    return this.dataService.paymentMethods.create(paymentMethod);
+    return this.dataService.paymentMethods.createPaymentMethod(paymentMethod);
   }
   updatePaymentMethod(
     id: string,
@@ -29,9 +31,12 @@ export class PaymentMethodUseCases implements IPaymentMethodsRepository {
     const paymentMethod = this.paymentMethodFactoryService.updatePaymentMethod(
       updatePaymentMethodInput,
     );
-    return this.dataService.paymentMethods.updateOneById(id, paymentMethod);
+    return this.dataService.paymentMethods.updatePaymentMethod(
+      id,
+      paymentMethod,
+    );
   }
   removePaymentMethod(id: string): Promise<IPaymentMethod> {
-    return this.dataService.paymentMethods.deleteOneById(id);
+    return this.dataService.paymentMethods.removePaymentMethod(id);
   }
 }

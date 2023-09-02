@@ -6,17 +6,16 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './User.entity';
 
-import { Location } from './Location.entity';
-import { OrderLine } from './OrderLine.entity';
-import { ShippingMethod } from './ShippingMethod.entity';
-import { OrderStatus } from './OrderStatus.entity';
 import { Address } from './Address.entity';
+import { OrderLine } from './OrderLine.entity';
+import { OrderStatus } from './OrderStatus.entity';
+import { ShippingMethod } from './ShippingMethod.entity';
+import { ShopOrderLocation } from './ShopOrderLocation.entity';
 import { UserPaymentMethod } from './UserPaymentMethod.entity';
 
 @Index('shop_order_pkey', ['id'], { unique: true })
@@ -27,9 +26,6 @@ export class ShopOrder {
 
   @Column('real', { name: 'order_total' })
   orderTotal: number;
-
-  @Column('character varying', { name: 'last_location_id', nullable: true })
-  lastLocationId?: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
   createdAt: Date;
@@ -49,10 +45,6 @@ export class ShopOrder {
   @JoinColumn([{ name: 'order_status_id', referencedColumnName: 'id' }])
   orderStatus: OrderStatus;
 
-  @OneToOne(() => Location, (location) => location.shopOrder)
-  @JoinColumn([{ name: 'last_location_id', referencedColumnName: 'id' }])
-  location: Location;
-
   @ManyToOne(() => User, (user) => user.shopOrder)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
@@ -67,4 +59,10 @@ export class ShopOrder {
   @ManyToOne(() => Address, (address) => address.shopOrder)
   @JoinColumn([{ name: 'shipping_address_id', referencedColumnName: 'id' }])
   address: Address;
+
+  @OneToMany(
+    () => ShopOrderLocation,
+    (shopOrderLocation) => shopOrderLocation.shopOrder,
+  )
+  shopOrderLocation: ShopOrderLocation[];
 }

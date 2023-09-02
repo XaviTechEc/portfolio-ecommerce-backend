@@ -1,16 +1,13 @@
 import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
-import { IAddress } from 'src/core/entities';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
-export abstract class IAddressesRepository {
-  abstract getAddressById(id: string): Promise<IAddress>;
-  abstract getAddressesBy(fields: Partial<IAddress>): Promise<IAddress[]>;
-  abstract getOneAddressesBy(fields: Partial<IAddress>): Promise<IAddress>;
-  abstract createAddress(
-    createAddressInput: CreateAddressInput,
-  ): Promise<IAddress>;
+export abstract class IAddressesRepository<T> {
+  abstract getAllAddresses(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAddressById(id: string): Promise<T>;
+  abstract createAddress(createAddressInput: CreateAddressInput): Promise<T>;
   abstract updateAddress(
     id: string,
     updateAddressInput: UpdateAddressInput,
-  ): Promise<IAddress>;
-  abstract removeAddress(id: string): Promise<IAddress>;
+  ): Promise<T>;
+  abstract removeAddress(id: string): Promise<T>;
 }

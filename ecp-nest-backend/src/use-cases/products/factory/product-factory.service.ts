@@ -9,7 +9,7 @@ export class ProductFactoryService {
     newProduct.title = createProductInput.title;
     newProduct.subtitle = createProductInput.subtitle;
     newProduct.description = createProductInput.description;
-    newProduct.createdBy = createProductInput.createdBy;
+    newProduct.user = createProductInput.user;
     return newProduct;
   }
   updateProduct(updateProductInput: UpdateProductInput) {
@@ -17,7 +17,7 @@ export class ProductFactoryService {
     newProduct.title = updateProductInput.title;
     newProduct.subtitle = updateProductInput.subtitle;
     newProduct.description = updateProductInput.description;
-    newProduct.createdBy = updateProductInput.createdBy;
+    newProduct.user = updateProductInput.user;
     return newProduct;
   }
 }

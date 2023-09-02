@@ -1,17 +1,21 @@
 import { CreateProductInput, UpdateProductInput } from 'src/core/dtos';
-import { IProduct } from 'src/core/entities';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
-export abstract class IProductsRepository {
-  abstract getAllProducts(): Promise<IProduct[]>;
-  abstract getAllProductsBy(fields: Partial<IProduct>): Promise<IProduct[]>;
-  abstract getProductById(id: string): Promise<IProduct>;
-  abstract getOneProductBy(fields: Partial<IProduct>): Promise<IProduct>;
-  abstract createProduct(
-    createProductInput: CreateProductInput,
-  ): Promise<IProduct>;
+export abstract class IProductsRepository<T> {
+  abstract getAllProducts(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllProductsBy(
+    fields: Partial<T>,
+    args?: IGenericArgs<T>,
+  ): Promise<T[]>;
+  abstract getOneProductBy(
+    fields: Partial<T>,
+    args?: IGenericArgs<T>,
+  ): Promise<T>;
+  abstract getProductById(id: string): Promise<T>;
+  abstract createProduct(createProductInput: CreateProductInput): Promise<T>;
   abstract updateProduct(
     id: string,
     updateProductInput: UpdateProductInput,
-  ): Promise<IProduct>;
-  abstract removeProduct(id: string): Promise<IProduct>;
+  ): Promise<T>;
+  abstract removeProduct(id: string): Promise<T>;
 }

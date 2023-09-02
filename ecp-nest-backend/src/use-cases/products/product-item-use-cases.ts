@@ -4,24 +4,35 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { ProductItemFactoryService } from './factory/product-item-factory.service';
 import { CreateProductItemInput, UpdateProductItemInput } from 'src/core/dtos';
 import { IProductItem } from 'src/core/entities';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
-export class ProductItemUseCases implements IProductItemsRepository {
+export class ProductItemUseCases
+  implements IProductItemsRepository<IProductItem>
+{
   constructor(
     private dataService: IDataSourcesService,
     private productItemFactoryService: ProductItemFactoryService,
   ) {}
-  getAllProductItems(): Promise<IProductItem[]> {
-    return this.dataService.productItems.getAll();
+  getAllProductItems(
+    args?: IGenericArgs<IProductItem>,
+  ): Promise<IProductItem[]> {
+    return this.dataService.productItems.getAllProductItems(args);
   }
-  getAllProductItemsBy(fields: Partial<IProductItem>): Promise<IProductItem[]> {
-    return this.dataService.productItems.getAllBy(fields);
+  getAllProductItemsBy(
+    fields: Partial<IProductItem>,
+    args?: IGenericArgs<IProductItem>,
+  ): Promise<IProductItem[]> {
+    return this.dataService.productItems.getAllProductItemsBy(fields, args);
   }
   getProductItemById(id: string): Promise<IProductItem> {
-    return this.dataService.productItems.getOneById(id);
+    return this.dataService.productItems.getProductItemById(id);
   }
-  getOneProductItemBy(fields: Partial<IProductItem>): Promise<IProductItem> {
-    return this.dataService.productItems.getOneBy(fields);
+  getOneProductItemBy(
+    fields: Partial<IProductItem>,
+    args?: IGenericArgs<IProductItem>,
+  ): Promise<IProductItem> {
+    return this.dataService.productItems.getOneProductItemBy(fields, args);
   }
   createProductItem(
     createProductItemInput: CreateProductItemInput,
@@ -29,7 +40,7 @@ export class ProductItemUseCases implements IProductItemsRepository {
     const productItem = this.productItemFactoryService.createProductItem(
       createProductItemInput,
     );
-    return this.dataService.productItems.create(productItem);
+    return this.dataService.productItems.createProductItem(productItem);
   }
   updateProductItem(
     id: string,
@@ -38,9 +49,10 @@ export class ProductItemUseCases implements IProductItemsRepository {
     const productItem = this.productItemFactoryService.updateProductItem(
       updateProductItemInput,
     );
-    return this.dataService.productItems.updateOneById(id, productItem);
+
+    return this.dataService.productItems.updateProductItem(id, productItem);
   }
   removeProductItem(id: string): Promise<IProductItem> {
-    return this.dataService.productItems.deleteOneById(id);
+    return this.dataService.productItems.removeProductItem(id);
   }
 }

@@ -1,13 +1,13 @@
 import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
-import { ISeason } from 'src/core/entities';
+import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
-export abstract class ISeasonsRepository {
-  abstract getAllSeasons(): Promise<ISeason[]>;
-  abstract getSeasonById(id: string): Promise<ISeason>;
-  abstract createSeason(createSeasonInput: CreateSeasonInput): Promise<ISeason>;
+export abstract class ISeasonsRepository<T> {
+  abstract getAllSeasons(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getSeasonById(id: string): Promise<T>;
+  abstract createSeason(createSeasonInput: CreateSeasonInput): Promise<T>;
   abstract updateSeason(
     id: string,
     updateSeasonInput: UpdateSeasonInput,
-  ): Promise<ISeason>;
-  abstract removeSeason(id: string): Promise<ISeason>;
+  ): Promise<T>;
+  abstract removeSeason(id: string): Promise<T>;
 }
