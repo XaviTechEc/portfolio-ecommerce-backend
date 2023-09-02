@@ -18,4 +18,9 @@ export class CreateProductPromotionInput {
 @InputType()
 export class UpdateProductPromotionInput extends PartialType(
   CreateProductPromotionInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

@@ -22,8 +22,8 @@ export class CategoryPromotionUseCases
   ): Promise<ICategoryPromotion[]> {
     return this.dataService.categoryPromotions.getAllCategoryPromotion(args);
   }
-  getOneCategoryPromotionById(id: string): Promise<ICategoryPromotion> {
-    return this.dataService.categoryPromotions.getOneCategoryPromotionById(id);
+  getCategoryPromotionById(id: string): Promise<ICategoryPromotion> {
+    return this.dataService.categoryPromotions.getCategoryPromotionById(id);
   }
   createCategoryPromotion(
     createCategoryPromotionInput: CreateCategoryPromotionInput,
@@ -36,7 +36,7 @@ export class CategoryPromotionUseCases
       categoryPromotion,
     );
   }
-  updateOneCategoryPromotionById(
+  updateCategoryPromotion(
     id: string,
     updateCategoryPromotionInput: UpdateCategoryPromotionInput,
   ): Promise<ICategoryPromotion> {
@@ -44,14 +44,12 @@ export class CategoryPromotionUseCases
       this.categoryPromotionFactoryService.updateCategoryPromotion(
         updateCategoryPromotionInput,
       );
-    return this.dataService.categoryPromotions.updateOneCategoryPromotionById(
+    return this.dataService.categoryPromotions.updateCategoryPromotion(
       id,
       categoryPromotion,
     );
   }
-  deleteOneCategoryPromotionById(id: string): Promise<ICategoryPromotion> {
-    return this.dataService.categoryPromotions.deleteOneCategoryPromotionById(
-      id,
-    );
+  removeCategoryPromotion(id: string): Promise<ICategoryPromotion> {
+    return this.dataService.categoryPromotions.removeCategoryPromotion(id);
   }
 }

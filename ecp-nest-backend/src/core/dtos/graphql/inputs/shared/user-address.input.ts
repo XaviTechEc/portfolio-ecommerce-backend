@@ -23,4 +23,9 @@ export class CreateUserAddressInput {
 @InputType()
 export class UpdateUserAddressInput extends PartialType(
   CreateUserAddressInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

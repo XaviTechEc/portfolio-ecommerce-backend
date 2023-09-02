@@ -1,4 +1,5 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateShippingMethodInput,
   PaginationArgs,
@@ -25,13 +26,15 @@ export class ShippingMethodResolver {
   }
 
   @Query(() => ShippingMethodType, { name: 'shippingMethod' })
-  getShippingMethodById(id: string): Promise<IShippingMethod> {
+  getShippingMethodById(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IShippingMethod> {
     return this.shippingMethodUseCases.getShippingMethodById(id);
   }
 
   @Mutation(() => ShippingMethodType)
   createShippingMethod(
-    createShippingMethodInput: CreateShippingMethodInput,
+    @Args() createShippingMethodInput: CreateShippingMethodInput,
   ): Promise<IShippingMethod> {
     return this.shippingMethodUseCases.createShippingMethod(
       createShippingMethodInput,
@@ -40,17 +43,18 @@ export class ShippingMethodResolver {
 
   @Mutation(() => ShippingMethodType)
   updateShippingMethod(
-    id: string,
-    updateShippingMethodInput: UpdateShippingMethodInput,
+    @Args() updateShippingMethodInput: UpdateShippingMethodInput,
   ): Promise<IShippingMethod> {
     return this.shippingMethodUseCases.updateShippingMethod(
-      id,
+      updateShippingMethodInput.id,
       updateShippingMethodInput,
     );
   }
 
   @Mutation(() => ShippingMethodType)
-  removeShippingMethod(id: string): Promise<IShippingMethod> {
+  removeShippingMethod(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IShippingMethod> {
     return this.shippingMethodUseCases.removeShippingMethod(id);
   }
 }

@@ -6,13 +6,13 @@ import {
 
 export abstract class IProductTagRepository<T> {
   abstract getAllProductTag(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getOneProductTagById(id: string): Promise<T>;
+  abstract getProductTagById(id: string): Promise<T>;
   abstract createProductTag(
     createProductTagInput: CreateProductTagInput,
   ): Promise<T>;
-  abstract updateOneProductTagById(
+  abstract updateProductTag(
     id: string,
     updateProductTagInput: UpdateProductTagInput,
   ): Promise<T>;
-  abstract deleteOneProductTagById(id: string): Promise<T>;
+  abstract removeProductTag(id: string): Promise<T>;
 }

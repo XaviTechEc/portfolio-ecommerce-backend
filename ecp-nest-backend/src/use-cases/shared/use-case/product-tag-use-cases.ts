@@ -18,8 +18,8 @@ export class ProductTagUseCases implements IProductTagRepository<IProductTag> {
   getAllProductTag(args?: IGenericArgs<IProductTag>): Promise<IProductTag[]> {
     return this.dataService.productTags.getAllProductTag(args);
   }
-  getOneProductTagById(id: string): Promise<IProductTag> {
-    return this.dataService.productTags.getOneProductTagById(id);
+  getProductTagById(id: string): Promise<IProductTag> {
+    return this.dataService.productTags.getProductTagById(id);
   }
   createProductTag(
     createProductTagInput: CreateProductTagInput,
@@ -29,16 +29,16 @@ export class ProductTagUseCases implements IProductTagRepository<IProductTag> {
     );
     return this.dataService.productTags.createProductTag(productTag);
   }
-  updateOneProductTagById(
+  updateProductTag(
     id: string,
     updateProductTagInput: UpdateProductTagInput,
   ): Promise<IProductTag> {
     const productTag = this.productTagFactoryService.updateProductTag(
       updateProductTagInput,
     );
-    return this.dataService.productTags.updateOneProductTagById(id, productTag);
+    return this.dataService.productTags.updateProductTag(id, productTag);
   }
-  deleteOneProductTagById(id: string): Promise<IProductTag> {
-    return this.dataService.productTags.deleteOneProductTagById(id);
+  removeProductTag(id: string): Promise<IProductTag> {
+    return this.dataService.productTags.removeProductTag(id);
   }
 }

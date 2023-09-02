@@ -22,8 +22,8 @@ export class ShopOrderLocationUseCases
   ): Promise<IShopOrderLocation[]> {
     return this.dataService.shopOrderLocations.getAllShopOrderLocation(args);
   }
-  getOneShopOrderLocationById(id: string): Promise<IShopOrderLocation> {
-    return this.dataService.shopOrderLocations.getOneShopOrderLocationById(id);
+  getShopOrderLocationById(id: string): Promise<IShopOrderLocation> {
+    return this.dataService.shopOrderLocations.getShopOrderLocationById(id);
   }
   createShopOrderLocation(
     createShopOrderLocationInput: CreateShopOrderLocationInput,
@@ -36,7 +36,7 @@ export class ShopOrderLocationUseCases
       shopOrderLocation,
     );
   }
-  updateOneShopOrderLocationById(
+  updateShopOrderLocation(
     id: string,
     updateShopOrderLocationInput: UpdateShopOrderLocationInput,
   ): Promise<IShopOrderLocation> {
@@ -44,14 +44,12 @@ export class ShopOrderLocationUseCases
       this.shopOrderLocationFactoryService.updateShopOrderLocation(
         updateShopOrderLocationInput,
       );
-    return this.dataService.shopOrderLocations.updateOneShopOrderLocationById(
+    return this.dataService.shopOrderLocations.updateShopOrderLocation(
       id,
       shopOrderLocation,
     );
   }
-  deleteOneShopOrderLocationById(id: string): Promise<IShopOrderLocation> {
-    return this.dataService.shopOrderLocations.deleteOneShopOrderLocationById(
-      id,
-    );
+  removeShopOrderLocation(id: string): Promise<IShopOrderLocation> {
+    return this.dataService.shopOrderLocations.removeShopOrderLocation(id);
   }
 }

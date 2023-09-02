@@ -1,9 +1,18 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ProductItem } from './ProductItem.entity';
 import { VariationOption } from './VariationOption.entity';
 
 @Entity('product_configuration')
 export class ProductConfiguration {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @PrimaryColumn('character varying', { name: 'product_item_id' })
   productItemId: string;
 

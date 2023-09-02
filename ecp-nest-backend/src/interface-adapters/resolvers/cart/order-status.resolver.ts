@@ -1,4 +1,5 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateOrderStatusInput,
   PaginationArgs,
@@ -25,30 +26,33 @@ export class OrderStatusResolver {
   }
 
   @Query(() => OrderStatusType, { name: 'orderStatus' })
-  getOrderStatusById(id: string): Promise<IOrderStatus> {
+  getOrderStatusById(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IOrderStatus> {
     return this.orderStatusUseCases.getOrderStatusById(id);
   }
 
   @Mutation(() => OrderStatusType)
   createOrderStatus(
-    createOrderStatusInput: CreateOrderStatusInput,
+    @Args() createOrderStatusInput: CreateOrderStatusInput,
   ): Promise<IOrderStatus> {
     return this.orderStatusUseCases.createOrderStatus(createOrderStatusInput);
   }
 
   @Mutation(() => OrderStatusType)
   updateOrderStatus(
-    id: string,
-    updateOrderStatusInput: UpdateOrderStatusInput,
+    @Args() updateOrderStatusInput: UpdateOrderStatusInput,
   ): Promise<IOrderStatus> {
     return this.orderStatusUseCases.updateOrderStatus(
-      id,
+      updateOrderStatusInput.id,
       updateOrderStatusInput,
     );
   }
 
   @Mutation(() => OrderStatusType)
-  removeOrderStatus(id: string): Promise<IOrderStatus> {
+  removeOrderStatus(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IOrderStatus> {
     return this.orderStatusUseCases.removeOrderStatus(id);
   }
 }

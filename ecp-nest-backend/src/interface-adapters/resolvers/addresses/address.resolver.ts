@@ -34,10 +34,12 @@ export class AddressResolver {
 
   @Mutation(() => AddressType)
   updateAddress(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
     @Args() updateAddressInput: UpdateAddressInput,
   ): Promise<IAddress> {
-    return this.addressUseCases.updateAddress(id, updateAddressInput);
+    return this.addressUseCases.updateAddress(
+      updateAddressInput.id,
+      updateAddressInput,
+    );
   }
 
   @Mutation(() => AddressType)

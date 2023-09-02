@@ -6,13 +6,13 @@ import {
 
 export abstract class IProductCategoryRepository<T> {
   abstract getAllProductCategory(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getOneProductCategoryById(id: string): Promise<T>;
+  abstract getProductCategoryById(id: string): Promise<T>;
   abstract createProductCategory(
     createProductCategoryInput: CreateProductCategoryInput,
   ): Promise<T>;
-  abstract updateOneProductCategoryById(
+  abstract updateProductCategory(
     id: string,
     updateProductCategoryInput: UpdateProductCategoryInput,
   ): Promise<T>;
-  abstract deleteOneProductCategoryById(id: string): Promise<T>;
+  abstract removeProductCategory(id: string): Promise<T>;
 }

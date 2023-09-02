@@ -38,14 +38,18 @@ export class CountryResolver {
 
   @Mutation(() => CountryType)
   updateCountry(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
     @Args() updateCountryInput: UpdateCountryInput,
   ): Promise<ICountry> {
-    return this.countryUseCases.updateCountry(id, updateCountryInput);
+    return this.countryUseCases.updateCountry(
+      updateCountryInput.id,
+      updateCountryInput,
+    );
   }
 
   @Mutation(() => CountryType)
-  removeCountry(id: string): Promise<ICountry> {
+  removeCountry(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<ICountry> {
     return this.countryUseCases.removeCountry(id);
   }
 }

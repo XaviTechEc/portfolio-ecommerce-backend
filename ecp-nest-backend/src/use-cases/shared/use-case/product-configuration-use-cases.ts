@@ -24,8 +24,8 @@ export class ProductConfigurationUseCases
       args,
     );
   }
-  getOneProductConfigurationById(id: string): Promise<IProductConfiguration> {
-    return this.dataService.productConfigurations.getOneProductConfigurationById(
+  getProductConfigurationById(id: string): Promise<IProductConfiguration> {
+    return this.dataService.productConfigurations.getProductConfigurationById(
       id,
     );
   }
@@ -40,7 +40,7 @@ export class ProductConfigurationUseCases
       productConfiguration,
     );
   }
-  updateOneProductConfigurationById(
+  updateProductConfiguration(
     id: string,
     updateProductConfigurationInput: UpdateProductConfigurationInput,
   ): Promise<IProductConfiguration> {
@@ -48,15 +48,13 @@ export class ProductConfigurationUseCases
       this.productConfigurationFactoryService.updateProductConfiguration(
         updateProductConfigurationInput,
       );
-    return this.dataService.productConfigurations.updateOneProductConfigurationById(
+    return this.dataService.productConfigurations.updateProductConfiguration(
       id,
       productConfiguration,
     );
   }
-  deleteOneProductConfigurationById(
-    id: string,
-  ): Promise<IProductConfiguration> {
-    return this.dataService.productConfigurations.deleteOneProductConfigurationById(
+  removeProductConfiguration(id: string): Promise<IProductConfiguration> {
+    return this.dataService.productConfigurations.removeProductConfiguration(
       id,
     );
   }

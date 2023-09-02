@@ -32,7 +32,9 @@ export class LocationResolver {
   }
 
   @Mutation(() => LocationType)
-  removeLocation(id: string): Promise<ILocation> {
+  removeLocation(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<ILocation> {
     return this.locationUseCases.removeLocation(id);
   }
 }

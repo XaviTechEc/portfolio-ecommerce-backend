@@ -1,10 +1,20 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { User } from './User.entity';
 import { Address } from './Address.entity';
 
 @Entity('user_address')
 export class UserAddress {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @PrimaryColumn('character varying', { name: 'user_id' })
   userId: string;
 

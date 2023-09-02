@@ -16,4 +16,9 @@ export class CreateProductTagInput {
 }
 
 @InputType()
-export class UpdateProductTagInput extends PartialType(CreateProductTagInput) {}
+export class UpdateProductTagInput extends PartialType(CreateProductTagInput) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

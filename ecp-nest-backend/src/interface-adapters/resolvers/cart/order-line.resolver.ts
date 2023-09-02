@@ -1,4 +1,5 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateOrderLineInput,
   PaginationArgs,
@@ -37,7 +38,9 @@ export class OrderLineResolver {
   }
 
   @Query(() => OrderLineType, { name: 'orderLine' })
-  getOrderLineById(id: string): Promise<IOrderLine> {
+  getOrderLineById(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IOrderLine> {
     return this.orderLineUseCases.getOrderLineById(id);
   }
 
@@ -51,21 +54,25 @@ export class OrderLineResolver {
 
   @Mutation(() => OrderLineType)
   createOrderLine(
-    createOrderLineInput: CreateOrderLineInput,
+    @Args() createOrderLineInput: CreateOrderLineInput,
   ): Promise<IOrderLine> {
     return this.orderLineUseCases.createOrderLine(createOrderLineInput);
   }
 
   @Mutation(() => OrderLineType)
   updateOrderLine(
-    id: string,
-    updateOrderLineInput: UpdateOrderLineInput,
+    @Args() updateOrderLineInput: UpdateOrderLineInput,
   ): Promise<IOrderLine> {
-    return this.orderLineUseCases.updateOrderLine(id, updateOrderLineInput);
+    return this.orderLineUseCases.updateOrderLine(
+      updateOrderLineInput.id,
+      updateOrderLineInput,
+    );
   }
 
   @Mutation(() => OrderLineType)
-  removeOrderLine(id: string): Promise<IOrderLine> {
+  removeOrderLine(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IOrderLine> {
     return this.orderLineUseCases.removeOrderLine(id);
   }
 }

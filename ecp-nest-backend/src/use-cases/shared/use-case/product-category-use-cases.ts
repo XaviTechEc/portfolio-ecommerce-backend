@@ -23,8 +23,8 @@ export class ProductCategoryUseCases
   ): Promise<IProductCategory[]> {
     return this.dataService.productCategories.getAllProductCategory(args);
   }
-  getOneProductCategoryById(id: string): Promise<IProductCategory> {
-    return this.dataService.productCategories.getOneProductCategoryById(id);
+  getProductCategoryById(id: string): Promise<IProductCategory> {
+    return this.dataService.productCategories.getProductCategoryById(id);
   }
   createProductCategory(
     createProductCategoryInput: CreateProductCategoryInput,
@@ -37,7 +37,7 @@ export class ProductCategoryUseCases
       productCategory,
     );
   }
-  updateOneProductCategoryById(
+  updateProductCategory(
     id: string,
     updateProductCategoryInput: UpdateProductCategoryInput,
   ): Promise<IProductCategory> {
@@ -45,12 +45,12 @@ export class ProductCategoryUseCases
       this.productCategoryFactoryService.updateProductCategory(
         updateProductCategoryInput,
       );
-    return this.dataService.productCategories.updateOneProductCategoryById(
+    return this.dataService.productCategories.updateProductCategory(
       id,
       productCategory,
     );
   }
-  deleteOneProductCategoryById(id: string): Promise<IProductCategory> {
-    return this.dataService.productCategories.deleteOneProductCategoryById(id);
+  removeProductCategory(id: string): Promise<IProductCategory> {
+    return this.dataService.productCategories.removeProductCategory(id);
   }
 }

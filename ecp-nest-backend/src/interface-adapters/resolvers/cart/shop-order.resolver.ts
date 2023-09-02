@@ -1,4 +1,5 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateShopOrderInput,
   PaginationArgs,
@@ -45,27 +46,33 @@ export class ShopOrderResolver {
   }
 
   @Query(() => ShopOrderType, { name: 'shopOrder' })
-  getShopOrderById(id: string): Promise<IShopOrder> {
+  getShopOrderById(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IShopOrder> {
     return this.shopOrderUseCases.getShopOrderById(id);
   }
 
   @Mutation(() => ShopOrderType)
   createShopOrder(
-    createShopOrderInput: CreateShopOrderInput,
+    @Args() createShopOrderInput: CreateShopOrderInput,
   ): Promise<IShopOrder> {
     return this.shopOrderUseCases.createShopOrder(createShopOrderInput);
   }
 
   @Mutation(() => ShopOrderType)
   updateShopOrder(
-    id: string,
-    updateShopOrderInput: UpdateShopOrderInput,
+    @Args() updateShopOrderInput: UpdateShopOrderInput,
   ): Promise<IShopOrder> {
-    return this.shopOrderUseCases.updateShopOrder(id, updateShopOrderInput);
+    return this.shopOrderUseCases.updateShopOrder(
+      updateShopOrderInput.id,
+      updateShopOrderInput,
+    );
   }
 
   @Mutation(() => ShopOrderType)
-  removeShopOrder(id: string): Promise<IShopOrder> {
+  removeShopOrder(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IShopOrder> {
     return this.shopOrderUseCases.removeShopOrder(id);
   }
 }

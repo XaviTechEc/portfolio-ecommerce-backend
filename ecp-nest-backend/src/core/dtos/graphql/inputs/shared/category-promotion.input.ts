@@ -18,4 +18,9 @@ export class CreateCategoryPromotionInput {
 @InputType()
 export class UpdateCategoryPromotionInput extends PartialType(
   CreateCategoryPromotionInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

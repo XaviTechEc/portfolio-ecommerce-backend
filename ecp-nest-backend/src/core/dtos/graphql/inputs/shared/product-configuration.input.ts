@@ -18,4 +18,9 @@ export class CreateProductConfigurationInput {
 @InputType()
 export class UpdateProductConfigurationInput extends PartialType(
   CreateProductConfigurationInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

@@ -1,4 +1,5 @@
-import { Resolver, Args, Mutation, Query } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common';
+import { Resolver, Args, Mutation, Query, ID } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -25,13 +26,15 @@ export class ShoppingCartResolver {
   }
 
   @Query(() => ShoppingCartType, { name: 'shoppingCart' })
-  getShoppingCartById(id: string): Promise<IShoppingCart> {
+  getShoppingCartById(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IShoppingCart> {
     return this.shoppingCartUseCases.getShoppingCartById(id);
   }
 
   @Mutation(() => ShoppingCartType)
   createShoppingCart(
-    createShoppingCartInput: CreateShoppingCartInput,
+    @Args() createShoppingCartInput: CreateShoppingCartInput,
   ): Promise<IShoppingCart> {
     return this.shoppingCartUseCases.createShoppingCart(
       createShoppingCartInput,
@@ -40,17 +43,18 @@ export class ShoppingCartResolver {
 
   @Mutation(() => ShoppingCartType)
   updateShoppingCart(
-    id: string,
-    updateShoppingCartInput: UpdateShoppingCartInput,
+    @Args() updateShoppingCartInput: UpdateShoppingCartInput,
   ): Promise<IShoppingCart> {
     return this.shoppingCartUseCases.updateShoppingCart(
-      id,
+      updateShoppingCartInput.id,
       updateShoppingCartInput,
     );
   }
 
   @Mutation(() => ShoppingCartType)
-  removeShoppingCart(id: string): Promise<IShoppingCart> {
+  removeShoppingCart(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<IShoppingCart> {
     return this.shoppingCartUseCases.removeShoppingCart(id);
   }
 }

@@ -18,4 +18,9 @@ export class CreateProductCategoryInput {
 @InputType()
 export class UpdateProductCategoryInput extends PartialType(
   CreateProductCategoryInput,
-) {}
+) {
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}
