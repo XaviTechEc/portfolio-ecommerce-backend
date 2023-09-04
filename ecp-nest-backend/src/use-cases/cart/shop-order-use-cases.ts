@@ -15,21 +15,11 @@ export class ShopOrderUseCases implements IShopOrdersRepository<IShopOrder> {
   getAllShopOrders(args?: IGenericArgs<IShopOrder>): Promise<IShopOrder[]> {
     return this.dataService.shopOrders.getAllShopOrders(args);
   }
-  getAllShopOrdersBy(
-    fields: Partial<IShopOrder>,
-    args?: IGenericArgs<IShopOrder>,
-  ): Promise<IShopOrder[]> {
-    return this.dataService.shopOrders.getAllShopOrdersBy(fields, args);
-  }
+
   getShopOrderById(id: string): Promise<IShopOrder> {
     return this.dataService.shopOrders.getShopOrderById(id);
   }
-  getOneShopOrderBy(
-    fields: Partial<IShopOrder>,
-    args?: IGenericArgs<IShopOrder>,
-  ): Promise<IShopOrder> {
-    return this.dataService.shopOrders.getOneShopOrderBy(fields, args);
-  }
+
   createShopOrder(
     createShopOrderInput: CreateShopOrderInput,
   ): Promise<IShopOrder> {

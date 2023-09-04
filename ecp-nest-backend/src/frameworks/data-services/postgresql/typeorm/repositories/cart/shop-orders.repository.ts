@@ -3,43 +3,91 @@ import { IShopOrdersRepository } from 'src/core/abstracts/repositories';
 import { CreateShopOrderInput, UpdateShopOrderInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
 import { ShopOrder } from '../../entities/outputs/entities';
+import { LoggerService } from '@nestjs/common';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
   private _repository: Repository<ShopOrder>;
+  private _loggerService: LoggerService;
+  private _exceptionsService: ExceptionsService;
 
-  constructor(repository: Repository<ShopOrder>) {
+  constructor(
+    repository: Repository<ShopOrder>,
+    loggerService: LoggerService,
+    exceptionsService: ExceptionsService,
+  ) {
     this._repository = repository;
+    this._loggerService = loggerService;
+    this._exceptionsService = exceptionsService;
   }
-  getAllShopOrders(args?: IGenericArgs<ShopOrder>): Promise<ShopOrder[]> {
-    throw new Error('Method not implemented.');
+  async getAllShopOrders(args?: IGenericArgs<ShopOrder>): Promise<ShopOrder[]> {
+    let qb = this._repository.createQueryBuilder('shopOrders');
+    if (args) {
+      const { paginationArgs, searchArgs } = args;
+
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        qb = qb.take(limit).skip(offset);
+      }
+
+      if (searchArgs) {
+        const { searchTerm, searchFields } = searchArgs;
+
+        if (searchTerm) {
+          if (searchTerm.trim.length === 0) return;
+          if (!searchFields || searchFields.length === 0) {
+            return this._exceptionsService.badRequest({
+              message: 'Search fields are required',
+              code_error: 404,
+            });
+          }
+
+          // Joins
+          qb = qb.where({});
+          // TODO: Joins and search fields
+        }
+      }
+
+      const shopOrdersFound = await qb.getMany();
+      return shopOrdersFound;
+    }
   }
-  getAllShopOrdersBy(
-    fields: Partial<ShopOrder>,
-    args?: IGenericArgs<ShopOrder>,
-  ): Promise<ShopOrder[]> {
-    throw new Error('Method not implemented.');
+
+  async getShopOrderById(id: string): Promise<ShopOrder> {
+    const shopOrder = await this._repository.findOneBy({ id });
+    if (!shopOrder) {
+      return this._exceptionsService.notFound({
+        message: `The shop order with id ${id} could not be found`,
+      });
+    }
+    return shopOrder;
   }
-  getShopOrderById(id: string): Promise<ShopOrder> {
-    throw new Error('Method not implemented.');
-  }
-  getOneShopOrderBy(
-    fields: Partial<ShopOrder>,
-    args?: IGenericArgs<ShopOrder>,
-  ): Promise<ShopOrder> {
-    throw new Error('Method not implemented.');
-  }
-  createShopOrder(
+
+  async createShopOrder(
     createShopOrderInput: CreateShopOrderInput,
   ): Promise<ShopOrder> {
-    throw new Error('Method not implemented.');
+    const newShopOrder = await this._repository.create({
+      ...createShopOrderInput,
+    });
+    return this._repository.save(newShopOrder);
   }
-  updateShopOrder(
+  async updateShopOrder(
     id: string,
     updateShopOrderInput: UpdateShopOrderInput,
   ): Promise<ShopOrder> {
-    throw new Error('Method not implemented.');
+    await this.getShopOrderById(id);
+    const newShopOrder = await this._repository.create({
+      ...updateShopOrderInput,
+    });
+    if (!newShopOrder) {
+      return this._exceptionsService.notFound({
+        message: 'The shop order could not be found',
+      });
+    }
+    return this._repository.save(newShopOrder);
   }
-  removeShopOrder(id: string): Promise<ShopOrder> {
-    throw new Error('Method not implemented.');
+  async removeShopOrder(id: string): Promise<ShopOrder> {
+    const shopOrder = await this.getShopOrderById(id);
+    return this._repository.save(shopOrder);
   }
 }

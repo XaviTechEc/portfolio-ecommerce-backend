@@ -14,26 +14,6 @@ import { ShopOrderUseCases } from 'src/use-cases';
 export class ShopOrderResolver {
   constructor(private shopOrderUseCases: ShopOrderUseCases) {}
 
-  @Query(() => [ShopOrderType], { name: 'shopOrdersBy' })
-  getAllShopOrdersBy(
-    fields: Partial<IShopOrder>,
-    @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShopOrder>,
-  ): Promise<IShopOrder[]> {
-    return this.shopOrderUseCases.getAllShopOrdersBy(fields, {
-      paginationArgs,
-      searchArgs,
-    });
-  }
-
-  @Query(() => ShopOrderType, { name: 'shopOrderBy' })
-  getOneShopOrderBy(
-    fields: Partial<IShopOrder>,
-    @Args() searchArgs: SearchArgs<IShopOrder>,
-  ): Promise<IShopOrder> {
-    return this.shopOrderUseCases.getOneShopOrderBy(fields, { searchArgs });
-  }
-
   @Query(() => [ShopOrderType], { name: 'shopOrders' })
   getAllShopOrders(
     @Args() paginationArgs: PaginationArgs,

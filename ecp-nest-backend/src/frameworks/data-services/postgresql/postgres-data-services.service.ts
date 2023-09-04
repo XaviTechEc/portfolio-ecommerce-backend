@@ -242,14 +242,30 @@ export class PostgresDataServices
     );
 
     // Cart
-    this.orderLines = new OrderLinesRepository(this.orderLinesRepository);
-    this.orderStatus = new OrderStatusRepository(this.orderStatusRepository);
+    this.orderLines = new OrderLinesRepository(
+      this.orderLinesRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
+    this.orderStatus = new OrderStatusRepository(
+      this.orderStatusRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
     this.shippingMethods = new ShippingMethodsRepository(
       this.shippingMethodsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
-    this.shopOrders = new ShopOrdersRepository(this.shopOrdersRepository);
+    this.shopOrders = new ShopOrdersRepository(
+      this.shopOrdersRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
     this.shoppingCarts = new ShoppingCartsRepository(
       this.shoppingCartsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
 
     // Categories
