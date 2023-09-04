@@ -67,6 +67,8 @@ import { TagsRepository } from './typeorm/repositories/tags/tags.repository';
 import { UsersRepository } from './typeorm/repositories/users/users.repository';
 import { VariationOptionsRepository } from './typeorm/repositories/variations/variation-options.repository';
 import { VariationsRepository } from './typeorm/repositories/variations/variations.repository';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 @Injectable()
 export class PostgresDataServices
@@ -216,13 +218,28 @@ export class PostgresDataServices
     private variationsRepository: Repository<Variation>,
     @InjectRepository(VariationOption)
     private variationOptionsRepository: Repository<VariationOption>,
+
+    private _loggerService: LoggerService,
+    private _exceptionsService: ExceptionsService,
   ) {}
 
   onApplicationBootstrap() {
     // Addresses
-    this.addresses = new AddressesRepository(this.addressesRepository);
-    this.countries = new CountriesRepository(this.countriesRepository);
-    this.locations = new LocationsRepository(this.locationsRepository);
+    this.addresses = new AddressesRepository(
+      this.addressesRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
+    this.countries = new CountriesRepository(
+      this.countriesRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
+    this.locations = new LocationsRepository(
+      this.locationsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Cart
     this.orderLines = new OrderLinesRepository(this.orderLinesRepository);

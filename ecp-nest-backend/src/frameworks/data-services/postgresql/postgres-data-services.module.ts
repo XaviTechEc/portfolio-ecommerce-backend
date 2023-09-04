@@ -34,6 +34,8 @@ import {
   Variation,
   VariationOption,
 } from './typeorm/entities/outputs/entities';
+import { LoggerModule } from 'src/infrastructure/logger/logger.module';
+import { ExceptionModule } from 'src/infrastructure/exceptions/exceptions.module';
 
 @Module({
   imports: [
@@ -68,6 +70,8 @@ import {
       Variation,
       VariationOption,
     ]),
+    LoggerModule,
+    ExceptionModule,
   ],
   providers: [
     {

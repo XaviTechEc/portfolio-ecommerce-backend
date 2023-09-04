@@ -11,5 +11,5 @@ export class SearchArgs<T> {
   @Field(() => [String], { name: 'searchFields', nullable: true })
   @IsOptional()
   @IsString({ each: true, always: true })
-  searchFields?: Array<keyof T>;
+  searchFields?: (keyof T)[] | string[];
 }

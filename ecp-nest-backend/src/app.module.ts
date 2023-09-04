@@ -7,6 +7,8 @@ import { ConfigurationModule } from './configuration/configuration.module';
 import { InterfaceAdaptersModule } from './interface-adapters/interface-adapters.module';
 import { UseCasesModule } from './use-cases/use-cases.module';
 import { FrameworksModule } from './frameworks/frameworks.module';
+import { ExceptionModule } from './infrastructure/exceptions/exceptions.module';
+import { LoggerModule } from './infrastructure/logger/logger.module';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { FrameworksModule } from './frameworks/frameworks.module';
     DataServicesModule,
     UseCasesModule,
     FrameworksModule,
+    ExceptionModule,
+    LoggerModule,
   ],
-  controllers: [],
   providers: [],
 })
 export class AppModule {}
