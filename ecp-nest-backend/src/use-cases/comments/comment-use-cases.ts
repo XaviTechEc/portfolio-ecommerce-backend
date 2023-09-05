@@ -15,11 +15,8 @@ export class CommentUseCases implements ICommentsRepository<IComment> {
   getCommentById(id: string): Promise<IComment> {
     return this.dataService.comments.getCommentById(id);
   }
-  getCommentsBy(
-    fields: Partial<IComment>,
-    args?: IGenericArgs<IComment>,
-  ): Promise<IComment[]> {
-    return this.dataService.comments.getCommentsBy(fields, args);
+  getAllComments(args?: IGenericArgs<IComment>): Promise<IComment[]> {
+    return this.dataService.comments.getAllComments(args);
   }
   createComment(createCommentInput: CreateCommentInput): Promise<IComment> {
     const comment =

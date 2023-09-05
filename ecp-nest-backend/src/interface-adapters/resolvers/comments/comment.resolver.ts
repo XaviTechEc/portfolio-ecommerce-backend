@@ -14,12 +14,11 @@ import { ParseUUIDPipe } from '@nestjs/common';
 export class CommentResolver {
   constructor(private commentUseCases: CommentUseCases) {}
   @Query(() => [CommentType], { name: 'comments' })
-  getCommentsBy(
-    fields: Partial<IComment>,
+  getAllComments(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs<IComment>,
   ): Promise<IComment[]> {
-    return this.commentUseCases.getCommentsBy(fields, {
+    return this.commentUseCases.getAllComments({
       paginationArgs,
       searchArgs,
     });

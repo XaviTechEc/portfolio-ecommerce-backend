@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IImageRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
-import { CreateImageDto, UpdateImageDto } from 'src/core/dtos';
+import { CreateImageDto, IGenericArgs, UpdateImageDto } from 'src/core/dtos';
 import { IImage } from 'src/core/entities';
 import { ImageFactoryService } from './image-factory.service';
 
@@ -11,8 +11,8 @@ export class ImageUseCases implements IImageRepository<IImage> {
     private dataService: IDataSourcesService,
     private imageFactoryService: ImageFactoryService,
   ) {}
-  getImagesBy(fields: Partial<IImage>): Promise<IImage[]> {
-    return this.dataService.images.getImagesBy(fields);
+  getAllImages(args?: IGenericArgs<IImage>): Promise<IImage[]> {
+    return this.dataService.images.getAllImages(args);
   }
   getImageById(id: string): Promise<IImage> {
     return this.dataService.images.getImageById(id);
@@ -26,7 +26,7 @@ export class ImageUseCases implements IImageRepository<IImage> {
     const image = this.imageFactoryService.updateImage(updateImageDto);
     return this.dataService.images.updateImage(id, image);
   }
-  removeComment(id: string): Promise<IImage> {
-    return this.dataService.images.removeComment(id);
+  removeImage(id: string): Promise<IImage> {
+    return this.dataService.images.removeImage(id);
   }
 }

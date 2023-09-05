@@ -3,14 +3,6 @@ import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository
 
 export abstract class ICategoriesRepository<T> {
   abstract getAllCategories(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getAllCategoriesBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T[]>;
-  abstract getOneCategoryBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T>;
   abstract getCategoryById(id: string): Promise<T>;
   abstract createCategory(createCategoryInput: CreateCategoryInput): Promise<T>;
   abstract updateCategory(

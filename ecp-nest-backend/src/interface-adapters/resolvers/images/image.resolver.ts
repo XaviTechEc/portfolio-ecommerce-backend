@@ -1,5 +1,6 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import { Args, ID, Query, Resolver } from '@nestjs/graphql';
+import { PaginationArgs, SearchArgs } from 'src/core/dtos';
 import { IImage } from 'src/core/entities';
 import { ImageType } from 'src/core/object-types';
 import { ImageUseCases } from 'src/use-cases';
@@ -9,8 +10,11 @@ export class ImageResolver {
   constructor(private imageUseCases: ImageUseCases) {}
 
   @Query(() => [ImageType], { name: 'images' })
-  getImagesBy(fields: Partial<IImage>): Promise<IImage[]> {
-    return this.imageUseCases.getImagesBy(fields);
+  getAllImages(
+    @Args() paginationArgs: PaginationArgs,
+    @Args() searchArgs: SearchArgs<IImage>,
+  ): Promise<IImage[]> {
+    return this.imageUseCases.getAllImages({ paginationArgs, searchArgs });
   }
 
   @Query(() => ImageType, { name: 'image' })
