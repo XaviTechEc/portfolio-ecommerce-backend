@@ -6,35 +6,76 @@ import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
 } from 'src/core/dtos';
+import { LoggerService } from '@nestjs/common';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class ProductCategoriesRepository
   implements IProductCategoryRepository<ProductCategory>
 {
   private _repository: Repository<ProductCategory>;
+  private _loggerService: LoggerService;
+  private _exceptionsService: ExceptionsService;
 
-  constructor(repository: Repository<ProductCategory>) {
+  constructor(
+    repository: Repository<ProductCategory>,
+    loggerService: LoggerService,
+    exceptionsService: ExceptionsService,
+  ) {
     this._repository = repository;
+    this._loggerService = loggerService;
+    this._exceptionsService = exceptionsService;
   }
-  getAllProductCategory(
+
+  async getAllProductCategory(
     args?: IGenericArgs<ProductCategory>,
   ): Promise<ProductCategory[]> {
-    throw new Error('Method not implemented.');
+    let qb = this._repository.createQueryBuilder('productCategory');
+
+    if (args) {
+      const { paginationArgs } = args;
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        qb = qb.take(limit).skip(offset);
+      }
+    }
+
+    const productCategories = await qb.getMany();
+    return productCategories;
   }
-  getProductCategoryById(id: string): Promise<ProductCategory> {
-    throw new Error('Method not implemented.');
+  async getProductCategoryById(id: string): Promise<ProductCategory> {
+    const productCategoryFound = await this._repository.findOneBy({ id });
+    if (!productCategoryFound) {
+      return this._exceptionsService.notFound({
+        message: `The productCategory with id ${id} could not be found`,
+      });
+    }
+    return this._repository.save(productCategoryFound);
   }
-  createProductCategory(
+  async createProductCategory(
     createProductCategoryInput: CreateProductCategoryInput,
   ): Promise<ProductCategory> {
-    throw new Error('Method not implemented.');
+    const newProductCategory = this._repository.create({
+      ...createProductCategoryInput,
+    });
+    return newProductCategory;
   }
-  updateProductCategory(
+  async updateProductCategory(
     id: string,
     updateProductCategoryInput: UpdateProductCategoryInput,
   ): Promise<ProductCategory> {
-    throw new Error('Method not implemented.');
+    await this.getProductCategoryById(id);
+    const newProductCategory = await this._repository.preload({
+      ...updateProductCategoryInput,
+    });
+    if (!newProductCategory) {
+      return this._exceptionsService.notFound({
+        message: 'The ProductCategory could not be preloaded',
+      });
+    }
+    return this._repository.save(newProductCategory);
   }
-  removeProductCategory(id: string): Promise<ProductCategory> {
-    throw new Error('Method not implemented.');
+  async removeProductCategory(id: string): Promise<ProductCategory> {
+    const productCategory = await this.getProductCategoryById(id);
+    return this._repository.remove(productCategory);
   }
 }

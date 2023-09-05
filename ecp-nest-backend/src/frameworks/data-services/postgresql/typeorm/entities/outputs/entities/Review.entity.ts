@@ -27,6 +27,9 @@ export class Review {
   @Column('smallint', { name: 'rating_value' })
   ratingValue: number;
 
+  @Column('text', { name: 'content', nullable: true })
+  content?: string;
+
   @Column('boolean', { name: 'visible', nullable: true, default: true })
   visible?: boolean;
 

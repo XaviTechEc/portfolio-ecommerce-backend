@@ -51,6 +51,7 @@ export class PaymentMethodsRepository
         message: 'The PaymentMethod could not be preloaded',
       });
     }
+    return this._repository.save(newPaymentMethod);
   }
 
   async removePaymentMethod(id: string): Promise<PaymentMethod> {

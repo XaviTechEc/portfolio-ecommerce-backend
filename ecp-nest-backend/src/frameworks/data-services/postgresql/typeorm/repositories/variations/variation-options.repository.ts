@@ -6,41 +6,90 @@ import {
 } from 'src/core/dtos';
 import { Repository } from 'typeorm';
 import { VariationOption } from '../../entities/outputs/entities';
+import { LoggerService } from '@nestjs/common';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class VariationOptionsRepository
   implements IVariationOptionsRepository<VariationOption>
 {
   private _repository: Repository<VariationOption>;
+  private _loggerService: LoggerService;
+  private _exceptionsService: ExceptionsService;
 
-  constructor(repository: Repository<VariationOption>) {
+  constructor(
+    repository: Repository<VariationOption>,
+    loggerService: LoggerService,
+    exceptionsService: ExceptionsService,
+  ) {
     this._repository = repository;
+    this._loggerService = loggerService;
+    this._exceptionsService = exceptionsService;
   }
-  getAllVariationOptions(
+
+  async getAllVariationOptions(
     args?: IGenericArgs<VariationOption>,
   ): Promise<VariationOption[]> {
-    throw new Error('Method not implemented.');
+    let qb = this._repository.createQueryBuilder('variation_option');
+
+    if (args) {
+      const { paginationArgs, searchArgs } = args;
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        qb = qb.take(limit).skip(offset);
+      }
+
+      if (searchArgs) {
+        const { searchTerm } = searchArgs;
+
+        qb = qb.where(`value ILIKE LOWER(:value)`).setParameters({
+          value: `%${searchTerm}%`,
+        });
+      }
+    }
+
+    const variationOptions = await qb.getMany();
+    return variationOptions;
   }
-  getOneVariationOptionBy(
+  async getOneVariationOptionBy(
     fields: Partial<VariationOption>,
     args?: IGenericArgs<VariationOption>,
   ): Promise<VariationOption> {
     throw new Error('Method not implemented.');
   }
-  getVariationOptionById(id: string): Promise<VariationOption> {
-    throw new Error('Method not implemented.');
+  async getVariationOptionById(id: string): Promise<VariationOption> {
+    const variationOptionFound = await this._repository.findOneBy({ id });
+    if (!variationOptionFound) {
+      return this._exceptionsService.notFound({
+        message: `The variationOption with id ${id} could not be found`,
+      });
+    }
+    return this._repository.save(variationOptionFound);
   }
-  createVariationOption(
+  async createVariationOption(
     createVariationOptionInput: CreateVariationOptionInput,
   ): Promise<VariationOption> {
-    throw new Error('Method not implemented.');
+    const newVariationOption = this._repository.create({
+      ...createVariationOptionInput,
+    });
+    return newVariationOption;
   }
-  updateVariationOption(
+  async updateVariationOption(
     id: string,
     updateVariationOptionInput: UpdateVariationOptionInput,
   ): Promise<VariationOption> {
-    throw new Error('Method not implemented.');
+    await this.getVariationOptionById(id);
+    const newVariationOption = await this._repository.preload({
+      ...updateVariationOptionInput,
+    });
+    if (!newVariationOption) {
+      return this._exceptionsService.notFound({
+        message: 'The VariationOption could not be preloaded',
+      });
+    }
+    return this._repository.save(newVariationOption);
   }
-  removeVariationOption(id: string): Promise<VariationOption> {
-    throw new Error('Method not implemented.');
+  async removeVariationOption(id: string): Promise<VariationOption> {
+    const variationOption = await this.getVariationOptionById(id);
+    return this._repository.remove(variationOption);
   }
 }

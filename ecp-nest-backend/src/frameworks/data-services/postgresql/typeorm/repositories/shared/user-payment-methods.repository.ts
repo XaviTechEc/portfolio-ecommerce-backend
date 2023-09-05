@@ -6,47 +6,88 @@ import {
   CreateUserPaymentMethodInput,
   UpdateUserPaymentMethodInput,
 } from 'src/core/dtos';
+import { LoggerService } from '@nestjs/common';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class UserPaymentMethodsRepository
   implements IUserPaymentMethodsRepository<UserPaymentMethod>
 {
   private _repository: Repository<UserPaymentMethod>;
+  private _loggerService: LoggerService;
+  private _exceptionsService: ExceptionsService;
 
-  constructor(repository: Repository<UserPaymentMethod>) {
+  constructor(
+    repository: Repository<UserPaymentMethod>,
+    loggerService: LoggerService,
+    exceptionsService: ExceptionsService,
+  ) {
     this._repository = repository;
+    this._loggerService = loggerService;
+    this._exceptionsService = exceptionsService;
   }
-  getAllUserPaymentMethods(
+
+  async getAllUserPaymentMethods(
     args?: IGenericArgs<UserPaymentMethod>,
   ): Promise<UserPaymentMethod[]> {
-    throw new Error('Method not implemented.');
+    let qb = this._repository.createQueryBuilder('userPaymentMethod');
+
+    if (args) {
+      const { paginationArgs } = args;
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        qb = qb.take(limit).skip(offset);
+      }
+    }
+
+    const userPaymentMethods = await qb.getMany();
+    return userPaymentMethods;
   }
-  getAllUserPaymentMethodsBy(
+  async getAllUserPaymentMethodsBy(
     fields: Partial<UserPaymentMethod>,
     args?: IGenericArgs<UserPaymentMethod>,
   ): Promise<UserPaymentMethod[]> {
     throw new Error('Method not implemented.');
   }
-  getUserPaymentMethodBy(
+  async getUserPaymentMethodBy(
     fields: Partial<UserPaymentMethod>,
     args?: IGenericArgs<UserPaymentMethod>,
   ): Promise<UserPaymentMethod> {
     throw new Error('Method not implemented.');
   }
-  getUserPaymentMethodById(id: string): Promise<UserPaymentMethod> {
-    throw new Error('Method not implemented.');
+  async getUserPaymentMethodById(id: string): Promise<UserPaymentMethod> {
+    const userPaymentMethodFound = await this._repository.findOneBy({ id });
+    if (!userPaymentMethodFound) {
+      return this._exceptionsService.notFound({
+        message: `The userPaymentMethod with id ${id} could not be found`,
+      });
+    }
+    return this._repository.save(userPaymentMethodFound);
   }
-  createUserPaymentMethod(
+  async createUserPaymentMethod(
     createUserPaymentMethodInput: CreateUserPaymentMethodInput,
   ): Promise<UserPaymentMethod> {
-    throw new Error('Method not implemented.');
+    const newUserPaymentMethod = this._repository.create({
+      ...createUserPaymentMethodInput,
+    });
+    return newUserPaymentMethod;
   }
-  updateUserPaymentMethod(
+  async updateUserPaymentMethod(
     id: string,
     updateUserPaymentMethodInput: UpdateUserPaymentMethodInput,
   ): Promise<UserPaymentMethod> {
-    throw new Error('Method not implemented.');
+    await this.getUserPaymentMethodById(id);
+    const newUserPaymentMethod = await this._repository.preload({
+      ...updateUserPaymentMethodInput,
+    });
+    if (!newUserPaymentMethod) {
+      return this._exceptionsService.notFound({
+        message: 'The UserPaymentMethod could not be preloaded',
+      });
+    }
+    return this._repository.save(newUserPaymentMethod);
   }
-  removeUserPaymentMethod(id: string): Promise<UserPaymentMethod> {
-    throw new Error('Method not implemented.');
+  async removeUserPaymentMethod(id: string): Promise<UserPaymentMethod> {
+    const userPaymentMethod = await this.getUserPaymentMethodById(id);
+    return this._repository.remove(userPaymentMethod);
   }
 }

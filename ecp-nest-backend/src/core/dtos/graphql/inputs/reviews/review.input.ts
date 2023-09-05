@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsPositive,
+  IsString,
   IsUUID,
   Max,
   Min,
@@ -35,6 +36,11 @@ export class CreateReviewInput {
   @IsOptional()
   @IsBoolean()
   visible?: boolean;
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  content?: string;
 }
 
 @InputType()

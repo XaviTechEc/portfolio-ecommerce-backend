@@ -55,6 +55,7 @@ export class ImagesRepository implements IImageRepository<Image> {
         message: 'The Image could not be preloaded',
       });
     }
+    return this._repository.remove(newImage);
   }
   async removeImage(id: string): Promise<Image> {
     const image = await this.getImageById(id);

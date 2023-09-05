@@ -34,7 +34,6 @@ export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
         const { searchTerm, searchFields } = searchArgs;
 
         if (searchTerm) {
-          if (searchTerm.trim.length === 0) return;
           if (!searchFields || searchFields.length === 0) {
             return this._exceptionsService.badRequest({
               message: 'Search fields are required',

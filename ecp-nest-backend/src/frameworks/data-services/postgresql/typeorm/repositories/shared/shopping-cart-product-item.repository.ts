@@ -6,35 +6,87 @@ import {
   CreateShoppingCartProductItemInput,
   UpdateShoppingCartProductItemInput,
 } from 'src/core/dtos';
+import { LoggerService } from '@nestjs/common';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class ShoppingCartProductItemsRepository
   implements IShoppingCartProductItemRepository<ShoppingCartProductItem>
 {
   private _repository: Repository<ShoppingCartProductItem>;
+  private _loggerService: LoggerService;
+  private _exceptionsService: ExceptionsService;
 
-  constructor(repository: Repository<ShoppingCartProductItem>) {
+  constructor(
+    repository: Repository<ShoppingCartProductItem>,
+    loggerService: LoggerService,
+    exceptionsService: ExceptionsService,
+  ) {
     this._repository = repository;
+    this._loggerService = loggerService;
+    this._exceptionsService = exceptionsService;
   }
-  getAllShoppingCartProductItem(
+
+  async getAllShoppingCartProductItem(
     args?: IGenericArgs<ShoppingCartProductItem>,
   ): Promise<ShoppingCartProductItem[]> {
-    throw new Error('Method not implemented.');
+    let qb = this._repository.createQueryBuilder('shoppingCartPI');
+
+    if (args) {
+      const { paginationArgs } = args;
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        qb = qb.take(limit).skip(offset);
+      }
+    }
+
+    const shoppingCartPIs = await qb.getMany();
+    return shoppingCartPIs;
   }
-  getShoppingCartProductItemById(id: string): Promise<ShoppingCartProductItem> {
-    throw new Error('Method not implemented.');
+
+  async getShoppingCartProductItemById(
+    id: string,
+  ): Promise<ShoppingCartProductItem> {
+    const shoppingCartProductItemFound = await this._repository.findOneBy({
+      id,
+    });
+    if (!shoppingCartProductItemFound) {
+      return this._exceptionsService.notFound({
+        message: `The shoppingCartProductItem with id ${id} could not be found`,
+      });
+    }
+    return this._repository.save(shoppingCartProductItemFound);
   }
-  createShoppingCartProductItem(
+
+  async createShoppingCartProductItem(
     createShoppingCartProductItemInput: CreateShoppingCartProductItemInput,
   ): Promise<ShoppingCartProductItem> {
-    throw new Error('Method not implemented.');
+    const newShoppingCartProductItem = this._repository.create({
+      ...createShoppingCartProductItemInput,
+    });
+    return newShoppingCartProductItem;
   }
-  updateShoppingCartProductItem(
+
+  async updateShoppingCartProductItem(
     id: string,
     updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput,
   ): Promise<ShoppingCartProductItem> {
-    throw new Error('Method not implemented.');
+    await this.getShoppingCartProductItemById(id);
+    const newShoppingCartProductItem = await this._repository.preload({
+      ...updateShoppingCartProductItemInput,
+    });
+    if (!newShoppingCartProductItem) {
+      return this._exceptionsService.notFound({
+        message: 'The ShoppingCartProductItem could not be preloaded',
+      });
+    }
+    return this._repository.save(newShoppingCartProductItem);
   }
-  removeShoppingCartProductItem(id: string): Promise<ShoppingCartProductItem> {
-    throw new Error('Method not implemented.');
+
+  async removeShoppingCartProductItem(
+    id: string,
+  ): Promise<ShoppingCartProductItem> {
+    const shoppingCartProductItem =
+      await this.getShoppingCartProductItemById(id);
+    return this._repository.remove(shoppingCartProductItem);
   }
 }

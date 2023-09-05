@@ -32,28 +32,25 @@ export class CommentsRepository implements ICommentsRepository<Comment> {
       }
 
       if (searchArgs) {
-        const { searchTerm, searchFields } = searchArgs;
-        if (searchTerm.trim.length === 0) return;
-        if (!searchFields || searchFields.length === 0) {
-          return this._exceptionsService.badRequest({
-            message: 'Search fields are required',
-            code_error: 404,
-          });
-        }
+        const { searchTerm } = searchArgs;
 
-        searchFields.forEach((sf) => {
-          if (sf === 'content') {
-            qb = qb.andWhere(`${sf} ILIKE LOWER(:content)`, {
-              content: `%${searchTerm}%`,
-            });
-          }
+        qb = qb.where(`content ILIKE LOWER(:content)`).setParameters({
+          content: `%${searchTerm}%`,
         });
       }
     }
+
+    const comments = await qb.getMany();
+    return comments;
   }
 
   async getCommentById(id: string): Promise<Comment> {
     const commentFound = await this._repository.findOneBy({ id });
+    if (!commentFound) {
+      return this._exceptionsService.notFound({
+        message: `The comment with id ${id} could not be found`,
+      });
+    }
     return this._repository.save(commentFound);
   }
 
@@ -77,6 +74,7 @@ export class CommentsRepository implements ICommentsRepository<Comment> {
         message: 'The comment could not be preloaded',
       });
     }
+    return this._repository.save(newComment);
   }
 
   async removeComment(id: string): Promise<Comment> {
