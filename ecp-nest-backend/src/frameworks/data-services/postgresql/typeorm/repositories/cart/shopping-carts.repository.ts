@@ -2,9 +2,16 @@ import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository
 import { IShoppingCartsRepository } from 'src/core/abstracts/repositories';
 import {
   CreateShoppingCartInput,
+  PaginationArgs,
   UpdateShoppingCartInput,
 } from 'src/core/dtos';
-import { FindManyOptions, Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { ShoppingCart } from '../../entities/outputs/entities';
 import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -24,6 +31,40 @@ export class ShoppingCartsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getShoppingCartsBy(
+    term: string,
+    fields: (keyof ShoppingCart)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ShoppingCart[]> {
+    let queryOptions: FindManyOptions<ShoppingCart> = {};
+    let relations: FindOptionsRelations<ShoppingCart> = {};
+    let where: FindOptionsWhere<ShoppingCart> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'user') {
+        relations = { ...relations, user: true };
+        where = {
+          ...where,
+          user: [
+            { username: ILike(`%${term}%`) },
+            { email: ILike(`%${term}%`) },
+            { fullName: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const shoppingCartsBy = await this._repository.find(queryOptions);
+    return shoppingCartsBy;
   }
   async getAllShoppingCarts(
     args: IGenericArgs<ShoppingCart>,

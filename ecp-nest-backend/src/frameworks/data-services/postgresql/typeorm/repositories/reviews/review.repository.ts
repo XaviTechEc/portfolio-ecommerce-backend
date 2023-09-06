@@ -3,6 +3,8 @@ import { IReviewsRepository } from 'src/core/abstracts/repositories';
 import { CreateReviewInput, UpdateReviewInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
 import { Review } from '../../entities/outputs/entities';
+import { LoggerService } from '@nestjs/common';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class ReviewsRepository implements IReviewsRepository<Review> {
   private _repository: Repository<Review>;

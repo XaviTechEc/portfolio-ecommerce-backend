@@ -1,5 +1,9 @@
-import { CreateShopOrderInput, UpdateShopOrderInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
+import {
+  CreateShopOrderInput,
+  IGenericArgs,
+  PaginationArgs,
+  UpdateShopOrderInput,
+} from 'src/core/dtos';
 
 export abstract class IShopOrdersRepository<T> {
   abstract getAllShopOrders(args?: IGenericArgs<T>): Promise<T[]>;
@@ -14,4 +18,10 @@ export abstract class IShopOrdersRepository<T> {
     updateShopOrderInput: UpdateShopOrderInput,
   ): Promise<T>;
   abstract removeShopOrder(id: string): Promise<T>;
+
+  abstract getShopOrdersBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

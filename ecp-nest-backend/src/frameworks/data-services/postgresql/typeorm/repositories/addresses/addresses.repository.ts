@@ -1,7 +1,17 @@
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IAddressesRepository } from 'src/core/abstracts/repositories';
-import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
-import { Repository } from 'typeorm';
+import {
+  CreateAddressInput,
+  PaginationArgs,
+  UpdateAddressInput,
+} from 'src/core/dtos';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { Address } from '../../entities/outputs/entities';
 import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -19,6 +29,40 @@ export class AddressesRepository implements IAddressesRepository<Address> {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getAddressesBy(
+    term: string,
+    fields: (keyof Address)[],
+    paginationArgs?: PaginationArgs,
+  ): Promise<Address[]> {
+    let queryOptions: FindManyOptions<Address> = {};
+    let relations: FindOptionsRelations<Address> = {};
+    let where: FindOptionsWhere<Address> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'country') {
+        relations = { ...relations, country: true };
+        where = {
+          ...where,
+          country: [{ longName: ILike(`%${term}%`) }, { id: term }],
+        };
+      }
+
+      if (field === 'location') {
+        relations = { ...relations, location: true };
+        where = { ...where, location: { id: term } };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const addressesBy = await this._repository.find(queryOptions);
+    return addressesBy;
   }
 
   async getAllAddresses(args?: IGenericArgs<Address>): Promise<Address[]> {

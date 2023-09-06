@@ -1,7 +1,17 @@
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { ICommentsRepository } from 'src/core/abstracts/repositories';
-import { CreateCommentInput, UpdateCommentInput } from 'src/core/dtos';
-import { Repository } from 'typeorm';
+import {
+  CreateCommentInput,
+  PaginationArgs,
+  UpdateCommentInput,
+} from 'src/core/dtos';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { Comment } from '../../entities/outputs/entities';
 import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -19,6 +29,56 @@ export class CommentsRepository implements ICommentsRepository<Comment> {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getCommentsBy(
+    term: string,
+    fields: (keyof Comment)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<Comment[]> {
+    let queryOptions: FindManyOptions<Comment> = {};
+    let relations: FindOptionsRelations<Comment> = {};
+    let where: FindOptionsWhere<Comment> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'user') {
+        relations = { ...relations, user: true };
+        where = {
+          ...where,
+          user: [
+            { username: ILike(`%${term}%`) },
+            { email: ILike(`%${term}%`) },
+            { fullName: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'review') {
+        relations = { ...relations, review: true };
+        where = {
+          ...where,
+          review: [{ content: ILike(`%${term}%`) }, { id: term }],
+        };
+      }
+
+      if (field === 'comment') {
+        relations = { ...relations, comment: true };
+        where = {
+          ...where,
+          comment: [{ content: ILike(`%${term}%`) }, { id: term }],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const commentsBy = await this._repository.find(queryOptions);
+    return commentsBy;
   }
 
   async getAllComments(args?: IGenericArgs<Comment>): Promise<Comment[]> {

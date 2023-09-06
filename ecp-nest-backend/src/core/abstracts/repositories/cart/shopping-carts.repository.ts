@@ -1,8 +1,9 @@
 import {
+  IGenericArgs,
   CreateShoppingCartInput,
   UpdateShoppingCartInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class IShoppingCartsRepository<T> {
   abstract getAllShoppingCarts(args: IGenericArgs<T>): Promise<T[]>;
@@ -15,4 +16,10 @@ export abstract class IShoppingCartsRepository<T> {
     updateShoppingCartInput: UpdateShoppingCartInput,
   ): Promise<T>;
   abstract removeShoppingCart(id: string): Promise<T>;
+
+  abstract getShoppingCartsBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

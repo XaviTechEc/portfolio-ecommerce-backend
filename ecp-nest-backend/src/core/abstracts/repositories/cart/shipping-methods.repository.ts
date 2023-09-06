@@ -1,9 +1,8 @@
 import {
+  IGenericArgs,
   CreateShippingMethodInput,
   UpdateShippingMethodInput,
 } from 'src/core/dtos';
-import { IShippingMethod } from 'src/core/entities';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class IShippingMethodsRepository<T> {
   abstract getAllShippingMethods(args?: IGenericArgs<T>): Promise<T[]>;

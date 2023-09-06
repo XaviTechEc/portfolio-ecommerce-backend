@@ -1,10 +1,20 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IShopOrdersRepository } from 'src/core/abstracts/repositories';
-import { CreateShopOrderInput, UpdateShopOrderInput } from 'src/core/dtos';
-import { FindManyOptions, Repository } from 'typeorm';
-import { ShopOrder } from '../../entities/outputs/entities';
 import { LoggerService } from '@nestjs/common';
+import { IShopOrdersRepository } from 'src/core/abstracts/repositories';
+import {
+  CreateShopOrderInput,
+  PaginationArgs,
+  UpdateShopOrderInput,
+} from 'src/core/dtos';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
+import { ShopOrder } from '../../entities/outputs/entities';
 
 export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
   private _repository: Repository<ShopOrder>;
@@ -19,6 +29,69 @@ export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getShopOrdersBy(
+    term: string,
+    fields: (keyof ShopOrder)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ShopOrder[]> {
+    let queryOptions: FindManyOptions<ShopOrder> = {};
+    let relations: FindOptionsRelations<ShopOrder> = {};
+    let where: FindOptionsWhere<ShopOrder> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'user') {
+        relations = { ...relations, user: true };
+        where = {
+          ...where,
+          user: [
+            { username: ILike(`%${term}%`) },
+            { email: ILike(`%${term}%`) },
+            { fullName: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'address') {
+        relations = { ...relations, address: true };
+        where = {
+          ...where,
+          address: [
+            { addressLine1: ILike(`%${term}%`) },
+            { addressLine2: ILike(`%${term}%`) },
+            { reference: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'shippingMethod') {
+        relations = { ...relations, shippingMethod: true };
+        where = {
+          ...where,
+          shippingMethod: [{ name: ILike(`%${term}%`) }, { id: term }],
+        };
+      }
+
+      if (field === 'orderStatus') {
+        relations = { ...relations, orderStatus: true };
+        where = {
+          ...where,
+          orderStatus: [{ id: term }],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const shopOrdersBy = await this._repository.find(queryOptions);
+    return shopOrdersBy;
   }
   async getAllShopOrders(args?: IGenericArgs<ShopOrder>): Promise<ShopOrder[]> {
     let queryOptions: FindManyOptions<ShopOrder> = {};

@@ -1,10 +1,20 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IOrderLinesRepository } from 'src/core/abstracts/repositories';
-import { CreateOrderLineInput, UpdateOrderLineInput } from 'src/core/dtos';
-import { FindManyOptions, Repository, SelectQueryBuilder } from 'typeorm';
-import { OrderLine } from '../../entities/outputs/entities';
 import { LoggerService } from '@nestjs/common';
+import { IOrderLinesRepository } from 'src/core/abstracts/repositories';
+import {
+  CreateOrderLineInput,
+  PaginationArgs,
+  UpdateOrderLineInput,
+} from 'src/core/dtos';
+import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
+import { OrderLine } from '../../entities/outputs/entities';
 
 export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
   private _repository: Repository<OrderLine>;
@@ -19,6 +29,44 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getOrderLinesBy(
+    term: string,
+    fields: (keyof OrderLine)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<OrderLine[]> {
+    let queryOptions: FindManyOptions<OrderLine> = {};
+    let relations: FindOptionsRelations<OrderLine> = {};
+    let where: FindOptionsWhere<OrderLine> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'productItem') {
+        relations = { ...relations, productItem: true };
+        where = {
+          ...where,
+          productItem: [
+            { sku: ILike(`%${term}%`) },
+            { slug: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'shopOrder') {
+        relations = { ...relations, shopOrder: true };
+        where = { ...where, shopOrder: { id: term } };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const orderLinesBy = await this._repository.find(queryOptions);
+    return orderLinesBy;
   }
   async getAllOrderLines(args?: IGenericArgs<OrderLine>): Promise<OrderLine[]> {
     let queryOptions: FindManyOptions<OrderLine> = {};
@@ -35,15 +83,6 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     return orderLines;
   }
 
-  async getAllOrderLinesBy(
-    fields: Partial<OrderLine>,
-    args?: IGenericArgs<OrderLine>,
-  ): Promise<OrderLine[]> {
-    const query = this._findOrdersByQuery(fields, args);
-    const orderLinesFound = await query.getMany();
-    return orderLinesFound;
-  }
-
   async getOrderLineById(id: string): Promise<OrderLine> {
     const orderLine = await this._repository.findOneBy({ id });
     if (!orderLine) {
@@ -52,15 +91,6 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
       });
     }
     return orderLine;
-  }
-
-  async getOneOrderLineBy(
-    fields: Partial<OrderLine>,
-    args?: IGenericArgs<OrderLine>,
-  ): Promise<OrderLine> {
-    const query = this._findOrdersByQuery(fields, args);
-    const orderLineFound = await query.getOne();
-    return orderLineFound;
   }
 
   async createOrderLine(
@@ -89,49 +119,5 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
   async removeOrderLine(id: string): Promise<OrderLine> {
     const orderLine = await this.getOrderLineById(id);
     return this._repository.remove(orderLine);
-  }
-
-  private _findOrdersByQuery(
-    fields?: Partial<OrderLine>,
-    args?: IGenericArgs<OrderLine>,
-  ): SelectQueryBuilder<OrderLine> {
-    let qb = this._repository.createQueryBuilder('orderLine');
-    if (fields) {
-      qb = qb.where({ ...fields });
-    }
-
-    // TODO: Change this impl
-    if (args) {
-      const { searchArgs, paginationArgs } = args;
-
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
-      }
-
-      if (searchArgs) {
-        const { searchTerm, searchFields } = searchArgs;
-
-        qb = qb
-          .leftJoin('orderLine.product_item_id', 'product_item')
-          .leftJoin('orderLine.shop_order_id', 'shop_order');
-
-        searchFields.forEach((sf) => {
-          if (sf === 'product_item.sku') {
-            qb = qb.andWhere('product_item.sku ILIKE LOWER(:sku)', {
-              sku: `%${searchTerm}%`,
-            });
-          }
-
-          if (sf === 'product_item.slug') {
-            qb = qb.andWhere('product_item.slug ILIKE LOWER(:slug)', {
-              slug: `%${searchTerm}%`,
-            });
-          }
-        });
-      }
-    }
-
-    return qb;
   }
 }

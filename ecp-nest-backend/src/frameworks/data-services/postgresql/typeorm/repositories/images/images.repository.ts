@@ -1,7 +1,18 @@
 import { IImageRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { Image } from '../../entities/outputs/entities';
-import { CreateImageDto, IGenericArgs, UpdateImageDto } from 'src/core/dtos';
+import {
+  CreateImageDto,
+  IGenericArgs,
+  PaginationArgs,
+  UpdateImageDto,
+} from 'src/core/dtos';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 import { LoggerService } from '@nestjs/common';
 
@@ -18,6 +29,77 @@ export class ImagesRepository implements IImageRepository<Image> {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getImagesBy(
+    term: string,
+    fields: (keyof Image)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<Image[]> {
+    let queryOptions: FindManyOptions<Image> = {};
+    let relations: FindOptionsRelations<Image> = {};
+    let where: FindOptionsWhere<Image> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'product') {
+        relations = { ...relations, product: true };
+        where = {
+          ...where,
+          product: [
+            { title: ILike(`%${term}%`) },
+            { subtitle: ILike(`%${term}%`) },
+            { description: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'productItem') {
+        relations = { ...relations, productItem: true };
+        where = {
+          ...where,
+          productItem: [
+            { sku: ILike(`%${term}%`) },
+            { slug: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'category') {
+        relations = { ...relations, category: true };
+        where = {
+          ...where,
+          category: [
+            { value: ILike(`%${term}%`) },
+            { description: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'user') {
+        relations = { ...relations, user: true };
+        where = {
+          ...where,
+          user: [
+            { username: ILike(`%${term}%`) },
+            { email: ILike(`%${term}%`) },
+            { fullName: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const imagesBy = await this._repository.find(queryOptions);
+    return imagesBy;
   }
 
   async getAllImages(args?: IGenericArgs<Image>): Promise<Image[]> {

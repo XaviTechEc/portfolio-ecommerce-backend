@@ -1,9 +1,10 @@
 import { IPaymentMethodsRepository } from 'src/core/abstracts/repositories';
 
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { PaymentMethod } from '../../entities/outputs/entities';
 import {
   CreatePaymentMethodInput,
+  IGenericArgs,
   UpdatePaymentMethodInput,
 } from 'src/core/dtos';
 import { LoggerService } from '@nestjs/common';
@@ -24,6 +25,21 @@ export class PaymentMethodsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getAllPaymentMethods(
+    args?: IGenericArgs<PaymentMethod>,
+  ): Promise<PaymentMethod[]> {
+    let queryOptions: FindManyOptions<PaymentMethod> = {};
+    if (args) {
+      const { paginationArgs } = args;
+
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
+      }
+    }
+    const paymentMethods = await this._repository.find(queryOptions);
+    return paymentMethods;
   }
 
   async getPaymentMethodById(id: string): Promise<PaymentMethod> {
