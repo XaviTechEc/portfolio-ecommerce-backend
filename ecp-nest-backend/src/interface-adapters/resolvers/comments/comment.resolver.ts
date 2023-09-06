@@ -16,7 +16,7 @@ export class CommentResolver {
   @Query(() => [CommentType], { name: 'comments' })
   getAllComments(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IComment>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IComment[]> {
     return this.commentUseCases.getAllComments({
       paginationArgs,

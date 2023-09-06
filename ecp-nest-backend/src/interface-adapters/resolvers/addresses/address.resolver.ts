@@ -13,7 +13,7 @@ export class AddressResolver {
   @Query(() => [AddressType], { name: 'addresses' })
   getAllAddresses(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IAddress>,
+    @Args() searchArgs: SearchArgs,
   ) {
     return this.addressUseCases.getAllAddresses({ paginationArgs, searchArgs });
   }

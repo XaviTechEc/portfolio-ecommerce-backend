@@ -17,7 +17,7 @@ export class UserAddressResolver {
   @Query(() => [UserAddressType], { name: 'userAddresses' })
   getAllUserAddress(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IUserAddress>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IUserAddress[]> {
     return this.userAddressUseCases.getAllUserAddress({
       paginationArgs,

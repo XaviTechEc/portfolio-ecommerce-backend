@@ -17,7 +17,7 @@ export class TagResolver {
   @Query(() => [TagType], { name: 'tags' })
   getAllTag(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<ITag>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<ITag[]> {
     return this.tagUseCases.getAllTags({
       paginationArgs,

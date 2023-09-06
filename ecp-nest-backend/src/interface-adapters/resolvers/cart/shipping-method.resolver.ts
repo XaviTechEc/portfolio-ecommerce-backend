@@ -17,7 +17,7 @@ export class ShippingMethodResolver {
   @Query(() => [ShippingMethodType], { name: 'shippingMethod' })
   getAllShippingMethod(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShippingMethod>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IShippingMethod[]> {
     return this.shippingMethodUseCases.getAllShippingMethods({
       paginationArgs,

@@ -17,7 +17,7 @@ export class ShopOrderResolver {
   @Query(() => [ShopOrderType], { name: 'shopOrders' })
   getAllShopOrders(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShopOrder>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IShopOrder[]> {
     return this.shopOrderUseCases.getAllShopOrders({
       paginationArgs,

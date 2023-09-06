@@ -17,7 +17,7 @@ export class CountryResolver {
   @Query(() => [CountryType], { name: 'countries' })
   getAllCountries(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<ICountry>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<ICountry[]> {
     return this.countryUseCases.getAllCountries({ paginationArgs, searchArgs });
   }

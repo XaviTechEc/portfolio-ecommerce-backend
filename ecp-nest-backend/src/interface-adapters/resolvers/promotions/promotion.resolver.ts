@@ -17,7 +17,7 @@ export class PromotionResolver {
   @Query(() => [PromotionType], { name: 'promotions' })
   getAllPromotion(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IPromotion>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IPromotion[]> {
     return this.promotionUseCases.getAllPromotions({
       paginationArgs,

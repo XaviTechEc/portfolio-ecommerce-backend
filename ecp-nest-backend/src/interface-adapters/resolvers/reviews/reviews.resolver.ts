@@ -17,7 +17,7 @@ export class ReviewResolver {
   @Query(() => [ReviewType], { name: 'reviews' })
   getAllReview(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IReview>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IReview[]> {
     return this.reviewUseCases.getAllReviews({
       paginationArgs,

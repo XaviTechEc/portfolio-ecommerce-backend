@@ -17,7 +17,7 @@ export class VariationResolver {
   @Query(() => [VariationType], { name: 'variations' })
   getAllVariation(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IVariation>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IVariation[]> {
     return this.variationUseCases.getAllVariations({
       paginationArgs,

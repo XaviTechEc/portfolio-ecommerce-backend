@@ -19,7 +19,7 @@ export class ProductConfigurationResolver {
   @Query(() => [ProductConfigurationType], { name: 'productConfigurations' })
   getAllProductConfiguration(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IProductConfiguration>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IProductConfiguration[]> {
     return this.productConfigurationUseCases.getAllProductConfiguration({
       paginationArgs,

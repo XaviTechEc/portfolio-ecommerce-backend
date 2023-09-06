@@ -17,7 +17,7 @@ export class ProductTagResolver {
   @Query(() => [ProductTagType], { name: 'productTags' })
   getAllProductTag(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IProductTag>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IProductTag[]> {
     return this.productTagUseCases.getAllProductTag({
       paginationArgs,

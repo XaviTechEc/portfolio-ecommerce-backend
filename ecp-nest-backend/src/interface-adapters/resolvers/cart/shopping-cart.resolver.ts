@@ -17,7 +17,7 @@ export class ShoppingCartResolver {
   @Query(() => [ShoppingCartType], { name: 'shoppingCarts' })
   getAllShoppingCarts(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShoppingCart>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IShoppingCart[]> {
     return this.shoppingCartUseCases.getAllShoppingCarts({
       paginationArgs,

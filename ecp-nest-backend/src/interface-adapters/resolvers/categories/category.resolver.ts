@@ -17,7 +17,7 @@ export class CategoryResolver {
   @Query(() => [CategoryType], { name: 'categories' })
   getAllCategories(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<ICategory>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<ICategory[]> {
     return this.categoryUseCases.getAllCategories({
       paginationArgs,

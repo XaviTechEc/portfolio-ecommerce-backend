@@ -17,7 +17,7 @@ export class CategoryPromotionResolver {
   @Query(() => [CategoryPromotionType], { name: 'categoryPromotions' })
   getAllCategoryPromotion(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<ICategoryPromotion>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<ICategoryPromotion[]> {
     return this.categoryPromotionUseCases.getAllCategoryPromotion({
       paginationArgs,

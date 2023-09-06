@@ -12,7 +12,7 @@ export class ImageResolver {
   @Query(() => [ImageType], { name: 'images' })
   getAllImages(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IImage>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IImage[]> {
     return this.imageUseCases.getAllImages({ paginationArgs, searchArgs });
   }

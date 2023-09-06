@@ -17,7 +17,7 @@ export class OrderStatusResolver {
   @Query(() => [OrderStatusType], { name: 'allOrderStatus' })
   getAllOrderStatus(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IOrderStatus>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IOrderStatus[]> {
     return this.orderStatusUseCases.getAllOrderStatus({
       paginationArgs,

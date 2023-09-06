@@ -17,7 +17,7 @@ export class ShopOrderLocationResolver {
   @Query(() => [ShopOrderLocationType], { name: 'shopOrderLocations' })
   getAllShopOrderLocation(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShopOrderLocation>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IShopOrderLocation[]> {
     return this.shopOrderLocationUseCases.getAllShopOrderLocation({
       paginationArgs,

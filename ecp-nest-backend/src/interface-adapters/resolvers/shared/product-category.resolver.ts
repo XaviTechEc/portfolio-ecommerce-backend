@@ -17,7 +17,7 @@ export class ProductCategoryResolver {
   @Query(() => [ProductCategoryType], { name: 'productCategories' })
   getAllProductCategory(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IProductCategory>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IProductCategory[]> {
     return this.productCategoryUseCases.getAllProductCategory({
       paginationArgs,

@@ -17,7 +17,7 @@ export class ProductPromotionResolver {
   @Query(() => [ProductPromotionType], { name: 'productPromotions' })
   getAllProductPromotion(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IProductPromotion>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IProductPromotion[]> {
     return this.productPromotionUseCases.getAllProductPromotion({
       paginationArgs,

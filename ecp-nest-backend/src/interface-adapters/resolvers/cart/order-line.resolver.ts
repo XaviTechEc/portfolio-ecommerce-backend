@@ -17,21 +17,9 @@ export class OrderLineResolver {
   @Query(() => [OrderLineType], { name: 'orderLines' })
   getAllOrderLines(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IOrderLine>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IOrderLine[]> {
     return this.orderLineUseCases.getAllOrderLines({
-      paginationArgs,
-      searchArgs,
-    });
-  }
-
-  @Query(() => [OrderLineType], { name: 'orderLinesBy' })
-  getAllOrderLinesBy(
-    fields: Partial<IOrderLine>,
-    @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IOrderLine>,
-  ): Promise<IOrderLine[]> {
-    return this.orderLineUseCases.getAllOrderLinesBy(fields, {
       paginationArgs,
       searchArgs,
     });
@@ -42,14 +30,6 @@ export class OrderLineResolver {
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
   ): Promise<IOrderLine> {
     return this.orderLineUseCases.getOrderLineById(id);
-  }
-
-  @Query(() => OrderLineType, { name: 'orderLineBy' })
-  getOneOrderLineBy(
-    fields: Partial<IOrderLine>,
-    @Args() searchArgs: SearchArgs<IOrderLine>,
-  ): Promise<IOrderLine> {
-    return this.orderLineUseCases.getOneOrderLineBy(fields, { searchArgs });
   }
 
   @Mutation(() => OrderLineType)

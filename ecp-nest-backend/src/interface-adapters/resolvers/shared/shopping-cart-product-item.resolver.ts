@@ -21,7 +21,7 @@ export class ShoppingCartProductItemResolver {
   })
   getAllShoppingCartProductItem(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShoppingCartProductItem>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IShoppingCartProductItem[]> {
     return this.shoppingCartProductItemUseCases.getAllShoppingCartProductItem({
       paginationArgs,

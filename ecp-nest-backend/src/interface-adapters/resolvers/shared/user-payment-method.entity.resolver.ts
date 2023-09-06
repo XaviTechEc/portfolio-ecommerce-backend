@@ -17,7 +17,7 @@ export class UserPaymentMethodResolver {
   @Query(() => [UserPaymentMethodType], { name: 'userPaymentMethods' })
   getAllUserPaymentMethod(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IUserPaymentMethod>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IUserPaymentMethod[]> {
     return this.userPaymentMethodUseCases.getAllUserPaymentMethods({
       paginationArgs,

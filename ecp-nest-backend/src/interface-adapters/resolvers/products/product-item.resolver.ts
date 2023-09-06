@@ -17,7 +17,7 @@ export class ProductItemResolver {
   @Query(() => [ProductItemType], { name: 'productItems' })
   getAllProductItems(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IProductItem>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IProductItem[]> {
     return this.productItemUseCases.getAllProductItems({
       paginationArgs,
