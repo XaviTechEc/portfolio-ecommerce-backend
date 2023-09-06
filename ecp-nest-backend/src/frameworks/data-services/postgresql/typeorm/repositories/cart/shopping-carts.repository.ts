@@ -30,9 +30,12 @@ export class ShoppingCartsRepository
   ): Promise<ShoppingCart[]> {
     let queryOptions: FindManyOptions<ShoppingCart> = {};
 
-    if (args?.paginationArgs) {
-      const { limit = 10, offset = 0 } = args.paginationArgs;
-      queryOptions = { take: limit, skip: offset };
+    if (args) {
+      const { paginationArgs } = args;
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
+      }
     }
 
     const shippingMethods = await this._repository.find(queryOptions);

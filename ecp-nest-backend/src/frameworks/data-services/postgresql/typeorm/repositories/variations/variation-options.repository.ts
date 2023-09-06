@@ -29,7 +29,7 @@ export class VariationOptionsRepository
   async getAllVariationOptions(
     args?: IGenericArgs<VariationOption>,
   ): Promise<VariationOption[]> {
-    let qb = this._repository.createQueryBuilder('variation_option');
+    let qb = this._repository.createQueryBuilder('variationOption');
 
     if (args) {
       const { paginationArgs, searchArgs } = args;
@@ -41,9 +41,11 @@ export class VariationOptionsRepository
       if (searchArgs) {
         const { searchTerm } = searchArgs;
 
-        qb = qb.where(`value ILIKE LOWER(:value)`).setParameters({
-          value: `%${searchTerm}%`,
-        });
+        qb = qb
+          .where(`variationOption.value ILIKE LOWER(:value)`)
+          .setParameters({
+            value: `%${searchTerm}%`,
+          });
       }
     }
 

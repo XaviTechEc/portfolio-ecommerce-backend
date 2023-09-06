@@ -32,42 +32,17 @@ export class AddressesRepository implements IAddressesRepository<Address> {
       }
 
       if (searchArgs) {
-        const { searchTerm, searchFields } = searchArgs;
+        const { searchTerm } = searchArgs;
         if (searchTerm) {
-          if (!searchFields || searchFields.length === 0) {
-            return this._exceptionsService.badRequest({
-              message: 'Search fields are required',
-              code_error: 404,
-            });
-          }
-
-          // Joins
           qb = qb
-            .leftJoin('address.country_id', 'country')
-            .leftJoin('address.location_id', 'location')
-            .where({});
-
-          searchFields.forEach((sf) => {
-            if (!sf) return;
-            if (sf === 'country.code') {
-              qb = qb.andWhere('UPPER(country.code) = UPPER(:code)', {
-                code: searchTerm,
-              });
-            }
-
-            if (sf === 'country.long_name') {
-              qb = qb.andWhere(
-                'LOWER(country.long_name) LIKE LOWER(:longName)',
-                {
-                  longName: `%${searchTerm}%`,
-                },
-              );
-            }
-
-            qb = qb.andWhere(`LOWER(${sf}) LIKE LOWER(:searchTerm)`, {
-              searchTerm: `%${searchTerm}%`,
+            .where('address.reference ILIKE LOWER(:reference)')
+            .orWhere('address.address_line1 ILIKE LOWER(:ad1)')
+            .orWhere('address.address_line2 ILIKE LOWER(:ad2)')
+            .setParameters({
+              reference: `%${searchTerm}%`,
+              address_line1: `%${searchTerm}%`,
+              address_line2: `%${searchTerm}%`,
             });
-          });
         }
       }
     }

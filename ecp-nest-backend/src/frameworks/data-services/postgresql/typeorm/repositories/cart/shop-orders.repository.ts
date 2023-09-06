@@ -1,7 +1,7 @@
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IShopOrdersRepository } from 'src/core/abstracts/repositories';
 import { CreateShopOrderInput, UpdateShopOrderInput } from 'src/core/dtos';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { ShopOrder } from '../../entities/outputs/entities';
 import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -21,35 +21,18 @@ export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
     this._exceptionsService = exceptionsService;
   }
   async getAllShopOrders(args?: IGenericArgs<ShopOrder>): Promise<ShopOrder[]> {
-    let qb = this._repository.createQueryBuilder('shopOrders');
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
+    let queryOptions: FindManyOptions<ShopOrder> = {};
 
+    if (args) {
+      const { paginationArgs } = args;
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+        queryOptions = { take: limit, skip: offset };
       }
-
-      if (searchArgs) {
-        const { searchTerm, searchFields } = searchArgs;
-
-        if (searchTerm) {
-          if (!searchFields || searchFields.length === 0) {
-            return this._exceptionsService.badRequest({
-              message: 'Search fields are required',
-              code_error: 404,
-            });
-          }
-
-          // Joins
-          qb = qb.where({});
-          // TODO: Joins and search fields
-        }
-      }
-
-      const shopOrdersFound = await qb.getMany();
-      return shopOrdersFound;
     }
+
+    const shippingMethods = await this._repository.find(queryOptions);
+    return shippingMethods;
   }
 
   async getShopOrderById(id: string): Promise<ShopOrder> {

@@ -1,7 +1,7 @@
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IOrderLinesRepository } from 'src/core/abstracts/repositories';
 import { CreateOrderLineInput, UpdateOrderLineInput } from 'src/core/dtos';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { FindManyOptions, Repository, SelectQueryBuilder } from 'typeorm';
 import { OrderLine } from '../../entities/outputs/entities';
 import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
@@ -21,10 +21,20 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     this._exceptionsService = exceptionsService;
   }
   async getAllOrderLines(args?: IGenericArgs<OrderLine>): Promise<OrderLine[]> {
-    const query = this._findOrdersByQuery(null, args);
-    const orderLinesFound = await query.getMany();
-    return orderLinesFound;
+    let queryOptions: FindManyOptions<OrderLine> = {};
+
+    if (args) {
+      const { paginationArgs } = args;
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
+      }
+    }
+
+    const orderLines = await this._repository.find(queryOptions);
+    return orderLines;
   }
+
   async getAllOrderLinesBy(
     fields: Partial<OrderLine>,
     args?: IGenericArgs<OrderLine>,
@@ -33,6 +43,7 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     const orderLinesFound = await query.getMany();
     return orderLinesFound;
   }
+
   async getOrderLineById(id: string): Promise<OrderLine> {
     const orderLine = await this._repository.findOneBy({ id });
     if (!orderLine) {
@@ -42,6 +53,7 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     }
     return orderLine;
   }
+
   async getOneOrderLineBy(
     fields: Partial<OrderLine>,
     args?: IGenericArgs<OrderLine>,
@@ -50,12 +62,14 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     const orderLineFound = await query.getOne();
     return orderLineFound;
   }
+
   async createOrderLine(
     createOrderLineInput: CreateOrderLineInput,
   ): Promise<OrderLine> {
     const newOrderLine = this._repository.create({ ...createOrderLineInput });
     return this._repository.save(newOrderLine);
   }
+
   async updateOrderLine(
     id: string,
     updateOrderLineInput: UpdateOrderLineInput,
@@ -71,6 +85,7 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     }
     return this._repository.save(newOrderLine);
   }
+
   async removeOrderLine(id: string): Promise<OrderLine> {
     const orderLine = await this.getOrderLineById(id);
     return this._repository.remove(orderLine);
@@ -85,6 +100,7 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
       qb = qb.where({ ...fields });
     }
 
+    // TODO: Change this impl
     if (args) {
       const { searchArgs, paginationArgs } = args;
 

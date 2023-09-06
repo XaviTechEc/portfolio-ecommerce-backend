@@ -35,9 +35,9 @@ export class UsersRepository implements IUsersRepository<User> {
         const { searchTerm } = searchArgs;
 
         qb = qb
-          .where(`full_name ILIKE LOWER(:fullName)`)
-          .orWhere('username ILIKE LOWER(:username)')
-          .orWhere('email ILIKE LOWER(:email)')
+          .where(`user.full_name ILIKE LOWER(:fullName)`)
+          .orWhere('user.username ILIKE LOWER(:username)')
+          .orWhere('user.email ILIKE LOWER(:email)')
           .setParameters({
             fullName: `%${searchTerm}%`,
             username: `%${searchTerm}%`,

@@ -34,7 +34,7 @@ export class CommentsRepository implements ICommentsRepository<Comment> {
       if (searchArgs) {
         const { searchTerm } = searchArgs;
 
-        qb = qb.where(`content ILIKE LOWER(:content)`).setParameters({
+        qb = qb.where(`comment.content ILIKE LOWER(:content)`).setParameters({
           content: `%${searchTerm}%`,
         });
       }

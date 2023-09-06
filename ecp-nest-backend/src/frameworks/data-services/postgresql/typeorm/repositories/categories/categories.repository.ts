@@ -32,32 +32,19 @@ export class CategoriesRepository implements ICategoriesRepository<Category> {
       }
 
       if (searchArgs) {
-        const { searchTerm, searchFields } = searchArgs;
+        const { searchTerm } = searchArgs;
 
-        if (!searchFields || searchFields.length === 0) {
-          return this._exceptionsService.badRequest({
-            message: 'Search fields are required',
-            code_error: 404,
-          });
-        }
-
-        // Joins
         qb = qb
-          .leftJoin('category.created_by', 'user')
-          .leftJoin('category.season_id', 'season')
-          .where({});
-
-        searchFields.forEach((sf) => {
-          if (sf === 'value' || sf === 'description') {
-            qb = qb.andWhere(`${sf} ILIKE :term`, { term: `%${searchTerm}%` });
-          }
-        });
+          .where('category.value ILIKE LOWER(:value)')
+          .orWhere('category.description ILIKE LOWER(:description)')
+          .setParameters({
+            value: `%${searchTerm}%`,
+            description: `%${searchTerm}%`,
+          });
       }
-
-      const categories = await qb.getMany();
-
-      return categories;
     }
+    const categories = await qb.getMany();
+    return categories;
   }
 
   async getCategoryById(id: string): Promise<Category> {

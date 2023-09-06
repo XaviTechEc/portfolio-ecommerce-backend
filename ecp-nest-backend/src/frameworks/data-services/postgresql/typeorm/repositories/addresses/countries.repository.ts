@@ -37,8 +37,12 @@ export class CountriesRepository implements ICountriesRepository<Country> {
 
         if (searchTerm) {
           qb = qb
-            .where(`code = :code OR long_name ILIKE :longName`)
-            .setParameters({ code: searchTerm, longName: `%${searchTerm}%` });
+            .where(`country.code = UPPER(:code)`)
+            .orWhere('country.long_name ILIKE LOWER(longName)')
+            .setParameters({
+              code: `${searchTerm}`,
+              longName: `%${searchTerm}%`,
+            });
         }
       }
     }

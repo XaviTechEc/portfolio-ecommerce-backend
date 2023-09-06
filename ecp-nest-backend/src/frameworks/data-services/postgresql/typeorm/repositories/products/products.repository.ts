@@ -35,9 +35,9 @@ export class ProductsRepository implements IProductsRepository<Product> {
         const { searchTerm } = searchArgs;
 
         qb = qb
-          .where('title ILIKE LOWER(:title)')
-          .orWhere('subtitle ILIKE LOWER(:subtitle)')
-          .orWhere('description ILIKE LOWER(:description)')
+          .where('product.title ILIKE LOWER(:title)')
+          .orWhere('product.subtitle ILIKE LOWER(:subtitle)')
+          .orWhere('product.description ILIKE LOWER(:description)')
           .setParameters({
             title: `%${searchTerm}%`,
             subtitle: `%${searchTerm}%`,

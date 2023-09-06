@@ -21,7 +21,7 @@ export class VariationsRepository implements IVariationsRepository<Variation> {
     this._exceptionsService = exceptionsService;
   }
   async getAllVariations(args?: IGenericArgs<Variation>): Promise<Variation[]> {
-    let qb = this._repository.createQueryBuilder('season');
+    let qb = this._repository.createQueryBuilder('variation');
 
     if (args) {
       const { paginationArgs, searchArgs } = args;
@@ -33,14 +33,14 @@ export class VariationsRepository implements IVariationsRepository<Variation> {
       if (searchArgs) {
         const { searchTerm } = searchArgs;
 
-        qb = qb.where(`name ILIKE LOWER(:name)`).setParameters({
+        qb = qb.where(`variation.name ILIKE LOWER(:name)`).setParameters({
           name: `%${searchTerm}%`,
         });
       }
     }
 
-    const seasons = await qb.getMany();
-    return seasons;
+    const variations = await qb.getMany();
+    return variations;
   }
   async getVariationById(id: string): Promise<Variation> {
     const variationFound = await this._repository.findOneBy({ id });

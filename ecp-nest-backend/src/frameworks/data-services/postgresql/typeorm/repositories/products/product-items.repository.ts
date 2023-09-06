@@ -26,7 +26,7 @@ export class ProductItemsRepository
   async getAllProductItems(
     args?: IGenericArgs<ProductItem>,
   ): Promise<ProductItem[]> {
-    let qb = this._repository.createQueryBuilder('product_item');
+    let qb = this._repository.createQueryBuilder('productItem');
 
     if (args) {
       const { paginationArgs, searchArgs } = args;
@@ -39,8 +39,8 @@ export class ProductItemsRepository
         const { searchTerm } = searchArgs;
 
         qb = qb
-          .where(`sku ILIKE LOWER(:sku)`)
-          .orWhere('slug ILIKE LOWER(:slug)')
+          .where(`productItem.sku ILIKE LOWER(:sku)`)
+          .orWhere('productItem.slug ILIKE LOWER(:slug)')
           .setParameters({
             sku: `%${searchTerm}%`,
             slug: `%${searchTerm}%`,

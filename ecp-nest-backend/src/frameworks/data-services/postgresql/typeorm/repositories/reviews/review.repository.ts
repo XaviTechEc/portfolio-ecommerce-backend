@@ -32,7 +32,7 @@ export class ReviewsRepository implements IReviewsRepository<Review> {
       if (searchArgs) {
         const { searchTerm } = searchArgs;
 
-        qb = qb.where(`content ILIKE LOWER(:content)`).setParameters({
+        qb = qb.where(`review.content ILIKE LOWER(:content)`).setParameters({
           content: `%${searchTerm}%`,
         });
       }
