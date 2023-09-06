@@ -1,13 +1,20 @@
 import { IProductPromotionRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { ProductPromotion } from '../../entities/outputs/entities';
 import {
   IGenericArgs,
   CreateProductPromotionInput,
   UpdateProductPromotionInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class ProductPromotionsRepository
   implements IProductPromotionRepository<ProductPromotion>
@@ -24,6 +31,48 @@ export class ProductPromotionsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getProductPromotionsBy(
+    term: string,
+    fields: (keyof ProductPromotion)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ProductPromotion[]> {
+    let queryOptions: FindManyOptions<ProductPromotion> = {};
+    let relations: FindOptionsRelations<ProductPromotion> = {};
+    let where: FindOptionsWhere<ProductPromotion> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'product') {
+        relations = { ...relations, product: true };
+        where = {
+          ...where,
+          product: [
+            { title: ILike(`%${term}%`) },
+            { subtitle: ILike(`%${term}%`) },
+            { description: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'promotion') {
+        relations = { ...relations, promotion: true };
+        where = {
+          ...where,
+          promotion: [{ description: ILike(`%${term}%`) }, { id: term }],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const productPromotionsBy = await this._repository.find(queryOptions);
+    return productPromotionsBy;
   }
 
   async getAllProductPromotion(

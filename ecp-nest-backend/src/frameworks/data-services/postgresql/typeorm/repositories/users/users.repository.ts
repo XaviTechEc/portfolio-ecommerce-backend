@@ -3,7 +3,7 @@ import { IUsersRepository } from 'src/core/abstracts/repositories';
 import { CreateUserDto, UpdateUserDto } from 'src/core/dtos';
 import { Repository } from 'typeorm';
 import { User } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class UsersRepository implements IUsersRepository<User> {

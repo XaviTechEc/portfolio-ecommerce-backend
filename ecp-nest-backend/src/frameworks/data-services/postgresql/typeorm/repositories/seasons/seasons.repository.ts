@@ -3,8 +3,8 @@ import { ISeasonsRepository } from 'src/core/abstracts/repositories';
 import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
 import { Season } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class SeasonsRepository implements ISeasonsRepository<Season> {
   private _repository: Repository<Season>;

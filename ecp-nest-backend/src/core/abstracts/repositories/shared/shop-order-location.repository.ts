@@ -1,6 +1,7 @@
 import {
   CreateShopOrderLocationInput,
   IGenericArgs,
+  PaginationArgs,
   UpdateShopOrderLocationInput,
 } from 'src/core/dtos';
 
@@ -15,4 +16,10 @@ export abstract class IShopOrderLocationRepository<T> {
     updateShopOrderLocationInput: UpdateShopOrderLocationInput,
   ): Promise<T>;
   abstract removeShopOrderLocation(id: string): Promise<T>;
+
+  abstract getShopOrderLocationsBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

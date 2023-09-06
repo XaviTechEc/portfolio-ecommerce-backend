@@ -1,6 +1,7 @@
 import {
   CreateProductTagInput,
   IGenericArgs,
+  PaginationArgs,
   UpdateProductTagInput,
 } from 'src/core/dtos';
 
@@ -15,4 +16,9 @@ export abstract class IProductTagRepository<T> {
     updateProductTagInput: UpdateProductTagInput,
   ): Promise<T>;
   abstract removeProductTag(id: string): Promise<T>;
+  abstract getProductTagsBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

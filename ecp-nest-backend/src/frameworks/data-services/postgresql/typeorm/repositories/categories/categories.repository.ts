@@ -13,7 +13,7 @@ import {
   Repository,
 } from 'typeorm';
 import { Category } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class CategoriesRepository implements ICategoriesRepository<Category> {

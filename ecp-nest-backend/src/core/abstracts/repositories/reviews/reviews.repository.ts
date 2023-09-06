@@ -1,12 +1,12 @@
-import { CreateReviewInput, UpdateReviewInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
+import {
+  IGenericArgs,
+  CreateReviewInput,
+  UpdateReviewInput,
+  PaginationArgs,
+} from 'src/core/dtos';
 
 export abstract class IReviewsRepository<T> {
   abstract getAllReviews(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getReviewsBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T[]>;
   abstract getReviewById(id: string): Promise<T>;
   abstract createReview(createReviewInput: CreateReviewInput): Promise<T>;
   abstract updateReview(
@@ -14,4 +14,9 @@ export abstract class IReviewsRepository<T> {
     updateReviewInput: UpdateReviewInput,
   ): Promise<T>;
   abstract removeReview(id: string): Promise<T>;
+  abstract getReviewsBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

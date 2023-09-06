@@ -3,7 +3,7 @@ import { ITagsRepository } from 'src/core/abstracts/repositories';
 import { CreateTagInput, UpdateTagInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
 import { Tag } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class TagsRepository implements ITagsRepository<Tag> {

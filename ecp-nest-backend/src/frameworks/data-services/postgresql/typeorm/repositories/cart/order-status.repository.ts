@@ -3,7 +3,7 @@ import { IOrderStatusRepository } from 'src/core/abstracts/repositories';
 import { CreateOrderStatusInput, UpdateOrderStatusInput } from 'src/core/dtos';
 import { FindManyOptions, Repository } from 'typeorm';
 import { OrderStatus } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class OrderStatusRepository

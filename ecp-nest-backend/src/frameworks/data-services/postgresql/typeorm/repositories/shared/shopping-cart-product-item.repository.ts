@@ -1,12 +1,19 @@
 import { IShoppingCartProductItemRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { ShoppingCartProductItem } from '../../entities/outputs/entities';
 import {
   IGenericArgs,
   CreateShoppingCartProductItemInput,
   UpdateShoppingCartProductItemInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class ShoppingCartProductItemsRepository
@@ -24,6 +31,48 @@ export class ShoppingCartProductItemsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getShoppingCartProductItemsBy(
+    term: string,
+    fields: (keyof ShoppingCartProductItem)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ShoppingCartProductItem[]> {
+    let queryOptions: FindManyOptions<ShoppingCartProductItem> = {};
+    let relations: FindOptionsRelations<ShoppingCartProductItem> = {};
+    let where: FindOptionsWhere<ShoppingCartProductItem> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'shoppingCart') {
+        relations = { ...relations, shoppingCart: true };
+        where = {
+          ...where,
+          shoppingCart: [{ id: term }],
+        };
+      }
+
+      if (field === 'productItem') {
+        relations = { ...relations, productItem: true };
+        where = {
+          ...where,
+          productItem: [
+            { sku: ILike(`%${term}%`) },
+            { slug: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const shoppingCartProductItemsBy =
+      await this._repository.find(queryOptions);
+    return shoppingCartProductItemsBy;
   }
 
   async getAllShoppingCartProductItem(

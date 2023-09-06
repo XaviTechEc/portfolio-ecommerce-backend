@@ -1,15 +1,17 @@
 import {
+  IGenericArgs,
   CreateVariationOptionInput,
   UpdateVariationOptionInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
 
 export abstract class IVariationOptionsRepository<T> {
   abstract getAllVariationOptions(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getOneVariationOptionBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T>;
+  abstract getVariationOptionsBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
   abstract getVariationOptionById(id: string): Promise<T>;
   abstract createVariationOption(
     createVariationOptionInput: CreateVariationOptionInput,

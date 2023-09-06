@@ -3,8 +3,8 @@ import { IPromotionsRepository } from 'src/core/abstracts/repositories';
 import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
 import { Repository } from 'typeorm';
 import { Promotion } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class PromotionsRepository implements IPromotionsRepository<Promotion> {
   private _repository: Repository<Promotion>;

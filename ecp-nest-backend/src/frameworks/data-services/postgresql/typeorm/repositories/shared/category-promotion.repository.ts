@@ -1,13 +1,21 @@
 import { ICategoryPromotionRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { CategoryPromotion } from '../../entities/outputs/entities';
 import {
   IGenericArgs,
   CreateCategoryPromotionInput,
   UpdateCategoryPromotionInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
+
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class CategoryPromotionsRepository
   implements ICategoryPromotionRepository<CategoryPromotion>
@@ -24,6 +32,47 @@ export class CategoryPromotionsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getCategoryPromotionBy(
+    term: string,
+    fields: (keyof CategoryPromotion)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<CategoryPromotion[]> {
+    let queryOptions: FindManyOptions<CategoryPromotion> = {};
+    let relations: FindOptionsRelations<CategoryPromotion> = {};
+    let where: FindOptionsWhere<CategoryPromotion> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'category') {
+        relations = { ...relations, category: true };
+        where = {
+          ...where,
+          category: [
+            { value: ILike(`%${term}%`) },
+            { description: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'promotion') {
+        relations = { ...relations, promotion: true };
+        where = {
+          ...where,
+          promotion: [{ description: ILike(`%${term}%`) }, { id: term }],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const categoryPromotionsBy = await this._repository.find(queryOptions);
+    return categoryPromotionsBy;
   }
 
   async getAllCategoryPromotion(

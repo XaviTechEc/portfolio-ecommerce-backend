@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { IOrderLinesRepository } from 'src/core/abstracts/repositories';
 import {
   CreateOrderLineInput,

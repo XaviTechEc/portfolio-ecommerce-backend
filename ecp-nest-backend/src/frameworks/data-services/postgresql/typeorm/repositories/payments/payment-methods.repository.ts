@@ -7,7 +7,7 @@ import {
   IGenericArgs,
   UpdatePaymentMethodInput,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class PaymentMethodsRepository

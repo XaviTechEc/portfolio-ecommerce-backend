@@ -1,6 +1,7 @@
 import {
   CreateUserAddressInput,
   IGenericArgs,
+  PaginationArgs,
   UpdateUserAddressInput,
 } from 'src/core/dtos';
 
@@ -15,4 +16,10 @@ export abstract class IUserAddressRepository<T> {
     updateUserAddressInput: UpdateUserAddressInput,
   ): Promise<T>;
   abstract removeUserAddress(id: string): Promise<T>;
+
+  abstract getUserAddressesBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

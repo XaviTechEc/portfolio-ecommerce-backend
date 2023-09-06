@@ -1,10 +1,20 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IProductItemsRepository } from 'src/core/abstracts/repositories';
-import { CreateProductItemInput, UpdateProductItemInput } from 'src/core/dtos';
-import { Repository } from 'typeorm';
-import { ProductItem } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
+import {
+  PaginationArgs,
+  IGenericArgs,
+  CreateProductItemInput,
+  UpdateProductItemInput,
+} from 'src/core/dtos';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import {
+  Repository,
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+} from 'typeorm';
+import { ProductItem } from '../../entities/outputs/entities';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class ProductItemsRepository
   implements IProductItemsRepository<ProductItem>
@@ -21,6 +31,40 @@ export class ProductItemsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getProductItemsBy(
+    term: string,
+    fields: (keyof ProductItem)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ProductItem[]> {
+    let queryOptions: FindManyOptions<ProductItem> = {};
+    let relations: FindOptionsRelations<ProductItem> = {};
+    let where: FindOptionsWhere<ProductItem> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'product') {
+        relations = { ...relations, product: true };
+        where = {
+          ...where,
+          product: [
+            { title: ILike(`%${term}%`) },
+            { subtitle: ILike(`%${term}%`) },
+            { description: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const productItemsBy = await this._repository.find(queryOptions);
+    return productItemsBy;
   }
 
   async getAllProductItems(
@@ -50,20 +94,6 @@ export class ProductItemsRepository
 
     const productItems = await qb.getMany();
     return productItems;
-  }
-
-  async getAllProductItemsBy(
-    fields: Partial<ProductItem>,
-    args?: IGenericArgs<ProductItem>,
-  ): Promise<ProductItem[]> {
-    throw new Error('Method not implemented.');
-  }
-
-  async getOneProductItemBy(
-    fields: Partial<ProductItem>,
-    args?: IGenericArgs<ProductItem>,
-  ): Promise<ProductItem> {
-    throw new Error('Method not implemented.');
   }
 
   async getProductItemById(id: string): Promise<ProductItem> {

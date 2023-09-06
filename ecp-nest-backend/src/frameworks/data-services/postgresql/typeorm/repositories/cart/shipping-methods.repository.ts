@@ -6,7 +6,7 @@ import {
 } from 'src/core/dtos';
 import { FindManyOptions, Repository } from 'typeorm';
 import { ShippingMethod } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class ShippingMethodsRepository

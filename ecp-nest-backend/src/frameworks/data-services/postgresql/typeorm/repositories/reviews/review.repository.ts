@@ -1,10 +1,20 @@
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IReviewsRepository } from 'src/core/abstracts/repositories';
-import { CreateReviewInput, UpdateReviewInput } from 'src/core/dtos';
-import { Repository } from 'typeorm';
+import {
+  CreateReviewInput,
+  PaginationArgs,
+  UpdateReviewInput,
+} from 'src/core/dtos';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { Review } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class ReviewsRepository implements IReviewsRepository<Review> {
   private _repository: Repository<Review>;
@@ -19,6 +29,48 @@ export class ReviewsRepository implements IReviewsRepository<Review> {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getReviewsBy(
+    term: string,
+    fields: (keyof Review)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<Review[]> {
+    let queryOptions: FindManyOptions<Review> = {};
+    let relations: FindOptionsRelations<Review> = {};
+    let where: FindOptionsWhere<Review> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'user') {
+        relations = { ...relations, user: true };
+        where = {
+          ...where,
+          user: [
+            { username: ILike(`%${term}%`) },
+            { email: ILike(`%${term}%`) },
+            { fullName: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'orderLine') {
+        relations = { ...relations, orderLine: true };
+        where = {
+          ...where,
+          orderLine: { id: term },
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const reviewsBy = await this._repository.find(queryOptions);
+    return reviewsBy;
   }
 
   async getAllReviews(args?: IGenericArgs<Review>): Promise<Review[]> {
@@ -43,12 +95,7 @@ export class ReviewsRepository implements IReviewsRepository<Review> {
     const reviews = await qb.getMany();
     return reviews;
   }
-  async getReviewsBy(
-    fields: Partial<Review>,
-    args?: IGenericArgs<Review>,
-  ): Promise<Review[]> {
-    throw new Error('Method not implemented.');
-  }
+
   async getReviewById(id: string): Promise<Review> {
     const reviewFound = await this._repository.findOneBy({ id });
     if (!reviewFound) {

@@ -14,7 +14,7 @@ import {
   UpdateImageDto,
 } from 'src/core/dtos';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class ImagesRepository implements IImageRepository<Image> {
   private _repository: Repository<Image>;

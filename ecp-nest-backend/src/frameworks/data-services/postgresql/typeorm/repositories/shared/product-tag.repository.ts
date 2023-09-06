@@ -1,13 +1,20 @@
 import { IProductTagRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { ProductTag } from '../../entities/outputs/entities';
 import {
   IGenericArgs,
   CreateProductTagInput,
   UpdateProductTagInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class ProductTagsRepository
   implements IProductTagRepository<ProductTag>
@@ -24,6 +31,52 @@ export class ProductTagsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getProductTagsBy(
+    term: string,
+    fields: (keyof ProductTag)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ProductTag[]> {
+    let queryOptions: FindManyOptions<ProductTag> = {};
+    let relations: FindOptionsRelations<ProductTag> = {};
+    let where: FindOptionsWhere<ProductTag> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'product') {
+        relations = { ...relations, product: true };
+        where = {
+          ...where,
+          product: [
+            { title: ILike(`%${term}%`) },
+            { subtitle: ILike(`%${term}%`) },
+            { description: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'tag') {
+        relations = { ...relations, tag: true };
+        where = {
+          ...where,
+          tag: [
+            { code: ILike(`%${term}%`) },
+            { value: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const productTagsBy = await this._repository.find(queryOptions);
+    return productTagsBy;
   }
 
   async getAllProductTag(

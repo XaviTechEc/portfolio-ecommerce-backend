@@ -1,12 +1,19 @@
 import { IUserPaymentMethodsRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { UserPaymentMethod } from '../../entities/outputs/entities';
 import {
   IGenericArgs,
   CreateUserPaymentMethodInput,
   UpdateUserPaymentMethodInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class UserPaymentMethodsRepository
@@ -25,6 +32,48 @@ export class UserPaymentMethodsRepository
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
   }
+  async getUserPaymentMethodsBy(
+    term: string,
+    fields: (keyof UserPaymentMethod)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<UserPaymentMethod[]> {
+    let queryOptions: FindManyOptions<UserPaymentMethod> = {};
+    let relations: FindOptionsRelations<UserPaymentMethod> = {};
+    let where: FindOptionsWhere<UserPaymentMethod> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'paymentMethod') {
+        relations = { ...relations, paymentMethod: true };
+        where = {
+          ...where,
+          paymentMethod: [{ id: term }],
+        };
+      }
+
+      if (field === 'user') {
+        relations = { ...relations, user: true };
+        where = {
+          ...where,
+          user: [
+            { username: ILike(`%${term}%`) },
+            { email: ILike(`%${term}%`) },
+            { fullName: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const userPaymentMethodsBy = await this._repository.find(queryOptions);
+    return userPaymentMethodsBy;
+  }
 
   async getAllUserPaymentMethods(
     args?: IGenericArgs<UserPaymentMethod>,
@@ -42,18 +91,7 @@ export class UserPaymentMethodsRepository
     const userPaymentMethods = await qb.getMany();
     return userPaymentMethods;
   }
-  async getAllUserPaymentMethodsBy(
-    fields: Partial<UserPaymentMethod>,
-    args?: IGenericArgs<UserPaymentMethod>,
-  ): Promise<UserPaymentMethod[]> {
-    throw new Error('Method not implemented.');
-  }
-  async getUserPaymentMethodBy(
-    fields: Partial<UserPaymentMethod>,
-    args?: IGenericArgs<UserPaymentMethod>,
-  ): Promise<UserPaymentMethod> {
-    throw new Error('Method not implemented.');
-  }
+
   async getUserPaymentMethodById(id: string): Promise<UserPaymentMethod> {
     const userPaymentMethodFound = await this._repository.findOneBy({ id });
     if (!userPaymentMethodFound) {

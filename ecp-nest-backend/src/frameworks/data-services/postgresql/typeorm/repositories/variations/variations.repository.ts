@@ -1,9 +1,19 @@
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IVariationsRepository } from 'src/core/abstracts/repositories';
-import { CreateVariationInput, UpdateVariationInput } from 'src/core/dtos';
-import { Repository } from 'typeorm';
+import {
+  CreateVariationInput,
+  PaginationArgs,
+  UpdateVariationInput,
+} from 'src/core/dtos';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { Variation } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class VariationsRepository implements IVariationsRepository<Variation> {
@@ -19,6 +29,39 @@ export class VariationsRepository implements IVariationsRepository<Variation> {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getVariationsBy(
+    term: string,
+    fields: (keyof Variation)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<Variation[]> {
+    let queryOptions: FindManyOptions<Variation> = {};
+    let relations: FindOptionsRelations<Variation> = {};
+    let where: FindOptionsWhere<Variation> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'category') {
+        relations = { ...relations, category: true };
+        where = {
+          ...where,
+          category: [
+            { value: ILike(`%${term}%`) },
+            { description: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const variationsBy = await this._repository.find(queryOptions);
+    return variationsBy;
   }
   async getAllVariations(args?: IGenericArgs<Variation>): Promise<Variation[]> {
     let qb = this._repository.createQueryBuilder('variation');

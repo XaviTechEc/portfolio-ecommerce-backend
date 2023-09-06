@@ -1,13 +1,21 @@
 import { IProductConfigurationRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { ProductConfiguration } from '../../entities/outputs/entities';
 import {
   IGenericArgs,
   CreateProductConfigurationInput,
   UpdateProductConfigurationInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
+
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 
 export class ProductConfigurationsRepository
   implements IProductConfigurationRepository<ProductConfiguration>
@@ -24,6 +32,47 @@ export class ProductConfigurationsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getProductConfigurationsBy(
+    term: string,
+    fields: (keyof ProductConfiguration)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ProductConfiguration[]> {
+    let queryOptions: FindManyOptions<ProductConfiguration> = {};
+    let relations: FindOptionsRelations<ProductConfiguration> = {};
+    let where: FindOptionsWhere<ProductConfiguration> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'productItem') {
+        relations = { ...relations, productItem: true };
+        where = {
+          ...where,
+          productItem: [
+            { sku: ILike(`%${term}%`) },
+            { slug: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'variationOption') {
+        relations = { ...relations, variationOption: true };
+        where = {
+          ...where,
+          variationOption: [{ value: ILike(`%${term}%`) }, { id: term }],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const productConfigurationsBy = await this._repository.find(queryOptions);
+    return productConfigurationsBy;
   }
 
   async getAllProductConfiguration(

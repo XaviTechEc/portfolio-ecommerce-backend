@@ -2,11 +2,18 @@ import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository
 import { IVariationOptionsRepository } from 'src/core/abstracts/repositories';
 import {
   CreateVariationOptionInput,
+  PaginationArgs,
   UpdateVariationOptionInput,
 } from 'src/core/dtos';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { VariationOption } from '../../entities/outputs/entities';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class VariationOptionsRepository
@@ -24,6 +31,35 @@ export class VariationOptionsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getVariationOptionsBy(
+    term: string,
+    fields: (keyof VariationOption)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<VariationOption[]> {
+    let queryOptions: FindManyOptions<VariationOption> = {};
+    let relations: FindOptionsRelations<VariationOption> = {};
+    let where: FindOptionsWhere<VariationOption> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'variation') {
+        relations = { ...relations, variation: true };
+        where = {
+          ...where,
+          variation: [{ name: ILike(`%${term}%`) }, { id: term }],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const variationOptionsBy = await this._repository.find(queryOptions);
+    return variationOptionsBy;
   }
 
   async getAllVariationOptions(
@@ -52,12 +88,7 @@ export class VariationOptionsRepository
     const variationOptions = await qb.getMany();
     return variationOptions;
   }
-  async getOneVariationOptionBy(
-    fields: Partial<VariationOption>,
-    args?: IGenericArgs<VariationOption>,
-  ): Promise<VariationOption> {
-    throw new Error('Method not implemented.');
-  }
+
   async getVariationOptionById(id: string): Promise<VariationOption> {
     const variationOptionFound = await this._repository.findOneBy({ id });
     if (!variationOptionFound) {

@@ -1,12 +1,19 @@
 import { IUserAddressRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { UserAddress } from '../../entities/outputs/entities';
 import {
   IGenericArgs,
   CreateUserAddressInput,
   UpdateUserAddressInput,
+  PaginationArgs,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class UserAddressesRepository
@@ -24,6 +31,53 @@ export class UserAddressesRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getUserAddressesBy(
+    term: string,
+    fields: (keyof UserAddress)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<UserAddress[]> {
+    let queryOptions: FindManyOptions<UserAddress> = {};
+    let relations: FindOptionsRelations<UserAddress> = {};
+    let where: FindOptionsWhere<UserAddress> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'user') {
+        relations = { ...relations, user: true };
+        where = {
+          ...where,
+          user: [
+            { username: ILike(`%${term}%`) },
+            { email: ILike(`%${term}%`) },
+            { fullName: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'address') {
+        relations = { ...relations, address: true };
+        where = {
+          ...where,
+          address: [
+            { addressLine1: ILike(`%${term}%`) },
+            { addressLine2: ILike(`%${term}%`) },
+            { reference: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const userAddressesBy = await this._repository.find(queryOptions);
+    return userAddressesBy;
   }
 
   async getAllUserAddress(

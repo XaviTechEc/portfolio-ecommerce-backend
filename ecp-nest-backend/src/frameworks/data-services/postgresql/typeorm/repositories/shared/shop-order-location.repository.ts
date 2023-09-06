@@ -1,13 +1,19 @@
 import { IShopOrderLocationRepository } from 'src/core/abstracts/repositories';
-import { Repository } from 'typeorm';
-import { ShopOrderLocation } from '../../entities/outputs/entities';
 import {
-  IGenericArgs,
   CreateShopOrderLocationInput,
+  IGenericArgs,
+  PaginationArgs,
   UpdateShopOrderLocationInput,
 } from 'src/core/dtos';
-import { LoggerService } from '@nestjs/common';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
+import { ShopOrderLocation } from '../../entities/outputs/entities';
 
 export class ShopOrderLocationsRepository
   implements IShopOrderLocationRepository<ShopOrderLocation>
@@ -24,6 +30,43 @@ export class ShopOrderLocationsRepository
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
+  }
+  async getShopOrderLocationsBy(
+    term: string,
+    fields: (keyof ShopOrderLocation)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ShopOrderLocation[]> {
+    let queryOptions: FindManyOptions<ShopOrderLocation> = {};
+    let relations: FindOptionsRelations<ShopOrderLocation> = {};
+    let where: FindOptionsWhere<ShopOrderLocation> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'shopOrder') {
+        relations = { ...relations, shopOrder: true };
+        where = {
+          ...where,
+          shopOrder: [{ id: term }],
+        };
+      }
+
+      if (field === 'location') {
+        relations = { ...relations, location: true };
+        where = {
+          ...where,
+          location: [{ id: term }],
+        };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const shopOrderLocationsBy = await this._repository.find(queryOptions);
+    return shopOrderLocationsBy;
   }
 
   async getAllShopOrderLocation(
