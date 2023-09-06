@@ -7,6 +7,7 @@ import {
   IGenericArgs,
   CreateProductPromotionInput,
   UpdateProductPromotionInput,
+  PaginationArgs,
 } from 'src/core/dtos';
 
 @Injectable()
@@ -17,6 +18,17 @@ export class ProductPromotionUseCases
     private dataService: IDataSourcesService,
     private productPromotionFactoryService: ProductPromotionFactoryService,
   ) {}
+  getProductPromotionsBy(
+    term: string,
+    fields: (keyof IProductPromotion)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IProductPromotion[]> {
+    return this.dataService.productPromotions.getProductPromotionsBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllProductPromotion(
     args?: IGenericArgs<IProductPromotion>,
   ): Promise<IProductPromotion[]> {

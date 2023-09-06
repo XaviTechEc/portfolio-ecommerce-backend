@@ -7,6 +7,7 @@ import {
   IGenericArgs,
   CreateCategoryPromotionInput,
   UpdateCategoryPromotionInput,
+  PaginationArgs,
 } from 'src/core/dtos';
 
 @Injectable()
@@ -17,6 +18,17 @@ export class CategoryPromotionUseCases
     private dataService: IDataSourcesService,
     private categoryPromotionFactoryService: CategoryPromotionFactoryService,
   ) {}
+  getCategoryPromotionBy(
+    term: string,
+    fields: (keyof ICategoryPromotion)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ICategoryPromotion[]> {
+    return this.dataService.categoryPromotions.getCategoryPromotionBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllCategoryPromotion(
     args?: IGenericArgs<ICategoryPromotion>,
   ): Promise<ICategoryPromotion[]> {

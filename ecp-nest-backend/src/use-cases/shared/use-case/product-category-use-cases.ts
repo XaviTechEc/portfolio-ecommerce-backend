@@ -7,6 +7,7 @@ import {
   IGenericArgs,
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
+  PaginationArgs,
 } from 'src/core/dtos';
 import { ProductCategoryFactoryService } from '../factory';
 
@@ -18,6 +19,17 @@ export class ProductCategoryUseCases
     private dataService: IDataSourcesService,
     private productCategoryFactoryService: ProductCategoryFactoryService,
   ) {}
+  getProductCategoriesBy(
+    term: string,
+    fields: (keyof IProductCategory)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IProductCategory[]> {
+    return this.dataService.productCategories.getProductCategoriesBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllProductCategory(
     args?: IGenericArgs<IProductCategory>,
   ): Promise<IProductCategory[]> {

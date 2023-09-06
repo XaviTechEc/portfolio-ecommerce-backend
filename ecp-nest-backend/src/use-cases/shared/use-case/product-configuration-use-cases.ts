@@ -7,6 +7,7 @@ import {
   IGenericArgs,
   CreateProductConfigurationInput,
   UpdateProductConfigurationInput,
+  PaginationArgs,
 } from 'src/core/dtos';
 
 @Injectable()
@@ -17,6 +18,17 @@ export class ProductConfigurationUseCases
     private dataService: IDataSourcesService,
     private productConfigurationFactoryService: ProductConfigurationFactoryService,
   ) {}
+  getProductConfigurationsBy(
+    term: string,
+    fields: (keyof IProductConfiguration)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IProductConfiguration[]> {
+    return this.dataService.productConfigurations.getProductConfigurationsBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllProductConfiguration(
     args?: IGenericArgs<IProductConfiguration>,
   ): Promise<IProductConfiguration[]> {

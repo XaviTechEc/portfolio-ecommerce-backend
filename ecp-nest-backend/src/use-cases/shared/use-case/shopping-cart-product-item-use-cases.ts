@@ -7,6 +7,7 @@ import {
   IGenericArgs,
   CreateShoppingCartProductItemInput,
   UpdateShoppingCartProductItemInput,
+  PaginationArgs,
 } from 'src/core/dtos';
 
 @Injectable()
@@ -17,6 +18,17 @@ export class ShoppingCartProductItemUseCases
     private dataService: IDataSourcesService,
     private shoppingCartProductItemFactoryService: ShoppingCartProductItemFactoryService,
   ) {}
+  getShoppingCartProductItemsBy(
+    term: string,
+    fields: (keyof IShoppingCartProductItem)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IShoppingCartProductItem[]> {
+    return this.dataService.shoppingCartProductItems.getShoppingCartProductItemsBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllShoppingCartProductItem(
     args?: IGenericArgs<IShoppingCartProductItem>,
   ): Promise<IShoppingCartProductItem[]> {

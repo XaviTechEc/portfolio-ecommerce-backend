@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { IProductsRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import { ProductFactoryService } from './factory';
-import { CreateProductInput, UpdateProductInput } from 'src/core/dtos';
+import {
+  CreateProductInput,
+  PaginationArgs,
+  UpdateProductInput,
+} from 'src/core/dtos';
 import { IProduct } from 'src/core/entities';
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
@@ -12,21 +16,21 @@ export class ProductUseCases implements IProductsRepository<IProduct> {
     private dataService: IDataSourcesService,
     private productFactoryService: ProductFactoryService,
   ) {}
+  getProductsBy(
+    term: string,
+    fields: (keyof IProduct)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IProduct[]> {
+    return this.dataService.products.getProductsBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllProducts(args?: IGenericArgs<IProduct>): Promise<IProduct[]> {
     return this.dataService.products.getAllProducts(args);
   }
-  getAllProductsBy(
-    fields: Partial<IProduct>,
-    args?: IGenericArgs<IProduct>,
-  ): Promise<IProduct[]> {
-    return this.dataService.products.getAllProductsBy(fields, args);
-  }
-  getOneProductBy(
-    fields: Partial<IProduct>,
-    args?: IGenericArgs<IProduct>,
-  ): Promise<IProduct> {
-    return this.dataService.products.getOneProductBy(fields, args);
-  }
+
   getProductById(id: string): Promise<IProduct> {
     return this.dataService.products.getProductById(id);
   }

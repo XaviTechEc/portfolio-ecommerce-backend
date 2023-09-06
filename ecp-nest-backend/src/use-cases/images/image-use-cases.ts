@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { IImageRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
-import { CreateImageDto, IGenericArgs, UpdateImageDto } from 'src/core/dtos';
+import {
+  CreateImageDto,
+  IGenericArgs,
+  PaginationArgs,
+  UpdateImageDto,
+} from 'src/core/dtos';
 import { IImage } from 'src/core/entities';
 import { ImageFactoryService } from './image-factory.service';
 
@@ -11,6 +16,13 @@ export class ImageUseCases implements IImageRepository<IImage> {
     private dataService: IDataSourcesService,
     private imageFactoryService: ImageFactoryService,
   ) {}
+  getImagesBy(
+    term: string,
+    fields: (keyof IImage)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IImage[]> {
+    return this.dataService.images.getImagesBy(term, fields, paginationArgs);
+  }
   getAllImages(args?: IGenericArgs<IImage>): Promise<IImage[]> {
     return this.dataService.images.getAllImages(args);
   }

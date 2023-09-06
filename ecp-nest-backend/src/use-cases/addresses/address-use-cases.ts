@@ -3,7 +3,11 @@ import { IAddressesRepository } from 'src/core/abstracts/repositories/addresses/
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import { IAddress } from 'src/core/entities';
 import { AddressFactoryService } from './factory/address-factory.service';
-import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
+import {
+  CreateAddressInput,
+  PaginationArgs,
+  UpdateAddressInput,
+} from 'src/core/dtos';
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
@@ -12,6 +16,17 @@ export class AddressesUseCases implements IAddressesRepository<IAddress> {
     private dataServices: IDataSourcesService,
     private addressFactoryService: AddressFactoryService,
   ) {}
+  getAddressesBy(
+    term: string,
+    fields: (keyof IAddress)[],
+    paginationArgs?: PaginationArgs,
+  ): Promise<IAddress[]> {
+    return this.dataServices.addresses.getAddressesBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllAddresses(args?: IGenericArgs<IAddress>): Promise<IAddress[]> {
     return this.dataServices.addresses.getAllAddresses(args);
   }

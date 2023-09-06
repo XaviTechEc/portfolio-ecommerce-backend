@@ -7,6 +7,7 @@ import {
   IGenericArgs,
   CreateUserAddressInput,
   UpdateUserAddressInput,
+  PaginationArgs,
 } from 'src/core/dtos';
 
 @Injectable()
@@ -17,6 +18,17 @@ export class UserAddressUseCases
     private dataService: IDataSourcesService,
     private userAddressFactoryService: UserAddressFactoryService,
   ) {}
+  getUserAddressesBy(
+    term: string,
+    fields: (keyof IUserAddress)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IUserAddress[]> {
+    return this.dataService.userAddresses.getUserAddressesBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllUserAddress(
     args?: IGenericArgs<IUserAddress>,
   ): Promise<IUserAddress[]> {

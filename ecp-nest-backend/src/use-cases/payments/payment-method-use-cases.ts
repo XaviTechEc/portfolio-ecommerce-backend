@@ -5,6 +5,7 @@ import { IPaymentMethod } from 'src/core/entities';
 import { PaymentMethodFactoryService } from './factory/payment-method-factory.service';
 import {
   CreatePaymentMethodInput,
+  IGenericArgs,
   UpdatePaymentMethodInput,
 } from 'src/core/dtos';
 
@@ -16,6 +17,11 @@ export class PaymentMethodUseCases
     private dataService: IDataSourcesService,
     private paymentMethodFactoryService: PaymentMethodFactoryService,
   ) {}
+  getAllPaymentMethods(
+    args?: IGenericArgs<IPaymentMethod>,
+  ): Promise<IPaymentMethod[]> {
+    return this.dataService.paymentMethods.getAllPaymentMethods(args);
+  }
   getPaymentMethodById(id: string): Promise<IPaymentMethod> {
     return this.dataService.paymentMethods.getPaymentMethodById(id);
   }
