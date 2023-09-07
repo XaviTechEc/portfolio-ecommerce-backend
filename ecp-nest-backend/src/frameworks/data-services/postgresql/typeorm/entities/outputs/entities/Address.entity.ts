@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -7,6 +8,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Country } from './Country.entity';
 import { Location } from './Location.entity';
@@ -46,6 +48,12 @@ export class Address {
     default: 'no-ref',
   })
   reference?: string;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @ManyToOne(() => Country, (country) => country.addresses)

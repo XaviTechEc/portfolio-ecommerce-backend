@@ -17,12 +17,32 @@ export class ReviewResolver {
   @Query(() => [ReviewType], { name: 'reviews' })
   getAllReview(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IReview>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IReview[]> {
     return this.reviewUseCases.getAllReviews({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [ReviewType], { name: 'reviewsByUser' })
+  getReviewsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IReview[]> {
+    return this.reviewUseCases.getReviewsBy(term, ['user'], paginationArgs);
+  }
+
+  @Query(() => [ReviewType], { name: 'reviewsByOrderLine' })
+  getReviewsByOrderLine(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IReview[]> {
+    return this.reviewUseCases.getReviewsBy(
+      term,
+      ['orderLine'],
+      paginationArgs,
+    );
   }
 
   @Query(() => ReviewType, { name: 'review' })

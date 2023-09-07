@@ -1,16 +1,12 @@
-import { CreateCategoryInput, UpdateCategoryInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
+import {
+  IGenericArgs,
+  CreateCategoryInput,
+  UpdateCategoryInput,
+  PaginationArgs,
+} from 'src/core/dtos';
 
 export abstract class ICategoriesRepository<T> {
   abstract getAllCategories(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getAllCategoriesBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T[]>;
-  abstract getOneCategoryBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T>;
   abstract getCategoryById(id: string): Promise<T>;
   abstract createCategory(createCategoryInput: CreateCategoryInput): Promise<T>;
   abstract updateCategory(
@@ -18,4 +14,10 @@ export abstract class ICategoriesRepository<T> {
     updateCategoryInput: UpdateCategoryInput,
   ): Promise<T>;
   abstract removeCategory(id: string): Promise<T>;
+
+  abstract getCategoriesBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

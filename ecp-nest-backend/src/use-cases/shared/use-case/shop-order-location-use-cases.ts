@@ -7,6 +7,7 @@ import {
   IGenericArgs,
   CreateShopOrderLocationInput,
   UpdateShopOrderLocationInput,
+  PaginationArgs,
 } from 'src/core/dtos';
 
 @Injectable()
@@ -17,6 +18,17 @@ export class ShopOrderLocationUseCases
     private dataService: IDataSourcesService,
     private shopOrderLocationFactoryService: ShopOrderLocationFactoryService,
   ) {}
+  getShopOrderLocationsBy(
+    term: string,
+    fields: (keyof IShopOrderLocation)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IShopOrderLocation[]> {
+    return this.dataService.shopOrderLocations.getShopOrderLocationsBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllShopOrderLocation(
     args?: IGenericArgs<IShopOrderLocation>,
   ): Promise<IShopOrderLocation[]> {

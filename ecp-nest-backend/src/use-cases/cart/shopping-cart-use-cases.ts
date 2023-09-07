@@ -3,6 +3,7 @@ import { IShoppingCartsRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import {
   CreateShoppingCartInput,
+  PaginationArgs,
   UpdateShoppingCartInput,
 } from 'src/core/dtos';
 import { IShoppingCart } from 'src/core/entities';
@@ -17,6 +18,17 @@ export class ShoppingCartUseCases
     private dataService: IDataSourcesService,
     private shoppingCartFactoryService: ShoppingCartFactoryService,
   ) {}
+  getShoppingCartsBy(
+    term: string,
+    fields: (keyof IShoppingCart)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IShoppingCart[]> {
+    return this.dataService.shoppingCarts.getShoppingCartsBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllShoppingCarts(
     args: IGenericArgs<IShoppingCart>,
   ): Promise<IShoppingCart[]> {

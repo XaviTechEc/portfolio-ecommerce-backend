@@ -17,12 +17,40 @@ export class CategoryPromotionResolver {
   @Query(() => [CategoryPromotionType], { name: 'categoryPromotions' })
   getAllCategoryPromotion(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<ICategoryPromotion>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<ICategoryPromotion[]> {
     return this.categoryPromotionUseCases.getAllCategoryPromotion({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [CategoryPromotionType], {
+    name: 'categoryPromotionsByCategory',
+  })
+  getCategoryPromotionsByCategory(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategoryPromotion[]> {
+    return this.categoryPromotionUseCases.getCategoryPromotionBy(
+      term,
+      ['category'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [CategoryPromotionType], {
+    name: 'categoryPromotionsByPromotion',
+  })
+  getCategoryPromotionsByPromotion(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategoryPromotion[]> {
+    return this.categoryPromotionUseCases.getCategoryPromotionBy(
+      term,
+      ['promotion'],
+      paginationArgs,
+    );
   }
 
   @Query(() => CategoryPromotionType, { name: 'categoryPromotion' })

@@ -21,12 +21,40 @@ export class ShoppingCartProductItemResolver {
   })
   getAllShoppingCartProductItem(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShoppingCartProductItem>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IShoppingCartProductItem[]> {
     return this.shoppingCartProductItemUseCases.getAllShoppingCartProductItem({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [ShoppingCartProductItemType], {
+    name: 'shoppingCartProductItemsByShoppingCart',
+  })
+  getAllByShoppingCart(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShoppingCartProductItem[]> {
+    return this.shoppingCartProductItemUseCases.getShoppingCartProductItemsBy(
+      term,
+      ['shoppingCart'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ShoppingCartProductItemType], {
+    name: 'shoppingCartProductItemsByProductItem',
+  })
+  getAllByProductItem(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShoppingCartProductItem[]> {
+    return this.shoppingCartProductItemUseCases.getShoppingCartProductItemsBy(
+      term,
+      ['productItem'],
+      paginationArgs,
+    );
   }
 
   @Query(() => ShoppingCartProductItemType, { name: 'shoppingCartProductItem' })

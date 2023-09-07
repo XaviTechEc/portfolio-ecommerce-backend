@@ -17,12 +17,24 @@ export class ShoppingCartResolver {
   @Query(() => [ShoppingCartType], { name: 'shoppingCarts' })
   getAllShoppingCarts(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShoppingCart>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IShoppingCart[]> {
     return this.shoppingCartUseCases.getAllShoppingCarts({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [ShoppingCartType], { name: 'shoppingCartsByUser' })
+  getShoppingCartsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShoppingCart[]> {
+    return this.shoppingCartUseCases.getShoppingCartsBy(
+      term,
+      ['user'],
+      paginationArgs,
+    );
   }
 
   @Query(() => ShoppingCartType, { name: 'shoppingCart' })

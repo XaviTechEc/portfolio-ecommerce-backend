@@ -14,15 +14,42 @@ import { ParseUUIDPipe } from '@nestjs/common';
 export class CommentResolver {
   constructor(private commentUseCases: CommentUseCases) {}
   @Query(() => [CommentType], { name: 'comments' })
-  getCommentsBy(
-    fields: Partial<IComment>,
+  getAllComments(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IComment>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IComment[]> {
-    return this.commentUseCases.getCommentsBy(fields, {
+    return this.commentUseCases.getAllComments({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [CommentType], { name: 'commentsByUser' })
+  getCommentsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IComment[]> {
+    return this.commentUseCases.getCommentsBy(term, ['user'], paginationArgs);
+  }
+
+  @Query(() => [CommentType], { name: 'commentsByReview' })
+  getCommentsByReview(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IComment[]> {
+    return this.commentUseCases.getCommentsBy(term, ['review'], paginationArgs);
+  }
+
+  @Query(() => [CommentType], { name: 'commentsByParentComment' })
+  getCommentsByParentComment(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IComment[]> {
+    return this.commentUseCases.getCommentsBy(
+      term,
+      ['comment'],
+      paginationArgs,
+    );
   }
 
   @Query(() => CommentType, { name: 'comment' })

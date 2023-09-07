@@ -5,6 +5,7 @@ import {
   IGenericArgs,
   CreateUserPaymentMethodInput,
   UpdateUserPaymentMethodInput,
+  PaginationArgs,
 } from 'src/core/dtos';
 import { IUserPaymentMethod } from 'src/core/entities';
 import { UserPaymentMethodFactoryService } from './factory';
@@ -17,28 +18,21 @@ export class UserPaymentMethodUseCases
     private dataService: IDataSourcesService,
     private userPaymentMethodFactoryService: UserPaymentMethodFactoryService,
   ) {}
+  getUserPaymentMethodsBy(
+    term: string,
+    fields: (keyof IUserPaymentMethod)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IUserPaymentMethod[]> {
+    return this.dataService.userPaymentMethods.getUserPaymentMethodsBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllUserPaymentMethods(
     args?: IGenericArgs<IUserPaymentMethod>,
   ): Promise<IUserPaymentMethod[]> {
     return this.dataService.userPaymentMethods.getAllUserPaymentMethods(args);
-  }
-  getAllUserPaymentMethodsBy(
-    fields: Partial<IUserPaymentMethod>,
-    args?: IGenericArgs<IUserPaymentMethod>,
-  ): Promise<IUserPaymentMethod[]> {
-    return this.dataService.userPaymentMethods.getAllUserPaymentMethodsBy(
-      fields,
-      args,
-    );
-  }
-  getUserPaymentMethodBy(
-    fields: Partial<IUserPaymentMethod>,
-    args?: IGenericArgs<IUserPaymentMethod>,
-  ): Promise<IUserPaymentMethod> {
-    return this.dataService.userPaymentMethods.getUserPaymentMethodBy(
-      fields,
-      args,
-    );
   }
   getUserPaymentMethodById(id: string): Promise<IUserPaymentMethod> {
     return this.dataService.userPaymentMethods.getUserPaymentMethodById(id);

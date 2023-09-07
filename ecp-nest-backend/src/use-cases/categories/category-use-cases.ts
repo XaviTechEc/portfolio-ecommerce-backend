@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import { CategoryFactoryService } from './category-factory.service';
 import { ICategoriesRepository } from 'src/core/abstracts/repositories';
-import { CreateCategoryInput, UpdateCategoryInput } from 'src/core/dtos';
+import {
+  CreateCategoryInput,
+  PaginationArgs,
+  UpdateCategoryInput,
+} from 'src/core/dtos';
 import { ICategory } from 'src/core/entities';
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
@@ -12,21 +16,21 @@ export class CategoryUseCases implements ICategoriesRepository<ICategory> {
     private dataService: IDataSourcesService,
     private categoryFactoryService: CategoryFactoryService,
   ) {}
+  getCategoriesBy(
+    term: string,
+    fields: (keyof ICategory)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<ICategory[]> {
+    return this.dataService.categories.getCategoriesBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllCategories(args?: IGenericArgs<ICategory>): Promise<ICategory[]> {
     return this.dataService.categories.getAllCategories(args);
   }
-  getAllCategoriesBy(
-    fields: Partial<ICategory>,
-    args?: IGenericArgs<ICategory>,
-  ): Promise<ICategory[]> {
-    return this.dataService.categories.getAllCategoriesBy(fields, args);
-  }
-  getOneCategoryBy(
-    fields: Partial<ICategory>,
-    args?: IGenericArgs<ICategory>,
-  ): Promise<ICategory> {
-    return this.dataService.categories.getOneCategoryBy(fields, args);
-  }
+
   getCategoryById(id: string): Promise<ICategory> {
     return this.dataService.categories.getCategoryById(id);
   }

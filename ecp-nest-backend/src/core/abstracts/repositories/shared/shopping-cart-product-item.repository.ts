@@ -1,6 +1,7 @@
 import {
   CreateShoppingCartProductItemInput,
   IGenericArgs,
+  PaginationArgs,
   UpdateShoppingCartProductItemInput,
 } from 'src/core/dtos';
 
@@ -15,4 +16,9 @@ export abstract class IShoppingCartProductItemRepository<T> {
     updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput,
   ): Promise<T>;
   abstract removeShoppingCartProductItem(id: string): Promise<T>;
+  abstract getShoppingCartProductItemsBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

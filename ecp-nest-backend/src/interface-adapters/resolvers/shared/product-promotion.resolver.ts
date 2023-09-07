@@ -17,12 +17,35 @@ export class ProductPromotionResolver {
   @Query(() => [ProductPromotionType], { name: 'productPromotions' })
   getAllProductPromotion(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IProductPromotion>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IProductPromotion[]> {
     return this.productPromotionUseCases.getAllProductPromotion({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [ProductPromotionType], { name: 'productPromotionsByProduct' })
+  getProductPromotionByProduct(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductPromotion[]> {
+    return this.productPromotionUseCases.getProductPromotionsBy(
+      term,
+      ['product'],
+      paginationArgs,
+    );
+  }
+  @Query(() => [ProductPromotionType], { name: 'productPromotionsByPromotion' })
+  getProductPromotionByPromotion(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductPromotion[]> {
+    return this.productPromotionUseCases.getProductPromotionsBy(
+      term,
+      ['promotion'],
+      paginationArgs,
+    );
   }
 
   @Query(() => ProductPromotionType, { name: 'productPromotion' })

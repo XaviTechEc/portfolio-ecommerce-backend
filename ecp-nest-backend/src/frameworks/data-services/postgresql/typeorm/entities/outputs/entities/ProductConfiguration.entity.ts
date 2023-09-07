@@ -1,9 +1,11 @@
 import {
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ProductItem } from './ProductItem.entity';
 import { VariationOption } from './VariationOption.entity';
@@ -18,6 +20,12 @@ export class ProductConfiguration {
 
   @PrimaryColumn('character varying', { name: 'variation_option_id' })
   variationOptionId: string;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @ManyToOne(

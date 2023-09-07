@@ -14,35 +14,39 @@ import { CategoryUseCases } from 'src/use-cases';
 export class CategoryResolver {
   constructor(private categoryUseCases: CategoryUseCases) {}
 
-  @Query(() => [CategoryType], { name: 'categoriesBy' })
-  getAllCategoriesBy(
-    fields: Partial<ICategory>,
-    @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<ICategory>,
-  ): Promise<ICategory[]> {
-    return this.categoryUseCases.getAllCategoriesBy(fields, {
-      paginationArgs,
-      searchArgs,
-    });
-  }
-
-  @Query(() => CategoryType, { name: 'categoryBy' })
-  getOneCategoryBy(
-    fields: Partial<ICategory>,
-    @Args() searchArgs: SearchArgs<ICategory>,
-  ): Promise<ICategory> {
-    return this.categoryUseCases.getOneCategoryBy(fields, { searchArgs });
-  }
-
   @Query(() => [CategoryType], { name: 'categories' })
   getAllCategories(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<ICategory>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<ICategory[]> {
     return this.categoryUseCases.getAllCategories({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [CategoryType], { name: 'categoriesBySeason' })
+  getCategoriesBySeason(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategory[]> {
+    return this.categoryUseCases.getCategoriesBy(
+      term,
+      ['season'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [CategoryType], { name: 'categoriesByUser' })
+  getCategoriesByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategory[]> {
+    return this.categoryUseCases.getCategoriesBy(
+      term,
+      ['user'],
+      paginationArgs,
+    );
   }
 
   @Query(() => CategoryType, { name: 'category' })

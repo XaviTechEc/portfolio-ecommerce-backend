@@ -17,12 +17,24 @@ export class VariationOptionResolver {
   @Query(() => [VariationOptionType], { name: 'variationOptions' })
   getAllVariationOption(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IVariationOption>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IVariationOption[]> {
     return this.variationOptionUseCases.getAllVariationOptions({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [VariationOptionType], { name: 'variationOptionsByVariation' })
+  getVariationOptionsByVariation(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IVariationOption[]> {
+    return this.variationOptionUseCases.getVariationOptionsBy(
+      term,
+      ['variation'],
+      paginationArgs,
+    );
   }
 
   @Query(() => VariationOptionType, { name: 'variationOption' })

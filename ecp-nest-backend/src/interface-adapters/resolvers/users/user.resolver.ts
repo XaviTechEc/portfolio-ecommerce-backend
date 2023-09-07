@@ -12,7 +12,7 @@ export class UserResolver {
   @Query(() => [UserType], { name: 'users' })
   getAllUsers(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IUser>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IUser[]> {
     return this.userUseCases.getAllUsers({
       paginationArgs,

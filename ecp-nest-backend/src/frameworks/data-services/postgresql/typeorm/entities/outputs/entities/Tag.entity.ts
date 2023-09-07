@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ProductTag } from './ProductTag.entity';
 
@@ -19,6 +21,12 @@ export class Tag {
 
   @Column('character varying', { name: 'value' })
   value: string;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(() => ProductTag, (productTag) => productTag.tag)

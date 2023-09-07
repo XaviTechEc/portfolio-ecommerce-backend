@@ -17,12 +17,36 @@ export class ProductTagResolver {
   @Query(() => [ProductTagType], { name: 'productTags' })
   getAllProductTag(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IProductTag>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IProductTag[]> {
     return this.productTagUseCases.getAllProductTag({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [ProductTagType], { name: 'productTagsByProduct' })
+  getProductTagsByProduct(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductTag[]> {
+    return this.productTagUseCases.getProductTagsBy(
+      term,
+      ['product'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ProductTagType], { name: 'productTagsByTag' })
+  getProductTagsByTag(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductTag[]> {
+    return this.productTagUseCases.getProductTagsBy(
+      term,
+      ['tag'],
+      paginationArgs,
+    );
   }
 
   @Query(() => ProductTagType, { name: 'productTag' })

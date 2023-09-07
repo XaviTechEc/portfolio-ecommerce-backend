@@ -3,6 +3,7 @@ import { IVariationOptionsRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
 import {
   CreateVariationOptionInput,
+  PaginationArgs,
   UpdateVariationOptionInput,
 } from 'src/core/dtos';
 import { IVariationOption } from 'src/core/entities';
@@ -17,19 +18,21 @@ export class VariationOptionUseCases
     private dataService: IDataSourcesService,
     private variationOptionFactoryService: VariationOptionFactoryService,
   ) {}
+  getVariationOptionsBy(
+    term: string,
+    fields: (keyof IVariationOption)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IVariationOption[]> {
+    return this.dataService.variationOptions.getVariationOptionsBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllVariationOptions(
     args?: IGenericArgs<IVariationOption>,
   ): Promise<IVariationOption[]> {
     return this.dataService.variationOptions.getAllVariationOptions(args);
-  }
-  getOneVariationOptionBy(
-    fields: Partial<IVariationOption>,
-    args?: IGenericArgs<IVariationOption>,
-  ): Promise<IVariationOption> {
-    return this.dataService.variationOptions.getOneVariationOptionBy(
-      fields,
-      args,
-    );
   }
   getVariationOptionById(id: string): Promise<IVariationOption> {
     return this.dataService.variationOptions.getVariationOptionById(id);

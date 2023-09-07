@@ -1,10 +1,12 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ProductItem } from './ProductItem.entity';
 import { ShoppingCart } from './ShoppingCart.entity';
@@ -23,6 +25,12 @@ export class ShoppingCartProductItem {
 
   @Column('smallint', { name: 'quantity' })
   quantity: number;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @ManyToOne(

@@ -5,7 +5,6 @@ export class IProduct {
   title: string;
   subtitle: string;
   description: string;
-  imgUrl?: string;
   createdAt: Date;
   updatedAt?: Date;
   user: IUser;

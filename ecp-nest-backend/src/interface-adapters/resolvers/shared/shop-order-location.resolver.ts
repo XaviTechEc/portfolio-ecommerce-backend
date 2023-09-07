@@ -17,12 +17,40 @@ export class ShopOrderLocationResolver {
   @Query(() => [ShopOrderLocationType], { name: 'shopOrderLocations' })
   getAllShopOrderLocation(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IShopOrderLocation>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IShopOrderLocation[]> {
     return this.shopOrderLocationUseCases.getAllShopOrderLocation({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [ShopOrderLocationType], {
+    name: 'shopOrderLocationsByShopOrder',
+  })
+  getShopOrderLocationsByShopOrder(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShopOrderLocation[]> {
+    return this.shopOrderLocationUseCases.getShopOrderLocationsBy(
+      term,
+      ['shopOrder'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ShopOrderLocationType], {
+    name: 'shopOrderLocationsByLocation',
+  })
+  getShopOrderLocationsByLocation(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShopOrderLocation[]> {
+    return this.shopOrderLocationUseCases.getShopOrderLocationsBy(
+      term,
+      ['location'],
+      paginationArgs,
+    );
   }
 
   @Query(() => ShopOrderLocationType, { name: 'shopOrderLocation' })

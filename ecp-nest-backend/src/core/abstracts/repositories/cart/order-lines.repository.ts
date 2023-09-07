@@ -1,17 +1,14 @@
-import { CreateOrderLineInput, UpdateOrderLineInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
+import {
+  IGenericArgs,
+  CreateOrderLineInput,
+  UpdateOrderLineInput,
+  PaginationArgs,
+} from 'src/core/dtos';
 
 export abstract class IOrderLinesRepository<T> {
   abstract getAllOrderLines(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getAllOrderLinesBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T[]>;
+
   abstract getOrderLineById(id: string): Promise<T>;
-  abstract getOneOrderLineBy(
-    fields: Partial<T>,
-    args?: IGenericArgs<T>,
-  ): Promise<T>;
   abstract createOrderLine(
     createOrderLineInput: CreateOrderLineInput,
   ): Promise<T>;
@@ -20,4 +17,10 @@ export abstract class IOrderLinesRepository<T> {
     updateOrderLineInput: UpdateOrderLineInput,
   ): Promise<T>;
   abstract removeOrderLine(id: string): Promise<T>;
+
+  abstract getOrderLinesBy(
+    term: string,
+    fields: (keyof T)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<T[]>;
 }

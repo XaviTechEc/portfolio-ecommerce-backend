@@ -1,5 +1,8 @@
-import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
+import {
+  IGenericArgs,
+  CreatePromotionInput,
+  UpdatePromotionInput,
+} from 'src/core/dtos';
 
 export abstract class IPromotionsRepository<T> {
   abstract getAllPromotions(args?: IGenericArgs<T>): Promise<T[]>;

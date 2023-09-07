@@ -17,7 +17,7 @@ export class OrderLineResolver {
   @Query(() => [OrderLineType], { name: 'orderLines' })
   getAllOrderLines(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IOrderLine>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IOrderLine[]> {
     return this.orderLineUseCases.getAllOrderLines({
       paginationArgs,
@@ -25,16 +25,28 @@ export class OrderLineResolver {
     });
   }
 
-  @Query(() => [OrderLineType], { name: 'orderLinesBy' })
-  getAllOrderLinesBy(
-    fields: Partial<IOrderLine>,
+  @Query(() => [OrderLineType], { name: 'orderLinesByProductItem' })
+  getOrderLinesByProductItem(
+    @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IOrderLine>,
-  ): Promise<IOrderLine[]> {
-    return this.orderLineUseCases.getAllOrderLinesBy(fields, {
+  ) {
+    return this.orderLineUseCases.getOrderLinesBy(
+      term,
+      ['productItem'],
       paginationArgs,
-      searchArgs,
-    });
+    );
+  }
+
+  @Query(() => [OrderLineType], { name: 'orderLinesByShopOrder' })
+  getOrderLinesByShopOrder(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.orderLineUseCases.getOrderLinesBy(
+      term,
+      ['shopOrder'],
+      paginationArgs,
+    );
   }
 
   @Query(() => OrderLineType, { name: 'orderLine' })
@@ -42,14 +54,6 @@ export class OrderLineResolver {
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
   ): Promise<IOrderLine> {
     return this.orderLineUseCases.getOrderLineById(id);
-  }
-
-  @Query(() => OrderLineType, { name: 'orderLineBy' })
-  getOneOrderLineBy(
-    fields: Partial<IOrderLine>,
-    @Args() searchArgs: SearchArgs<IOrderLine>,
-  ): Promise<IOrderLine> {
-    return this.orderLineUseCases.getOneOrderLineBy(fields, { searchArgs });
   }
 
   @Mutation(() => OrderLineType)

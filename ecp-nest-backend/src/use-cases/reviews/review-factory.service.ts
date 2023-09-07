@@ -10,6 +10,7 @@ export class ReviewFactoryService {
     newReview.orderLine = createReviewInput.orderLine;
     newReview.ratingValue = createReviewInput.ratingValue;
     newReview.visible = createReviewInput.visible;
+    newReview.content = createReviewInput.content;
     return newReview;
   }
   updateReview(updateReviewInput: UpdateReviewInput) {
@@ -18,6 +19,7 @@ export class ReviewFactoryService {
     newReview.orderLine = updateReviewInput.orderLine;
     newReview.ratingValue = updateReviewInput.ratingValue;
     newReview.visible = updateReviewInput.visible;
+    newReview.content = updateReviewInput.content;
     return newReview;
   }
 }

@@ -1,11 +1,13 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Season } from './Season.entity';
 import { CategoryPromotion } from './CategoryPromotion.entity';
@@ -28,6 +30,12 @@ export class Category {
 
   @Column('boolean', { name: 'active', default: true })
   active?: boolean;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(

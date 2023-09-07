@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IReviewsRepository } from 'src/core/abstracts/repositories';
 import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
-import { CreateReviewInput, UpdateReviewInput } from 'src/core/dtos';
+import {
+  CreateReviewInput,
+  PaginationArgs,
+  UpdateReviewInput,
+} from 'src/core/dtos';
 import { IReview } from 'src/core/entities';
 import { ReviewFactoryService } from './review-factory.service';
 
@@ -12,15 +16,17 @@ export class ReviewUseCases implements IReviewsRepository<IReview> {
     private dataService: IDataSourcesService,
     private reviewFactoryService: ReviewFactoryService,
   ) {}
+  getReviewsBy(
+    term: string,
+    fields: (keyof IReview)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IReview[]> {
+    return this.dataService.reviews.getReviewsBy(term, fields, paginationArgs);
+  }
   getAllReviews(args?: IGenericArgs<IReview>): Promise<IReview[]> {
     return this.dataService.reviews.getAllReviews(args);
   }
-  getReviewsBy(
-    fields: Partial<IReview>,
-    args?: IGenericArgs<IReview>,
-  ): Promise<IReview[]> {
-    return this.dataService.reviews.getReviewsBy(fields, args);
-  }
+
   getReviewById(id: string): Promise<IReview> {
     return this.dataService.reviews.getReviewById(id);
   }

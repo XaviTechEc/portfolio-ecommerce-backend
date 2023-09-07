@@ -11,6 +11,9 @@ export class ReviewType {
   @Field(() => Int)
   ratingValue: number;
 
+  @Field(() => String, { nullable: true })
+  content?: string;
+
   @Field(() => Boolean, { nullable: true })
   visible?: boolean;
 

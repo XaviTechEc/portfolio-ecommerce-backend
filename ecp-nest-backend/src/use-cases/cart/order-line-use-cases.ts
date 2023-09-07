@@ -4,7 +4,11 @@ import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.se
 import { IOrderLine } from 'src/core/entities';
 import { OrderLineFactoryService } from './factory/order-line-factory.service';
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { CreateOrderLineInput, UpdateOrderLineInput } from 'src/core/dtos';
+import {
+  CreateOrderLineInput,
+  PaginationArgs,
+  UpdateOrderLineInput,
+} from 'src/core/dtos';
 
 @Injectable()
 export class OrderLineUseCases implements IOrderLinesRepository<IOrderLine> {
@@ -12,24 +16,25 @@ export class OrderLineUseCases implements IOrderLinesRepository<IOrderLine> {
     private dataService: IDataSourcesService,
     private orderLineFactoryService: OrderLineFactoryService,
   ) {}
+  getOrderLinesBy(
+    term: string,
+    fields: (keyof IOrderLine)[],
+    paginationArgs: PaginationArgs,
+  ): Promise<IOrderLine[]> {
+    return this.dataService.orderLines.getOrderLinesBy(
+      term,
+      fields,
+      paginationArgs,
+    );
+  }
   getAllOrderLines(args?: IGenericArgs<IOrderLine>): Promise<IOrderLine[]> {
     return this.dataService.orderLines.getAllOrderLines(args);
   }
-  getAllOrderLinesBy(
-    fields: Partial<IOrderLine>,
-    args?: IGenericArgs<IOrderLine>,
-  ): Promise<IOrderLine[]> {
-    return this.dataService.orderLines.getAllOrderLinesBy(fields, args);
-  }
+
   getOrderLineById(id: string): Promise<IOrderLine> {
     return this.dataService.orderLines.getOrderLineById(id);
   }
-  getOneOrderLineBy(
-    fields: Partial<IOrderLine>,
-    args?: IGenericArgs<IOrderLine>,
-  ): Promise<IOrderLine> {
-    return this.dataService.orderLines.getOneOrderLineBy(fields, args);
-  }
+
   createOrderLine(
     createOrderLineInput: CreateOrderLineInput,
   ): Promise<IOrderLine> {

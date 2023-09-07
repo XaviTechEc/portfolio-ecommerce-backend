@@ -17,12 +17,38 @@ export class UserPaymentMethodResolver {
   @Query(() => [UserPaymentMethodType], { name: 'userPaymentMethods' })
   getAllUserPaymentMethod(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IUserPaymentMethod>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IUserPaymentMethod[]> {
     return this.userPaymentMethodUseCases.getAllUserPaymentMethods({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [UserPaymentMethodType], { name: 'userPaymentMethodsByUser' })
+  getUserPaymentMethodsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IUserPaymentMethod[]> {
+    return this.userPaymentMethodUseCases.getUserPaymentMethodsBy(
+      term,
+      ['user'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [UserPaymentMethodType], {
+    name: 'userPaymentMethodsByPaymentMethod',
+  })
+  getUserPaymentMethodsByPaymentMethod(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IUserPaymentMethod[]> {
+    return this.userPaymentMethodUseCases.getUserPaymentMethodsBy(
+      term,
+      ['paymentMethod'],
+      paginationArgs,
+    );
   }
 
   @Query(() => UserPaymentMethodType, { name: 'userPaymentMethod' })

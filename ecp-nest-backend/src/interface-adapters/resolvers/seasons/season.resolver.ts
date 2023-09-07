@@ -17,7 +17,7 @@ export class SeasonResolver {
   @Query(() => [SeasonType], { name: 'seasons' })
   getAllSeason(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<ISeason>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<ISeason[]> {
     return this.seasonUseCases.getAllSeasons({
       paginationArgs,

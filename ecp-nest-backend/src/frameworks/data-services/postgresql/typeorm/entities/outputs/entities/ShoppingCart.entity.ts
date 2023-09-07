@@ -1,10 +1,12 @@
 import {
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ShoppingCartProductItem } from './ShoppingCartProductItem.entity';
 import { User } from './User.entity';
@@ -14,6 +16,12 @@ import { User } from './User.entity';
 export class ShoppingCart {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(

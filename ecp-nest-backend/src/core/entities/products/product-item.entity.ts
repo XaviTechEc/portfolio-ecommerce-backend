@@ -5,7 +5,6 @@ export class IProductItem {
   sku: string;
   quantityInStock?: number;
   price?: number;
-  imgUrl?: string;
   slug: string;
   product: IProduct;
 }

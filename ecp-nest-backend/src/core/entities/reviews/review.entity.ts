@@ -4,6 +4,7 @@ import { IUser } from '../users/user.entity';
 export class IReview {
   id: string;
   ratingValue: number;
+  content?: string;
   visible?: boolean;
   createdAt: Date;
   updatedAt?: Date;

@@ -1,11 +1,13 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Review } from './Review.entity';
 import { ProductItem } from './ProductItem.entity';
@@ -22,6 +24,12 @@ export class OrderLine {
 
   @Column('real', { name: 'total_price' })
   totalPrice: number;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(() => Review, (review) => review.orderLine)

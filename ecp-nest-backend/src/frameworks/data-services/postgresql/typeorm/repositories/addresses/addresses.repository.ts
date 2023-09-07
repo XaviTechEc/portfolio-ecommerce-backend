@@ -1,18 +1,76 @@
 import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 import { IAddressesRepository } from 'src/core/abstracts/repositories';
-import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
-import { Repository } from 'typeorm';
+import {
+  CreateAddressInput,
+  PaginationArgs,
+  UpdateAddressInput,
+} from 'src/core/dtos';
+import {
+  FindManyOptions,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  ILike,
+  Repository,
+} from 'typeorm';
 import { Address } from '../../entities/outputs/entities';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
 
 export class AddressesRepository implements IAddressesRepository<Address> {
   private _repository: Repository<Address>;
-  constructor(repository: Repository<Address>) {
+  private _loggerService: LoggerService;
+  private _exceptionsService: ExceptionsService;
+
+  constructor(
+    repository: Repository<Address>,
+    loggerService: LoggerService,
+    exceptionsService: ExceptionsService,
+  ) {
     this._repository = repository;
+    this._loggerService = loggerService;
+    this._exceptionsService = exceptionsService;
   }
+  async getAddressesBy(
+    term: string,
+    fields: (keyof Address)[],
+    paginationArgs?: PaginationArgs,
+  ): Promise<Address[]> {
+    let queryOptions: FindManyOptions<Address> = {};
+    let relations: FindOptionsRelations<Address> = {};
+    let where: FindOptionsWhere<Address> = {};
+
+    if (paginationArgs) {
+      const { limit = 10, offset = 0 } = paginationArgs;
+      queryOptions = { take: limit, skip: offset };
+    }
+
+    for (const field of fields) {
+      if (field === 'country') {
+        relations = { ...relations, country: true };
+        where = {
+          ...where,
+          country: [
+            { code: term },
+            { longName: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
+      if (field === 'location') {
+        relations = { ...relations, location: true };
+        where = { ...where, location: { id: term } };
+      }
+    }
+
+    queryOptions = { ...queryOptions, relations, where };
+
+    const addressesBy = await this._repository.find(queryOptions);
+    return addressesBy;
+  }
+
   async getAllAddresses(args?: IGenericArgs<Address>): Promise<Address[]> {
-    let qb = this._repository.createQueryBuilder();
-    qb = qb.where({});
+    let qb = this._repository.createQueryBuilder('address');
 
     if (args) {
       const { paginationArgs, searchArgs } = args;
@@ -22,18 +80,17 @@ export class AddressesRepository implements IAddressesRepository<Address> {
       }
 
       if (searchArgs) {
-        const { searchTerm, searchFields } = searchArgs;
+        const { searchTerm } = searchArgs;
         if (searchTerm) {
-          if (!searchFields || searchFields.length === 0) {
-            throw new BadRequestException('Search fields are required');
-          }
-
-          searchFields.forEach((sf) => {
-            if (!sf) return;
-            qb = qb.orWhere(`LOWER(${sf}) LIKE LOWER(:searchTerm)`, {
-              searchTerm: `%${searchTerm}%`,
+          qb = qb
+            .where('address.reference ILIKE LOWER(:reference)')
+            .orWhere('address.address_line1 ILIKE LOWER(:ad1)')
+            .orWhere('address.address_line2 ILIKE LOWER(:ad2)')
+            .setParameters({
+              reference: `%${searchTerm}%`,
+              address_line1: `%${searchTerm}%`,
+              address_line2: `%${searchTerm}%`,
             });
-          });
         }
       }
     }
@@ -43,12 +100,20 @@ export class AddressesRepository implements IAddressesRepository<Address> {
   }
 
   async getAddressById(id: string): Promise<Address> {
-    return this._repository.findOneBy({ id });
+    const address = await this._repository.findOneBy({ id });
+    if (!address) {
+      return this._exceptionsService.notFound({
+        message: `The address with id ${id} could not be found`,
+        code_error: 404,
+      });
+    }
+    return address;
   }
   async createAddress(
     createAddressInput: CreateAddressInput,
   ): Promise<Address> {
-    return this._repository.save({ ...createAddressInput });
+    const newAddress = this._repository.create({ ...createAddressInput });
+    return this._repository.save(newAddress);
   }
   async updateAddress(
     id: string,
@@ -57,7 +122,9 @@ export class AddressesRepository implements IAddressesRepository<Address> {
     await this.getAddressById(id);
     const address = await this._repository.preload({ ...updateAddressInput });
     if (!address) {
-      throw new NotFoundException();
+      return this._exceptionsService.notFound({
+        message: `The address could not be preloaded`,
+      });
     }
     return this._repository.save(address);
   }

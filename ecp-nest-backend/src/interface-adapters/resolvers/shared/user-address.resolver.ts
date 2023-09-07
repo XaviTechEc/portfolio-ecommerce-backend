@@ -17,12 +17,36 @@ export class UserAddressResolver {
   @Query(() => [UserAddressType], { name: 'userAddresses' })
   getAllUserAddress(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IUserAddress>,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IUserAddress[]> {
     return this.userAddressUseCases.getAllUserAddress({
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [UserAddressType], { name: 'userAddressesByUser' })
+  getUserAddressByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IUserAddress[]> {
+    return this.userAddressUseCases.getUserAddressesBy(
+      term,
+      ['user'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [UserAddressType], { name: 'userAddressesByAddress' })
+  getUserAddressByAddress(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IUserAddress[]> {
+    return this.userAddressUseCases.getUserAddressesBy(
+      term,
+      ['address'],
+      paginationArgs,
+    );
   }
 
   @Query(() => UserAddressType, { name: 'userAddress' })

@@ -13,9 +13,33 @@ export class AddressResolver {
   @Query(() => [AddressType], { name: 'addresses' })
   getAllAddresses(
     @Args() paginationArgs: PaginationArgs,
-    @Args() searchArgs: SearchArgs<IAddress>,
+    @Args() searchArgs: SearchArgs,
   ) {
     return this.addressUseCases.getAllAddresses({ paginationArgs, searchArgs });
+  }
+
+  @Query(() => [AddressType], { name: 'addressesByCountry' })
+  getAddressesByCountry(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.addressUseCases.getAddressesBy(
+      term,
+      ['country'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [AddressType], { name: 'addressesByLocation' })
+  getAddressesByLocation(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.addressUseCases.getAddressesBy(
+      term,
+      ['location'],
+      paginationArgs,
+    );
   }
 
   @Query(() => AddressType, { name: 'address' })
