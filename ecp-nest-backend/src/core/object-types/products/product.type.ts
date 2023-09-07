@@ -1,10 +1,10 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { UserObjType } from '../users/user.type';
 import { ProductCategoryType } from '../shared/product-category.type';
-import { ProductPromotionType } from '../shared/product-promotion.type';
 import { ProductItemType } from './product-item.type';
-import { ProductTagType } from '../shared/product-tag.type';
 import { ImageType } from '../images/image.type';
+// import { ProductTagType } from '../shared/product-tag.type';
+// import { ProductPromotionType } from '../shared/product-promotion.type';
 
 @ObjectType()
 export class ProductType {
@@ -33,15 +33,17 @@ export class ProductType {
   @Field(() => UserObjType)
   createdBy: UserObjType;
 
-  @Field(() => [ProductTagType])
-  productTags: ProductTagType[];
-
-  @Field(() => [ProductPromotionType])
-  productPromotions: ProductPromotionType[];
-
   @Field(() => [ProductItemType])
   productItems: ProductItemType[];
 
   @Field(() => [ImageType])
   images: ImageType[];
+
+  //? Unnecessary field - query in parent
+  // @Field(() => [ProductTagType])
+  // productTags: ProductTagType[];
+
+  //? Unnecessary field - query in parent
+  // @Field(() => [ProductPromotionType])
+  // productPromotions: ProductPromotionType[];
 }

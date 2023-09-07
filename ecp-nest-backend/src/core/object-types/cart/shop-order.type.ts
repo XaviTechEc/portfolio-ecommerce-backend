@@ -5,7 +5,7 @@ import { AddressType } from '../addresses/address.type';
 import { ShippingMethodType } from './shipping-method.type';
 import { OrderStatusType } from './order-status.type';
 import { OrderLineType } from './order-line.type';
-import { ShopOrderLocationType } from '../shared/shop-order-location.type';
+// import { ShopOrderLocationType } from '../shared/shop-order-location.type';
 
 @ObjectType()
 export class ShopOrderType {
@@ -40,6 +40,7 @@ export class ShopOrderType {
   @Field(() => AddressType)
   shippingAddress: AddressType;
 
-  @Field(() => [ShopOrderLocationType])
-  shopOrderLocations: ShopOrderLocationType[];
+  //? Unnecessary field - query in parent
+  // @Field(() => [ShopOrderLocationType])
+  // shopOrderLocations: ShopOrderLocationType[];
 }

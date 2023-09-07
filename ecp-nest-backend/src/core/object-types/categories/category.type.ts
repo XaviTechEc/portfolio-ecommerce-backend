@@ -1,10 +1,10 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { SeasonType } from '../seasons/season.type';
-import { ProductCategoryType } from '../shared/product-category.type';
 import { UserObjType } from '../users/user.type';
-import { CategoryPromotionType } from '../shared/category-promotion.type';
 import { VariationType } from '../variations/variation.entity.type';
 import { ImageType } from '../images/image.type';
+// import { ProductCategoryType } from '../shared/product-category.type';
+// import { CategoryPromotionType } from '../shared/category-promotion.type';
 
 @ObjectType()
 export class CategoryType {
@@ -21,9 +21,6 @@ export class CategoryType {
   active?: boolean;
 
   // Relations
-  @Field(() => [ProductCategoryType])
-  productCategories: ProductCategoryType[];
-
   @Field(() => UserObjType)
   createdBy: UserObjType;
 
@@ -33,9 +30,6 @@ export class CategoryType {
   @Field(() => CategoryType, { nullable: true })
   parentCategory?: CategoryType;
 
-  @Field(() => [CategoryPromotionType])
-  categoryPromotions?: CategoryPromotionType[];
-
   @Field(() => [VariationType])
   variations: VariationType[];
 
@@ -44,4 +38,12 @@ export class CategoryType {
 
   @Field(() => [ImageType])
   images: ImageType[];
+
+  //? Unnecessary field - query in parent
+  // @Field(() => [ProductCategoryType])
+  // productCategories: ProductCategoryType[];
+
+  //? Unnecessary field - query in parent
+  // @Field(() => [CategoryPromotionType])
+  // categoryPromotions?: CategoryPromotionType[];
 }

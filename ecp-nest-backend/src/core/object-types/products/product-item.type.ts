@@ -1,9 +1,9 @@
 import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 import { ProductType } from './product.type';
 import { ShoppingCartProductItemType } from '../shared/shopping-cart-product-item.type';
-import { ProductConfigurationType } from '../shared/product-configuration.type';
 import { OrderLineType } from '../cart/order-line.type';
 import { ImageType } from '../images/image.type';
+// import { ProductConfigurationType } from '../shared/product-configuration.type';
 
 @ObjectType()
 export class ProductItemType {
@@ -32,9 +32,10 @@ export class ProductItemType {
   @Field(() => ProductType)
   product: ProductType;
 
-  @Field(() => [ProductConfigurationType])
-  productConfigurations: ProductConfigurationType[];
-
   @Field(() => [ImageType])
   images: ImageType[];
+
+  //? Unnecessary field - query in parent
+  // @Field(() => [ProductConfigurationType])
+  // productConfigurations: ProductConfigurationType[];
 }
