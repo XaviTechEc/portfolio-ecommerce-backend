@@ -34,14 +34,16 @@ export class OrderStatusResolver {
 
   @Mutation(() => OrderStatusType)
   createOrderStatus(
-    @Args() createOrderStatusInput: CreateOrderStatusInput,
+    @Args('createOrderStatusInput')
+    createOrderStatusInput: CreateOrderStatusInput,
   ): Promise<IOrderStatus> {
     return this.orderStatusUseCases.createOrderStatus(createOrderStatusInput);
   }
 
   @Mutation(() => OrderStatusType)
   updateOrderStatus(
-    @Args() updateOrderStatusInput: UpdateOrderStatusInput,
+    @Args('updateOrderStatusInput')
+    updateOrderStatusInput: UpdateOrderStatusInput,
   ): Promise<IOrderStatus> {
     return this.orderStatusUseCases.updateOrderStatus(
       updateOrderStatusInput.id,

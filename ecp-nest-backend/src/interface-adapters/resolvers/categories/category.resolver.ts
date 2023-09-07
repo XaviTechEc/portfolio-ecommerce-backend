@@ -58,14 +58,14 @@ export class CategoryResolver {
 
   @Mutation(() => CategoryType)
   createCategory(
-    @Args() createCategoryInput: CreateCategoryInput,
+    @Args('createCategoryInput') createCategoryInput: CreateCategoryInput,
   ): Promise<ICategory> {
     return this.categoryUseCases.createCategory(createCategoryInput);
   }
 
   @Mutation(() => CategoryType)
   updateCategory(
-    @Args() updateCategoryInput: UpdateCategoryInput,
+    @Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput,
   ): Promise<ICategory> {
     return this.categoryUseCases.updateCategory(
       updateCategoryInput.id,

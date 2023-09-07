@@ -70,6 +70,160 @@ input CreateAddressInput {
   unitNumber: Int
 }
 
+input CreateCategoryInput {
+  active: Boolean = true
+  description: String!
+  parentCategory: ID
+  season: ID!
+  user: ID!
+  value: String!
+}
+
+input CreateCategoryPromotionInput {
+  category: ID!
+  promotion: ID!
+}
+
+input CreateCountryInput {
+  code: String!
+  longName: String!
+}
+
+input CreateLocationInput {
+  lat: Float!
+  lng: Float!
+}
+
+input CreateOrderLineInput {
+  productItem: ID!
+  quantity: Int!
+  shopOrder: ID!
+  totalPrice: Float!
+}
+
+input CreateOrderStatusInput {
+  statusValue: StatusVal! = IN_PROGRESS
+}
+
+input CreatePaymentMethodInput {
+  value: PaymentMethod!
+}
+
+input CreateProductCategoryInput {
+  category: ID!
+  product: ID!
+}
+
+input CreateProductConfigurationInput {
+  productItem: ID!
+  variationOption: ID!
+}
+
+input CreateProductInput {
+  description: String!
+  subtitle: String!
+  title: String!
+  user: ID!
+}
+
+input CreateProductItemInput {
+  price: Float!
+  product: ID!
+  quantityInStock: Int = 0
+  sku: String!
+  slug: String!
+}
+
+input CreateProductPromotionInput {
+  product: ID!
+  promotion: ID!
+}
+
+input CreateProductTagInput {
+  product: ID!
+  tag: ID!
+}
+
+input CreatePromotionInput {
+  description: String!
+  endDate: Timestamp
+  percentageDiscount: Int = 0
+  startDate: Timestamp
+}
+
+input CreateReviewInput {
+  content: String
+  orderLine: ID!
+  ratingValue: Int!
+  user: ID!
+  visible: Boolean = true
+}
+
+input CreateSeasonInput {
+  description: String!
+  endDate: Timestamp
+  startDate: Timestamp
+}
+
+input CreateShippingMethodInput {
+  name: String!
+  price: Float!
+}
+
+input CreateShopOrderInput {
+  address: ID!
+  orderStatus: ID!
+  orderTotal: Float!
+  shippingMethod: ID!
+  user: ID!
+  userPaymentMethod: ID!
+}
+
+input CreateShopOrderLocationInput {
+  location: ID!
+  shopOrder: ID!
+}
+
+input CreateShoppingCartInput {
+  user: ID!
+}
+
+input CreateShoppingCartProductItemInput {
+  productItem: ID!
+  quantity: Int!
+  shoppingCart: ID!
+}
+
+input CreateTagInput {
+  code: String!
+  value: String!
+}
+
+input CreateUserAddressInput {
+  address: ID!
+  isDefault: Boolean!
+  user: ID!
+}
+
+input CreateUserPaymentMethodInput {
+  accountNumber: Timestamp
+  expiryDate: Timestamp
+  isDefault: Boolean
+  paymentMethod: ID!
+  provider: String
+  user: ID!
+}
+
+input CreateVariationInput {
+  category: ID!
+  name: String!
+}
+
+input CreateVariationOptionInput {
+  value: String!
+  variation: ID!
+}
+
 enum Gender {
   FEMALE
   MALE
@@ -98,8 +252,86 @@ type LocationType {
 
 type Mutation {
   createAddress(createAddressInput: CreateAddressInput!): AddressType!
+  createCategory(createCategoryInput: CreateCategoryInput!): CategoryType!
+  createCategoryPromotion(createCategoryPromotionInput: CreateCategoryPromotionInput!): CategoryPromotionType!
+  createCountry(createCountryInput: CreateCountryInput!): CountryType!
+  createLocation(createLocationInput: CreateLocationInput!): LocationType!
+  createOrderLine(createOrderLineInput: CreateOrderLineInput!): OrderLineType!
+  createOrderStatus(createOrderStatusInput: CreateOrderStatusInput!): OrderStatusType!
+  createPaymentMethod(createPaymentMethodInput: CreatePaymentMethodInput!): PaymentMethodType!
+  createProduct(createProductInput: CreateProductInput!): ProductType!
+  createProductCategory(createProductCategoryInput: CreateProductCategoryInput!): ProductCategoryType!
+  createProductConfiguration(createProductConfigurationInput: CreateProductConfigurationInput!): ProductConfigurationType!
+  createProductItem(createProductItemInput: CreateProductItemInput!): ProductItemType!
+  createProductPromotion(createProductPromotionInput: CreateProductPromotionInput!): ProductPromotionType!
+  createProductTag(createProductTagInput: CreateProductTagInput!): ProductTagType!
+  createPromotion(createPromotionInput: CreatePromotionInput!): PromotionType!
+  createReview(createReviewInput: CreateReviewInput!): ReviewType!
+  createSeason(createSeasonInput: CreateSeasonInput!): SeasonType!
+  createShippingMethod(createShippingMethodInput: CreateShippingMethodInput!): ShippingMethodType!
+  createShopOrder(createShopOrderInput: CreateShopOrderInput!): ShopOrderType!
+  createShopOrderLocation(createShopOrderLocationInput: CreateShopOrderLocationInput!): ShopOrderLocationType!
+  createShoppingCart(createShoppingCartInput: CreateShoppingCartInput!): ShoppingCartType!
+  createShoppingCartProductItem(createShoppingCartProductItemInput: CreateShoppingCartProductItemInput!): ShoppingCartProductItemType!
+  createTag(createTagInput: CreateTagInput!): TagType!
+  createUserAddress(createUserAddressInput: CreateUserAddressInput!): UserAddressType!
+  createUserPaymentMethod(createUserPaymentMethodInput: CreateUserPaymentMethodInput!): UserPaymentMethodType!
+  createVariation(createVariationInput: CreateVariationInput!): VariationType!
+  createVariationOption(createVariationOptionInput: CreateVariationOptionInput!): VariationOptionType!
   removeAddress(id: ID!): AddressType!
+  removeCategory(id: ID!): CategoryType!
+  removeCategoryPromotion(id: ID!): CategoryPromotionType!
+  removeCountry(id: ID!): CountryType!
+  removeLocation(id: ID!): LocationType!
+  removeOrderLine(id: ID!): OrderLineType!
+  removeOrderStatus(id: ID!): OrderStatusType!
+  removePaymentMethod(id: ID!): PaymentMethodType!
+  removeProduct(id: ID!): ProductType!
+  removeProductCategory(id: ID!): ProductCategoryType!
+  removeProductConfiguration(id: ID!): ProductConfigurationType!
+  removeProductItem(id: ID!): ProductItemType!
+  removeProductPromotion(id: ID!): ProductPromotionType!
+  removeProductTag(id: ID!): ProductTagType!
+  removePromotion(id: ID!): PromotionType!
+  removeReview(id: ID!): ReviewType!
+  removeSeason(id: ID!): SeasonType!
+  removeShippingMethod(id: ID!): ShippingMethodType!
+  removeShopOrder(id: ID!): ShopOrderType!
+  removeShopOrderLocation(id: ID!): ShopOrderLocationType!
+  removeShoppingCart(id: ID!): ShoppingCartType!
+  removeShoppingCartProductItem(id: ID!): ShoppingCartProductItemType!
+  removeTag(id: ID!): TagType!
+  removeUserAddress(id: ID!): UserAddressType!
+  removeUserPaymentMethod(id: ID!): UserPaymentMethodType!
+  removeVariation(id: ID!): VariationType!
+  removeVariationOption(id: ID!): VariationOptionType!
   updateAddress(updateAddressInput: UpdateAddressInput!): AddressType!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryType!
+  updateCategoryPromotion(updateCategoryPromotionInput: UpdateCategoryPromotionInput!): CategoryPromotionType!
+  updateCountry(updateCountryInput: UpdateCountryInput!): CountryType!
+  updateLocation(id: ID!, updateLocationInput: UpdateLocationInput!): LocationType!
+  updateOrderLine(updateOrderLineInput: UpdateOrderLineInput!): OrderLineType!
+  updateOrderStatus(updateOrderStatusInput: UpdateOrderStatusInput!): OrderStatusType!
+  updatePaymentMethod(updatePaymentMethodInput: UpdatePaymentMethodInput!): PaymentMethodType!
+  updateProduct(updateProductInput: UpdateProductInput!): ProductType!
+  updateProductCategory(updateProductCategoryInput: UpdateProductCategoryInput!): ProductCategoryType!
+  updateProductConfiguration(updateProductConfigurationInput: UpdateProductConfigurationInput!): ProductConfigurationType!
+  updateProductItem(updateProductItemInput: UpdateProductItemInput!): ProductItemType!
+  updateProductPromotion(updateProductPromotionInput: UpdateProductPromotionInput!): ProductPromotionType!
+  updateProductTag(updateProductTagInput: UpdateProductTagInput!): ProductTagType!
+  updatePromotion(updatePromotionInput: UpdatePromotionInput!): PromotionType!
+  updateReview(updateReviewInput: UpdateReviewInput!): ReviewType!
+  updateSeason(updateSeasonInput: UpdateSeasonInput!): SeasonType!
+  updateShippingMethod(updateShippingMethodInput: UpdateShippingMethodInput!): ShippingMethodType!
+  updateShopOrder(updateShopOrderInput: UpdateShopOrderInput!): ShopOrderType!
+  updateShopOrderLocation(updateShopOrderLocationInput: UpdateShopOrderLocationInput!): ShopOrderLocationType!
+  updateShoppingCart(updateShoppingCartInput: UpdateShoppingCartInput!): ShoppingCartType!
+  updateShoppingCartProductItem(updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput!): ShoppingCartProductItemType!
+  updateTag(updateTagInput: UpdateTagInput!): TagType!
+  updateUserAddress(updateUserAddressInput: UpdateUserAddressInput!): UserAddressType!
+  updateUserPaymentMethod(updateUserPaymentMethodInput: UpdateUserPaymentMethodInput!): UserPaymentMethodType!
+  updateVariation(updateVariationInput: UpdateVariationInput!): VariationType!
+  updateVariationOption(updateVariationOptionInput: UpdateVariationOptionInput!): VariationOptionType!
 }
 
 type OrderLineType {
@@ -192,6 +424,96 @@ type Query {
   addresses(limit: Int = 10, offset: Int = 0, searchTerm: String): [AddressType!]!
   addressesByCountry(limit: Int = 10, offset: Int = 0, term: String!): [AddressType!]!
   addressesByLocation(limit: Int = 10, offset: Int = 0, term: String!): [AddressType!]!
+  allOrderStatus(limit: Int = 10, offset: Int = 0, searchTerm: String): [OrderStatusType!]!
+  categories(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryType!]!
+  categoriesBySeason(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
+  categoriesByUser(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
+  category(id: ID!): CategoryType!
+  categoryPromotion(id: ID!): CategoryPromotionType!
+  categoryPromotions(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryPromotionType!]!
+  categoryPromotionsByCategory(limit: Int = 10, offset: Int = 0, term: String!): [CategoryPromotionType!]!
+  categoryPromotionsByPromotion(limit: Int = 10, offset: Int = 0, term: String!): [CategoryPromotionType!]!
+  countries(limit: Int = 10, offset: Int = 0, searchTerm: String): [CountryType!]!
+  country(id: ID!): CountryType!
+  getLocationById(id: ID!): LocationType!
+  image(id: ID!): ImageType!
+  images(limit: Int = 10, offset: Int = 0, searchTerm: String): [ImageType!]!
+  imagesByCategory(limit: Int = 10, offset: Int = 0, term: String!): [ImageType!]!
+  imagesByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ImageType!]!
+  imagesByProductItem(limit: Int = 10, offset: Int = 0, term: String!): [ImageType!]!
+  imagesByUser(limit: Int = 10, offset: Int = 0, term: String!): [ImageType!]!
+  orderLine(id: ID!): OrderLineType!
+  orderLines(limit: Int = 10, offset: Int = 0, searchTerm: String): [OrderLineType!]!
+  orderLinesByProductItem(limit: Int = 10, offset: Int = 0, term: String!): [OrderLineType!]!
+  orderLinesByShopOrder(limit: Int = 10, offset: Int = 0, term: String!): [OrderLineType!]!
+  orderStatus(id: ID!): OrderStatusType!
+  paymentMethod(id: ID!): PaymentMethodType!
+  product(id: ID!): ProductType!
+  productCategories(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductCategoryType!]!
+  productCategoriesByCategory(limit: Int = 10, offset: Int = 0, term: String!): [ProductCategoryType!]!
+  productCategoriesByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ProductCategoryType!]!
+  productCategory(id: ID!): ProductCategoryType!
+  productConfiguration(id: ID!): ProductConfigurationType!
+  productConfigurations(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductConfigurationType!]!
+  productConfigurationsByProductItem(limit: Int = 10, offset: Int = 0, term: String!): [ProductConfigurationType!]!
+  productConfigurationsByVariationOption(limit: Int = 10, offset: Int = 0, term: String!): [ProductConfigurationType!]!
+  productItem(id: ID!): ProductItemType!
+  productItems(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductItemType!]!
+  productItemsByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ProductItemType!]!
+  productPromotion(id: ID!): ProductPromotionType!
+  productPromotions(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductPromotionType!]!
+  productPromotionsByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ProductPromotionType!]!
+  productPromotionsByPromotion(limit: Int = 10, offset: Int = 0, term: String!): [ProductPromotionType!]!
+  productTag(id: ID!): ProductTagType!
+  productTags(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductTagType!]!
+  productTagsByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ProductTagType!]!
+  productTagsByTag(limit: Int = 10, offset: Int = 0, term: String!): [ProductTagType!]!
+  products(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductType!]!
+  productsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ProductType!]!
+  promotion(id: ID!): PromotionType!
+  promotions(limit: Int = 10, offset: Int = 0, searchTerm: String): [PromotionType!]!
+  review(id: ID!): ReviewType!
+  reviews(limit: Int = 10, offset: Int = 0, searchTerm: String): [ReviewType!]!
+  reviewsByOrderLine(limit: Int = 10, offset: Int = 0, term: String!): [ReviewType!]!
+  reviewsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ReviewType!]!
+  season(id: ID!): SeasonType!
+  seasons(limit: Int = 10, offset: Int = 0, searchTerm: String): [SeasonType!]!
+  shippingMethod(id: ID!): ShippingMethodType!
+  shopOrder(id: ID!): ShopOrderType!
+  shopOrderLocation(id: ID!): ShopOrderLocationType!
+  shopOrderLocations(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShopOrderLocationType!]!
+  shopOrderLocationsByLocation(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderLocationType!]!
+  shopOrderLocationsByShopOrder(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderLocationType!]!
+  shopOrders(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShopOrderType!]!
+  shopOrdersByAddress(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
+  shopOrdersByOrderStatus(limit: Int = 10, offset: Int = 0, term: StatusVal!): [ShopOrderType!]!
+  shopOrdersByShippingMethod(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
+  shopOrdersByUser(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
+  shoppingCart(id: ID!): ShoppingCartType!
+  shoppingCartProductItem(id: ID!): ShoppingCartProductItemType!
+  shoppingCartProductItems(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShoppingCartProductItemType!]!
+  shoppingCartProductItemsByProductItem(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartProductItemType!]!
+  shoppingCartProductItemsByShoppingCart(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartProductItemType!]!
+  shoppingCarts(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShoppingCartType!]!
+  shoppingCartsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartType!]!
+  tag(id: ID!): TagType!
+  tags(limit: Int = 10, offset: Int = 0, searchTerm: String): [TagType!]!
+  user(id: ID!): UserType!
+  userAddress(id: ID!): UserAddressType!
+  userAddresses(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserAddressType!]!
+  userAddressesByAddress(limit: Int = 10, offset: Int = 0, term: String!): [UserAddressType!]!
+  userAddressesByUser(limit: Int = 10, offset: Int = 0, term: String!): [UserAddressType!]!
+  userPaymentMethod(id: ID!): UserPaymentMethodType!
+  userPaymentMethods(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserPaymentMethodType!]!
+  userPaymentMethodsByPaymentMethod(limit: Int = 10, offset: Int = 0, term: String!): [UserPaymentMethodType!]!
+  userPaymentMethodsByUser(limit: Int = 10, offset: Int = 0, term: String!): [UserPaymentMethodType!]!
+  users(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserType!]!
+  variation(id: ID!): VariationType!
+  variationOption(id: ID!): VariationOptionType!
+  variationOptions(limit: Int = 10, offset: Int = 0, searchTerm: String): [VariationOptionType!]!
+  variationOptionsByVariation(limit: Int = 10, offset: Int = 0, term: String!): [VariationOptionType!]!
+  variations(limit: Int = 10, offset: Int = 0, searchTerm: String): [VariationType!]!
+  variationsByCategory(limit: Int = 10, offset: Int = 0, term: String!): [VariationType!]!
 }
 
 type ReviewType {
@@ -290,6 +612,156 @@ input UpdateAddressInput {
   region: String
   streetNumber: String
   unitNumber: Int
+}
+
+input UpdateCategoryInput {
+  active: Boolean = true
+  description: String
+  id: String!
+  parentCategory: ID
+  season: ID
+  user: ID
+  value: String
+}
+
+input UpdateCategoryPromotionInput {
+  id: ID!
+}
+
+input UpdateCountryInput {
+  code: String
+  id: ID!
+  longName: String
+}
+
+input UpdateLocationInput {
+  id: ID!
+  lat: Float
+  lng: Float
+}
+
+input UpdateOrderLineInput {
+  id: ID!
+  productItem: ID
+  quantity: Int
+  shopOrder: ID
+  totalPrice: Float
+}
+
+input UpdateOrderStatusInput {
+  id: ID!
+  statusValue: StatusVal = IN_PROGRESS
+}
+
+input UpdatePaymentMethodInput {
+  id: ID!
+}
+
+input UpdateProductCategoryInput {
+  id: ID!
+}
+
+input UpdateProductConfigurationInput {
+  id: ID!
+}
+
+input UpdateProductInput {
+  description: String
+  id: ID!
+  subtitle: String
+  title: String
+  user: ID
+}
+
+input UpdateProductItemInput {
+  id: ID!
+  price: Float
+  product: ID
+  quantityInStock: Int = 0
+  sku: String
+  slug: String
+}
+
+input UpdateProductPromotionInput {
+  id: ID!
+}
+
+input UpdateProductTagInput {
+  id: ID!
+}
+
+input UpdatePromotionInput {
+  description: String
+  endDate: Timestamp
+  id: ID!
+  percentageDiscount: Int = 0
+  startDate: Timestamp
+}
+
+input UpdateReviewInput {
+  id: ID!
+}
+
+input UpdateSeasonInput {
+  description: String
+  endDate: Timestamp
+  id: String!
+  startDate: Timestamp
+}
+
+input UpdateShippingMethodInput {
+  id: ID!
+  name: String
+  price: Float
+}
+
+input UpdateShopOrderInput {
+  address: ID
+  id: ID!
+  orderStatus: ID
+  orderTotal: Float
+  shippingMethod: ID
+  user: ID
+  userPaymentMethod: ID
+}
+
+input UpdateShopOrderLocationInput {
+  id: ID!
+}
+
+input UpdateShoppingCartInput {
+  id: ID!
+  user: ID
+}
+
+input UpdateShoppingCartProductItemInput {
+  id: ID!
+}
+
+input UpdateTagInput {
+  code: String
+  id: ID!
+  value: String
+}
+
+input UpdateUserAddressInput {
+  id: ID!
+}
+
+input UpdateUserPaymentMethodInput {
+  id: ID!
+}
+
+input UpdateVariationInput {
+  category: ID
+  id: ID!
+  name: String
+}
+
+input UpdateVariationOptionInput {
+  id: ID!
+  value: String
+  variation: ID
 }
 
 type UserAddressType {

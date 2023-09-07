@@ -61,14 +61,14 @@ export class CommentResolver {
 
   @Mutation(() => CommentType)
   createComment(
-    @Args() createCommentInput: CreateCommentInput,
+    @Args('createCommentInput') createCommentInput: CreateCommentInput,
   ): Promise<IComment> {
     return this.commentUseCases.createComment(createCommentInput);
   }
 
   @Mutation(() => CommentType)
   updateComment(
-    @Args() updateCommentInput: UpdateCommentInput,
+    @Args('updateCommentInput') updateCommentInput: UpdateCommentInput,
   ): Promise<IComment> {
     return this.commentUseCases.updateComment(
       updateCommentInput.id,

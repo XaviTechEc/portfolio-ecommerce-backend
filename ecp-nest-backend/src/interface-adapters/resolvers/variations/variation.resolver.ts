@@ -46,14 +46,14 @@ export class VariationResolver {
 
   @Mutation(() => VariationType)
   createVariation(
-    @Args() createVariationInput: CreateVariationInput,
+    @Args('createVariationInput') createVariationInput: CreateVariationInput,
   ): Promise<IVariation> {
     return this.variationUseCases.createVariation(createVariationInput);
   }
 
   @Mutation(() => VariationType)
   updateVariation(
-    @Args() updateVariationInput: UpdateVariationInput,
+    @Args('updateVariationInput') updateVariationInput: UpdateVariationInput,
   ): Promise<IVariation> {
     return this.variationUseCases.updateVariation(
       updateVariationInput.id,

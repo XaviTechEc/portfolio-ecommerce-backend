@@ -34,7 +34,8 @@ export class ShippingMethodResolver {
 
   @Mutation(() => ShippingMethodType)
   createShippingMethod(
-    @Args() createShippingMethodInput: CreateShippingMethodInput,
+    @Args('createShippingMethodInput')
+    createShippingMethodInput: CreateShippingMethodInput,
   ): Promise<IShippingMethod> {
     return this.shippingMethodUseCases.createShippingMethod(
       createShippingMethodInput,
@@ -43,7 +44,8 @@ export class ShippingMethodResolver {
 
   @Mutation(() => ShippingMethodType)
   updateShippingMethod(
-    @Args() updateShippingMethodInput: UpdateShippingMethodInput,
+    @Args('updateShippingMethodInput')
+    updateShippingMethodInput: UpdateShippingMethodInput,
   ): Promise<IShippingMethod> {
     return this.shippingMethodUseCases.updateShippingMethod(
       updateShippingMethodInput.id,

@@ -18,7 +18,7 @@ export class LocationResolver {
 
   @Mutation(() => LocationType)
   createLocation(
-    @Args() createLocationInput: CreateLocationInput,
+    @Args('createLocationInput') createLocationInput: CreateLocationInput,
   ): Promise<ILocation> {
     return this.locationUseCases.createLocation(createLocationInput);
   }
@@ -26,7 +26,7 @@ export class LocationResolver {
   @Mutation(() => LocationType)
   updateLocation(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-    @Args() updateLocationInput: UpdateLocationInput,
+    @Args('updateLocationInput') updateLocationInput: UpdateLocationInput,
   ): Promise<ILocation> {
     return this.locationUseCases.updateLocation(id, updateLocationInput);
   }

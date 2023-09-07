@@ -58,14 +58,16 @@ export class UserAddressResolver {
 
   @Mutation(() => UserAddressType)
   createUserAddress(
-    @Args() createUserAddressInput: CreateUserAddressInput,
+    @Args('createUserAddressInput')
+    createUserAddressInput: CreateUserAddressInput,
   ): Promise<IUserAddress> {
     return this.userAddressUseCases.createUserAddress(createUserAddressInput);
   }
 
   @Mutation(() => UserAddressType)
   updateUserAddress(
-    @Args() updateUserAddressInput: UpdateUserAddressInput,
+    @Args('updateUserAddressInput')
+    updateUserAddressInput: UpdateUserAddressInput,
   ): Promise<IUserAddress> {
     return this.userAddressUseCases.updateUserAddress(
       updateUserAddressInput.id,

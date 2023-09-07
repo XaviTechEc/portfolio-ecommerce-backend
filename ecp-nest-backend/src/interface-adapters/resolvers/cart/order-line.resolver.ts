@@ -58,14 +58,14 @@ export class OrderLineResolver {
 
   @Mutation(() => OrderLineType)
   createOrderLine(
-    @Args() createOrderLineInput: CreateOrderLineInput,
+    @Args('createOrderLineInput') createOrderLineInput: CreateOrderLineInput,
   ): Promise<IOrderLine> {
     return this.orderLineUseCases.createOrderLine(createOrderLineInput);
   }
 
   @Mutation(() => OrderLineType)
   updateOrderLine(
-    @Args() updateOrderLineInput: UpdateOrderLineInput,
+    @Args('updateOrderLineInput') updateOrderLineInput: UpdateOrderLineInput,
   ): Promise<IOrderLine> {
     return this.orderLineUseCases.updateOrderLine(
       updateOrderLineInput.id,

@@ -57,7 +57,8 @@ export class ProductPromotionResolver {
 
   @Mutation(() => ProductPromotionType)
   createProductPromotion(
-    @Args() createProductPromotionInput: CreateProductPromotionInput,
+    @Args('createProductPromotionInput')
+    createProductPromotionInput: CreateProductPromotionInput,
   ): Promise<IProductPromotion> {
     return this.productPromotionUseCases.createProductPromotion(
       createProductPromotionInput,
@@ -66,7 +67,8 @@ export class ProductPromotionResolver {
 
   @Mutation(() => ProductPromotionType)
   updateProductPromotion(
-    @Args() updateProductPromotionInput: UpdateProductPromotionInput,
+    @Args('updateProductPromotionInput')
+    updateProductPromotionInput: UpdateProductPromotionInput,
   ): Promise<IProductPromotion> {
     return this.productPromotionUseCases.updateProductPromotion(
       updateProductPromotionInput.id,

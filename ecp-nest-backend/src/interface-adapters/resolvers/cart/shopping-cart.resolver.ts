@@ -46,7 +46,8 @@ export class ShoppingCartResolver {
 
   @Mutation(() => ShoppingCartType)
   createShoppingCart(
-    @Args() createShoppingCartInput: CreateShoppingCartInput,
+    @Args('createShoppingCartInput')
+    createShoppingCartInput: CreateShoppingCartInput,
   ): Promise<IShoppingCart> {
     return this.shoppingCartUseCases.createShoppingCart(
       createShoppingCartInput,
@@ -55,7 +56,8 @@ export class ShoppingCartResolver {
 
   @Mutation(() => ShoppingCartType)
   updateShoppingCart(
-    @Args() updateShoppingCartInput: UpdateShoppingCartInput,
+    @Args('updateShoppingCartInput')
+    updateShoppingCartInput: UpdateShoppingCartInput,
   ): Promise<IShoppingCart> {
     return this.shoppingCartUseCases.updateShoppingCart(
       updateShoppingCartInput.id,

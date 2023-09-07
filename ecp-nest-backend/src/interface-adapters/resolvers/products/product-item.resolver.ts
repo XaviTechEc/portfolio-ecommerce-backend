@@ -46,14 +46,16 @@ export class ProductItemResolver {
 
   @Mutation(() => ProductItemType)
   createProductItem(
-    @Args() createProductItemInput: CreateProductItemInput,
+    @Args('createProductItemInput')
+    createProductItemInput: CreateProductItemInput,
   ): Promise<IProductItem> {
     return this.productItemUseCases.createProductItem(createProductItemInput);
   }
 
   @Mutation(() => ProductItemType)
   updateProductItem(
-    @Args() updateProductItemInput: UpdateProductItemInput,
+    @Args('updateProductItemInput')
+    updateProductItemInput: UpdateProductItemInput,
   ): Promise<IProductItem> {
     return this.productItemUseCases.updateProductItem(
       updateProductItemInput.id,

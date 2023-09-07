@@ -33,12 +33,16 @@ export class SeasonResolver {
   }
 
   @Mutation(() => SeasonType)
-  createSeason(@Args() createSeasonInput: CreateSeasonInput): Promise<ISeason> {
+  createSeason(
+    @Args('createSeasonInput') createSeasonInput: CreateSeasonInput,
+  ): Promise<ISeason> {
     return this.seasonUseCases.createSeason(createSeasonInput);
   }
 
   @Mutation(() => SeasonType)
-  updateSeason(@Args() updateSeasonInput: UpdateSeasonInput): Promise<ISeason> {
+  updateSeason(
+    @Args('updateSeasonInput') updateSeasonInput: UpdateSeasonInput,
+  ): Promise<ISeason> {
     return this.seasonUseCases.updateSeason(
       updateSeasonInput.id,
       updateSeasonInput,

@@ -21,7 +21,8 @@ export class PaymentMethodResolver {
 
   @Mutation(() => PaymentMethodType)
   createPaymentMethod(
-    @Args() createPaymentMethodInput: CreatePaymentMethodInput,
+    @Args('createPaymentMethodInput')
+    createPaymentMethodInput: CreatePaymentMethodInput,
   ): Promise<IPaymentMethod> {
     return this.paymentMethodUseCases.createPaymentMethod(
       createPaymentMethodInput,
@@ -30,7 +31,8 @@ export class PaymentMethodResolver {
 
   @Mutation(() => PaymentMethodType)
   updatePaymentMethod(
-    @Args() updatePaymentMethodInput: UpdatePaymentMethodInput,
+    @Args('updatePaymentMethodInput')
+    updatePaymentMethodInput: UpdatePaymentMethodInput,
   ): Promise<IPaymentMethod> {
     return this.paymentMethodUseCases.updatePaymentMethod(
       updatePaymentMethodInput.id,

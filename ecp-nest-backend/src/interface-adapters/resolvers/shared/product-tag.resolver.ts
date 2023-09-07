@@ -58,14 +58,14 @@ export class ProductTagResolver {
 
   @Mutation(() => ProductTagType)
   createProductTag(
-    @Args() createProductTagInput: CreateProductTagInput,
+    @Args('createProductTagInput') createProductTagInput: CreateProductTagInput,
   ): Promise<IProductTag> {
     return this.productTagUseCases.createProductTag(createProductTagInput);
   }
 
   @Mutation(() => ProductTagType)
   updateProductTag(
-    @Args() updateProductTagInput: UpdateProductTagInput,
+    @Args('updateProductTagInput') updateProductTagInput: UpdateProductTagInput,
   ): Promise<IProductTag> {
     return this.productTagUseCases.updateProductTag(
       updateProductTagInput.id,

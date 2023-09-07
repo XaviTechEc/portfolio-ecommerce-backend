@@ -8,7 +8,7 @@ import {
 } from 'src/core/dtos';
 import { ITag } from 'src/core/entities';
 import { TagType } from 'src/core/object-types';
-import { TagUseCases } from 'src/use-cases';
+import { TagUseCases } from 'src/use-cases/tags/tag-use-cases';
 
 @Resolver(() => TagType)
 export class TagResolver {
@@ -33,12 +33,16 @@ export class TagResolver {
   }
 
   @Mutation(() => TagType)
-  createTag(@Args() createTagInput: CreateTagInput): Promise<ITag> {
+  createTag(
+    @Args('createTagInput') createTagInput: CreateTagInput,
+  ): Promise<ITag> {
     return this.tagUseCases.createTag(createTagInput);
   }
 
   @Mutation(() => TagType)
-  updateTag(@Args() updateTagInput: UpdateTagInput): Promise<ITag> {
+  updateTag(
+    @Args('updateTagInput') updateTagInput: UpdateTagInput,
+  ): Promise<ITag> {
     return this.tagUseCases.updateTag(updateTagInput.id, updateTagInput);
   }
 

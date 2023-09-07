@@ -42,14 +42,14 @@ export class ProductResolver {
 
   @Mutation(() => ProductType)
   createProduct(
-    @Args() createProductInput: CreateProductInput,
+    @Args('createProductInput') createProductInput: CreateProductInput,
   ): Promise<IProduct> {
     return this.productUseCases.createProduct(createProductInput);
   }
 
   @Mutation(() => ProductType)
   updateProduct(
-    @Args() updateProductInput: UpdateProductInput,
+    @Args('updateProductInput') updateProductInput: UpdateProductInput,
   ): Promise<IProduct> {
     return this.productUseCases.updateProduct(
       updateProductInput.id,

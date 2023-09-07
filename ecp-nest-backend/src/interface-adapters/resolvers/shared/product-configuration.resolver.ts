@@ -64,7 +64,8 @@ export class ProductConfigurationResolver {
 
   @Mutation(() => ProductConfigurationType)
   createProductConfiguration(
-    @Args() createProductConfigurationInput: CreateProductConfigurationInput,
+    @Args('createProductConfigurationInput')
+    createProductConfigurationInput: CreateProductConfigurationInput,
   ): Promise<IProductConfiguration> {
     return this.productConfigurationUseCases.createProductConfiguration(
       createProductConfigurationInput,
@@ -73,7 +74,8 @@ export class ProductConfigurationResolver {
 
   @Mutation(() => ProductConfigurationType)
   updateProductConfiguration(
-    @Args() updateProductConfigurationInput: UpdateProductConfigurationInput,
+    @Args('updateProductConfigurationInput')
+    updateProductConfigurationInput: UpdateProductConfigurationInput,
   ): Promise<IProductConfiguration> {
     return this.productConfigurationUseCases.updateProductConfiguration(
       updateProductConfigurationInput.id,

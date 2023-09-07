@@ -58,7 +58,8 @@ export class ProductCategoryResolver {
 
   @Mutation(() => ProductCategoryType)
   createProductCategory(
-    @Args() createProductCategoryInput: CreateProductCategoryInput,
+    @Args('createProductCategoryInput')
+    createProductCategoryInput: CreateProductCategoryInput,
   ): Promise<IProductCategory> {
     return this.productCategoryUseCases.createProductCategory(
       createProductCategoryInput,
@@ -67,7 +68,8 @@ export class ProductCategoryResolver {
 
   @Mutation(() => ProductCategoryType)
   updateProductCategory(
-    @Args() updateProductCategoryInput: UpdateProductCategoryInput,
+    @Args('updateProductCategoryInput')
+    updateProductCategoryInput: UpdateProductCategoryInput,
   ): Promise<IProductCategory> {
     return this.productCategoryUseCases.updateProductCategory(
       updateProductCategoryInput.id,

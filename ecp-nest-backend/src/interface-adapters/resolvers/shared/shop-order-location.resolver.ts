@@ -62,7 +62,8 @@ export class ShopOrderLocationResolver {
 
   @Mutation(() => ShopOrderLocationType)
   createShopOrderLocation(
-    @Args() createShopOrderLocationInput: CreateShopOrderLocationInput,
+    @Args('createShopOrderLocationInput')
+    createShopOrderLocationInput: CreateShopOrderLocationInput,
   ): Promise<IShopOrderLocation> {
     return this.shopOrderLocationUseCases.createShopOrderLocation(
       createShopOrderLocationInput,
@@ -71,7 +72,8 @@ export class ShopOrderLocationResolver {
 
   @Mutation(() => ShopOrderLocationType)
   updateShopOrderLocation(
-    @Args() updateShopOrderLocationInput: UpdateShopOrderLocationInput,
+    @Args('updateShopOrderLocationInput')
+    updateShopOrderLocationInput: UpdateShopOrderLocationInput,
   ): Promise<IShopOrderLocation> {
     return this.shopOrderLocationUseCases.updateShopOrderLocation(
       updateShopOrderLocationInput.id,

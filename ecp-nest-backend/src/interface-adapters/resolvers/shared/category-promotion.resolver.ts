@@ -62,7 +62,8 @@ export class CategoryPromotionResolver {
 
   @Mutation(() => CategoryPromotionType)
   createCategoryPromotion(
-    @Args() createCategoryPromotionInput: CreateCategoryPromotionInput,
+    @Args('createCategoryPromotionInput')
+    createCategoryPromotionInput: CreateCategoryPromotionInput,
   ): Promise<ICategoryPromotion> {
     return this.categoryPromotionUseCases.createCategoryPromotion(
       createCategoryPromotionInput,
@@ -71,7 +72,8 @@ export class CategoryPromotionResolver {
 
   @Mutation(() => CategoryPromotionType)
   updateCategoryPromotion(
-    @Args() updateCategoryPromotionInput: UpdateCategoryPromotionInput,
+    @Args('updateCategoryPromotionInput')
+    updateCategoryPromotionInput: UpdateCategoryPromotionInput,
   ): Promise<ICategoryPromotion> {
     return this.categoryPromotionUseCases.updateCategoryPromotion(
       updateCategoryPromotionInput.id,

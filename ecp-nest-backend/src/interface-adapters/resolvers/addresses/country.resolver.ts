@@ -31,14 +31,14 @@ export class CountryResolver {
 
   @Mutation(() => CountryType)
   createCountry(
-    @Args() createCountryInput: CreateCountryInput,
+    @Args('createCountryInput') createCountryInput: CreateCountryInput,
   ): Promise<ICountry> {
     return this.countryUseCases.createCountry(createCountryInput);
   }
 
   @Mutation(() => CountryType)
   updateCountry(
-    @Args() updateCountryInput: UpdateCountryInput,
+    @Args('updateCountryInput') updateCountryInput: UpdateCountryInput,
   ): Promise<ICountry> {
     return this.countryUseCases.updateCountry(
       updateCountryInput.id,

@@ -83,14 +83,14 @@ export class ShopOrderResolver {
 
   @Mutation(() => ShopOrderType)
   createShopOrder(
-    @Args() createShopOrderInput: CreateShopOrderInput,
+    @Args('createShopOrderInput') createShopOrderInput: CreateShopOrderInput,
   ): Promise<IShopOrder> {
     return this.shopOrderUseCases.createShopOrder(createShopOrderInput);
   }
 
   @Mutation(() => ShopOrderType)
   updateShopOrder(
-    @Args() updateShopOrderInput: UpdateShopOrderInput,
+    @Args('updateShopOrderInput') updateShopOrderInput: UpdateShopOrderInput,
   ): Promise<IShopOrder> {
     return this.shopOrderUseCases.updateShopOrder(
       updateShopOrderInput.id,

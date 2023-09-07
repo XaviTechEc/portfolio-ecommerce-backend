@@ -53,12 +53,16 @@ export class ReviewResolver {
   }
 
   @Mutation(() => ReviewType)
-  createReview(@Args() createReviewInput: CreateReviewInput): Promise<IReview> {
+  createReview(
+    @Args('createReviewInput') createReviewInput: CreateReviewInput,
+  ): Promise<IReview> {
     return this.reviewUseCases.createReview(createReviewInput);
   }
 
   @Mutation(() => ReviewType)
-  updateReview(@Args() updateReviewInput: UpdateReviewInput): Promise<IReview> {
+  updateReview(
+    @Args('updateReviewInput') updateReviewInput: UpdateReviewInput,
+  ): Promise<IReview> {
     return this.reviewUseCases.updateReview(
       updateReviewInput.id,
       updateReviewInput,

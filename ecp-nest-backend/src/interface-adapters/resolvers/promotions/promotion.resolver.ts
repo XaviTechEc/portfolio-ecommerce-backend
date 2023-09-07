@@ -34,14 +34,14 @@ export class PromotionResolver {
 
   @Mutation(() => PromotionType)
   createPromotion(
-    @Args() createPromotionInput: CreatePromotionInput,
+    @Args('createPromotionInput') createPromotionInput: CreatePromotionInput,
   ): Promise<IPromotion> {
     return this.promotionUseCases.createPromotion(createPromotionInput);
   }
 
   @Mutation(() => PromotionType)
   updatePromotion(
-    @Args() updatePromotionInput: UpdatePromotionInput,
+    @Args('updatePromotionInput') updatePromotionInput: UpdatePromotionInput,
   ): Promise<IPromotion> {
     return this.promotionUseCases.updatePromotion(
       updatePromotionInput.id,

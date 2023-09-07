@@ -68,7 +68,7 @@ export class ShoppingCartProductItemResolver {
 
   @Mutation(() => ShoppingCartProductItemType)
   createShoppingCartProductItem(
-    @Args()
+    @Args('createShoppingCartProductItemInput')
     createShoppingCartProductItemInput: CreateShoppingCartProductItemInput,
   ): Promise<IShoppingCartProductItem> {
     return this.shoppingCartProductItemUseCases.createShoppingCartProductItem(
@@ -78,7 +78,7 @@ export class ShoppingCartProductItemResolver {
 
   @Mutation(() => ShoppingCartProductItemType)
   updateShoppingCartProductItem(
-    @Args()
+    @Args('updateShoppingCartProductItemInput')
     updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput,
   ): Promise<IShoppingCartProductItem> {
     return this.shoppingCartProductItemUseCases.updateShoppingCartProductItem(

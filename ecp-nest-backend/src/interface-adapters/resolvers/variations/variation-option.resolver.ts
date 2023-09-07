@@ -46,7 +46,8 @@ export class VariationOptionResolver {
 
   @Mutation(() => VariationOptionType)
   createVariationOption(
-    @Args() createVariationOptionInput: CreateVariationOptionInput,
+    @Args('createVariationOptionInput')
+    createVariationOptionInput: CreateVariationOptionInput,
   ): Promise<IVariationOption> {
     return this.variationOptionUseCases.createVariationOption(
       createVariationOptionInput,
@@ -55,7 +56,8 @@ export class VariationOptionResolver {
 
   @Mutation(() => VariationOptionType)
   updateVariationOption(
-    @Args() updateVariationOptionInput: UpdateVariationOptionInput,
+    @Args('updateVariationOptionInput')
+    updateVariationOptionInput: UpdateVariationOptionInput,
   ): Promise<IVariationOption> {
     return this.variationOptionUseCases.updateVariationOption(
       updateVariationOptionInput.id,
