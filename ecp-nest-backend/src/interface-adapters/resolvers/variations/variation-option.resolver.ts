@@ -25,6 +25,18 @@ export class VariationOptionResolver {
     });
   }
 
+  @Query(() => [VariationOptionType], { name: 'variationOptionsByVariation' })
+  getVariationOptionsByVariation(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IVariationOption[]> {
+    return this.variationOptionUseCases.getVariationOptionsBy(
+      term,
+      ['variation'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => VariationOptionType, { name: 'variationOption' })
   getVariationOptionById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

@@ -25,6 +25,18 @@ export class ProductItemResolver {
     });
   }
 
+  @Query(() => [ProductItemType], { name: 'productItemsByProduct' })
+  getProductItemsByProduct(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductItem[]> {
+    return this.productItemUseCases.getProductItemsBy(
+      term,
+      ['product'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => ProductItemType, { name: 'productItem' })
   getProductItemById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

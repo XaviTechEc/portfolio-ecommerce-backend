@@ -7,6 +7,7 @@ import {
   UpdateShopOrderInput,
 } from 'src/core/dtos';
 import { IShopOrder } from 'src/core/entities';
+import { StatusValue } from 'src/core/enums';
 import { ShopOrderType } from 'src/core/object-types';
 import { ShopOrderUseCases } from 'src/use-cases';
 
@@ -23,6 +24,54 @@ export class ShopOrderResolver {
       paginationArgs,
       searchArgs,
     });
+  }
+
+  @Query(() => [ShopOrderType], { name: 'shopOrdersByUser' })
+  getShopOrdersByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.shopOrderUseCases.getShopOrdersBy(
+      term,
+      ['user'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ShopOrderType], { name: 'shopOrdersByAddress' })
+  getShopOrdersByAddress(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.shopOrderUseCases.getShopOrdersBy(
+      term,
+      ['address'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ShopOrderType], { name: 'shopOrdersByShippingMethod' })
+  getShopOrdersByShippingMethod(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.shopOrderUseCases.getShopOrdersBy(
+      term,
+      ['shippingMethod'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ShopOrderType], { name: 'shopOrdersByOrderStatus' })
+  getShopOrdersByOrderStatus(
+    @Args({ name: 'term', type: () => StatusValue }) term: StatusValue,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.shopOrderUseCases.getShopOrdersBy(
+      term,
+      ['orderStatus'],
+      paginationArgs,
+    );
   }
 
   @Query(() => ShopOrderType, { name: 'shopOrder' })

@@ -31,7 +31,7 @@ export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
     this._exceptionsService = exceptionsService;
   }
   async getShopOrdersBy(
-    term: string,
+    term: any,
     fields: (keyof ShopOrder)[],
     paginationArgs: PaginationArgs,
   ): Promise<ShopOrder[]> {
@@ -83,7 +83,7 @@ export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
         relations = { ...relations, orderStatus: true };
         where = {
           ...where,
-          orderStatus: [{ id: term }],
+          orderStatus: [{ statusValue: term }, { id: term }],
         };
       }
     }

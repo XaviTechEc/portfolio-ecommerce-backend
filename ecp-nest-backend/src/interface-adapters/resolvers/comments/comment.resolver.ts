@@ -24,6 +24,34 @@ export class CommentResolver {
     });
   }
 
+  @Query(() => [CommentType], { name: 'commentsByUser' })
+  getCommentsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IComment[]> {
+    return this.commentUseCases.getCommentsBy(term, ['user'], paginationArgs);
+  }
+
+  @Query(() => [CommentType], { name: 'commentsByReview' })
+  getCommentsByReview(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IComment[]> {
+    return this.commentUseCases.getCommentsBy(term, ['review'], paginationArgs);
+  }
+
+  @Query(() => [CommentType], { name: 'commentsByParentComment' })
+  getCommentsByParentComment(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IComment[]> {
+    return this.commentUseCases.getCommentsBy(
+      term,
+      ['comment'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => CommentType, { name: 'comment' })
   getCommentById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

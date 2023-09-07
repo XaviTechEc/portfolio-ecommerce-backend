@@ -25,6 +25,18 @@ export class ShoppingCartResolver {
     });
   }
 
+  @Query(() => [ShoppingCartType], { name: 'shoppingCartsByUser' })
+  getShoppingCartsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShoppingCart[]> {
+    return this.shoppingCartUseCases.getShoppingCartsBy(
+      term,
+      ['user'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => ShoppingCartType, { name: 'shoppingCart' })
   getShoppingCartById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

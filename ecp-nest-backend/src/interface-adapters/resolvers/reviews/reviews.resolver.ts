@@ -25,6 +25,26 @@ export class ReviewResolver {
     });
   }
 
+  @Query(() => [ReviewType], { name: 'reviewsByUser' })
+  getReviewsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IReview[]> {
+    return this.reviewUseCases.getReviewsBy(term, ['user'], paginationArgs);
+  }
+
+  @Query(() => [ReviewType], { name: 'reviewsByOrderLine' })
+  getReviewsByOrderLine(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IReview[]> {
+    return this.reviewUseCases.getReviewsBy(
+      term,
+      ['orderLine'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => ReviewType, { name: 'review' })
   getReviewById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

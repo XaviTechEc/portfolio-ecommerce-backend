@@ -25,6 +25,29 @@ export class ProductPromotionResolver {
     });
   }
 
+  @Query(() => [ProductPromotionType], { name: 'productPromotionsByProduct' })
+  getProductPromotionByProduct(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductPromotion[]> {
+    return this.productPromotionUseCases.getProductPromotionsBy(
+      term,
+      ['product'],
+      paginationArgs,
+    );
+  }
+  @Query(() => [ProductPromotionType], { name: 'productPromotionsByPromotion' })
+  getProductPromotionByPromotion(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductPromotion[]> {
+    return this.productPromotionUseCases.getProductPromotionsBy(
+      term,
+      ['promotion'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => ProductPromotionType, { name: 'productPromotion' })
   getProductPromotionById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

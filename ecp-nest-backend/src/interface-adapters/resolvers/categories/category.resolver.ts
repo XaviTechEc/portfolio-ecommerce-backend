@@ -25,6 +25,30 @@ export class CategoryResolver {
     });
   }
 
+  @Query(() => [CategoryType], { name: 'categoriesBySeason' })
+  getCategoriesBySeason(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategory[]> {
+    return this.categoryUseCases.getCategoriesBy(
+      term,
+      ['season'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [CategoryType], { name: 'categoriesByUser' })
+  getCategoriesByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategory[]> {
+    return this.categoryUseCases.getCategoriesBy(
+      term,
+      ['user'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => CategoryType, { name: 'category' })
   getCategoryById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

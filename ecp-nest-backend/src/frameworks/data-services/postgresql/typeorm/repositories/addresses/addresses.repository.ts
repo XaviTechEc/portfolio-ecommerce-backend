@@ -49,7 +49,11 @@ export class AddressesRepository implements IAddressesRepository<Address> {
         relations = { ...relations, country: true };
         where = {
           ...where,
-          country: [{ longName: ILike(`%${term}%`) }, { id: term }],
+          country: [
+            { code: term },
+            { longName: ILike(`%${term}%`) },
+            { id: term },
+          ],
         };
       }
 

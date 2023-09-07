@@ -27,6 +27,34 @@ export class ProductConfigurationResolver {
     });
   }
 
+  @Query(() => [ProductConfigurationType], {
+    name: 'productConfigurationsByProductItem',
+  })
+  getProductConfigurationsByProductItem(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductConfiguration[]> {
+    return this.productConfigurationUseCases.getProductConfigurationsBy(
+      term,
+      ['productItem'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ProductConfigurationType], {
+    name: 'productConfigurationsByVariationOption',
+  })
+  getProductConfigurationsByVariationOption(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductConfiguration[]> {
+    return this.productConfigurationUseCases.getProductConfigurationsBy(
+      term,
+      ['variationOption'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => ProductConfigurationType, { name: 'productConfiguration' })
   getProductConfigurationById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

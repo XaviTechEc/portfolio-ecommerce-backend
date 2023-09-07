@@ -25,6 +25,34 @@ export class ShopOrderLocationResolver {
     });
   }
 
+  @Query(() => [ShopOrderLocationType], {
+    name: 'shopOrderLocationsByShopOrder',
+  })
+  getShopOrderLocationsByShopOrder(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShopOrderLocation[]> {
+    return this.shopOrderLocationUseCases.getShopOrderLocationsBy(
+      term,
+      ['shopOrder'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ShopOrderLocationType], {
+    name: 'shopOrderLocationsByLocation',
+  })
+  getShopOrderLocationsByLocation(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShopOrderLocation[]> {
+    return this.shopOrderLocationUseCases.getShopOrderLocationsBy(
+      term,
+      ['location'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => ShopOrderLocationType, { name: 'shopOrderLocation' })
   getShopOrderLocationById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

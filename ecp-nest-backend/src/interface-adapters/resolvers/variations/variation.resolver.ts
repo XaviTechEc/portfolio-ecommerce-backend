@@ -25,6 +25,18 @@ export class VariationResolver {
     });
   }
 
+  @Query(() => [VariationType], { name: 'variationsByCategory' })
+  getVariationsByCategory(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IVariation[]> {
+    return this.variationUseCases.getVariationsBy(
+      term,
+      ['category'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => VariationType, { name: 'variation' })
   getVariationById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

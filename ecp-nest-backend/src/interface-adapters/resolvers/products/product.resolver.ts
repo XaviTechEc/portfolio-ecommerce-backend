@@ -25,6 +25,14 @@ export class ProductResolver {
     });
   }
 
+  @Query(() => [ProductType], { name: 'productsByUser' })
+  getProductsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProduct[]> {
+    return this.productUseCases.getProductsBy(term, ['user'], paginationArgs);
+  }
+
   @Query(() => ProductType, { name: 'product' })
   getProductById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

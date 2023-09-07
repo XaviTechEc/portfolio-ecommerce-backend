@@ -25,6 +25,30 @@ export class OrderLineResolver {
     });
   }
 
+  @Query(() => [OrderLineType], { name: 'orderLinesByProductItem' })
+  getOrderLinesByProductItem(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.orderLineUseCases.getOrderLinesBy(
+      term,
+      ['productItem'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [OrderLineType], { name: 'orderLinesByShopOrder' })
+  getOrderLinesByShopOrder(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.orderLineUseCases.getOrderLinesBy(
+      term,
+      ['shopOrder'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => OrderLineType, { name: 'orderLine' })
   getOrderLineById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

@@ -49,7 +49,6 @@ export class CategoriesRepository implements ICategoriesRepository<Category> {
         relations = { ...relations, season: true };
         where = {
           ...where,
-          // TODO: Season between dates
           season: [{ description: ILike(`%${term}%`) }, { id: term }],
         };
       }

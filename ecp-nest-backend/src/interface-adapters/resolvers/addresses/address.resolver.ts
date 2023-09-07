@@ -18,6 +18,30 @@ export class AddressResolver {
     return this.addressUseCases.getAllAddresses({ paginationArgs, searchArgs });
   }
 
+  @Query(() => [AddressType], { name: 'addressesByCountry' })
+  getAddressesByCountry(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.addressUseCases.getAddressesBy(
+      term,
+      ['country'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [AddressType], { name: 'addressesByLocation' })
+  getAddressesByLocation(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.addressUseCases.getAddressesBy(
+      term,
+      ['location'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => AddressType, { name: 'address' })
   getAddressById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

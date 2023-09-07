@@ -20,7 +20,7 @@ export abstract class IShopOrdersRepository<T> {
   abstract removeShopOrder(id: string): Promise<T>;
 
   abstract getShopOrdersBy(
-    term: string,
+    term: any,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
   ): Promise<T[]>;

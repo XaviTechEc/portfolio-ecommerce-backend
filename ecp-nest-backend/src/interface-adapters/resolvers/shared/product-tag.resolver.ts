@@ -25,6 +25,30 @@ export class ProductTagResolver {
     });
   }
 
+  @Query(() => [ProductTagType], { name: 'productTagsByProduct' })
+  getProductTagsByProduct(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductTag[]> {
+    return this.productTagUseCases.getProductTagsBy(
+      term,
+      ['product'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [ProductTagType], { name: 'productTagsByTag' })
+  getProductTagsByTag(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IProductTag[]> {
+    return this.productTagUseCases.getProductTagsBy(
+      term,
+      ['tag'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => ProductTagType, { name: 'productTag' })
   getProductTagById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

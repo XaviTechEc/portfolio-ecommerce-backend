@@ -25,6 +25,34 @@ export class CategoryPromotionResolver {
     });
   }
 
+  @Query(() => [CategoryPromotionType], {
+    name: 'categoryPromotionsByCategory',
+  })
+  getCategoryPromotionsByCategory(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategoryPromotion[]> {
+    return this.categoryPromotionUseCases.getCategoryPromotionBy(
+      term,
+      ['category'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [CategoryPromotionType], {
+    name: 'categoryPromotionsByPromotion',
+  })
+  getCategoryPromotionsByPromotion(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategoryPromotion[]> {
+    return this.categoryPromotionUseCases.getCategoryPromotionBy(
+      term,
+      ['promotion'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => CategoryPromotionType, { name: 'categoryPromotion' })
   getCategoryPromotionById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,

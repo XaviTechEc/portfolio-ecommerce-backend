@@ -25,6 +25,32 @@ export class UserPaymentMethodResolver {
     });
   }
 
+  @Query(() => [UserPaymentMethodType], { name: 'userPaymentMethodsByUser' })
+  getUserPaymentMethodsByUser(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IUserPaymentMethod[]> {
+    return this.userPaymentMethodUseCases.getUserPaymentMethodsBy(
+      term,
+      ['user'],
+      paginationArgs,
+    );
+  }
+
+  @Query(() => [UserPaymentMethodType], {
+    name: 'userPaymentMethodsByPaymentMethod',
+  })
+  getUserPaymentMethodsByPaymentMethod(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IUserPaymentMethod[]> {
+    return this.userPaymentMethodUseCases.getUserPaymentMethodsBy(
+      term,
+      ['paymentMethod'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => UserPaymentMethodType, { name: 'userPaymentMethod' })
   getUserPaymentMethodById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
