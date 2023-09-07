@@ -1,5 +1,13 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, Mutation, Query, ID } from '@nestjs/graphql';
+import {
+  Resolver,
+  Args,
+  Mutation,
+  Query,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -7,12 +15,18 @@ import {
   UpdateShoppingCartInput,
 } from 'src/core/dtos';
 import { IShoppingCart } from 'src/core/entities';
-import { ShoppingCartType } from 'src/core/object-types';
-import { ShoppingCartUseCases } from 'src/use-cases';
+import { ProductItemType, ShoppingCartType } from 'src/core/object-types';
+import {
+  ShoppingCartProductItemUseCases,
+  ShoppingCartUseCases,
+} from 'src/use-cases';
 
 @Resolver(() => ShoppingCartType)
 export class ShoppingCartResolver {
-  constructor(private shoppingCartUseCases: ShoppingCartUseCases) {}
+  constructor(
+    private shoppingCartUseCases: ShoppingCartUseCases,
+    private shoppingCartProductItemUseCases: ShoppingCartProductItemUseCases,
+  ) {}
 
   @Query(() => [ShoppingCartType], { name: 'shoppingCarts' })
   getAllShoppingCarts(
@@ -70,5 +84,18 @@ export class ShoppingCartResolver {
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
   ): Promise<IShoppingCart> {
     return this.shoppingCartUseCases.removeShoppingCart(id);
+  }
+
+  // === Resolve Fields ===
+  @ResolveField(() => [ProductItemType], { name: 'productItems' })
+  getAllProductItems(
+    @Parent() shoppingCart: ShoppingCartType,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.shoppingCartProductItemUseCases.getShoppingCartProductItemsBy(
+      shoppingCart.id,
+      ['shoppingCart'],
+      paginationArgs,
+    );
   }
 }

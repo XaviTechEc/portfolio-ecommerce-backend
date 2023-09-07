@@ -1,5 +1,13 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Args,
+  ID,
+  Mutation,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -7,12 +15,18 @@ import {
   UpdateProductItemInput,
 } from 'src/core/dtos';
 import { IProductItem } from 'src/core/entities';
-import { ProductItemType } from 'src/core/object-types';
-import { ProductItemUseCases } from 'src/use-cases';
+import { ProductItemType, VariationOptionType } from 'src/core/object-types';
+import {
+  ProductConfigurationUseCases,
+  ProductItemUseCases,
+} from 'src/use-cases';
 
 @Resolver(() => ProductItemType)
 export class ProductItemResolver {
-  constructor(private productItemUseCases: ProductItemUseCases) {}
+  constructor(
+    private productItemUseCases: ProductItemUseCases,
+    private productConfigurationUseCases: ProductConfigurationUseCases,
+  ) {}
 
   @Query(() => [ProductItemType], { name: 'productItems' })
   getAllProductItems(
@@ -68,5 +82,18 @@ export class ProductItemResolver {
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
   ): Promise<IProductItem> {
     return this.productItemUseCases.removeProductItem(id);
+  }
+
+  // === Resolve Fields ===
+  @ResolveField(() => [VariationOptionType], { name: 'variationOptions' })
+  getAllVariationOptions(
+    @Parent() productItem: ProductItemType,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.productConfigurationUseCases.getProductConfigurationsBy(
+      productItem.id,
+      ['productItem'],
+      paginationArgs,
+    );
   }
 }

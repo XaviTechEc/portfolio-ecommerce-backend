@@ -1,19 +1,30 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import {
   CreateShopOrderInput,
   PaginationArgs,
   SearchArgs,
   UpdateShopOrderInput,
 } from 'src/core/dtos';
-import { IShopOrder } from 'src/core/entities';
+import { IShopOrder, IShopOrderLocation } from 'src/core/entities';
 import { StatusValue } from 'src/core/enums';
-import { ShopOrderType } from 'src/core/object-types';
-import { ShopOrderUseCases } from 'src/use-cases';
+import { LocationType, ShopOrderType } from 'src/core/object-types';
+import { ShopOrderUseCases, ShopOrderLocationUseCases } from 'src/use-cases';
 
 @Resolver(() => ShopOrderType)
 export class ShopOrderResolver {
-  constructor(private shopOrderUseCases: ShopOrderUseCases) {}
+  constructor(
+    private shopOrderUseCases: ShopOrderUseCases,
+    private shopOrderLocationUseCases: ShopOrderLocationUseCases,
+  ) {}
 
   @Query(() => [ShopOrderType], { name: 'shopOrders' })
   getAllShopOrders(
@@ -103,5 +114,18 @@ export class ShopOrderResolver {
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
   ): Promise<IShopOrder> {
     return this.shopOrderUseCases.removeShopOrder(id);
+  }
+
+  // === Resolve Fields ===
+  @ResolveField(() => [LocationType], { name: 'locations' })
+  async getLocations(
+    @Parent() shopOrder: ShopOrderType,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<IShopOrderLocation[]> {
+    return this.shopOrderLocationUseCases.getShopOrderLocationsBy(
+      shopOrder.id,
+      ['shopOrder'],
+      paginationArgs,
+    );
   }
 }

@@ -50,13 +50,14 @@ export class UsersRepository implements IUsersRepository<User> {
     return users;
   }
   async getUserById(id: string): Promise<User> {
-    const seasonFound = await this._repository.findOneBy({ id });
-    if (!seasonFound) {
+    const userFound = await this._repository.findOneBy({ id });
+    if (!userFound) {
       return this._exceptionsService.notFound({
-        message: `The season with id ${id} could not be found`,
+        message: `The user with id ${id} could not be found`,
+        code_error: 404,
       });
     }
-    return this._repository.save(seasonFound);
+    return this._repository.save(userFound);
   }
   async createUser(data: CreateUserDto): Promise<User> {
     const newUser = this._repository.create({ ...data });

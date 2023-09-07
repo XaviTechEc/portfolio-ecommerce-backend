@@ -53,6 +53,18 @@ export class CategoriesRepository implements ICategoriesRepository<Category> {
         };
       }
 
+      if (field === 'parentCategory') {
+        relations = { ...relations, category: true };
+        where = {
+          ...where,
+          category: [
+            { value: ILike(`%${term}%`) },
+            { description: ILike(`%${term}%`) },
+            { id: term },
+          ],
+        };
+      }
+
       if (field === 'user') {
         relations = { ...relations, user: true };
         where = {

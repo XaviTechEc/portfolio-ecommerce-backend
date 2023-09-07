@@ -33,6 +33,8 @@ type CategoryType {
   images: [ImageType!]!
   parentCategory: CategoryType
   productCategories: [ProductCategoryType!]!
+  products(limit: Int = 10, offset: Int = 0): [ProductType!]!
+  promotions(limit: Int = 10, offset: Int = 0): [PromotionType!]!
   season: SeasonType!
   value: String!
   variations: [VariationType!]!
@@ -382,6 +384,7 @@ type ProductItemType {
   shoppingCartProductItems: [ShoppingCartProductItemType!]!
   sku: String!
   slug: String!
+  variationOptions(limit: Int = 10, offset: Int = 0): [VariationOptionType!]!
 }
 
 type ProductPromotionType {
@@ -404,7 +407,9 @@ type ProductType {
   productItems: [ProductItemType!]!
   productPromotions: [ProductPromotionType!]!
   productTags: [ProductTagType!]!
+  promotions(limit: Int = 10, offset: Int = 0): [PromotionType!]!
   subtitle: String!
+  tags(limit: Int = 10, offset: Int = 0): [TagType!]!
   title: String!
   updatedAt: Timestamp
 }
@@ -426,6 +431,7 @@ type Query {
   addressesByLocation(limit: Int = 10, offset: Int = 0, term: String!): [AddressType!]!
   allOrderStatus(limit: Int = 10, offset: Int = 0, searchTerm: String): [OrderStatusType!]!
   categories(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryType!]!
+  categoriesByParentCategory(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
   categoriesBySeason(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
   categoriesByUser(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
   category(id: ID!): CategoryType!
@@ -498,7 +504,7 @@ type Query {
   shoppingCartsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartType!]!
   tag(id: ID!): TagType!
   tags(limit: Int = 10, offset: Int = 0, searchTerm: String): [TagType!]!
-  user(id: ID!): UserType!
+  user(id: ID!): UserObjType!
   userAddress(id: ID!): UserAddressType!
   userAddresses(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserAddressType!]!
   userAddressesByAddress(limit: Int = 10, offset: Int = 0, term: String!): [UserAddressType!]!
@@ -507,7 +513,7 @@ type Query {
   userPaymentMethods(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserPaymentMethodType!]!
   userPaymentMethodsByPaymentMethod(limit: Int = 10, offset: Int = 0, term: String!): [UserPaymentMethodType!]!
   userPaymentMethodsByUser(limit: Int = 10, offset: Int = 0, term: String!): [UserPaymentMethodType!]!
-  users(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserType!]!
+  users(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserObjType!]!
   variation(id: ID!): VariationType!
   variationOption(id: ID!): VariationOptionType!
   variationOptions(limit: Int = 10, offset: Int = 0, searchTerm: String): [VariationOptionType!]!
@@ -557,6 +563,7 @@ type ShopOrderLocationType {
 type ShopOrderType {
   createdAt: Timestamp!
   id: ID!
+  locations(limit: Int = 10, offset: Int = 0): [LocationType!]!
   orderLines: [OrderLineType!]!
   orderStatus: OrderStatusType!
   orderTotal: Float!
@@ -577,6 +584,7 @@ type ShoppingCartProductItemType {
 
 type ShoppingCartType {
   id: ID!
+  productItems(limit: Int = 10, offset: Int = 0): [ProductItemType!]!
   shoppingCartProductItems: [ShoppingCartProductItemType!]!
   user: UserObjType!
 }
@@ -772,6 +780,7 @@ type UserAddressType {
 
 type UserObjType {
   active: Boolean!
+  addresses(limit: Int = 10, offset: Int = 0): [AddressType!]!
   avatarImg: String
   categories: [CategoryType!]!
   comments: [CommentType!]!
@@ -782,6 +791,7 @@ type UserObjType {
   id: ID!
   lastConnection: Timestamp
   password: String!
+  paymentMethods(limit: Int = 10, offset: Int = 0): [PaymentMethodType!]!
   phoneNumber: String
   products: [ProductType!]!
   reviews: [ReviewType!]!

@@ -1,5 +1,13 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Args,
+  ID,
+  Mutation,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -7,12 +15,20 @@ import {
   UpdateProductInput,
 } from 'src/core/dtos';
 import { IProduct } from 'src/core/entities';
-import { ProductType } from 'src/core/object-types';
-import { ProductUseCases } from 'src/use-cases';
+import { ProductType, PromotionType, TagType } from 'src/core/object-types';
+import {
+  ProductPromotionUseCases,
+  ProductTagUseCases,
+  ProductUseCases,
+} from 'src/use-cases';
 
 @Resolver(() => ProductType)
 export class ProductResolver {
-  constructor(private productUseCases: ProductUseCases) {}
+  constructor(
+    private productUseCases: ProductUseCases,
+    private productTagUseCases: ProductTagUseCases,
+    private productPromotionUseCases: ProductPromotionUseCases,
+  ) {}
 
   @Query(() => [ProductType], { name: 'products' })
   getAllProduct(
@@ -62,5 +78,30 @@ export class ProductResolver {
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
   ): Promise<IProduct> {
     return this.productUseCases.removeProduct(id);
+  }
+
+  // === Resolve Fields ===
+  @ResolveField(() => [TagType], { name: 'tags' })
+  getAllTags(
+    @Parent() product: ProductType,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.productTagUseCases.getProductTagsBy(
+      product.id,
+      ['product'],
+      paginationArgs,
+    );
+  }
+
+  @ResolveField(() => [PromotionType], { name: 'promotions' })
+  getAllPromotions(
+    @Parent() product: ProductType,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.productPromotionUseCases.getProductPromotionsBy(
+      product.id,
+      ['product'],
+      paginationArgs,
+    );
   }
 }

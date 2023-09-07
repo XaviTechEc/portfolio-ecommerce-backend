@@ -1,5 +1,13 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import {
   CreateCategoryInput,
   PaginationArgs,
@@ -7,12 +15,24 @@ import {
   UpdateCategoryInput,
 } from 'src/core/dtos';
 import { ICategory } from 'src/core/entities';
-import { CategoryType } from 'src/core/object-types';
-import { CategoryUseCases } from 'src/use-cases';
+import {
+  CategoryType,
+  ProductType,
+  PromotionType,
+} from 'src/core/object-types';
+import {
+  CategoryPromotionUseCases,
+  CategoryUseCases,
+  ProductCategoryUseCases,
+} from 'src/use-cases';
 
 @Resolver(() => CategoryType)
 export class CategoryResolver {
-  constructor(private categoryUseCases: CategoryUseCases) {}
+  constructor(
+    private categoryUseCases: CategoryUseCases,
+    private productCategoryUseCases: ProductCategoryUseCases,
+    private categoryPromotionUseCases: CategoryPromotionUseCases,
+  ) {}
 
   @Query(() => [CategoryType], { name: 'categories' })
   getAllCategories(
@@ -49,6 +69,18 @@ export class CategoryResolver {
     );
   }
 
+  @Query(() => [CategoryType], { name: 'categoriesByParentCategory' })
+  getCategoriesByParentCategory(
+    @Args({ name: 'term', type: () => String }) term: string,
+    @Args() paginationArgs: PaginationArgs,
+  ): Promise<ICategory[]> {
+    return this.categoryUseCases.getCategoriesBy(
+      term,
+      ['parentCategory'],
+      paginationArgs,
+    );
+  }
+
   @Query(() => CategoryType, { name: 'category' })
   getCategoryById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
@@ -78,5 +110,30 @@ export class CategoryResolver {
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
   ): Promise<ICategory> {
     return this.categoryUseCases.removeCategory(id);
+  }
+
+  // === Resolve Fields ===
+  @ResolveField(() => [ProductType], { name: 'products' })
+  getAllProducts(
+    @Parent() category: CategoryType,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.productCategoryUseCases.getProductCategoriesBy(
+      category.id,
+      ['category'],
+      paginationArgs,
+    );
+  }
+
+  @ResolveField(() => [PromotionType], { name: 'promotions' })
+  getAllPromotions(
+    @Parent() category: CategoryType,
+    @Args() paginationArgs: PaginationArgs,
+  ) {
+    return this.categoryPromotionUseCases.getCategoryPromotionBy(
+      category.id,
+      ['category'],
+      paginationArgs,
+    );
   }
 }
