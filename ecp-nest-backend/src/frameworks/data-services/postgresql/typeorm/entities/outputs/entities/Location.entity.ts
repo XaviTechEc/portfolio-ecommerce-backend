@@ -1,10 +1,12 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { Address } from './Address.entity';
@@ -23,6 +25,13 @@ export class Location {
   @Column('decimal', { name: 'lng' })
   lng: number;
 
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
+
+  // Relations
   @OneToOne(() => Address, (address) => address.location)
   address: Address;
 

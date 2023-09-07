@@ -1,10 +1,12 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { User } from './User.entity';
@@ -26,6 +28,12 @@ export class UserAddress {
     nullable: true,
   })
   isDefault?: boolean;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   @ManyToOne(() => User, (user) => user.userAddress)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])

@@ -1,11 +1,13 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Product } from './Product.entity';
 import { ShoppingCartProductItem } from './ShoppingCartProductItem.entity';
@@ -33,6 +35,11 @@ export class ProductItem {
   @Column('character varying', { name: 'slug', unique: true })
   slug: string;
 
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
   // Relations
   @OneToMany(
     () => ShoppingCartProductItem,

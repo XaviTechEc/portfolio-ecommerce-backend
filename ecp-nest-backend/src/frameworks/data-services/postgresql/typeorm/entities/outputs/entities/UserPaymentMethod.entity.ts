@@ -1,11 +1,13 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { PaymentMethod } from './PaymentMethod.entity';
 import { ShopOrder } from './ShopOrder.entity';
@@ -34,6 +36,12 @@ export class UserPaymentMethod {
     default: true,
   })
   isDefault?: boolean;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.userPaymentMethod)

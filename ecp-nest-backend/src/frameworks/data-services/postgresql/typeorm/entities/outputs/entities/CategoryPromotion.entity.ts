@@ -1,9 +1,11 @@
 import {
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Category } from './Category.entity';
 import { Promotion } from './Promotion.entity';
@@ -18,6 +20,12 @@ export class CategoryPromotion {
 
   @PrimaryColumn('character varying', { name: 'promotion_id' })
   promotionId: string;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   @ManyToOne(() => Category, (category) => category.categoryPromotion)
   @JoinColumn([{ name: 'category_id', referencedColumnName: 'id' }])

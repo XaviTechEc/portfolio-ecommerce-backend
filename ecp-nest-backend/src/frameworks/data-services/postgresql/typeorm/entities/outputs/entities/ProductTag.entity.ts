@@ -1,9 +1,11 @@
 import {
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Product } from './Product.entity';
 import { Tag } from './Tag.entity';
@@ -18,6 +20,12 @@ export class ProductTag {
 
   @PrimaryColumn('character varying', { name: 'tag_id' })
   tagId: string;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @ManyToOne(() => Product, (product) => product.productTag)

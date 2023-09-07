@@ -1,4 +1,11 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  OneToMany,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { PaymentMethod as PaymentMth } from 'src/core/enums';
 import { UserPaymentMethod } from './UserPaymentMethod.entity';
@@ -17,6 +24,13 @@ export class PaymentMethod {
   })
   value: PaymentMth;
 
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
+
+  // Relations
   @OneToMany(
     () => UserPaymentMethod,
     (userPaymentMethod) => userPaymentMethod.paymentMethod,

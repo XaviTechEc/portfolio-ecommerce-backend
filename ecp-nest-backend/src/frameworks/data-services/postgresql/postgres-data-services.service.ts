@@ -269,68 +269,134 @@ export class PostgresDataServices
     );
 
     // Categories
-    this.categories = new CategoriesRepository(this.categoriesRepository);
+    this.categories = new CategoriesRepository(
+      this.categoriesRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Comments
-    this.comments = new CommentsRepository(this.commentsRepository);
+    this.comments = new CommentsRepository(
+      this.commentsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Images
-    this.images = new ImagesRepository(this.imagesRepository);
+    this.images = new ImagesRepository(
+      this.imagesRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Payments
     this.paymentMethods = new PaymentMethodsRepository(
       this.paymentMethodsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
     this.userPaymentMethods = new UserPaymentMethodsRepository(
       this.userPaymentMethodsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
 
     // Products
-    this.productItems = new ProductItemsRepository(this.productItemsRepository);
-    this.products = new ProductsRepository(this.productsRepository);
+    this.productItems = new ProductItemsRepository(
+      this.productItemsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
+    this.products = new ProductsRepository(
+      this.productsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Promotions
-    this.promotions = new PromotionsRepository(this.promotionsRepository);
+    this.promotions = new PromotionsRepository(
+      this.promotionsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Reviews
-    this.reviews = new ReviewsRepository(this.reviewsRepository);
+    this.reviews = new ReviewsRepository(
+      this.reviewsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Seasons
-    this.seasons = new SeasonsRepository(this.seasonsRepository);
+    this.seasons = new SeasonsRepository(
+      this.seasonsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Shared
     this.categoryPromotions = new CategoryPromotionsRepository(
       this.categoryPromotionsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
     this.productCategories = new ProductCategoriesRepository(
       this.productCategoriesRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
     this.productConfigurations = new ProductConfigurationsRepository(
       this.productConfigurationsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
     this.productPromotions = new ProductPromotionsRepository(
       this.productPromotionsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
 
-    this.productTags = new ProductTagsRepository(this.productTagsRepository);
+    this.productTags = new ProductTagsRepository(
+      this.productTagsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
     this.shoppingCartProductItems = new ShoppingCartProductItemsRepository(
       this.shoppingCartProductItemsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
     this.userAddresses = new UserAddressesRepository(
       this.userAddressesRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
 
     // Tags
-    this.tags = new TagsRepository(this.tagsRepository);
+    this.tags = new TagsRepository(
+      this.tagsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Users
-    this.users = new UsersRepository(this.usersRepository);
+    this.users = new UsersRepository(
+      this.usersRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     // Variations
-    this.variations = new VariationsRepository(this.variationsRepository);
+    this.variations = new VariationsRepository(
+      this.variationsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
 
     this.variationOptions = new VariationOptionsRepository(
       this.variationOptionsRepository,
+      this._loggerService,
+      this._exceptionsService,
     );
   }
 }

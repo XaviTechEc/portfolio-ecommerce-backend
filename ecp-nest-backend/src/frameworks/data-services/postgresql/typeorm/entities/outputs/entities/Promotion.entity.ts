@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CategoryPromotion } from './CategoryPromotion.entity';
 import { ProductPromotion } from './ProductPromotion.entity';
@@ -32,6 +34,12 @@ export class Promotion {
 
   @Column('timestamptz', { name: 'end_date', nullable: true })
   endDate?: Date;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(

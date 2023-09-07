@@ -1,9 +1,11 @@
 import {
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Location } from './Location.entity';
 import { ShopOrder } from './ShopOrder.entity';
@@ -19,6 +21,13 @@ export class ShopOrderLocation {
   @PrimaryColumn('character varying', { name: 'location_id' })
   locationId: string;
 
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
+
+  // Relations
   @ManyToOne(() => ShopOrder, (shopOrder) => shopOrder.shopOrderLocation)
   @JoinColumn([{ name: 'shop_order_id', referencedColumnName: 'id' }])
   shopOrder: ShopOrder;

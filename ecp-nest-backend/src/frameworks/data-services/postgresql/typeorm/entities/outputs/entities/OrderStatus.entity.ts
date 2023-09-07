@@ -1,10 +1,12 @@
 import { StatusValue } from 'src/core/enums/orders/status-value.enum';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { ShopOrder } from './ShopOrder.entity';
 
@@ -21,6 +23,12 @@ export class OrderStatus {
     default: StatusValue.IN_PROGRESS,
   })
   statusValue: StatusValue;
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.orderStatus)
