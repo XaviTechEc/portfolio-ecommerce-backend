@@ -28,5 +28,6 @@ export * from './graphql/inputs/shared/user-payment-method.input';
 export * from './graphql/inputs/tags/tag.input';
 export * from './graphql/inputs/variations/variation-option.input';
 export * from './graphql/inputs/variations/variation.input';
+export * from './rest/auth/sign-in-user.dto';
 export * from './rest/images/image.dto';
 export * from './rest/users/user.dto';

@@ -1,8 +1,8 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { ShopOrderType } from '../cart/shop-order.type';
+import { UserAddressType } from '../shared/user-address.type';
 import { CountryType } from './country.type';
 import { LocationType } from './location.type';
-import { UserAddressType } from '../shared/user-address.type';
-import { ShopOrderType } from '../cart/shop-order.type';
 
 @ObjectType()
 export class AddressType {

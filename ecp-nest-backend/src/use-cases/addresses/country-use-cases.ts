@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICountriesRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { ICountry } from 'src/core/entities';
 
 import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';

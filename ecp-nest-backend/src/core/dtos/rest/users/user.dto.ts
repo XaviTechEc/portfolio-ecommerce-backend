@@ -12,14 +12,15 @@ import {
 import { UserType, Role, Gender } from 'src/core/enums';
 
 export class CreateUserDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   username: string;
 
-  @IsEmail()
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
+  @IsNotEmpty()
   @IsStrongPassword({
     minLength: 6,
     minLowercase: 1,
@@ -27,36 +28,35 @@ export class CreateUserDto {
     minSymbols: 1,
     minUppercase: 1,
   })
-  @IsNotEmpty()
   password: string;
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   fullName: string;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-  @IsMobilePhone()
   @IsOptional()
+  @IsMobilePhone()
   phoneNumber?: string;
 
-  @IsEnum(UserType)
   @IsOptional()
+  @IsEnum(UserType)
   userType?: UserType;
 
-  @IsEnum(Role)
   @IsOptional()
+  @IsEnum(Role)
   role?: Role;
 
-  @IsEnum(Gender)
   @IsOptional()
+  @IsEnum(Gender)
   gender?: Gender;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   avatarImg?: string;
 
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   active?: boolean;
 }

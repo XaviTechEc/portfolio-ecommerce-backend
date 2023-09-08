@@ -3,6 +3,8 @@ export * from './addresses/addresses-use-cases.module';
 export * from './addresses/country-use-cases';
 export * from './addresses/factory';
 export * from './addresses/location-use-cases';
+export * from './auth/auth-use-cases.module';
+export * from './auth/auth-use-cases';
 export * from './cart/cart-use-cases.module';
 export * from './cart/factory';
 export * from './cart/order-line-use-cases';

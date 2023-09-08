@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IShopOrderLocationRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { IShopOrderLocation } from 'src/core/entities';
 import { ShopOrderLocationFactoryService } from '../factory';
 import {

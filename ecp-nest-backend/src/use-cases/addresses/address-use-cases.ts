@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IAddressesRepository } from 'src/core/abstracts/repositories/addresses/addresses.repository';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { IAddress } from 'src/core/entities';
 import { AddressFactoryService } from './factory/address-factory.service';
 import {

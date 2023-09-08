@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ITagsRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { CreateTagInput, UpdateTagInput } from 'src/core/dtos';
 import { ITag } from 'src/core/entities';
 import { TagFactoryService } from './tag-factory.service';

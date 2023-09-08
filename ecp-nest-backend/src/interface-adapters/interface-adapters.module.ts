@@ -31,10 +31,11 @@ import {
   VariationOptionResolver,
   VariationResolver,
 } from './resolvers';
+import { AuthController } from './controllers';
 
 @Module({
   imports: [UseCasesModule],
-  controllers: [],
+  controllers: [AuthController],
   providers: [
     AddressResolver,
     CountryResolver,

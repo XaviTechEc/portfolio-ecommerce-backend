@@ -11,11 +11,14 @@ export class AddressResolver {
   constructor(private addressUseCases: AddressesUseCases) {}
 
   @Query(() => [AddressType], { name: 'addresses' })
-  getAllAddresses(
+  async getAllAddresses(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
   ) {
-    return this.addressUseCases.getAllAddresses({ paginationArgs, searchArgs });
+    return this.addressUseCases.getAllAddresses({
+      paginationArgs,
+      searchArgs,
+    });
   }
 
   @Query(() => [AddressType], { name: 'addressesByCountry' })

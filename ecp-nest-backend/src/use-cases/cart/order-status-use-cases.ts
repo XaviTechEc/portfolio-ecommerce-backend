@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IOrderStatusRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { OrderStatusFactoryService } from './factory/order-status-factory.service';
 import { CreateOrderStatusInput, UpdateOrderStatusInput } from 'src/core/dtos';
 import { IOrderStatus } from 'src/core/entities';

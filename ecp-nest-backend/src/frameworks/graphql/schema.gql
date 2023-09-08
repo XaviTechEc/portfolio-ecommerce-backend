@@ -26,13 +26,11 @@ type CategoryPromotionType {
 type CategoryType {
   active: Boolean
   categories: [CategoryType!]
-  categoryPromotions: [CategoryPromotionType!]!
   createdBy: UserObjType!
   description: String!
   id: ID!
   images: [ImageType!]!
   parentCategory: CategoryType
-  productCategories: [ProductCategoryType!]!
   products(limit: Int = 10, offset: Int = 0): [ProductType!]!
   promotions(limit: Int = 10, offset: Int = 0): [PromotionType!]!
   season: SeasonType!
@@ -379,7 +377,6 @@ type ProductItemType {
   orderLines: [OrderLineType!]!
   price: Float
   product: ProductType!
-  productConfigurations: [ProductConfigurationType!]!
   quantityInStock: Float
   shoppingCartProductItems: [ShoppingCartProductItemType!]!
   sku: String!
@@ -405,8 +402,6 @@ type ProductType {
   images: [ImageType!]!
   productCategories: [ProductCategoryType!]!
   productItems: [ProductItemType!]!
-  productPromotions: [ProductPromotionType!]!
-  productTags: [ProductTagType!]!
   promotions(limit: Int = 10, offset: Int = 0): [PromotionType!]!
   subtitle: String!
   tags(limit: Int = 10, offset: Int = 0): [TagType!]!
@@ -569,7 +564,6 @@ type ShopOrderType {
   orderTotal: Float!
   shippingAddress: AddressType!
   shippingMethod: ShippingMethodType!
-  shopOrderLocations: [ShopOrderLocationType!]!
   updatedAt: Timestamp
   user: UserObjType!
   userPaymentMethod: UserPaymentMethodType!
@@ -585,7 +579,6 @@ type ShoppingCartProductItemType {
 type ShoppingCartType {
   id: ID!
   productItems(limit: Int = 10, offset: Int = 0): [ProductItemType!]!
-  shoppingCartProductItems: [ShoppingCartProductItemType!]!
   user: UserObjType!
 }
 
@@ -799,8 +792,6 @@ type UserObjType {
   shopOrders: [ShopOrderType!]!
   shoppingCarts: [ShoppingCartType!]!
   updatedAt: Timestamp
-  userAddresses: [UserAddressType!]!
-  userPaymentMethods: [UserPaymentMethodType!]!
   userType: UserType!
   username: String!
 }

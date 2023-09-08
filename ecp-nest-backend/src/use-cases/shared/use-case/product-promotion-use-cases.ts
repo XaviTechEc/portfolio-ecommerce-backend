@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IProductPromotionRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { IProductPromotion } from 'src/core/entities';
 import { ProductPromotionFactoryService } from '../factory';
 import {

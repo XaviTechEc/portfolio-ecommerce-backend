@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { CategoryFactoryService } from './category-factory.service';
 import { ICategoriesRepository } from 'src/core/abstracts/repositories';
 import {

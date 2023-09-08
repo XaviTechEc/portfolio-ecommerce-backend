@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 
 import { Repository } from 'typeorm';
 import {
@@ -69,6 +69,8 @@ import { VariationOptionsRepository } from './typeorm/repositories/variations/va
 import { VariationsRepository } from './typeorm/repositories/variations/variations.repository';
 import { LoggerService } from 'src/infrastructure/logger/logger.service';
 import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { IAuthRepository } from 'src/core/abstracts/repositories';
+import { AuthRepository } from './typeorm/repositories/auth/auth.repository';
 
 @Injectable()
 export class PostgresDataServices
@@ -78,6 +80,9 @@ export class PostgresDataServices
   addresses: AddressesRepository;
   countries: CountriesRepository;
   locations: LocationsRepository;
+
+  // Auth
+  auth: IAuthRepository;
 
   // Cart
   orderLines: OrderLinesRepository;
@@ -237,6 +242,13 @@ export class PostgresDataServices
     );
     this.locations = new LocationsRepository(
       this.locationsRepository,
+      this._loggerService,
+      this._exceptionsService,
+    );
+
+    // Auth
+    this.auth = new AuthRepository(
+      this.usersRepository,
       this._loggerService,
       this._exceptionsService,
     );

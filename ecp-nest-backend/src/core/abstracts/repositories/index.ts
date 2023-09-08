@@ -1,6 +1,7 @@
 export * from './addresses/addresses.repository';
 export * from './addresses/countries.repository';
 export * from './addresses/locations.repository';
+export * from './auth/auth.repository';
 export * from './cart/order-lines.repository';
 export * from './cart/order-status.repository';
 export * from './cart/shipping-methods.repository';

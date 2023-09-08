@@ -32,6 +32,7 @@ import {
 } from 'src/core/entities';
 import {
   IAddressesRepository,
+  IAuthRepository,
   ICategoriesRepository,
   ICategoryPromotionRepository,
   ICommentsRepository,
@@ -61,13 +62,16 @@ import {
   IUsersRepository,
   IVariationOptionsRepository,
   IVariationsRepository,
-} from '../repositories';
+} from '../../repositories';
 
 export abstract class IDataSourcesService {
   // Addresses
   abstract addresses: IAddressesRepository<IAddress>;
   abstract countries: ICountriesRepository<ICountry>;
   abstract locations: ILocationsRepository<ILocation>;
+
+  // Auth
+  abstract auth: IAuthRepository;
 
   // // Cart
   abstract orderLines: IOrderLinesRepository<IOrderLine>;

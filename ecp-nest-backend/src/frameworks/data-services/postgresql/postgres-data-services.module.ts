@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { PostgresDataServices } from './postgres-data-services.service';
 import {
   Address,
@@ -36,6 +36,8 @@ import {
 } from './typeorm/entities/outputs/entities';
 import { LoggerModule } from 'src/infrastructure/logger/logger.module';
 import { ExceptionModule } from 'src/infrastructure/exceptions/exceptions.module';
+import { JwtModule } from 'src/services/jwt/jwt.module';
+import { HashingModule } from '../../../services/hashing/hashing.module';
 
 @Module({
   imports: [
@@ -70,8 +72,12 @@ import { ExceptionModule } from 'src/infrastructure/exceptions/exceptions.module
       Variation,
       VariationOption,
     ]),
+
+    // Other Modules
     LoggerModule,
     ExceptionModule,
+    JwtModule,
+    HashingModule,
   ],
   providers: [
     {

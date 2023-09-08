@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IProductTagRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { IProductTag } from 'src/core/entities';
 import { ProductTagFactoryService } from '../factory';
 import {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ISeasonsRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
 import { ISeason } from 'src/core/entities';
 import { SeasonFactoryService } from './season-factory.service';

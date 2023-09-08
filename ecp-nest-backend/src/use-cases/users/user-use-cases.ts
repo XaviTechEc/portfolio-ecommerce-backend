@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-sources.service';
+import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
 import { UserFactoryService } from './user-factory.service';
 import { IUser } from 'src/core/entities';
 import { IUsersRepository } from 'src/core/abstracts/repositories/users/users.repository';
