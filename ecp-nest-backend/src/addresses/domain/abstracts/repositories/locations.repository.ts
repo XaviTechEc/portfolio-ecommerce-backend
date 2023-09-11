@@ -1,4 +1,7 @@
-import { CreateLocationInput, UpdateLocationInput } from 'src/core/dtos';
+import {
+  CreateLocationInput,
+  UpdateLocationInput,
+} from '../../dtos/graphql/inputs/location.input';
 
 export abstract class ILocationsRepository<T> {
   abstract getLocationById(id: string): Promise<T>;

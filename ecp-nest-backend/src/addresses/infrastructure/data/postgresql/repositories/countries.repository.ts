@@ -1,10 +1,13 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { ICountriesRepository } from 'src/core/abstracts/repositories';
-import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';
+import { LoggerService } from '@nestjs/common';
+import { ICountriesRepository } from 'src/addresses/domain/abstracts/repositories/countries.repository';
+import {
+  CreateCountryInput,
+  UpdateCountryInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/country.input';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { Repository } from 'typeorm';
-import { Country } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { Country } from '../entities';
 
 export class CountriesRepository implements ICountriesRepository<Country> {
   private _repository: Repository<Country>;

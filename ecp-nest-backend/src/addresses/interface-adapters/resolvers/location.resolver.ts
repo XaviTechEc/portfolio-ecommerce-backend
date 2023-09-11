@@ -1,9 +1,12 @@
-import { Resolver, Args, ID, Query, Mutation } from '@nestjs/graphql';
-import { CreateLocationInput, UpdateLocationInput } from 'src/core/dtos';
-import { ILocation } from 'src/core/entities';
-import { LocationType } from 'src/core/object-types/addresses/location.type';
-import { LocationUseCases } from 'src/use-cases';
 import { ParseUUIDPipe } from '@nestjs/common';
+import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { LocationUseCases } from 'src/addresses/application/use-cases';
+import {
+  CreateLocationInput,
+  UpdateLocationInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/location.input';
+import { ILocation } from 'src/addresses/domain/entities/location.entity';
+import { LocationType } from 'src/addresses/domain/object-types/location.type';
 
 @Resolver(() => LocationType)
 export class LocationResolver {

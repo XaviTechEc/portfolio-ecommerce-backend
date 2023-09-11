@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { ICountriesRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { ICountry } from 'src/core/entities';
-
-import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';
-import { CountryFactoryService } from './factory/country-factory.service';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+import { ICountriesRepository } from 'src/addresses/domain/abstracts/repositories/countries.repository';
+import {
+  CreateCountryInput,
+  UpdateCountryInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/country.input';
+import { ICountry } from 'src/addresses/domain/entities/country.entity';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { CountryFactoryService } from './factory';
 
 @Injectable()
 export class CountryUseCases implements ICountriesRepository<ICountry> {

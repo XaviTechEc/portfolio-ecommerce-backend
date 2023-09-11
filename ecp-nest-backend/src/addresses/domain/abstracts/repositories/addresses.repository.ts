@@ -1,9 +1,11 @@
 import {
   IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
   CreateAddressInput,
   UpdateAddressInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/address.input';
 
 export abstract class IAddressesRepository<T> {
   abstract getAllAddresses(args?: IGenericArgs<T>): Promise<T[]>;

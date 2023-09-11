@@ -1,19 +1,19 @@
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToOne,
+  OneToMany,
 } from 'typeorm';
+import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
+import { UserAddress } from 'src/user-addresses/infrastructure/data/postgresql/entities/UserAddress.entity';
 import { Country } from './Country.entity';
 import { Location } from './Location.entity';
-import { ShopOrder } from './ShopOrder.entity';
-import { UserAddress } from './UserAddress.entity';
 
 @Index('address_pkey', ['id'], { unique: true })
 @Entity('address')

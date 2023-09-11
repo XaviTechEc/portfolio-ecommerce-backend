@@ -1,10 +1,16 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
-import { PaginationArgs, SearchArgs } from 'src/core/dtos/graphql/args';
-import { IAddress } from 'src/core/entities';
-import { AddressType } from 'src/core/object-types';
-import { AddressesUseCases } from 'src/use-cases';
+import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { AddressesUseCases } from 'src/addresses/application/use-cases';
+import {
+  CreateAddressInput,
+  UpdateAddressInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/address.input';
+import { IAddress } from 'src/addresses/domain/entities/address.entity';
+import { AddressType } from 'src/addresses/domain/object-types/address.type';
+import {
+  PaginationArgs,
+  SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
 
 @Resolver(() => AddressType)
 export class AddressResolver {

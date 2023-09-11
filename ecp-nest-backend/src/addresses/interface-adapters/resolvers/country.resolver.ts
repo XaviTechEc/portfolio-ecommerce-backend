@@ -1,14 +1,16 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common';
+import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { CountryUseCases } from 'src/addresses/application/use-cases';
 import {
   CreateCountryInput,
+  UpdateCountryInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/country.input';
+import { ICountry } from 'src/addresses/domain/entities/country.entity';
+import { CountryType } from 'src/addresses/domain/object-types/country.type';
+import {
   PaginationArgs,
   SearchArgs,
-  UpdateCountryInput,
-} from 'src/core/dtos';
-import { ICountry } from 'src/core/entities';
-import { CountryType } from 'src/core/object-types';
-import { CountryUseCases } from 'src/use-cases';
-import { ParseUUIDPipe } from '@nestjs/common';
+} from 'src/common/domain/dtos/graphql/args';
 
 @Resolver(() => CountryType)
 export class CountryResolver {

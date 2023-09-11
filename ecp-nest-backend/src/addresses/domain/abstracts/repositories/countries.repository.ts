@@ -1,8 +1,8 @@
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import {
   CreateCountryInput,
-  IGenericArgs,
   UpdateCountryInput,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/country.input';
 
 export abstract class ICountriesRepository<T> {
   abstract getAllCountries(args?: IGenericArgs<T>): Promise<T[]>;

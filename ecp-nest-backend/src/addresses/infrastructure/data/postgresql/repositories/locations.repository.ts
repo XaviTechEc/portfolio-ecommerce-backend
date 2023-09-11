@@ -1,9 +1,12 @@
-import { ILocationsRepository } from 'src/core/abstracts/repositories';
-import { CreateLocationInput, UpdateLocationInput } from 'src/core/dtos';
+import { LoggerService } from '@nestjs/common';
+import { ILocationsRepository } from 'src/addresses/domain/abstracts/repositories/locations.repository';
+import {
+  CreateLocationInput,
+  UpdateLocationInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/location.input';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { Repository } from 'typeorm';
-import { Location } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { Location } from '../entities';
 
 export class LocationsRepository implements ILocationsRepository<Location> {
   private _repository: Repository<Location>;

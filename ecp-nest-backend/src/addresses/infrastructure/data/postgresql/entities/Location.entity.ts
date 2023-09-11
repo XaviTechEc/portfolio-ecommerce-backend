@@ -1,16 +1,15 @@
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToOne,
+  OneToMany,
 } from 'typeorm';
-
 import { Address } from './Address.entity';
-import { ShopOrderLocation } from './ShopOrderLocation.entity';
+import { ShopOrderLocation } from 'src/shop-order-locations/infrastructure/data/postgresql/entities/ShopOrderLocation.entity';
 
 @Index('location_pkey', ['id'], { unique: true })
 @Index('location_lat_lng_idx', ['lat', 'lng'], {})
