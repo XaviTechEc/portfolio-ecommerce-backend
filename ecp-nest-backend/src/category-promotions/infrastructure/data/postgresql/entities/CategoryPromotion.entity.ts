@@ -1,14 +1,14 @@
+import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
+import { Promotion } from 'src/promotions/infrastructure/data/postgresql/entities/Promotion.entity';
 import {
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
+  PrimaryColumn,
+  CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Category } from './Category.entity';
-import { Promotion } from './Promotion.entity';
 
 @Entity('category_promotion')
 export class CategoryPromotion {

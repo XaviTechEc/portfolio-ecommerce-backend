@@ -1,21 +1,22 @@
-import { ICategoryPromotionRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import { ICategoryPromotionRepository } from 'src/category-promotions/domain/abstracts/repositories/category-promotion.repository';
 import {
+  CreateCategoryPromotionInput,
+  UpdateCategoryPromotionInput,
+} from 'src/category-promotions/domain/dtos/graphql/inputs/category-promotion.input';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { CategoryPromotion } from '../../entities/outputs/entities';
-import {
-  IGenericArgs,
-  CreateCategoryPromotionInput,
-  UpdateCategoryPromotionInput,
-  PaginationArgs,
-} from 'src/core/dtos';
-
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { CategoryPromotion } from '../entities/CategoryPromotion.entity';
 
 export class CategoryPromotionsRepository
   implements ICategoryPromotionRepository<CategoryPromotion>

@@ -1,6 +1,6 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { UserObjType } from '../users/user.type';
-import { ReviewType } from '../reviews/review.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ReviewType } from 'src/reviews/domain/object-types/review.type';
+import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @ObjectType()
 export class CommentType {

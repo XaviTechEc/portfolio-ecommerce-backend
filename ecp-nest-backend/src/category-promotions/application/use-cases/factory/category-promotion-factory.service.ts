@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateCategoryPromotionInput,
   UpdateCategoryPromotionInput,
-} from 'src/core/dtos';
-import { ICategoryPromotion } from 'src/core/entities';
+} from 'src/category-promotions/domain/dtos/graphql/inputs/category-promotion.input';
+import { ICategoryPromotion } from 'src/category-promotions/domain/entities/category-promotion.entity';
 
 @Injectable()
 export class CategoryPromotionFactoryService {

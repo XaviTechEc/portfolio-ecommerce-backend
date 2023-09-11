@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { ICategoryPromotionRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { ICategoryPromotion } from 'src/core/entities';
-import { CategoryPromotionFactoryService } from '../factory';
+import { ICategoryPromotionRepository } from 'src/category-promotions/domain/abstracts/repositories/category-promotion.repository';
 import {
-  IGenericArgs,
   CreateCategoryPromotionInput,
   UpdateCategoryPromotionInput,
+} from 'src/category-promotions/domain/dtos/graphql/inputs/category-promotion.input';
+import { ICategoryPromotion } from 'src/category-promotions/domain/entities/category-promotion.entity';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import {
   PaginationArgs,
-} from 'src/core/dtos';
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { CategoryPromotionFactoryService } from './factory/category-promotion-factory.service';
 
 @Injectable()
 export class CategoryPromotionUseCases

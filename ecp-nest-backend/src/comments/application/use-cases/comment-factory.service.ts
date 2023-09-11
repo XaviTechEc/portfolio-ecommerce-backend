@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCommentInput, UpdateCommentInput } from 'src/core/dtos';
-import { IComment } from 'src/core/entities';
+import {
+  CreateCommentInput,
+  UpdateCommentInput,
+} from 'src/comments/domain/dtos/graphql/inputs/comment.input';
+import { IComment } from 'src/comments/domain/entities/comment.entity';
 
 @Injectable()
 export class CommentFactoryService {

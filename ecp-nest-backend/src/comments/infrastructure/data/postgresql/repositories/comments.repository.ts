@@ -1,20 +1,22 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { ICommentsRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import { ICommentsRepository } from 'src/comments/domain/abstracts/repositories/comments.repository';
 import {
   CreateCommentInput,
-  PaginationArgs,
   UpdateCommentInput,
-} from 'src/core/dtos';
+} from 'src/comments/domain/dtos/graphql/inputs/comment.input';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { Comment } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { Comment } from '../entities/Comment.entity';
 
 export class CommentsRepository implements ICommentsRepository<Comment> {
   private _repository: Repository<Comment>;

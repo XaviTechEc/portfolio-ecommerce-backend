@@ -1,14 +1,16 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { CategoryPromotionUseCases } from 'src/category-promotions/application/use-cases/category-promotion-use-cases';
+import {
+  CreateCategoryPromotionInput,
+  UpdateCategoryPromotionInput,
+} from 'src/category-promotions/domain/dtos/graphql/inputs/category-promotion.input';
+import { ICategoryPromotion } from 'src/category-promotions/domain/entities/category-promotion.entity';
+import { CategoryPromotionType } from 'src/category-promotions/domain/object-types/category-promotion.type';
 import {
   PaginationArgs,
   SearchArgs,
-  CreateCategoryPromotionInput,
-  UpdateCategoryPromotionInput,
-} from 'src/core/dtos';
-import { ICategoryPromotion } from 'src/core/entities';
-import { CategoryPromotionType } from 'src/core/object-types';
-import { CategoryPromotionUseCases } from 'src/use-cases';
+} from 'src/common/domain/dtos/graphql/args';
 
 @Resolver(() => CategoryPromotionType)
 export class CategoryPromotionResolver {

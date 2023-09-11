@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { CommentFactoryService } from './comment-factory.service';
-import { ICommentsRepository } from 'src/core/abstracts/repositories';
+import { ICommentsRepository } from 'src/comments/domain/abstracts/repositories/comments.repository';
 import {
   CreateCommentInput,
-  PaginationArgs,
   UpdateCommentInput,
-} from 'src/core/dtos';
-import { IComment } from 'src/core/entities';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+} from 'src/comments/domain/dtos/graphql/inputs/comment.input';
+import { IComment } from 'src/comments/domain/entities/comment.entity';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { CommentFactoryService } from './comment-factory.service';
 
 @Injectable()
 export class CommentUseCases implements ICommentsRepository<IComment> {

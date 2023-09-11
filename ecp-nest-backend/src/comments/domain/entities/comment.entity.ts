@@ -1,5 +1,5 @@
-import { IReview } from '../reviews/review.entity';
-import { IUser } from '../users/user.entity';
+import { IReview } from 'src/reviews/domain/entities/review.entity';
+import { IUser } from 'src/users/domain/entities/user.entity';
 
 export class IComment {
   id: string;

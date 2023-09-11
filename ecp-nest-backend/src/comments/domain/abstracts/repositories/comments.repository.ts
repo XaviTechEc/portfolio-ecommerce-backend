@@ -1,9 +1,11 @@
 import {
   IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
   CreateCommentInput,
   UpdateCommentInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/comment.input';
 
 export abstract class ICommentsRepository<T> {
   abstract getCommentById(id: string): Promise<T>;

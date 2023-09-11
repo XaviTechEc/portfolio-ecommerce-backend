@@ -1,16 +1,16 @@
+import { Review } from 'src/reviews/infrastructure/data/postgresql/entities/Review.entity';
+import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
-import { Review } from './Review.entity';
-import { User } from './User.entity';
 
 @Index('comment_pkey', ['id'], { unique: true })
 @Index('comment_user_id_idx', ['user'], {})
