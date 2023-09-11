@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateProductConfigurationInput,
   UpdateProductConfigurationInput,
-} from 'src/core/dtos';
-import { IProductConfiguration } from 'src/core/entities';
+} from 'src/product-configurations/domain/dtos/graphql/inputs/product-configuration.input';
+import { IProductConfiguration } from 'src/product-configurations/domain/entities/product-configuration.entity';
 
 @Injectable()
 export class ProductConfigurationFactoryService {

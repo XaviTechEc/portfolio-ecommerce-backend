@@ -1,4 +1,4 @@
-import { IProduct } from './product.entity';
+import { IProduct } from 'src/products/domain/entities/product.entity';
 
 export class IProductItem {
   id: string;

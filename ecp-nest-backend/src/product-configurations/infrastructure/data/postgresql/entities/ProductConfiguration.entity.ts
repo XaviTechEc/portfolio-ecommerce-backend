@@ -1,14 +1,14 @@
+import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
+import { VariationOption } from 'src/variation-options/infrastructure/data/postgresql/entities/VariationOption.entity';
 import {
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
+  PrimaryColumn,
+  CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { ProductItem } from './ProductItem.entity';
-import { VariationOption } from './VariationOption.entity';
 
 @Entity('product_configuration')
 export class ProductConfiguration {

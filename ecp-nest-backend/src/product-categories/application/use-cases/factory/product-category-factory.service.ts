@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
-} from 'src/core/dtos';
-import { IProductCategory } from 'src/core/entities';
+} from 'src/product-categories/domain/dtos/graphql/inputs/product-category.input';
+import { IProductCategory } from 'src/product-categories/domain/entities/product-category.entity';
 
 @Injectable()
 export class ProductCategoryFactoryService {

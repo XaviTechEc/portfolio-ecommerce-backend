@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IProductItemsRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { ProductItemFactoryService } from './factory/product-item-factory.service';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { IProductItemsRepository } from 'src/product-items/domain/abstracts/repositories/product-item.repository';
 import {
   CreateProductItemInput,
-  PaginationArgs,
   UpdateProductItemInput,
-} from 'src/core/dtos';
-import { IProductItem } from 'src/core/entities';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+} from 'src/product-items/domain/dtos/graphql/inputs/product-item.input';
+import { IProductItem } from 'src/product-items/domain/entities/product-item.entity';
+import { ProductItemFactoryService } from './factory/product-item-factory.service';
 
 @Injectable()
 export class ProductItemUseCases

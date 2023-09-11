@@ -1,7 +1,6 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
-import { PartialType } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
-import { PaymentMethod } from 'src/core/enums';
+import { InputType, Field, PartialType, ID } from '@nestjs/graphql';
+import { IsNotEmpty, IsEnum, IsUUID } from 'class-validator';
+import { PaymentMethod } from 'src/payment-methods/domain/enums/payment-methods.enum';
 
 @InputType()
 export class CreatePaymentMethodInput {

@@ -1,9 +1,11 @@
-import { PaginationArgs } from '../../../dtos/graphql/args/pagination.args';
+import {
+  IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
 import {
   CreateProductConfigurationInput,
-  IGenericArgs,
   UpdateProductConfigurationInput,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/product-configuration.input';
 
 export abstract class IProductConfigurationRepository<T> {
   abstract getAllProductConfiguration(args?: IGenericArgs<T>): Promise<T[]>;

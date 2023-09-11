@@ -1,21 +1,22 @@
-import { IProductCategoryRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IProductCategoryRepository } from 'src/product-categories/domain/abstracts/repositories/product-category.repository';
+import {
+  CreateProductCategoryInput,
+  UpdateProductCategoryInput,
+} from 'src/product-categories/domain/dtos/graphql/inputs/product-category.input';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { ProductCategory } from '../../entities/outputs/entities';
-import {
-  IGenericArgs,
-  CreateProductCategoryInput,
-  UpdateProductCategoryInput,
-  PaginationArgs,
-} from 'src/core/dtos';
-
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { ProductCategory } from '../entities/ProductCategory.entity';
 
 export class ProductCategoriesRepository
   implements IProductCategoryRepository<ProductCategory>

@@ -1,14 +1,14 @@
+import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
+import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
 import {
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
+  PrimaryColumn,
+  CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Category } from './Category.entity';
-import { Product } from './Product.entity';
 
 @Entity('product_category')
 export class ProductCategory {

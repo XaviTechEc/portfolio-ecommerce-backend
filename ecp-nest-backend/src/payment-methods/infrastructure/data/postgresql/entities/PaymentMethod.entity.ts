@@ -1,14 +1,14 @@
+import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/repositories/UserPaymentMethod.entity';
 import {
+  Index,
+  Entity,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  OneToMany,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
-import { PaymentMethod as PaymentMth } from 'src/core/enums';
-import { UserPaymentMethod } from './UserPaymentMethod.entity';
+import { PaymentMethod as PaymentMth } from '../../../../domain/enums/payment-methods.enum';
 
 @Index('payment_method_pkey', ['id'], { unique: true })
 @Entity('payment_method')

@@ -1,4 +1,4 @@
-import { IGenericArgs } from 'src/core/dtos';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 
 export abstract class IPaymentMethodsRepository<T> {
   abstract getAllPaymentMethods(args?: IGenericArgs<T>): Promise<T[]>;

@@ -1,14 +1,13 @@
-import { IPaymentMethodsRepository } from 'src/core/abstracts/repositories';
-
-import { FindManyOptions, Repository } from 'typeorm';
-import { PaymentMethod } from '../../entities/outputs/entities';
+import { LoggerService } from '@nestjs/common';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IPaymentMethodsRepository } from 'src/payment-methods/domain/abstracts/repositories/payment-methods.repository';
 import {
   CreatePaymentMethodInput,
-  IGenericArgs,
   UpdatePaymentMethodInput,
-} from 'src/core/dtos';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+} from 'src/payment-methods/domain/dtos/graphql/inputs/payment-method.input';
+import { Repository, FindManyOptions } from 'typeorm';
+import { PaymentMethod } from '../entities/PaymentMethod.entity';
 
 export class PaymentMethodsRepository
   implements IPaymentMethodsRepository<PaymentMethod>

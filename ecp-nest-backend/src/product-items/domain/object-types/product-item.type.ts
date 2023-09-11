@@ -1,9 +1,8 @@
-import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
-import { ProductType } from './product.type';
-import { ShoppingCartProductItemType } from '../shared/shopping-cart-product-item.type';
-import { OrderLineType } from '../cart/order-line.type';
-import { ImageType } from '../images/image.type';
-// import { ProductConfigurationType } from '../shared/product-configuration.type';
+import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+import { ImageType } from 'src/images/domain/object-types/image.type';
+import { OrderLineType } from 'src/order-lines/domain/object-types/order-line.type';
+import { ProductType } from 'src/products/domain/object-types/product.type';
+import { ShoppingCartProductItemType } from 'src/shopping-cart-product-items/domain/object-types/shopping-cart-product-item.type';
 
 @ObjectType()
 export class ProductItemType {

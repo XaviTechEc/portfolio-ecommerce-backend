@@ -1,6 +1,6 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { PaymentMethod } from 'src/core/enums';
-import { UserPaymentMethodType } from '../shared/user-payment-method.entity.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { UserPaymentMethodType } from 'src/user-payment-methods/domain/object-types/user-payment-method.entity.type';
+import { PaymentMethod } from '../enums/payment-methods.enum';
 
 @ObjectType()
 export class PaymentMethodType {

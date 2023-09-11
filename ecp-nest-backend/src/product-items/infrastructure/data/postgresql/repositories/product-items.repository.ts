@@ -1,11 +1,14 @@
-import { IProductItemsRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
 import {
   PaginationArgs,
   IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IProductItemsRepository } from 'src/product-items/domain/abstracts/repositories/product-item.repository';
+import {
   CreateProductItemInput,
   UpdateProductItemInput,
-} from 'src/core/dtos';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+} from 'src/product-items/domain/dtos/graphql/inputs/product-item.input';
 import {
   Repository,
   FindManyOptions,
@@ -13,8 +16,7 @@ import {
   FindOptionsWhere,
   ILike,
 } from 'typeorm';
-import { ProductItem } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { ProductItem } from '../entities/ProductItem.entity';
 
 export class ProductItemsRepository
   implements IProductItemsRepository<ProductItem>

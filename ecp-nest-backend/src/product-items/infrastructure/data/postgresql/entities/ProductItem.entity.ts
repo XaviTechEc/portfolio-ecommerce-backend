@@ -1,19 +1,19 @@
+import { Image } from 'src/images/infrastructure/data/postgresql/entities/Image.entity';
+import { OrderLine } from 'src/order-lines/infrastructure/data/postgresql/entities/OrderLine.entity';
+import { ProductConfiguration } from 'src/product-configurations/infrastructure/data/postgresql/entities/ProductConfiguration.entity';
+import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
+import { ShoppingCartProductItem } from 'src/shopping-cart-product-items/infrastructure/data/postgresql/entities/ShoppingCartProductItem.entity';
 import {
+  Index,
+  Entity,
+  PrimaryColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Product } from './Product.entity';
-import { ShoppingCartProductItem } from './ShoppingCartProductItem.entity';
-import { OrderLine } from './OrderLine.entity';
-import { ProductConfiguration } from './ProductConfiguration.entity';
-import { Image } from './Image.entity';
 
 @Index('product_item_pkey', ['id'], { unique: true })
 @Index('product_item_sku_idx', ['sku'], { unique: true })

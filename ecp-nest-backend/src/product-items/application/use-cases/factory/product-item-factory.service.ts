@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductItemInput, UpdateProductItemInput } from 'src/core/dtos';
-import { IProductItem } from 'src/core/entities';
+import {
+  CreateProductItemInput,
+  UpdateProductItemInput,
+} from 'src/product-items/domain/dtos/graphql/inputs/product-item.input';
+import { IProductItem } from 'src/product-items/domain/entities/product-item.entity';
 
 @Injectable()
 export class ProductItemFactoryService {

@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { IPaymentMethodsRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { IPaymentMethod } from 'src/core/entities';
-import { PaymentMethodFactoryService } from './factory/payment-method-factory.service';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { IPaymentMethodsRepository } from 'src/payment-methods/domain/abstracts/repositories/payment-methods.repository';
 import {
   CreatePaymentMethodInput,
-  IGenericArgs,
   UpdatePaymentMethodInput,
-} from 'src/core/dtos';
+} from 'src/payment-methods/domain/dtos/graphql/inputs/payment-method.input';
+import { IPaymentMethod } from 'src/payment-methods/domain/entities/payment-method.entity';
+import { PaymentMethodFactoryService } from './factory/payment-method-factory.service';
 
 @Injectable()
 export class PaymentMethodUseCases

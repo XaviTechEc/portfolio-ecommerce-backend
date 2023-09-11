@@ -1,6 +1,11 @@
-import { CreateProductItemInput, UpdateProductItemInput } from 'src/core/dtos';
-import { IGenericArgs } from '../../../dtos/graphql/args/generic-args.repository';
-import { PaginationArgs } from '../../../dtos/graphql/args/pagination.args';
+import {
+  IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
+  CreateProductItemInput,
+  UpdateProductItemInput,
+} from '../../dtos/graphql/inputs/product-item.input';
 
 export abstract class IProductItemsRepository<T> {
   abstract getAllProductItems(args?: IGenericArgs<T>): Promise<T[]>;

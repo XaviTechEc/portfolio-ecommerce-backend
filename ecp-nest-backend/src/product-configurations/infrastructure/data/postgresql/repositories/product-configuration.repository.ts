@@ -1,21 +1,22 @@
-import { IProductConfigurationRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IProductConfigurationRepository } from 'src/product-configurations/domain/abstracts/repositories/product-configuration.repository';
+import {
+  CreateProductConfigurationInput,
+  UpdateProductConfigurationInput,
+} from 'src/product-configurations/domain/dtos/graphql/inputs/product-configuration.input';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { ProductConfiguration } from '../../entities/outputs/entities';
-import {
-  IGenericArgs,
-  CreateProductConfigurationInput,
-  UpdateProductConfigurationInput,
-  PaginationArgs,
-} from 'src/core/dtos';
-
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { ProductConfiguration } from '../entities/ProductConfiguration.entity';
 
 export class ProductConfigurationsRepository
   implements IProductConfigurationRepository<ProductConfiguration>

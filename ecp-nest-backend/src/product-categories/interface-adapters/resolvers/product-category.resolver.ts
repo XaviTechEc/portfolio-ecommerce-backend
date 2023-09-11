@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ProductCategoryUseCases } from 'src/product-categories/application/use-cases/product-category-use-cases';
+import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
-} from 'src/core/dtos';
-import { IProductCategory } from 'src/core/entities';
-import { ProductCategoryType } from 'src/core/object-types';
-import { ProductCategoryUseCases } from 'src/use-cases';
+} from 'src/product-categories/domain/dtos/graphql/inputs/product-category.input';
+import { IProductCategory } from 'src/product-categories/domain/entities/product-category.entity';
+import { ProductCategoryType } from 'src/product-categories/domain/object-types/product-category.type';
 
 @Resolver(() => ProductCategoryType)
 export class ProductCategoryResolver {

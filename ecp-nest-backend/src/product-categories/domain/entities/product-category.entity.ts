@@ -1,5 +1,5 @@
-import { ICategory } from '../categories/category.entity';
-import { IProduct } from '../products/product.entity';
+import { ICategory } from 'src/categories/domain/entities/category.entity';
+import { IProduct } from 'src/products/domain/entities/product.entity';
 
 export class IProductCategory {
   id: string;

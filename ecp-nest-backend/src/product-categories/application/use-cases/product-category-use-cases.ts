@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IProductCategoryRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { IProductCategory } from 'src/core/entities';
-
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
+  PaginationArgs,
   IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { IProductCategoryRepository } from 'src/product-categories/domain/abstracts/repositories/product-category.repository';
+import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
-  PaginationArgs,
-} from 'src/core/dtos';
-import { ProductCategoryFactoryService } from '../factory';
+} from 'src/product-categories/domain/dtos/graphql/inputs/product-category.input';
+import { IProductCategory } from 'src/product-categories/domain/entities/product-category.entity';
+import { ProductCategoryFactoryService } from './factory/product-category-factory.service';
 
 @Injectable()
 export class ProductCategoryUseCases
