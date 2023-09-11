@@ -1,6 +1,6 @@
-import { IProductItem } from '../products/product-item.entity';
-import { IReview } from '../reviews/review.entity';
-import { IShopOrder } from './shop-order.entity';
+import { IProductItem } from 'src/product-items/domain/entities/product-item.entity';
+import { IReview } from 'src/reviews/domain/entities/review.entity';
+import { IShopOrder } from 'src/shop-orders/domain/entities/shop-order.entity';
 
 export class IOrderLine {
   id: string;

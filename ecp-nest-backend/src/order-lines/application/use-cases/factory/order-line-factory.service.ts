@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderLineInput, UpdateOrderLineInput } from 'src/core/dtos';
-import { IOrderLine } from 'src/core/entities';
+import {
+  CreateOrderLineInput,
+  UpdateOrderLineInput,
+} from 'src/order-lines/domain/dtos/graphql/inputs/order-line.input';
+import { IOrderLine } from 'src/order-lines/domain/entities/order-line.entity';
 
 @Injectable()
 export class OrderLineFactoryService {

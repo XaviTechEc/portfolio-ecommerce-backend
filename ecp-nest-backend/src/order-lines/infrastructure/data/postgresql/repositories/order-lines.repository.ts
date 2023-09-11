@@ -1,20 +1,22 @@
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { IOrderLinesRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IOrderLinesRepository } from 'src/order-lines/domain/abstracts/repositories/order-lines.repository';
 import {
   CreateOrderLineInput,
-  PaginationArgs,
   UpdateOrderLineInput,
-} from 'src/core/dtos';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+} from 'src/order-lines/domain/dtos/graphql/inputs/order-line.input';
 import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { OrderLine } from '../../entities/outputs/entities';
+import { OrderLine } from '../entities/OrderLine.entity';
 
 export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
   private _repository: Repository<OrderLine>;

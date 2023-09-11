@@ -1,14 +1,16 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
-  CreateOrderLineInput,
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { OrderLineUseCases } from 'src/order-lines/application/use-cases/order-line-use-cases';
+import {
+  CreateOrderLineInput,
   UpdateOrderLineInput,
-} from 'src/core/dtos';
-import { IOrderLine } from 'src/core/entities';
-import { OrderLineType } from 'src/core/object-types';
-import { OrderLineUseCases } from 'src/use-cases';
+} from 'src/order-lines/domain/dtos/graphql/inputs/order-line.input';
+import { IOrderLine } from 'src/order-lines/domain/entities/order-line.entity';
+import { OrderLineType } from 'src/order-lines/domain/object-types/order-line.type';
 
 @Resolver(() => OrderLineType)
 export class OrderLineResolver {

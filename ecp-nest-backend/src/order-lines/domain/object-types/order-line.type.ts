@@ -1,7 +1,7 @@
-import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
-import { ProductItemType } from '../products/product-item.type';
-import { ShopOrderType } from './shop-order.type';
-import { ReviewType } from '../reviews/review.type';
+import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+import { ProductItemType } from 'src/product-items/domain/object-types/product-item.type';
+import { ReviewType } from 'src/reviews/domain/object-types/review.type';
+import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.type';
 
 @ObjectType()
 export class OrderLineType {

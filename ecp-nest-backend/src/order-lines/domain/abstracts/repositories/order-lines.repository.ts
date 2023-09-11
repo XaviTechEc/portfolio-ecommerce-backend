@@ -1,9 +1,11 @@
 import {
   IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
   CreateOrderLineInput,
   UpdateOrderLineInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/order-line.input';
 
 export abstract class IOrderLinesRepository<T> {
   abstract getAllOrderLines(args?: IGenericArgs<T>): Promise<T[]>;

@@ -1,17 +1,17 @@
+import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
+import { Review } from 'src/reviews/infrastructure/data/postgresql/entities/Review.entity';
+import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Review } from './Review.entity';
-import { ProductItem } from './ProductItem.entity';
-import { ShopOrder } from './ShopOrder.entity';
 
 @Index('order_line_pkey', ['id'], { unique: true })
 @Entity('order_line')
