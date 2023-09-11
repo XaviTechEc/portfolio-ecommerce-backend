@@ -1,5 +1,5 @@
-import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
-import { ShopOrderType } from './shop-order.type';
+import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.type';
 
 @ObjectType()
 export class ShippingMethodType {

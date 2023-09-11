@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateShoppingCartProductItemInput,
   UpdateShoppingCartProductItemInput,
-} from 'src/core/dtos';
-import { IShoppingCartProductItem } from 'src/core/entities';
+} from 'src/shopping-cart-product-items/domain/dtos/graphql/inputs/shopping-cart-product-item.input';
+import { IShoppingCartProductItem } from 'src/shopping-cart-product-items/domain/entities/shopping-cart-product-item.entity';
 
 @Injectable()
 export class ShoppingCartProductItemFactoryService {

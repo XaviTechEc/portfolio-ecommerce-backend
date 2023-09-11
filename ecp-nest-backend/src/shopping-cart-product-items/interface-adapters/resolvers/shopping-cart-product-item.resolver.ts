@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ShoppingCartProductItemUseCases } from 'src/shopping-cart-product-items/application/use-cases/shopping-cart-product-item-use-cases';
+import {
   CreateShoppingCartProductItemInput,
   UpdateShoppingCartProductItemInput,
-} from 'src/core/dtos';
-import { IShoppingCartProductItem } from 'src/core/entities';
-import { ShoppingCartProductItemType } from 'src/core/object-types';
-import { ShoppingCartProductItemUseCases } from 'src/use-cases';
+} from 'src/shopping-cart-product-items/domain/dtos/graphql/inputs/shopping-cart-product-item.input';
+import { IShoppingCartProductItem } from 'src/shopping-cart-product-items/domain/entities/shopping-cart-product-item.entity';
+import { ShoppingCartProductItemType } from 'src/shopping-cart-product-items/domain/object-types/shopping-cart-product-item.type';
 
 @Resolver(() => ShoppingCartProductItemType)
 export class ShoppingCartProductItemResolver {

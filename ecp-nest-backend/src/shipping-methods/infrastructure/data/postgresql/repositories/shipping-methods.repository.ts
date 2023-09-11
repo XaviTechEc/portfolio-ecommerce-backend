@@ -1,13 +1,13 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IShippingMethodsRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IShippingMethodsRepository } from 'src/shipping-methods/domain/abstracts/repositories/shipping-methods.repository';
 import {
   CreateShippingMethodInput,
   UpdateShippingMethodInput,
-} from 'src/core/dtos';
-import { FindManyOptions, Repository } from 'typeorm';
-import { ShippingMethod } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+} from 'src/shipping-methods/domain/dtos/graphql/inputs/shipping-method.input';
+import { Repository, FindManyOptions } from 'typeorm';
+import { ShippingMethod } from '../entities/ShippingMethod.entity';
 
 export class ShippingMethodsRepository
   implements IShippingMethodsRepository<ShippingMethod>

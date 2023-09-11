@@ -1,5 +1,5 @@
-import { IShoppingCart } from '../cart/shopping-cart.entity';
-import { IProductItem } from '../products/product-item.entity';
+import { IProductItem } from 'src/product-items/domain/entities/product-item.entity';
+import { IShoppingCart } from 'src/shopping-carts/domain/entities/shopping-cart.entity';
 
 export class IShoppingCartProductItem {
   id: string;

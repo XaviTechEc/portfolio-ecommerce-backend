@@ -1,23 +1,28 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
+  Resolver,
   Args,
   ID,
   Mutation,
+  ResolveField,
   Parent,
   Query,
-  ResolveField,
-  Resolver,
 } from '@nestjs/graphql';
+import { LocationType } from 'src/addresses/domain/object-types/location.type';
 import {
-  CreateShopOrderInput,
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { StatusValue } from 'src/order-status/domain/enums/status-value.enum';
+import { ShopOrderLocationUseCases } from 'src/shop-order-locations/application/use-cases/shop-order-location-use-cases';
+import { IShopOrderLocation } from 'src/shop-order-locations/domain/entities/shop-order-locations.entity';
+import { ShopOrderUseCases } from 'src/shop-orders/application/use-cases/shop-order-use-cases';
+import {
+  CreateShopOrderInput,
   UpdateShopOrderInput,
-} from 'src/core/dtos';
-import { IShopOrder, IShopOrderLocation } from 'src/core/entities';
-import { StatusValue } from 'src/core/enums';
-import { LocationType, ShopOrderType } from 'src/core/object-types';
-import { ShopOrderUseCases, ShopOrderLocationUseCases } from 'src/use-cases';
+} from 'src/shop-orders/domain/dtos/graphql/inputs/shop-order.input';
+import { IShopOrder } from 'src/shop-orders/domain/entities/shop-order.entity';
+import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.type';
 
 @Resolver(() => ShopOrderType)
 export class ShopOrderResolver {

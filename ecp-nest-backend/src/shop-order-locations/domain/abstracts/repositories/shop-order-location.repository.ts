@@ -1,9 +1,11 @@
 import {
-  CreateShopOrderLocationInput,
   IGenericArgs,
   PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
+  CreateShopOrderLocationInput,
   UpdateShopOrderLocationInput,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/shop-order-location.input';
 
 export abstract class IShopOrderLocationRepository<T> {
   abstract getAllShopOrderLocation(args?: IGenericArgs<T>): Promise<T[]>;

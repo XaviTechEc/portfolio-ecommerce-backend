@@ -1,6 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { UserObjType } from '../users/user.type';
-// import { ShoppingCartProductItemType } from '../shared/shopping-cart-product-item.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @ObjectType()
 export class ShoppingCartType {

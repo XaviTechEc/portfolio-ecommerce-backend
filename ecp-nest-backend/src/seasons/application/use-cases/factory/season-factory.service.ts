@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
-import { ISeason } from 'src/core/entities';
+import {
+  CreateSeasonInput,
+  UpdateSeasonInput,
+} from 'src/seasons/domain/dtos/graphql/inputs/season.input';
+import { ISeason } from 'src/seasons/domain/entities/season.entity';
 
 @Injectable()
 export class SeasonFactoryService {

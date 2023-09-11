@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateShippingMethodInput,
   UpdateShippingMethodInput,
-} from 'src/core/dtos';
-import { IShippingMethod } from 'src/core/entities';
+} from 'src/shipping-methods/domain/dtos/graphql/inputs/shipping-method.input';
+import { IShippingMethod } from 'src/shipping-methods/domain/entities/shipping-method.entity';
 
 @Injectable()
 export class ShippingMethodFactoryService {

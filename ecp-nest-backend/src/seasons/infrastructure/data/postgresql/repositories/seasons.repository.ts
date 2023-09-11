@@ -1,10 +1,13 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { ISeasonsRepository } from 'src/core/abstracts/repositories';
-import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
+import { LoggerService } from '@nestjs/common';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { ISeasonsRepository } from 'src/seasons/domain/abstracts/repositories/seasons.repository';
+import {
+  CreateSeasonInput,
+  UpdateSeasonInput,
+} from 'src/seasons/domain/dtos/graphql/inputs/season.input';
 import { Repository } from 'typeorm';
-import { Season } from '../../entities/outputs/entities';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { Season } from '../entities/Season.entity';
 
 export class SeasonsRepository implements ISeasonsRepository<Season> {
   private _repository: Repository<Season>;

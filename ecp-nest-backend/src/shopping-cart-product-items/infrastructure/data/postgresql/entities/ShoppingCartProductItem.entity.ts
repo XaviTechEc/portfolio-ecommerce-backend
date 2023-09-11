@@ -1,15 +1,15 @@
+import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
+import { ShoppingCart } from 'src/shopping-carts/infrastructure/data/postgresql/entities/ShoppingCart.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { ProductItem } from './ProductItem.entity';
-import { ShoppingCart } from './ShoppingCart.entity';
 
 @Index(
   'shopping_cart_product_item_shopping_cart_id_product_item_id_idx',

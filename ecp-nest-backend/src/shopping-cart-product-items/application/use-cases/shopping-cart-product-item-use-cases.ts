@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IShoppingCartProductItemRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { IShoppingCartProductItem } from 'src/core/entities';
-import { ShoppingCartProductItemFactoryService } from '../factory';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
+  PaginationArgs,
   IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { IShoppingCartProductItemRepository } from 'src/shopping-cart-product-items/domain/abstracts/repositories/shopping-cart-product-item.repository';
+import {
   CreateShoppingCartProductItemInput,
   UpdateShoppingCartProductItemInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from 'src/shopping-cart-product-items/domain/dtos/graphql/inputs/shopping-cart-product-item.input';
+import { IShoppingCartProductItem } from 'src/shopping-cart-product-items/domain/entities/shopping-cart-product-item.entity';
+import { ShoppingCartProductItemFactoryService } from './factory/shopping-cart-product-item-factory.service';
 
 @Injectable()
 export class ShoppingCartProductItemUseCases

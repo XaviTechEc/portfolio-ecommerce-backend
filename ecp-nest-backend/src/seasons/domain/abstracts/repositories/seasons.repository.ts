@@ -1,8 +1,8 @@
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import {
-  IGenericArgs,
   CreateSeasonInput,
   UpdateSeasonInput,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/season.input';
 
 export abstract class ISeasonsRepository<T> {
   abstract getAllSeasons(args?: IGenericArgs<T>): Promise<T[]>;

@@ -1,14 +1,14 @@
+import { Location } from 'src/addresses/infrastructure/data/postgresql/entities';
+import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import {
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
+  PrimaryColumn,
+  CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Location } from './Location.entity';
-import { ShopOrder } from './ShopOrder.entity';
 
 @Entity('shop_order_location')
 export class ShopOrderLocation {

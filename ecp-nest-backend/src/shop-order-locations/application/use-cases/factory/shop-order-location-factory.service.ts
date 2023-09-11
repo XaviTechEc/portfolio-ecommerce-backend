@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateShopOrderLocationInput,
   UpdateShopOrderLocationInput,
-} from 'src/core/dtos';
-import { IShopOrderLocation } from 'src/core/entities';
+} from 'src/shop-order-locations/domain/dtos/graphql/inputs/shop-order-location.input';
+import { IShopOrderLocation } from 'src/shop-order-locations/domain/entities/shop-order-locations.entity';
 
 @Injectable()
 export class ShopOrderLocationFactoryService {

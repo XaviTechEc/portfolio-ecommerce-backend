@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { SeasonUseCases } from 'src/seasons/application/use-cases/season-use-cases';
+import {
   CreateSeasonInput,
   UpdateSeasonInput,
-} from 'src/core/dtos';
-import { ISeason } from 'src/core/entities';
-import { SeasonType } from 'src/core/object-types';
-import { SeasonUseCases } from 'src/use-cases';
+} from 'src/seasons/domain/dtos/graphql/inputs/season.input';
+import { ISeason } from 'src/seasons/domain/entities/season.entity';
+import { SeasonType } from 'src/seasons/domain/object-types/season.type';
 
 @Resolver(() => SeasonType)
 export class SeasonResolver {

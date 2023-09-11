@@ -1,20 +1,22 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IShoppingCartsRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IShoppingCartsRepository } from 'src/shopping-carts/domain/abstracts/repositories/shopping-carts.repository';
 import {
   CreateShoppingCartInput,
-  PaginationArgs,
   UpdateShoppingCartInput,
-} from 'src/core/dtos';
+} from 'src/shopping-carts/domain/dtos/graphql/inputs/shopping-cart.input';
 import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { ShoppingCart } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ShoppingCart } from '../entities/ShoppingCart.entity';
 
 export class ShoppingCartsRepository
   implements IShoppingCartsRepository<ShoppingCart>

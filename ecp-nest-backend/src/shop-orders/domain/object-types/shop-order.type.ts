@@ -1,11 +1,10 @@
-import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
-import { UserObjType } from '../users/user.type';
-import { UserPaymentMethodType } from '../shared/user-payment-method.entity.type';
-import { AddressType } from '../addresses/address.type';
-import { ShippingMethodType } from './shipping-method.type';
-import { OrderStatusType } from './order-status.type';
-import { OrderLineType } from './order-line.type';
-// import { ShopOrderLocationType } from '../shared/shop-order-location.type';
+import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+import { AddressType } from 'src/addresses/domain/object-types/address.type';
+import { OrderLineType } from 'src/order-lines/domain/object-types/order-line.type';
+import { OrderStatusType } from 'src/order-status/domain/object-types/order-status.type';
+import { ShippingMethodType } from 'src/shipping-methods/domain/object-types/shipping-method.type';
+import { UserPaymentMethodType } from 'src/user-payment-methods/domain/object-types/user-payment-method.entity.type';
+import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @ObjectType()
 export class ShopOrderType {

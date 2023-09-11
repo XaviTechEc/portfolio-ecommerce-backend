@@ -1,20 +1,22 @@
-import { IShoppingCartProductItemRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IShoppingCartProductItemRepository } from 'src/shopping-cart-product-items/domain/abstracts/repositories/shopping-cart-product-item.repository';
+import {
+  CreateShoppingCartProductItemInput,
+  UpdateShoppingCartProductItemInput,
+} from 'src/shopping-cart-product-items/domain/dtos/graphql/inputs/shopping-cart-product-item.input';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { ShoppingCartProductItem } from '../../entities/outputs/entities';
-import {
-  IGenericArgs,
-  CreateShoppingCartProductItemInput,
-  UpdateShoppingCartProductItemInput,
-  PaginationArgs,
-} from 'src/core/dtos';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { ShoppingCartProductItem } from '../entities/ShoppingCartProductItem.entity';
 
 export class ShoppingCartProductItemsRepository
   implements IShoppingCartProductItemRepository<ShoppingCartProductItem>

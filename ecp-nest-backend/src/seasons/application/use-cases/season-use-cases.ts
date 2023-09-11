@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { ISeasonsRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { CreateSeasonInput, UpdateSeasonInput } from 'src/core/dtos';
-import { ISeason } from 'src/core/entities';
-import { SeasonFactoryService } from './season-factory.service';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ISeasonsRepository } from 'src/seasons/domain/abstracts/repositories/seasons.repository';
+import {
+  CreateSeasonInput,
+  UpdateSeasonInput,
+} from 'src/seasons/domain/dtos/graphql/inputs/season.input';
+import { ISeason } from 'src/seasons/domain/entities/season.entity';
+import { SeasonFactoryService } from './factory/season-factory.service';
 
 @Injectable()
 export class SeasonUseCases implements ISeasonsRepository<ISeason> {

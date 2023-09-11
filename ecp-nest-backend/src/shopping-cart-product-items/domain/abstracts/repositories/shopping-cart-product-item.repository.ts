@@ -1,9 +1,11 @@
 import {
-  CreateShoppingCartProductItemInput,
   IGenericArgs,
   PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
+  CreateShoppingCartProductItemInput,
   UpdateShoppingCartProductItemInput,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/shopping-cart-product-item.input';
 
 export abstract class IShoppingCartProductItemRepository<T> {
   abstract getAllShoppingCartProductItem(args?: IGenericArgs<T>): Promise<T[]>;

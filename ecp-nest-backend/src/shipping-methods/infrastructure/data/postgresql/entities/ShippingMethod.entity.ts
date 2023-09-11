@@ -1,13 +1,13 @@
+import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { ShopOrder } from './ShopOrder.entity';
 
 @Index('shipping_method_pkey', ['id'], { unique: true })
 @Entity('shipping_method')

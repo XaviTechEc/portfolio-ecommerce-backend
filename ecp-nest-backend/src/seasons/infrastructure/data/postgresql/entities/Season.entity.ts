@@ -1,13 +1,13 @@
+import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { Category } from './Category.entity';
 
 @Index('season_pkey', ['id'], { unique: true })
 @Entity('season')

@@ -1,25 +1,26 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
+  Query,
   Resolver,
   Args,
-  Mutation,
-  Query,
   ID,
+  Mutation,
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ProductItemType } from 'src/product-items/domain/object-types/product-item.type';
+import { ShoppingCartProductItemUseCases } from 'src/shopping-cart-product-items/application/use-cases/shopping-cart-product-item-use-cases';
+import { ShoppingCartUseCases } from 'src/shopping-carts/application/use-cases/shopping-cart-use-cases';
+import {
   CreateShoppingCartInput,
   UpdateShoppingCartInput,
-} from 'src/core/dtos';
-import { IShoppingCart } from 'src/core/entities';
-import { ProductItemType, ShoppingCartType } from 'src/core/object-types';
-import {
-  ShoppingCartProductItemUseCases,
-  ShoppingCartUseCases,
-} from 'src/use-cases';
+} from 'src/shopping-carts/domain/dtos/graphql/inputs/shopping-cart.input';
+import { IShoppingCart } from 'src/shopping-carts/domain/entities/shopping-cart.entity';
+import { ShoppingCartType } from 'src/shopping-carts/domain/object-types/shopping-cart.type';
 
 @Resolver(() => ShoppingCartType)
 export class ShoppingCartResolver {

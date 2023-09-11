@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ShopOrderLocationUseCases } from 'src/shop-order-locations/application/use-cases/shop-order-location-use-cases';
+import {
   CreateShopOrderLocationInput,
   UpdateShopOrderLocationInput,
-} from 'src/core/dtos';
-import { IShopOrderLocation } from 'src/core/entities';
-import { ShopOrderLocationType } from 'src/core/object-types';
-import { ShopOrderLocationUseCases } from 'src/use-cases';
+} from 'src/shop-order-locations/domain/dtos/graphql/inputs/shop-order-location.input';
+import { IShopOrderLocation } from 'src/shop-order-locations/domain/entities/shop-order-locations.entity';
+import { ShopOrderLocationType } from 'src/shop-order-locations/domain/object-types/shop-order-location.type';
 
 @Resolver(() => ShopOrderLocationType)
 export class ShopOrderLocationResolver {

@@ -1,22 +1,21 @@
+import { Address } from 'src/addresses/infrastructure/data/postgresql/entities';
+import { OrderLine } from 'src/order-lines/infrastructure/data/postgresql/entities/OrderLine.entity';
+import { OrderStatus } from 'src/order-status/infrastructure/data/postgresql/entities/OrderStatus.entity';
+import { ShippingMethod } from 'src/shipping-methods/infrastructure/data/postgresql/entities/ShippingMethod.entity';
+import { ShopOrderLocation } from 'src/shop-order-locations/infrastructure/data/postgresql/entities/ShopOrderLocation.entity';
+import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/repositories/UserPaymentMethod.entity';
+import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { User } from './User.entity';
-
-import { Address } from './Address.entity';
-import { OrderLine } from './OrderLine.entity';
-import { OrderStatus } from './OrderStatus.entity';
-import { ShippingMethod } from './ShippingMethod.entity';
-import { ShopOrderLocation } from './ShopOrderLocation.entity';
-import { UserPaymentMethod } from './UserPaymentMethod.entity';
 
 @Index('shop_order_pkey', ['id'], { unique: true })
 @Entity('shop_order')

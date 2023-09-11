@@ -1,19 +1,21 @@
-import { IShopOrderLocationRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IShopOrderLocationRepository } from 'src/shop-order-locations/domain/abstracts/repositories/shop-order-location.repository';
 import {
   CreateShopOrderLocationInput,
-  IGenericArgs,
-  PaginationArgs,
   UpdateShopOrderLocationInput,
-} from 'src/core/dtos';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+} from 'src/shop-order-locations/domain/dtos/graphql/inputs/shop-order-location.input';
 import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
-  Repository,
 } from 'typeorm';
-import { ShopOrderLocation } from '../../entities/outputs/entities';
+import { ShopOrderLocation } from '../entities/ShopOrderLocation.entity';
 
 export class ShopOrderLocationsRepository
   implements IShopOrderLocationRepository<ShopOrderLocation>
