@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { UserPaymentMethodUseCases } from 'src/user-payment-methods/application/use-cases/user-payment-method-use-cases';
+import {
   CreateUserPaymentMethodInput,
   UpdateUserPaymentMethodInput,
-} from 'src/core/dtos';
-import { IUserPaymentMethod } from 'src/core/entities';
-import { UserPaymentMethodType } from 'src/core/object-types';
-import { UserPaymentMethodUseCases } from 'src/use-cases';
+} from 'src/user-payment-methods/domain/dtos/graphql/inputs/user-payment-method.input';
+import { IUserPaymentMethod } from 'src/user-payment-methods/domain/entities/user-payment-method.entity';
+import { UserPaymentMethodType } from 'src/user-payment-methods/domain/object-types/user-payment-method.entity.type';
 
 @Resolver(() => UserPaymentMethodType)
 export class UserPaymentMethodResolver {

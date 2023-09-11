@@ -1,16 +1,16 @@
+import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
+import { VariationOption } from 'src/variation-options/infrastructure/data/postgresql/entities/VariationOption.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Category } from './Category.entity';
-import { VariationOption } from './VariationOption.entity';
 
 @Index('variation_pkey', ['id'], { unique: true })
 @Entity('variation')

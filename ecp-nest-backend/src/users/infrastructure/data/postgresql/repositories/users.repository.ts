@@ -1,10 +1,13 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IUsersRepository } from 'src/core/abstracts/repositories';
-import { CreateUserDto, UpdateUserDto } from 'src/core/dtos';
+import { LoggerService } from '@nestjs/common';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IUsersRepository } from 'src/users/domain/abstracts/repositories/users.repository';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+} from 'src/users/domain/dtos/rest/user.dto';
 import { Repository } from 'typeorm';
-import { User } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { User } from '../entities/User.entity';
 
 export class UsersRepository implements IUsersRepository<User> {
   private _repository: Repository<User>;

@@ -1,13 +1,11 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Gender, Role, UserType } from 'src/core/enums';
-import { ShoppingCartType } from '../cart/shopping-cart.type';
-import { ShopOrderType } from '../cart/shop-order.type';
-import { ReviewType } from '../reviews/review.type';
-import { CommentType } from '../comments/comment.type';
-import { ProductType } from '../products/product.type';
-import { CategoryType } from '../categories/category.type';
-// import { UserAddressType } from '../shared/user-address.type';
-// import { UserPaymentMethodType } from '../shared/user-payment-method.entity.type';
+import { CategoryType } from 'src/categories/domain/object-types/category.type';
+import { CommentType } from 'src/comments/domain/object-types/comment.type';
+import { ProductType } from 'src/products/domain/object-types/product.type';
+import { ReviewType } from 'src/reviews/domain/object-types/review.type';
+import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.type';
+import { ShoppingCartType } from 'src/shopping-carts/domain/object-types/shopping-cart.type';
+import { UserType, Role, Gender } from '../enums';
 
 @ObjectType()
 export class UserObjType {

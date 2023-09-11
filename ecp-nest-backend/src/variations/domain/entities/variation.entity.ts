@@ -1,4 +1,4 @@
-import { ICategory } from '../categories/category.entity';
+import { ICategory } from 'src/categories/domain/entities/category.entity';
 
 export class IVariation {
   id: string;

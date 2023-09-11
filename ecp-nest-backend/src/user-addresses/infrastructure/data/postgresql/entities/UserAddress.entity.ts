@@ -1,16 +1,15 @@
+import { Address } from 'src/addresses/infrastructure/data/postgresql/entities';
+import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
+  Entity,
+  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-
-import { User } from './User.entity';
-import { Address } from './Address.entity';
 
 @Entity('user_address')
 export class UserAddress {

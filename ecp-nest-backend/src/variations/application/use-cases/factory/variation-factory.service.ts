@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVariationInput, UpdateVariationInput } from 'src/core/dtos';
-import { IVariation } from 'src/core/entities';
+import {
+  CreateVariationInput,
+  UpdateVariationInput,
+} from 'src/variations/domain/dtos/graphql/inputs/variation.input';
+import { IVariation } from 'src/variations/domain/entities/variation.entity';
 
 @Injectable()
 export class VariationFactoryService {

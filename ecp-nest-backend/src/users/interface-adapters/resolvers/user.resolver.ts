@@ -3,22 +3,21 @@ import {
   Resolver,
   Args,
   ID,
-  Query,
   ResolveField,
   Parent,
+  Query,
 } from '@nestjs/graphql';
-import { PaginationArgs, SearchArgs } from 'src/core/dtos';
-import { IUser } from 'src/core/entities';
+import { AddressType } from 'src/addresses/domain/object-types/address.type';
 import {
-  AddressType,
-  PaymentMethodType,
-  UserObjType,
-} from 'src/core/object-types';
-import {
-  UserAddressUseCases,
-  UserPaymentMethodUseCases,
-  UserUseCases,
-} from 'src/use-cases';
+  PaginationArgs,
+  SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { PaymentMethodType } from 'src/payment-methods/domain/object-types/payment-method.type';
+import { UserAddressUseCases } from 'src/user-addresses/application/use-cases/user-address-use-case';
+import { UserPaymentMethodUseCases } from 'src/user-payment-methods/application/use-cases/user-payment-method-use-cases';
+import { UserUseCases } from 'src/users/application/use-cases/user-use-cases';
+import { IUser } from 'src/users/domain/entities/user.entity';
+import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @Resolver(() => UserObjType)
 export class UserResolver {

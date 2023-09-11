@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IUserAddressRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { IUserAddress } from 'src/core/entities';
-import { UserAddressFactoryService } from '../factory';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
+  PaginationArgs,
   IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { IUserAddressRepository } from 'src/user-addresses/domain/abstracts/repositories/user-address.repository';
+import {
   CreateUserAddressInput,
   UpdateUserAddressInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from 'src/user-addresses/domain/dtos/graphql/inputs/user-address.input';
+import { IUserAddress } from 'src/user-addresses/domain/entities/user-address.entity';
+import { UserAddressFactoryService } from './factory/user-address-factory.service';
 
 @Injectable()
 export class UserAddressUseCases

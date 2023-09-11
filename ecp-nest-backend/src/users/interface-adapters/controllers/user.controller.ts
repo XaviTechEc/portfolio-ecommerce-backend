@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { UserUseCases } from 'src/use-cases/users/user-use-cases';
+import { UserUseCases } from 'src/users/application/use-cases/user-use-cases';
 
 @Controller('users')
 export class UserController {

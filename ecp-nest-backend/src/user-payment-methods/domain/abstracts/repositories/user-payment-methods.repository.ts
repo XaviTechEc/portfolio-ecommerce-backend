@@ -1,9 +1,11 @@
 import {
   IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
   CreateUserPaymentMethodInput,
   UpdateUserPaymentMethodInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/user-payment-method.input';
 
 export abstract class IUserPaymentMethodsRepository<T> {
   abstract getAllUserPaymentMethods(args?: IGenericArgs<T>): Promise<T[]>;

@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateUserPaymentMethodInput,
   UpdateUserPaymentMethodInput,
-} from 'src/core/dtos';
-import { IUserPaymentMethod } from 'src/core/entities';
+} from 'src/user-payment-methods/domain/dtos/graphql/inputs/user-payment-method.input';
+import { IUserPaymentMethod } from 'src/user-payment-methods/domain/entities/user-payment-method.entity';
 
 @Injectable()
 export class UserPaymentMethodFactoryService {

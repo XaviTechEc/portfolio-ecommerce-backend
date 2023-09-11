@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { VariationOptionUseCases } from 'src/variation-options/application/use-cases/variation-option-use-cases';
+import {
   CreateVariationOptionInput,
   UpdateVariationOptionInput,
-} from 'src/core/dtos';
-import { IVariationOption } from 'src/core/entities';
-import { VariationOptionType } from 'src/core/object-types';
-import { VariationOptionUseCases } from 'src/use-cases';
+} from 'src/variation-options/domain/dtos/graphql/inputs/variation-option.input';
+import { IVariationOption } from 'src/variation-options/domain/entities/variation-option.entity';
+import { VariationOptionType } from 'src/variation-options/domain/object-types/variation-option.type';
 
 @Resolver(() => VariationOptionType)
 export class VariationOptionResolver {

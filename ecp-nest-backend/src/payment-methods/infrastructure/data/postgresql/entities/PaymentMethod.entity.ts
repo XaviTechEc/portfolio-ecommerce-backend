@@ -1,4 +1,4 @@
-import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/repositories/UserPaymentMethod.entity';
+import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/entities/UserPaymentMethod.entity';
 import {
   Index,
   Entity,

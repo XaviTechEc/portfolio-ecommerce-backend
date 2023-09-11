@@ -1,4 +1,4 @@
-import { Gender, Role, UserType } from 'src/core/enums';
+import { UserType, Role, Gender } from '../enums';
 
 export class IUser {
   id: string;

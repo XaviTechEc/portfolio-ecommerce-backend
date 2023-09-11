@@ -1,13 +1,13 @@
+import { ProductTag } from 'src/product-tags/infrastructure/data/postgresql/entities/ProductTag.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { ProductTag } from './ProductTag.entity';
 
 @Index('tag_pkey', ['id'], { unique: true })
 @Index('tag_code_idx', ['code'], {})

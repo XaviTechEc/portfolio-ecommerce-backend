@@ -1,20 +1,22 @@
-import { IUserAddressRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IUserAddressRepository } from 'src/user-addresses/domain/abstracts/repositories/user-address.repository';
+import {
+  CreateUserAddressInput,
+  UpdateUserAddressInput,
+} from 'src/user-addresses/domain/dtos/graphql/inputs/user-address.input';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { UserAddress } from '../../entities/outputs/entities';
-import {
-  IGenericArgs,
-  CreateUserAddressInput,
-  UpdateUserAddressInput,
-  PaginationArgs,
-} from 'src/core/dtos';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { UserAddress } from '../entities/UserAddress.entity';
 
 export class UserAddressesRepository
   implements IUserAddressRepository<UserAddress>

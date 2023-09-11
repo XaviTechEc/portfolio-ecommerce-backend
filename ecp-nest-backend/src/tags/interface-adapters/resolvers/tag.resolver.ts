@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { TagUseCases } from 'src/tags/application/use-cases/tag-use-cases';
+import {
   CreateTagInput,
   UpdateTagInput,
-} from 'src/core/dtos';
-import { ITag } from 'src/core/entities';
-import { TagType } from 'src/core/object-types';
-import { TagUseCases } from 'src/use-cases/tags/tag-use-cases';
+} from 'src/tags/domain/dtos/graphql/inputs/tag.input';
+import { ITag } from 'src/tags/domain/entities/tag.entity';
+import { TagType } from 'src/tags/domain/object-types/tag.type';
 
 @Resolver(() => TagType)
 export class TagResolver {

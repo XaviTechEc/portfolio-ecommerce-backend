@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTagInput, UpdateTagInput } from 'src/core/dtos';
-import { ITag } from 'src/core/entities';
+import {
+  CreateTagInput,
+  UpdateTagInput,
+} from 'src/tags/domain/dtos/graphql/inputs/tag.input';
+import { ITag } from 'src/tags/domain/entities/tag.entity';
 
 @Injectable()
 export class TagFactoryService {

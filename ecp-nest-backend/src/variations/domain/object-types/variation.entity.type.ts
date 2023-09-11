@@ -1,6 +1,6 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { CategoryType } from '../categories/category.type';
-import { VariationOptionType } from './variation-option.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { CategoryType } from 'src/categories/domain/object-types/category.type';
+import { VariationOptionType } from 'src/variation-options/domain/object-types/variation-option.type';
 
 @ObjectType()
 export class VariationType {

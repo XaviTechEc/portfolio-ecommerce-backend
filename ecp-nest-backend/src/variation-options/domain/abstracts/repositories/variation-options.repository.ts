@@ -1,9 +1,11 @@
 import {
   IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
   CreateVariationOptionInput,
   UpdateVariationOptionInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/variation-option.input';
 
 export abstract class IVariationOptionsRepository<T> {
   abstract getAllVariationOptions(args?: IGenericArgs<T>): Promise<T[]>;

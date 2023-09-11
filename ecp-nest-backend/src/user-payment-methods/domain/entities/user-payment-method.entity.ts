@@ -1,5 +1,5 @@
-import { IPaymentMethod } from '../payments/payment-method.entity';
-import { IUser } from '../users/user.entity';
+import { IPaymentMethod } from 'src/payment-methods/domain/entities/payment-method.entity';
+import { IUser } from 'src/users/domain/entities/user.entity';
 
 export class IUserPaymentMethod {
   id: string;

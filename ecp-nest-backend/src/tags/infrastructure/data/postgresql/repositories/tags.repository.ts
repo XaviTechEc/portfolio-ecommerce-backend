@@ -1,10 +1,13 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { ITagsRepository } from 'src/core/abstracts/repositories';
-import { CreateTagInput, UpdateTagInput } from 'src/core/dtos';
+import { LoggerService } from '@nestjs/common';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { ITagsRepository } from 'src/tags/domain/abstracts/repositories/tags.repository';
+import {
+  CreateTagInput,
+  UpdateTagInput,
+} from 'src/tags/domain/dtos/graphql/inputs/tag.input';
 import { Repository } from 'typeorm';
-import { Tag } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { Tag } from '../entities/Tag.entity';
 
 export class TagsRepository implements ITagsRepository<Tag> {
   private _repository: Repository<Tag>;

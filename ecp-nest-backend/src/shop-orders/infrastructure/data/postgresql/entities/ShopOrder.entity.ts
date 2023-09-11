@@ -3,7 +3,7 @@ import { OrderLine } from 'src/order-lines/infrastructure/data/postgresql/entiti
 import { OrderStatus } from 'src/order-status/infrastructure/data/postgresql/entities/OrderStatus.entity';
 import { ShippingMethod } from 'src/shipping-methods/infrastructure/data/postgresql/entities/ShippingMethod.entity';
 import { ShopOrderLocation } from 'src/shop-order-locations/infrastructure/data/postgresql/entities/ShopOrderLocation.entity';
-import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/repositories/UserPaymentMethod.entity';
+import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/entities/UserPaymentMethod.entity';
 import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
   Index,

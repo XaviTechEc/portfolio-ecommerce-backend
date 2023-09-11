@@ -1,16 +1,16 @@
+import { ProductConfiguration } from 'src/product-configurations/infrastructure/data/postgresql/entities/ProductConfiguration.entity';
+import { Variation } from 'src/variations/infrastructure/data/postgresql/entities/Variation.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { ProductConfiguration } from './ProductConfiguration.entity';
-import { Variation } from './Variation.entity';
 
 @Index('variation_option_pkey', ['id'], { unique: true })
 @Entity('variation_option')

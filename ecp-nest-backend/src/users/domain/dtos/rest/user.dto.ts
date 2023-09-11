@@ -1,15 +1,15 @@
-import { PartialType } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/graphql';
 import {
-  IsBoolean,
-  IsEmail,
-  IsEnum,
-  IsMobilePhone,
   IsNotEmpty,
-  IsOptional,
   IsString,
+  IsEmail,
   IsStrongPassword,
+  IsOptional,
+  IsMobilePhone,
+  IsEnum,
+  IsBoolean,
 } from 'class-validator';
-import { UserType, Role, Gender } from 'src/core/enums';
+import { UserType, Role, Gender } from '../../enums';
 
 export class CreateUserDto {
   @IsNotEmpty()

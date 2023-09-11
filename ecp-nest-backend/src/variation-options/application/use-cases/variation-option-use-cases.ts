@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IVariationOptionsRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { IVariationOptionsRepository } from 'src/variation-options/domain/abstracts/repositories/variation-options.repository';
 import {
   CreateVariationOptionInput,
-  PaginationArgs,
   UpdateVariationOptionInput,
-} from 'src/core/dtos';
-import { IVariationOption } from 'src/core/entities';
+} from 'src/variation-options/domain/dtos/graphql/inputs/variation-option.input';
+import { IVariationOption } from 'src/variation-options/domain/entities/variation-option.entity';
 import { VariationOptionFactoryService } from './factory/variation-option-factory.service';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class VariationOptionUseCases

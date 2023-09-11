@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserAddressInput, UpdateUserAddressInput } from 'src/core/dtos';
-import { IUserAddress } from 'src/core/entities';
+import {
+  CreateUserAddressInput,
+  UpdateUserAddressInput,
+} from 'src/user-addresses/domain/dtos/graphql/inputs/user-address.input';
+import { IUserAddress } from 'src/user-addresses/domain/entities/user-address.entity';
 
 @Injectable()
 export class UserAddressFactoryService {

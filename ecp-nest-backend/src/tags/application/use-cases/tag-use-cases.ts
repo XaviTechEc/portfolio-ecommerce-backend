@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { ITagsRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { CreateTagInput, UpdateTagInput } from 'src/core/dtos';
-import { ITag } from 'src/core/entities';
-import { TagFactoryService } from './tag-factory.service';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ITagsRepository } from 'src/tags/domain/abstracts/repositories/tags.repository';
+import {
+  CreateTagInput,
+  UpdateTagInput,
+} from 'src/tags/domain/dtos/graphql/inputs/tag.input';
+import { ITag } from 'src/tags/domain/entities/tag.entity';
+import { TagFactoryService } from './factory/tag-factory.service';
 
 @Injectable()
 export class TagUseCases implements ITagsRepository<ITag> {

@@ -1,20 +1,22 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IVariationsRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IVariationsRepository } from 'src/variations/domain/abstracts/repositories/variations.repository';
 import {
   CreateVariationInput,
-  PaginationArgs,
   UpdateVariationInput,
-} from 'src/core/dtos';
+} from 'src/variations/domain/dtos/graphql/inputs/variation.input';
 import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { Variation } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { Variation } from '../entities/Variation.entity';
 
 export class VariationsRepository implements IVariationsRepository<Variation> {
   private _repository: Repository<Variation>;

@@ -1,25 +1,24 @@
+import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
+import { Comment } from 'src/comments/infrastructure/data/postgresql/entities/Comment.entity';
+import { Image } from 'src/images/infrastructure/data/postgresql/entities/Image.entity';
+import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
+import { Review } from 'src/reviews/infrastructure/data/postgresql/entities/Review.entity';
+import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
+import { ShoppingCart } from 'src/shopping-carts/infrastructure/data/postgresql/entities/ShoppingCart.entity';
+import { UserAddress } from 'src/user-addresses/infrastructure/data/postgresql/entities/UserAddress.entity';
+import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/entities/UserPaymentMethod.entity';
+import { UserType, Role, Gender } from 'src/users/domain/enums';
 import {
-  Entity,
   Index,
+  Entity,
   PrimaryGeneratedColumn,
   Column,
+  CreateDateColumn,
+  UpdateDateColumn,
   OneToMany,
   BeforeInsert,
   BeforeUpdate,
-  CreateDateColumn,
-  UpdateDateColumn,
 } from 'typeorm';
-import { UserAddress } from './UserAddress.entity';
-import { Review } from './Review.entity';
-import { ShoppingCart } from './ShoppingCart.entity';
-import { ShopOrder } from './ShopOrder.entity';
-import { Comment } from './Comment.entity';
-
-import { Product } from './Product.entity';
-import { UserType, Role, Gender } from 'src/core/enums';
-import { Category } from './Category.entity';
-import { UserPaymentMethod } from './UserPaymentMethod.entity';
-import { Image } from './Image.entity';
 
 @Index('user_pkey', ['id'], { unique: true })
 @Index('user_id_user_username_idx', ['id', 'username'], { unique: true })

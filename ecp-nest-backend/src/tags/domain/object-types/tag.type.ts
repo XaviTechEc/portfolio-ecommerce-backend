@@ -1,5 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { ProductTagType } from '../shared/product-tag.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ProductTagType } from 'src/product-tags/domain/object-types/product-tag.type';
 
 @ObjectType()
 export class TagType {

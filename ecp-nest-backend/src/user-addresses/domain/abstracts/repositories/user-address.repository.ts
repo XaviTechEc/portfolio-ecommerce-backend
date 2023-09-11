@@ -1,9 +1,11 @@
 import {
-  CreateUserAddressInput,
   IGenericArgs,
   PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
+  CreateUserAddressInput,
   UpdateUserAddressInput,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/user-address.input';
 
 export abstract class IUserAddressRepository<T> {
   abstract getAllUserAddress(args?: IGenericArgs<T>): Promise<T[]>;

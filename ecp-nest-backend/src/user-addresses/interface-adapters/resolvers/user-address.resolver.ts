@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { UserAddressUseCases } from 'src/user-addresses/application/use-cases/user-address-use-case';
+import {
   CreateUserAddressInput,
   UpdateUserAddressInput,
-} from 'src/core/dtos';
-import { IUserAddress } from 'src/core/entities';
-import { UserAddressType } from 'src/core/object-types';
-import { UserAddressUseCases } from 'src/use-cases';
+} from 'src/user-addresses/domain/dtos/graphql/inputs/user-address.input';
+import { IUserAddress } from 'src/user-addresses/domain/entities/user-address.entity';
+import { UserAddressType } from 'src/user-addresses/domain/object-types/user-address.type';
 
 @Resolver(() => UserAddressType)
 export class UserAddressResolver {

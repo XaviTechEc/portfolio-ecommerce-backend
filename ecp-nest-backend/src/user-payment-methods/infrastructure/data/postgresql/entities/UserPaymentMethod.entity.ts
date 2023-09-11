@@ -1,17 +1,17 @@
+import { PaymentMethod } from 'src/payment-methods/infrastructure/data/postgresql/entities/PaymentMethod.entity';
+import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
+import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { PaymentMethod } from './PaymentMethod.entity';
-import { ShopOrder } from './ShopOrder.entity';
-import { User } from './User.entity';
 
 @Index('user_payment_method_pkey', ['id'], { unique: true })
 @Entity('user_payment_method')

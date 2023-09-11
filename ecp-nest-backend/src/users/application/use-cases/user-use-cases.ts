@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { UserFactoryService } from './user-factory.service';
-import { IUser } from 'src/core/entities';
-import { IUsersRepository } from 'src/core/abstracts/repositories/users/users.repository';
-import { CreateUserDto, UpdateUserDto } from 'src/core/dtos';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { IUsersRepository } from 'src/users/domain/abstracts/repositories/users.repository';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+} from 'src/users/domain/dtos/rest/user.dto';
+import { IUser } from 'src/users/domain/entities/user.entity';
+import { UserFactoryService } from './factory/user-factory.service';
 
 @Injectable()
 export class UserUseCases implements IUsersRepository<IUser> {
