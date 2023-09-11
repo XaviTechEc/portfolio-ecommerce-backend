@@ -1,9 +1,11 @@
 import {
   IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
   CreateCategoryInput,
   UpdateCategoryInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/category.input';
 
 export abstract class ICategoriesRepository<T> {
   abstract getAllCategories(args?: IGenericArgs<T>): Promise<T[]>;

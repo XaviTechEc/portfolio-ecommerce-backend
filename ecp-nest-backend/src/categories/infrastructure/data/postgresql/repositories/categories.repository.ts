@@ -1,20 +1,22 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { ICategoriesRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import { ICategoriesRepository } from 'src/categories/domain/abstracts/repositories/categories.repository';
 import {
   CreateCategoryInput,
-  PaginationArgs,
   UpdateCategoryInput,
-} from 'src/core/dtos';
+} from 'src/categories/domain/dtos/graphql/inputs/category.input';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { Category } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { Category } from '../entities/Category.entity';
 
 export class CategoriesRepository implements ICategoriesRepository<Category> {
   private _repository: Repository<Category>;

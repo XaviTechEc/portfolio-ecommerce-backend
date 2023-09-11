@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCategoryInput, UpdateCategoryInput } from 'src/core/dtos';
-import { ICategory } from 'src/core/entities';
+import {
+  CreateCategoryInput,
+  UpdateCategoryInput,
+} from 'src/categories/domain/dtos/graphql/inputs/category.input';
+import { ICategory } from 'src/categories/domain/entities/category.entity';
 
 @Injectable()
 export class CategoryFactoryService {

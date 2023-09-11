@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { CategoryFactoryService } from './category-factory.service';
-import { ICategoriesRepository } from 'src/core/abstracts/repositories';
+import { ICategoriesRepository } from 'src/categories/domain/abstracts/repositories/categories.repository';
 import {
   CreateCategoryInput,
-  PaginationArgs,
   UpdateCategoryInput,
-} from 'src/core/dtos';
-import { ICategory } from 'src/core/entities';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+} from 'src/categories/domain/dtos/graphql/inputs/category.input';
+import { ICategory } from 'src/categories/domain/entities/category.entity';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { CategoryFactoryService } from './factory/category-factory.service';
 
 @Injectable()
 export class CategoryUseCases implements ICategoriesRepository<ICategory> {

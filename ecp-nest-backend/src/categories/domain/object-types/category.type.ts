@@ -1,10 +1,8 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { SeasonType } from '../seasons/season.type';
-import { UserObjType } from '../users/user.type';
-import { VariationType } from '../variations/variation.entity.type';
-import { ImageType } from '../images/image.type';
-// import { ProductCategoryType } from '../shared/product-category.type';
-// import { CategoryPromotionType } from '../shared/category-promotion.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ImageType } from 'src/images/domain/object-types/image.type';
+import { SeasonType } from 'src/seasons/domain/object-types/season.type';
+import { UserObjType } from 'src/users/domain/object-types/user.type';
+import { VariationType } from 'src/variations/domain/object-types/variation.entity.type';
 
 @ObjectType()
 export class CategoryType {

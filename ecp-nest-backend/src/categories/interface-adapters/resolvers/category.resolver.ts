@@ -1,30 +1,28 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
+  Resolver,
   Args,
   ID,
   Mutation,
+  ResolveField,
   Parent,
   Query,
-  ResolveField,
-  Resolver,
 } from '@nestjs/graphql';
+import { CategoryUseCases } from 'src/categories/application/use-cases/category-use-cases';
 import {
   CreateCategoryInput,
+  UpdateCategoryInput,
+} from 'src/categories/domain/dtos/graphql/inputs/category.input';
+import { ICategory } from 'src/categories/domain/entities/category.entity';
+import { CategoryType } from 'src/categories/domain/object-types/category.type';
+import { CategoryPromotionUseCases } from 'src/category-promotions/application/use-cases/category-promotion-use-cases';
+import {
   PaginationArgs,
   SearchArgs,
-  UpdateCategoryInput,
-} from 'src/core/dtos';
-import { ICategory } from 'src/core/entities';
-import {
-  CategoryType,
-  ProductType,
-  PromotionType,
-} from 'src/core/object-types';
-import {
-  CategoryPromotionUseCases,
-  CategoryUseCases,
-  ProductCategoryUseCases,
-} from 'src/use-cases';
+} from 'src/common/domain/dtos/graphql/args';
+import { ProductCategoryUseCases } from 'src/product-categories/application/use-cases/product-category-use-cases';
+import { ProductType } from 'src/products/domain/object-types/product.type';
+import { PromotionType } from 'src/promotions/domain/object-types/promotion.type';
 
 @Resolver(() => CategoryType)
 export class CategoryResolver {
