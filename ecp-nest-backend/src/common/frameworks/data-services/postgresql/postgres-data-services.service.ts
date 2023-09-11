@@ -74,15 +74,12 @@ import { Repository } from 'typeorm';
 export class PostgresDataServices
   implements IDataSourcesService, OnApplicationBootstrap
 {
-  // Images
-  images: ImagesRepository;
-
   // Payments
-  paymentMethods: PaymentMethodsRepository;
+
   userPaymentMethods: UserPaymentMethodsRepository;
 
   // Products
-  productItems: ProductItemsRepository;
+
   products: ProductsRepository;
 
   // Promotions
@@ -106,35 +103,25 @@ export class PostgresDataServices
 
   // Shared
 
-  productCategories: ProductCategoriesRepository;
-  productConfigurations: ProductConfigurationsRepository;
-  productPromotions: ProductPromotionsRepository;
   productTags: ProductTagsRepository;
   shopOrderLocations: ShopOrderLocationsRepository;
   shoppingCartProductItems: ShoppingCartProductItemsRepository;
   userAddresses: UserAddressesRepository;
 
   // Cart
-  orderLines: OrderLinesRepository;
-  orderStatus: OrderStatusRepository;
+
   shippingMethods: ShippingMethodsRepository;
   shopOrders: ShopOrdersRepository;
   shoppingCarts: ShoppingCartsRepository;
 
   constructor(
-    // Images
-    @InjectRepository(Image)
-    private imagesRepository: Repository<Image>,
-
     // Payments
-    @InjectRepository(PaymentMethod)
-    private paymentMethodsRepository: Repository<PaymentMethod>,
+
     @InjectRepository(UserPaymentMethod)
     private userPaymentMethodsRepository: Repository<UserPaymentMethod>,
 
     // Products
-    @InjectRepository(ProductItem)
-    private productItemsRepository: Repository<ProductItem>,
+
     @InjectRepository(Product)
     private productsRepository: Repository<Product>,
 
@@ -166,12 +153,6 @@ export class PostgresDataServices
 
     // Shared
 
-    @InjectRepository(ProductCategory)
-    private productCategoriesRepository: Repository<ProductCategory>,
-    @InjectRepository(ProductConfiguration)
-    private productConfigurationsRepository: Repository<ProductConfiguration>,
-    @InjectRepository(ProductPromotion)
-    private productPromotionsRepository: Repository<ProductPromotion>,
     @InjectRepository(ProductTag)
     private productTagsRepository: Repository<ProductTag>,
     @InjectRepository(ShoppingCartProductItem)
@@ -180,10 +161,7 @@ export class PostgresDataServices
     private userAddressesRepository: Repository<UserAddress>,
 
     // Cart
-    @InjectRepository(OrderLine)
-    private orderLinesRepository: Repository<OrderLine>,
-    @InjectRepository(OrderStatus)
-    private orderStatusRepository: Repository<OrderStatus>,
+
     @InjectRepository(ShippingMethod)
     private shippingMethodsRepository: Repository<ShippingMethod>,
     @InjectRepository(ShopOrder)
@@ -196,19 +174,8 @@ export class PostgresDataServices
   ) {}
 
   onApplicationBootstrap() {
-    // Images
-    this.images = new ImagesRepository(
-      this.imagesRepository,
-      this._loggerService,
-      this._exceptionsService,
-    );
-
     // Payments
-    this.paymentMethods = new PaymentMethodsRepository(
-      this.paymentMethodsRepository,
-      this._loggerService,
-      this._exceptionsService,
-    );
+
     this.userPaymentMethods = new UserPaymentMethodsRepository(
       this.userPaymentMethodsRepository,
       this._loggerService,
@@ -216,11 +183,7 @@ export class PostgresDataServices
     );
 
     // Products
-    this.productItems = new ProductItemsRepository(
-      this.productItemsRepository,
-      this._loggerService,
-      this._exceptionsService,
-    );
+
     this.products = new ProductsRepository(
       this.productsRepository,
       this._loggerService,
@@ -276,16 +239,7 @@ export class PostgresDataServices
     );
 
     // Cart
-    this.orderLines = new OrderLinesRepository(
-      this.orderLinesRepository,
-      this._loggerService,
-      this._exceptionsService,
-    );
-    this.orderStatus = new OrderStatusRepository(
-      this.orderStatusRepository,
-      this._loggerService,
-      this._exceptionsService,
-    );
+
     this.shippingMethods = new ShippingMethodsRepository(
       this.shippingMethodsRepository,
       this._loggerService,
@@ -303,22 +257,6 @@ export class PostgresDataServices
     );
 
     // Shared
-
-    this.productCategories = new ProductCategoriesRepository(
-      this.productCategoriesRepository,
-      this._loggerService,
-      this._exceptionsService,
-    );
-    this.productConfigurations = new ProductConfigurationsRepository(
-      this.productConfigurationsRepository,
-      this._loggerService,
-      this._exceptionsService,
-    );
-    this.productPromotions = new ProductPromotionsRepository(
-      this.productPromotionsRepository,
-      this._loggerService,
-      this._exceptionsService,
-    );
 
     this.productTags = new ProductTagsRepository(
       this.productTagsRepository,

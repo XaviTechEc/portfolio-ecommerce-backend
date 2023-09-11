@@ -1,25 +1,25 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { PaymentMethod } from './postgresql/entities/PaymentMethod.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PaymentMethodsRepository } from './postgresql/repositories/payment-methods.repository';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { Repository } from 'typeorm';
+import { ProductItem } from './postgresql/entities/ProductItem.entity';
+import { ProductItemsRepository } from './postgresql/repositories/product-items.repository';
 
 @Injectable()
-export class PaymentMethodsDataService implements OnApplicationBootstrap {
-  paymentMethods: PaymentMethodsRepository;
+export class ProductItemsDataService implements OnApplicationBootstrap {
+  productItems: ProductItemsRepository;
 
   constructor(
-    @InjectRepository(PaymentMethod)
-    private paymentMethodsRepository: Repository<PaymentMethod>,
+    @InjectRepository(ProductItem)
+    private productItemsRepository: Repository<ProductItem>,
     private _loggerService: MyLoggerService,
     private _exceptionsService: ExceptionsService,
   ) {}
 
   onApplicationBootstrap() {
-    this.paymentMethods = new PaymentMethodsRepository(
-      this.paymentMethodsRepository,
+    this.productItems = new ProductItemsRepository(
+      this.productItemsRepository,
       this._loggerService,
       this._exceptionsService,
     );

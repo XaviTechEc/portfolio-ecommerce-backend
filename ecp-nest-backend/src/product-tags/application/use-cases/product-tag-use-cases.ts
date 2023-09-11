@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { IProductTagRepository } from 'src/product-tags/domain/abstracts/repositories/product-tag.repository';
+import { IProductTagsDataSourceService } from 'src/product-tags/domain/abstracts/services/product-tags-datasource.abstract.service';
 import {
   CreateProductTagInput,
   UpdateProductTagInput,
@@ -15,7 +15,7 @@ import { ProductTagFactoryService } from './factory/product-tag-factory.service'
 @Injectable()
 export class ProductTagUseCases implements IProductTagRepository<IProductTag> {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IProductTagsDataSourceService,
     private productTagFactoryService: ProductTagFactoryService,
   ) {}
   getProductTagsBy(

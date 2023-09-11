@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { IProductItemsRepository } from 'src/product-items/domain/abstracts/repositories/product-item.repository';
+import { IProductItemsDataSourceService } from 'src/product-items/domain/abstracts/services/product-items-datasource.abstract.service';
 import {
   CreateProductItemInput,
   UpdateProductItemInput,
@@ -17,7 +17,7 @@ export class ProductItemUseCases
   implements IProductItemsRepository<IProductItem>
 {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IProductItemsDataSourceService,
     private productItemFactoryService: ProductItemFactoryService,
   ) {}
   getProductItemsBy(

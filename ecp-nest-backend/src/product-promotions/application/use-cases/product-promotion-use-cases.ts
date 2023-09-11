@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { IProductPromotionRepository } from 'src/product-promotions/domain/abstracts/repositories/product-promotion.repository';
+import { IProductPromotionsDataSourceService } from 'src/product-promotions/domain/abstracts/services/product-promotions-datasource.abstract.service';
 import {
   CreateProductPromotionInput,
   UpdateProductPromotionInput,
@@ -17,7 +17,7 @@ export class ProductPromotionUseCases
   implements IProductPromotionRepository<IProductPromotion>
 {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IProductPromotionsDataSourceService,
     private productPromotionFactoryService: ProductPromotionFactoryService,
   ) {}
   getProductPromotionsBy(
