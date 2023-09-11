@@ -1,10 +1,8 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { UserObjType } from '../users/user.type';
-import { ProductCategoryType } from '../shared/product-category.type';
-import { ProductItemType } from './product-item.type';
-import { ImageType } from '../images/image.type';
-// import { ProductTagType } from '../shared/product-tag.type';
-// import { ProductPromotionType } from '../shared/product-promotion.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ImageType } from 'src/images/domain/object-types/image.type';
+import { ProductCategoryType } from 'src/product-categories/domain/object-types/product-category.type';
+import { ProductItemType } from 'src/product-items/domain/object-types/product-item.type';
+import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @ObjectType()
 export class ProductType {

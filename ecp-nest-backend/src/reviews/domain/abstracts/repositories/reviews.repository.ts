@@ -1,9 +1,11 @@
 import {
   IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
   CreateReviewInput,
   UpdateReviewInput,
-  PaginationArgs,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/review.input';
 
 export abstract class IReviewsRepository<T> {
   abstract getAllReviews(args?: IGenericArgs<T>): Promise<T[]>;

@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateProductPromotionInput,
   UpdateProductPromotionInput,
-} from 'src/core/dtos';
-import { IProductPromotion } from 'src/core/entities';
+} from 'src/product-promotions/domain/dtos/graphql/inputs/product-promotion.input';
+import { IProductPromotion } from 'src/product-promotions/domain/entities/product-promotion.entity';
 
 @Injectable()
 export class ProductPromotionFactoryService {

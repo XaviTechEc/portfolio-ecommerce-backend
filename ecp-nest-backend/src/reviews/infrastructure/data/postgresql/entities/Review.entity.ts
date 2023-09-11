@@ -1,17 +1,17 @@
+import { Comment } from 'src/comments/infrastructure/data/postgresql/entities/Comment.entity';
+import { OrderLine } from 'src/order-lines/infrastructure/data/postgresql/entities/OrderLine.entity';
+import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
-  Column,
-  Entity,
   Index,
-  ManyToOne,
-  JoinColumn,
+  Entity,
   PrimaryGeneratedColumn,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { User } from './User.entity';
-import { OrderLine } from './OrderLine.entity';
-import { Comment } from './Comment.entity';
 
 @Index('review_pkey', ['id'], { unique: true })
 @Index('review_user_id_ordered_product_id_idx', ['orderLine', 'user'], {

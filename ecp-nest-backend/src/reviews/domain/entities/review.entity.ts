@@ -1,5 +1,5 @@
-import { IOrderLine } from '../cart/order-line.entity';
-import { IUser } from '../users/user.entity';
+import { IOrderLine } from 'src/order-lines/domain/entities/order-line.entity';
+import { IUser } from 'src/users/domain/entities/user.entity';
 
 export class IReview {
   id: string;

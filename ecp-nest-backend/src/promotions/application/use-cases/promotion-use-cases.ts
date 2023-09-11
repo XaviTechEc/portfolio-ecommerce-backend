@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { IPromotionsRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { PromotionFactoryService } from './promotion-factory.service';
-import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
-import { IPromotion } from 'src/core/entities';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { IPromotionsRepository } from 'src/promotions/domain/abstracts/repositories/promotions.repository';
+import {
+  CreatePromotionInput,
+  UpdatePromotionInput,
+} from 'src/promotions/domain/dtos/graphql/inputs/promotion.input';
+import { IPromotion } from 'src/promotions/domain/entities/promotion.entity';
+import { PromotionFactoryService } from './factory/promotion-factory.service';
 
 @Injectable()
 export class PromotionUseCases implements IPromotionsRepository<IPromotion> {

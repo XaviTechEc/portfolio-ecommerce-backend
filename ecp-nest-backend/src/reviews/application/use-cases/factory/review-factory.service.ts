@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReviewInput, UpdateReviewInput } from 'src/core/dtos';
-import { IReview } from 'src/core/entities';
+import {
+  CreateReviewInput,
+  UpdateReviewInput,
+} from 'src/reviews/domain/dtos/graphql/inputs/review.input';
+import { IReview } from 'src/reviews/domain/entities/review.entity';
 
 @Injectable()
 export class ReviewFactoryService {

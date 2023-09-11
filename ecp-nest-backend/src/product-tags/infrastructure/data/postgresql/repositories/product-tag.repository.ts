@@ -1,20 +1,22 @@
-import { IProductTagRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IProductTagRepository } from 'src/product-tags/domain/abstracts/repositories/product-tag.repository';
+import {
+  CreateProductTagInput,
+  UpdateProductTagInput,
+} from 'src/product-tags/domain/dtos/graphql/inputs/product-tag.input';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { ProductTag } from '../../entities/outputs/entities';
-import {
-  IGenericArgs,
-  CreateProductTagInput,
-  UpdateProductTagInput,
-  PaginationArgs,
-} from 'src/core/dtos';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { ProductTag } from '../entities/ProductTag.entity';
 
 export class ProductTagsRepository
   implements IProductTagRepository<ProductTag>

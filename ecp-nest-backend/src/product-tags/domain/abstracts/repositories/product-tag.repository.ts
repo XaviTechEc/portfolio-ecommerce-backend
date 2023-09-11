@@ -1,9 +1,11 @@
 import {
-  CreateProductTagInput,
   IGenericArgs,
   PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import {
+  CreateProductTagInput,
   UpdateProductTagInput,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/product-tag.input';
 
 export abstract class IProductTagRepository<T> {
   abstract getAllProductTag(args?: IGenericArgs<T>): Promise<T[]>;

@@ -1,7 +1,7 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { UserObjType } from '../users/user.type';
-import { OrderLineType } from '../cart/order-line.type';
-import { CommentType } from '../comments/comment.type';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
+import { CommentType } from 'src/comments/domain/object-types/comment.type';
+import { OrderLineType } from 'src/order-lines/domain/object-types/order-line.type';
+import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @ObjectType()
 export class ReviewType {

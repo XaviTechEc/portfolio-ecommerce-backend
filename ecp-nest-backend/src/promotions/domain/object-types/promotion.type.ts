@@ -1,6 +1,6 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { ProductPromotionType } from '../shared/product-promotion.type';
-import { CategoryPromotionType } from '../shared/category-promotion.type';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
+import { CategoryPromotionType } from 'src/category-promotions/domain/object-types/category-promotion.type';
+import { ProductPromotionType } from 'src/product-promotions/domain/object-types/product-promotion.type';
 
 @ObjectType()
 export class PromotionType {

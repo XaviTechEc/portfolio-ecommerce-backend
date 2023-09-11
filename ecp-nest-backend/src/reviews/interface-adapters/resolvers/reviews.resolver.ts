@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ReviewUseCases } from 'src/reviews/application/use-cases/review-use-cases';
+import {
   CreateReviewInput,
   UpdateReviewInput,
-} from 'src/core/dtos';
-import { IReview } from 'src/core/entities';
-import { ReviewType } from 'src/core/object-types';
-import { ReviewUseCases } from 'src/use-cases';
+} from 'src/reviews/domain/dtos/graphql/inputs/review.input';
+import { IReview } from 'src/reviews/domain/entities/review.entity';
+import { ReviewType } from 'src/reviews/domain/object-types/review.type';
 
 @Resolver(() => ReviewType)
 export class ReviewResolver {

@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ProductPromotionUseCases } from 'src/product-promotions/application/use-cases/product-promotion-use-cases';
+import {
   CreateProductPromotionInput,
   UpdateProductPromotionInput,
-} from 'src/core/dtos';
-import { IProductPromotion } from 'src/core/entities';
-import { ProductPromotionType } from 'src/core/object-types';
-import { ProductPromotionUseCases } from 'src/use-cases';
+} from 'src/product-promotions/domain/dtos/graphql/inputs/product-promotion.input';
+import { IProductPromotion } from 'src/product-promotions/domain/entities/product-promotion.entity';
+import { ProductPromotionType } from 'src/product-promotions/domain/object-types/product-promotion.type';
 
 @Resolver(() => ProductPromotionType)
 export class ProductPromotionResolver {

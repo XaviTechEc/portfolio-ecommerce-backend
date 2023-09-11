@@ -1,14 +1,14 @@
+import { CategoryPromotion } from 'src/category-promotions/infrastructure/data/postgresql/entities/CategoryPromotion.entity';
+import { ProductPromotion } from 'src/product-promotions/infrastructure/data/postgresql/entities/ProductPromotion.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { CategoryPromotion } from './CategoryPromotion.entity';
-import { ProductPromotion } from './ProductPromotion.entity';
 
 @Index('promotion_pkey', ['id'], { unique: true })
 @Entity('promotion')

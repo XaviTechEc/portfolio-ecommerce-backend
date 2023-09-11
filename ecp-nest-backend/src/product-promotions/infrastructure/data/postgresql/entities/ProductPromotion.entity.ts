@@ -1,14 +1,14 @@
+import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
+import { Promotion } from 'src/promotions/infrastructure/data/postgresql/entities/Promotion.entity';
 import {
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
+  PrimaryColumn,
+  CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Promotion } from './Promotion.entity';
-import { Product } from './Product.entity';
 
 @Entity('product_promotion')
 export class ProductPromotion {

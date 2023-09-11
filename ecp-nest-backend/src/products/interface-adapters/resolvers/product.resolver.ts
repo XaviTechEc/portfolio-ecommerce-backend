@@ -4,23 +4,25 @@ import {
   Args,
   ID,
   Mutation,
-  Query,
   ResolveField,
   Parent,
+  Query,
 } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ProductPromotionUseCases } from 'src/product-promotions/application/use-cases/product-promotion-use-cases';
+import { ProductTagUseCases } from 'src/product-tags/application/use-cases/product-tag-use-cases';
+import { ProductUseCases } from 'src/products/application/use-cases/product-use-cases';
+import {
   CreateProductInput,
   UpdateProductInput,
-} from 'src/core/dtos';
-import { IProduct } from 'src/core/entities';
-import { ProductType, PromotionType, TagType } from 'src/core/object-types';
-import {
-  ProductPromotionUseCases,
-  ProductTagUseCases,
-  ProductUseCases,
-} from 'src/use-cases';
+} from 'src/products/domain/dtos/graphql/inputs/product.input';
+import { IProduct } from 'src/products/domain/entities/product.entity';
+import { ProductType } from 'src/products/domain/object-types/product.type';
+import { PromotionType } from 'src/promotions/domain/object-types/promotion.type';
+import { TagType } from 'src/tags/domain/object-types/tag.type';
 
 @Resolver(() => ProductType)
 export class ProductResolver {

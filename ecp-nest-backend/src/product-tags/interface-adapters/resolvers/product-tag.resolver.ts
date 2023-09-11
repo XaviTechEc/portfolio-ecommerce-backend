@@ -3,12 +3,14 @@ import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ProductTagUseCases } from 'src/product-tags/application/use-cases/product-tag-use-cases';
+import {
   CreateProductTagInput,
   UpdateProductTagInput,
-} from 'src/core/dtos';
-import { IProductTag } from 'src/core/entities';
-import { ProductTagType } from 'src/core/object-types';
-import { ProductTagUseCases } from 'src/use-cases';
+} from 'src/product-tags/domain/dtos/graphql/inputs/product-tag.input';
+import { IProductTag } from 'src/product-tags/domain/entities/product-tag.entity';
+import { ProductTagType } from 'src/product-tags/domain/object-types/product-tag.type';
 
 @Resolver(() => ProductTagType)
 export class ProductTagResolver {

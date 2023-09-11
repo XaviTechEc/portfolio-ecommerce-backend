@@ -1,14 +1,14 @@
+import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
+import { Tag } from 'src/tags/infrastructure/data/postgresql/entities/Tag.entity';
 import {
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
+  PrimaryColumn,
+  CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Product } from './Product.entity';
-import { Tag } from './Tag.entity';
 
 @Entity('product_tag')
 export class ProductTag {

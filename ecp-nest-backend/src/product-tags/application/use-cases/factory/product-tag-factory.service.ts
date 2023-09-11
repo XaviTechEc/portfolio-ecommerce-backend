@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductTagInput, UpdateProductTagInput } from 'src/core/dtos';
-import { IProductTag } from 'src/core/entities';
+import {
+  CreateProductTagInput,
+  UpdateProductTagInput,
+} from 'src/product-tags/domain/dtos/graphql/inputs/product-tag.input';
+import { IProductTag } from 'src/product-tags/domain/entities/product-tag.entity';
 
 @Injectable()
 export class ProductTagFactoryService {

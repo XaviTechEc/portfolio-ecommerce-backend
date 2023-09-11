@@ -1,20 +1,22 @@
-import { IProductPromotionRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IProductPromotionRepository } from 'src/product-promotions/domain/abstracts/repositories/product-promotion.repository';
+import {
+  CreateProductPromotionInput,
+  UpdateProductPromotionInput,
+} from 'src/product-promotions/domain/dtos/graphql/inputs/product-promotion.input';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { ProductPromotion } from '../../entities/outputs/entities';
-import {
-  IGenericArgs,
-  CreateProductPromotionInput,
-  UpdateProductPromotionInput,
-  PaginationArgs,
-} from 'src/core/dtos';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { ProductPromotion } from '../entities/ProductPromotion.entity';
 
 export class ProductPromotionsRepository
   implements IProductPromotionRepository<ProductPromotion>

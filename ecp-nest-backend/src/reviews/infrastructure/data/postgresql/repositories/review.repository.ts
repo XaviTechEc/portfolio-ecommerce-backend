@@ -1,20 +1,22 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IReviewsRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IReviewsRepository } from 'src/reviews/domain/abstracts/repositories/reviews.repository';
 import {
   CreateReviewInput,
-  PaginationArgs,
   UpdateReviewInput,
-} from 'src/core/dtos';
+} from 'src/reviews/domain/dtos/graphql/inputs/review.input';
 import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { Review } from '../../entities/outputs/entities';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { Review } from '../entities/Review.entity';
 
 export class ReviewsRepository implements IReviewsRepository<Review> {
   private _repository: Repository<Review>;

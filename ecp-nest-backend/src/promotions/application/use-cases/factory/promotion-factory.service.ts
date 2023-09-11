@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePromotionInput, UpdatePromotionInput } from 'src/core/dtos';
-import { IPromotion } from 'src/core/entities';
+import {
+  CreatePromotionInput,
+  UpdatePromotionInput,
+} from 'src/promotions/domain/dtos/graphql/inputs/promotion.input';
+import { IPromotion } from 'src/promotions/domain/entities/promotion.entity';
 
 @Injectable()
 export class PromotionFactoryService {
