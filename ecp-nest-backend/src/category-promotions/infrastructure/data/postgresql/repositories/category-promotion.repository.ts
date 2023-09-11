@@ -1,4 +1,3 @@
-import { LoggerService } from '@nestjs/common';
 import { ICategoryPromotionRepository } from 'src/category-promotions/domain/abstracts/repositories/category-promotion.repository';
 import {
   CreateCategoryPromotionInput,
@@ -17,17 +16,18 @@ import {
   ILike,
 } from 'typeorm';
 import { CategoryPromotion } from '../entities/CategoryPromotion.entity';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 
 export class CategoryPromotionsRepository
   implements ICategoryPromotionRepository<CategoryPromotion>
 {
   private _repository: Repository<CategoryPromotion>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<CategoryPromotion>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

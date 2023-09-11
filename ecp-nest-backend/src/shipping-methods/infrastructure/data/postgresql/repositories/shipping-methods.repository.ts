@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { IShippingMethodsRepository } from 'src/shipping-methods/domain/abstracts/repositories/shipping-methods.repository';
@@ -13,12 +13,12 @@ export class ShippingMethodsRepository
   implements IShippingMethodsRepository<ShippingMethod>
 {
   private _repository: Repository<ShippingMethod>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<ShippingMethod>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

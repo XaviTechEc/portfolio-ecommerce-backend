@@ -1,4 +1,3 @@
-import { LoggerService } from '@nestjs/common';
 import { ICountriesRepository } from 'src/addresses/domain/abstracts/repositories/countries.repository';
 import {
   CreateCountryInput,
@@ -8,15 +7,16 @@ import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { Repository } from 'typeorm';
 import { Country } from '../entities';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 
 export class CountriesRepository implements ICountriesRepository<Country> {
   private _repository: Repository<Country>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Country>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

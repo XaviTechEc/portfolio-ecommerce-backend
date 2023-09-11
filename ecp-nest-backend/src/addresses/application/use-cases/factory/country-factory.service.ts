@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCountryInput, UpdateCountryInput } from 'src/core/dtos';
-import { ICountry } from 'src/core/entities';
+import {
+  CreateCountryInput,
+  UpdateCountryInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/country.input';
+import { ICountry } from 'src/addresses/domain/entities/country.entity';
 
 @Injectable()
 export class CountryFactoryService {

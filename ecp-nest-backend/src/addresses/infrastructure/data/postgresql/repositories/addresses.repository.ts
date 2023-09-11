@@ -1,4 +1,3 @@
-import { LoggerService } from '@nestjs/common';
 import { IAddressesRepository } from 'src/addresses/domain/abstracts/repositories/addresses.repository';
 import {
   CreateAddressInput,
@@ -17,15 +16,16 @@ import {
   ILike,
 } from 'typeorm';
 import { Address } from '../entities';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 
 export class AddressesRepository implements IAddressesRepository<Address> {
   private _repository: Repository<Address>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Address>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

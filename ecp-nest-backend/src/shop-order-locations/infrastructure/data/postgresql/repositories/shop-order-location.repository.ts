@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import {
   PaginationArgs,
   IGenericArgs,
@@ -21,12 +21,12 @@ export class ShopOrderLocationsRepository
   implements IShopOrderLocationRepository<ShopOrderLocation>
 {
   private _repository: Repository<ShopOrderLocation>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<ShopOrderLocation>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

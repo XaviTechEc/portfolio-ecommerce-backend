@@ -1,4 +1,3 @@
-import { LoggerService } from '@nestjs/common';
 import { ILocationsRepository } from 'src/addresses/domain/abstracts/repositories/locations.repository';
 import {
   CreateLocationInput,
@@ -7,15 +6,16 @@ import {
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { Repository } from 'typeorm';
 import { Location } from '../entities';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 
 export class LocationsRepository implements ILocationsRepository<Location> {
   private _repository: Repository<Location>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Location>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

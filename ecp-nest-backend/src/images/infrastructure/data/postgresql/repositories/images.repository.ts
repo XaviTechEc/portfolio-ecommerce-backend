@@ -1,4 +1,3 @@
-import { LoggerService } from '@nestjs/common';
 import {
   PaginationArgs,
   IGenericArgs,
@@ -17,15 +16,16 @@ import {
   ILike,
 } from 'typeorm';
 import { Image } from '../entities/Image.entity';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 
 export class ImagesRepository implements IImageRepository<Image> {
   private _repository: Repository<Image>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Image>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

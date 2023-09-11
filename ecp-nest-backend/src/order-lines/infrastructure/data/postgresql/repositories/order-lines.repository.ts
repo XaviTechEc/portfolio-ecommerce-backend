@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import {
   PaginationArgs,
   IGenericArgs,
@@ -20,12 +20,12 @@ import { OrderLine } from '../entities/OrderLine.entity';
 
 export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
   private _repository: Repository<OrderLine>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<OrderLine>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

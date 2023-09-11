@@ -5,17 +5,17 @@ import {
   UpdateAddressInput,
 } from 'src/addresses/domain/dtos/graphql/inputs/address.input';
 import { IAddress } from 'src/addresses/domain/entities/address.entity';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { AddressFactoryService } from './factory';
+import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 
 @Injectable()
 export class AddressesUseCases implements IAddressesRepository<IAddress> {
   constructor(
-    private dataServices: IDataSourcesService,
+    private dataServices: IAddressDataSourceService,
     private addressFactoryService: AddressFactoryService,
   ) {}
   getAddressesBy(

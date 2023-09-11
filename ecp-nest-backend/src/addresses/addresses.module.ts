@@ -1,26 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
-  AddressesUseCases,
-  CountryUseCases,
-  LocationUseCases,
   AddressFactoryService,
+  AddressesUseCases,
   CountryFactoryService,
+  CountryUseCases,
   LocationFactoryService,
+  LocationUseCases,
 } from './application/use-cases';
-import {
-  Address,
-  Country,
-  Location,
-} from './infrastructure/data/postgresql/entities';
 import {
   AddressResolver,
   CountryResolver,
   LocationResolver,
 } from './interface-adapters/resolvers';
+import { AddressDatasourceModule } from './infrastructure/data/address-datasource.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Address, Country, Location])],
+  imports: [AddressDatasourceModule],
   providers: [
     AddressesUseCases,
     CountryUseCases,

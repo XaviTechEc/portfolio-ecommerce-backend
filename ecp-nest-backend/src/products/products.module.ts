@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Product } from './infrastructure/data/postgresql/entities/Product.entity';
 import { ProductFactoryService } from './application/use-cases/factory/product-factory.service';
-import { ProductUseCases } from './application/use-cases/factory/product-use-cases';
+import { ProductUseCases } from './application/use-cases/product-use-cases';
+import { Product } from './infrastructure/data/postgresql/entities/Product.entity';
 import { ProductResolver } from './interface-adapters/resolvers/product.resolver';
 
 @Module({

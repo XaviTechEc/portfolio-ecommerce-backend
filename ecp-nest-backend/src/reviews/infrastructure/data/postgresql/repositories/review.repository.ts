@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import {
   PaginationArgs,
   IGenericArgs,
@@ -20,12 +20,12 @@ import { Review } from '../entities/Review.entity';
 
 export class ReviewsRepository implements IReviewsRepository<Review> {
   private _repository: Repository<Review>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Review>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

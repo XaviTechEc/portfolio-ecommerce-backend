@@ -1,15 +1,15 @@
 import {
-  ICustomExceptionFormat,
-  IException,
-} from 'src/core/interfaces/exceptions/exceptions.interface';
-import {
   Injectable,
-  BadRequestException,
-  ForbiddenException,
   NotFoundException,
+  BadRequestException,
   InternalServerErrorException,
+  ForbiddenException,
   UnauthorizedException,
 } from '@nestjs/common';
+import {
+  IException,
+  ICustomExceptionFormat,
+} from 'src/common/domain/interfaces/exceptions/exceptions.interface';
 
 @Injectable()
 export class ExceptionsService implements IException {

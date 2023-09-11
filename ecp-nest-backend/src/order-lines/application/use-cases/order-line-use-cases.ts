@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { IOrderLinesRepository } from 'src/order-lines/domain/abstracts/repositories/order-lines.repository';
+import { IOrderLinesDataSourceService } from 'src/order-lines/domain/abstracts/services/order-lines-datasource.abstract.service';
 import {
   CreateOrderLineInput,
   UpdateOrderLineInput,
@@ -15,7 +15,7 @@ import { OrderLineFactoryService } from './factory/order-line-factory.service';
 @Injectable()
 export class OrderLineUseCases implements IOrderLinesRepository<IOrderLine> {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IOrderLinesDataSourceService,
     private orderLineFactoryService: OrderLineFactoryService,
   ) {}
   getOrderLinesBy(

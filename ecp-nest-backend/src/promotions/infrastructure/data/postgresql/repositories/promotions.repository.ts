@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { IPromotionsRepository } from 'src/promotions/domain/abstracts/repositories/promotions.repository';
@@ -11,12 +11,12 @@ import { Promotion } from '../entities/Promotion.entity';
 
 export class PromotionsRepository implements IPromotionsRepository<Promotion> {
   private _repository: Repository<Promotion>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Promotion>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

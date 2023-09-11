@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAddressInput, UpdateAddressInput } from 'src/core/dtos';
-import { IAddress } from 'src/core/entities';
+import {
+  CreateAddressInput,
+  UpdateAddressInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/address.input';
+import { IAddress } from 'src/addresses/domain/entities/address.entity';
 
 @Injectable()
 export class AddressFactoryService {

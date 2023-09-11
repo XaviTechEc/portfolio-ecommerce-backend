@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { IPaymentMethodsRepository } from 'src/payment-methods/domain/abstracts/repositories/payment-methods.repository';
@@ -13,12 +13,12 @@ export class PaymentMethodsRepository
   implements IPaymentMethodsRepository<PaymentMethod>
 {
   private _repository: Repository<PaymentMethod>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<PaymentMethod>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

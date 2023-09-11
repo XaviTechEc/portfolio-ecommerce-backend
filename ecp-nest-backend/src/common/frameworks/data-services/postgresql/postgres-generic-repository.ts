@@ -1,5 +1,5 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IGenericDataMethodsRepository } from 'src/core/abstracts/generic-data-methods.repository';
+import { IGenericDataMethodsRepository } from 'src/common/domain/abstracts/generic-data-methods.repository';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { Repository } from 'typeorm';
 
 export class PostgresGenericRepository<T>
@@ -11,7 +11,7 @@ export class PostgresGenericRepository<T>
     this._repository = repository;
   }
   async getAll(args?: IGenericArgs<T>): Promise<T[]> {
-    return this._repository.find(); // TODO
+    return this._repository.find();
   }
 
   async create(data: T): Promise<T> {

@@ -1,4 +1,3 @@
-import { LoggerService } from '@nestjs/common';
 import { ICategoriesRepository } from 'src/categories/domain/abstracts/repositories/categories.repository';
 import {
   CreateCategoryInput,
@@ -17,15 +16,16 @@ import {
   ILike,
 } from 'typeorm';
 import { Category } from '../entities/Category.entity';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 
 export class CategoriesRepository implements ICategoriesRepository<Category> {
   private _repository: Repository<Category>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Category>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

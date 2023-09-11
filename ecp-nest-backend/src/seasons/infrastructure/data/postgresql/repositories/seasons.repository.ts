@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { ISeasonsRepository } from 'src/seasons/domain/abstracts/repositories/seasons.repository';
@@ -11,12 +11,12 @@ import { Season } from '../entities/Season.entity';
 
 export class SeasonsRepository implements ISeasonsRepository<Season> {
   private _repository: Repository<Season>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Season>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

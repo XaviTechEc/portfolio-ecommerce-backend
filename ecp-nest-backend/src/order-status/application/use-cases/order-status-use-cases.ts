@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { IOrderStatusRepository } from 'src/order-status/domain/abstracts/repositories/order-status.repository';
+import { IOrderStatusDataSourceService } from 'src/order-status/domain/abstracts/services/order-status-datasource.abstract.service';
 import {
   CreateOrderStatusInput,
   UpdateOrderStatusInput,
@@ -14,7 +14,7 @@ export class OrderStatusUseCases
   implements IOrderStatusRepository<IOrderStatus>
 {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IOrderStatusDataSourceService,
     private orderStatusFactoryService: OrderStatusFactoryService,
   ) {}
   getAllOrderStatus(

@@ -1,6 +1,6 @@
-import { IHashService } from 'src/core/abstracts/services';
-import * as bcrypt from 'bcryptjs';
 import { Injectable } from '@nestjs/common';
+import { IHashService } from 'src/common/domain/abstracts/services';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class BcryptService implements IHashService {

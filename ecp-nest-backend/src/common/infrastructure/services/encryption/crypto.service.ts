@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IEncryptService } from 'src/core/abstracts/services';
+import { IEncryptService } from 'src/common/domain/abstracts/services';
 
 @Injectable()
 export class CryptoService implements IEncryptService {

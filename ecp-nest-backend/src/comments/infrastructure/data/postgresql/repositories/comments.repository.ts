@@ -1,4 +1,3 @@
-import { LoggerService } from '@nestjs/common';
 import { ICommentsRepository } from 'src/comments/domain/abstracts/repositories/comments.repository';
 import {
   CreateCommentInput,
@@ -17,15 +16,16 @@ import {
   ILike,
 } from 'typeorm';
 import { Comment } from '../entities/Comment.entity';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 
 export class CommentsRepository implements ICommentsRepository<Comment> {
   private _repository: Repository<Comment>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<Comment>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

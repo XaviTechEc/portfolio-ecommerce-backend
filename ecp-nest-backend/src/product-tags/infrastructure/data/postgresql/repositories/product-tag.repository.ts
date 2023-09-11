@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import {
   PaginationArgs,
   IGenericArgs,
@@ -22,12 +22,12 @@ export class ProductTagsRepository
   implements IProductTagRepository<ProductTag>
 {
   private _repository: Repository<ProductTag>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<ProductTag>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

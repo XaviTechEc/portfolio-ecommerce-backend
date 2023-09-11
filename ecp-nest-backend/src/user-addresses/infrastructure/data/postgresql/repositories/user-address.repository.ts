@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import {
   PaginationArgs,
   IGenericArgs,
@@ -22,12 +22,12 @@ export class UserAddressesRepository
   implements IUserAddressRepository<UserAddress>
 {
   private _repository: Repository<UserAddress>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<UserAddress>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
   ) {
     this._repository = repository;

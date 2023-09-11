@@ -1,17 +1,17 @@
+import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
+import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
+import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
+import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Category } from './Category.entity';
-import { Product } from './Product.entity';
-import { ProductItem } from './ProductItem.entity';
-import { User } from './User.entity';
 
 @Index('image_pkey', ['id'], { unique: true })
 @Index('image_product_id_idx', ['product'], {})

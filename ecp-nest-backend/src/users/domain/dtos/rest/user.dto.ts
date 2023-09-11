@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/graphql';
 import {
   IsNotEmpty,
   IsString,
@@ -10,6 +9,7 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { UserType, Role, Gender } from '../../enums';
+import { PartialType } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @IsNotEmpty()

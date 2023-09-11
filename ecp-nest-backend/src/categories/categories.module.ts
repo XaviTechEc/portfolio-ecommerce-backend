@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Category } from './infrastructure/data/postgresql/entities/Category.entity';
 import { CategoryUseCases } from './application/use-cases/category-use-cases';
+import { CategoryFactoryService } from './application/use-cases/factory/category-factory.service';
+import { CategoryDatasourceModule } from './infrastructure/data/category-datasource.module';
 import { CategoryResolver } from './interface-adapters/resolvers/category.resolver';
-import { CategoryFactoryService } from './application/use-cases/category-factory.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category])],
+  imports: [CategoryDatasourceModule],
   providers: [CategoryFactoryService, CategoryUseCases, CategoryResolver],
   exports: [TypeOrmModule],
 })

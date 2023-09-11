@@ -1,20 +1,20 @@
+import { CategoryPromotion } from 'src/category-promotions/infrastructure/data/postgresql/entities/CategoryPromotion.entity';
+import { Image } from 'src/images/infrastructure/data/postgresql/entities/Image.entity';
+import { ProductCategory } from 'src/product-categories/infrastructure/data/postgresql/entities/ProductCategory.entity';
+import { Season } from 'src/seasons/infrastructure/data/postgresql/entities/Season.entity';
+import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
+import { Variation } from 'src/variations/infrastructure/data/postgresql/entities/Variation.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { Season } from './Season.entity';
-import { CategoryPromotion } from './CategoryPromotion.entity';
-import { ProductCategory } from './ProductCategory.entity';
-import { Variation } from './Variation.entity';
-import { User } from './User.entity';
-import { Image } from './Image.entity';
 
 @Index('category_pkey', ['id'], { unique: true })
 @Entity('category')

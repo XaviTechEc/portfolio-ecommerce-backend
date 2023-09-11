@@ -10,12 +10,8 @@ export const getTypeOrmModuleOptions = (
   database: envConfigService.getDbName(),
   username: envConfigService.getDbUsername(),
   password: envConfigService.getDbPassword(),
-  entities: [
-    __dirname +
-      './../../../frameworks/data-services/postgresql/typeorm/entities/**/*.entity{.ts,.js}',
-  ],
   schema: envConfigService.getDataSchema(),
   // logging: true,
   autoLoadEntities: true,
-  synchronize: true, //! Danger: Only dev mode
+  synchronize: true, //! TODO: Only dev mode
 });

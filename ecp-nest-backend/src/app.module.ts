@@ -1,25 +1,12 @@
 import { Module } from '@nestjs/common';
-
-import { CommonModule } from './common/common.module';
-import { DataServicesModule } from './services/data-services/data-services.module';
-
 import { AddressesModule } from './addresses/addresses.module';
+import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CategoryPromotionsModule } from './category-promotions/category-promotions.module';
 import { CommentsModule } from './comments/comments.module';
+import { CommonModule } from './common/common.module';
 import { ConfigurationModule } from './configuration/configuration.module';
-import { FrameworksModule } from './frameworks/frameworks.module';
-import { ExceptionModule } from './infrastructure/exceptions/exceptions.module';
-import { LoggerModule } from './infrastructure/logger/logger.module';
-import { InterfaceAdaptersModule } from './interface-adapters/interface-adapters.module';
-import { EncryptionModule } from './services/encryption/encryption.module';
-import { HashingModule } from './services/hashing/hashing.module';
-import { JwtModule } from './services/jwt/jwt.module';
-import { UseCasesModule } from './use-cases/use-cases.module';
-
 import { ImagesModule } from './images/images.module';
-
-import { AuthModule } from './auth/auth.module';
 import { OrderLinesModule } from './order-lines/order-lines.module';
 import { OrderStatusModule } from './order-status/order-status.module';
 import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
@@ -46,46 +33,37 @@ import { VariationsModule } from './variations/variations.module';
 
 @Module({
   imports: [
-    CommonModule,
-    ConfigurationModule,
-    InterfaceAdaptersModule,
-    DataServicesModule,
-    JwtModule,
-    HashingModule,
-    EncryptionModule,
-    UseCasesModule,
-    FrameworksModule,
-    ExceptionModule,
-    LoggerModule,
     AddressesModule,
+    AuthModule,
     CategoriesModule,
     CategoryPromotionsModule,
     CommentsModule,
+    CommonModule,
+    ConfigurationModule,
     ImagesModule,
     OrderLinesModule,
     OrderStatusModule,
     PaymentMethodsModule,
-    ProductsModule,
     ProductCategoriesModule,
     ProductConfigurationsModule,
     ProductItemsModule,
     ProductPromotionsModule,
     ProductTagsModule,
+    ProductsModule,
     PromotionsModule,
     ReviewsModule,
     SeasonsModule,
     ShippingMethodsModule,
+    ShopOrderLocationsModule,
     ShopOrdersModule,
-    ShoppingCartsModule,
     ShoppingCartProductItemsModule,
+    ShoppingCartsModule,
     TagsModule,
-    UsersModule,
     UserAddressesModule,
     UserPaymentMethodsModule,
-    VariationsModule,
+    UsersModule,
     VariationOptionsModule,
-    AuthModule,
-    ShopOrderLocationsModule,
+    VariationsModule,
   ],
 })
 export class AppModule {}

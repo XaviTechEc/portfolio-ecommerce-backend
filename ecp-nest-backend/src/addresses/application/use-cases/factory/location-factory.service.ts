@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLocationInput, UpdateLocationInput } from 'src/core/dtos';
-import { ILocation } from 'src/core/entities';
+import {
+  CreateLocationInput,
+  UpdateLocationInput,
+} from 'src/addresses/domain/dtos/graphql/inputs/location.input';
+import { ILocation } from 'src/addresses/domain/entities/location.entity';
 
 @Injectable()
 export class LocationFactoryService {

@@ -1,9 +1,10 @@
-import { Injectable, LoggerService } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IAuthRepository } from 'src/auth/domain/abstracts/repositories/auth.repository';
 import { SignInUserDto } from 'src/auth/domain/dtos/rest/sign-in-user.dto';
 import { IAuthResponse } from 'src/auth/domain/interfaces/auth-response.interface';
 import { IJwtPayload } from 'src/common/domain/interfaces/jwt/jwt-payload.interface';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import { BcryptService } from 'src/common/infrastructure/services/hashing/bcrypt.service';
 import { MyJwtService } from 'src/common/infrastructure/services/jwt/jwt.service';
 import { CreateUserDto } from 'src/users/domain/dtos/rest/user.dto';
@@ -14,12 +15,12 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AuthRepository implements IAuthRepository {
   private _repository: Repository<User>;
-  private _loggerService: LoggerService;
+  private _loggerService: MyLoggerService;
   private _exceptionsService: ExceptionsService;
 
   constructor(
     repository: Repository<User>,
-    loggerService: LoggerService,
+    loggerService: MyLoggerService,
     exceptionsService: ExceptionsService,
     private readonly _jwtService?: MyJwtService,
     private readonly _bcryptService?: BcryptService,
