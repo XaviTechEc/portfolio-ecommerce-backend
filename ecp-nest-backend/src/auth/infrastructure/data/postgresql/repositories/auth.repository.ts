@@ -1,14 +1,15 @@
-import { IAuthRepository } from 'src/core/abstracts/repositories';
-import { SignInUserDto, CreateUserDto } from 'src/core/dtos';
-import { IUser } from 'src/core/entities';
-import { IAuthResponse } from 'src/core/interfaces/auth/auth-response.interface';
-import { User } from '../../entities/outputs/entities';
-import { LoggerService, Injectable } from '@nestjs/common';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { Injectable, LoggerService } from '@nestjs/common';
+import { IAuthRepository } from 'src/auth/domain/abstracts/repositories/auth.repository';
+import { SignInUserDto } from 'src/auth/domain/dtos/rest/sign-in-user.dto';
+import { IAuthResponse } from 'src/auth/domain/interfaces/auth-response.interface';
+import { IJwtPayload } from 'src/common/domain/interfaces/jwt/jwt-payload.interface';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { BcryptService } from 'src/common/infrastructure/services/hashing/bcrypt.service';
+import { MyJwtService } from 'src/common/infrastructure/services/jwt/jwt.service';
+import { CreateUserDto } from 'src/users/domain/dtos/rest/user.dto';
+import { IUser } from 'src/users/domain/entities/user.entity';
+import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import { Repository } from 'typeorm';
-import { IJwtPayload } from 'src/core/interfaces/strategies/jwt/jwt-payload.interface';
-import { MyJwtService } from 'src/services/jwt/jwt.service';
-import { BcryptService } from 'src/services/hashing/bcrypt.service';
 
 @Injectable()
 export class AuthRepository implements IAuthRepository {

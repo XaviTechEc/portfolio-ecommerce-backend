@@ -1,6 +1,7 @@
-import { CreateUserDto, SignInUserDto } from 'src/core/dtos';
-import { IUser } from 'src/core/entities';
-import { IAuthResponse } from 'src/core/interfaces/auth/auth-response.interface';
+import { CreateUserDto } from 'src/users/domain/dtos/rest/user.dto';
+import { IUser } from 'src/users/domain/entities/user.entity';
+import { SignInUserDto } from '../../dtos/rest/sign-in-user.dto';
+import { IAuthResponse } from '../../interfaces/auth-response.interface';
 
 export abstract class IAuthRepository {
   abstract signIn(signInUserDto: SignInUserDto): Promise<IAuthResponse>;

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IAuthRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
-import { SignInUserDto, CreateUserDto } from 'src/core/dtos';
-import { IUser } from 'src/core/entities';
-import { IAuthResponse } from 'src/core/interfaces/auth/auth-response.interface';
+import { IAuthRepository } from 'src/auth/domain/abstracts/repositories/auth.repository';
+import { SignInUserDto } from 'src/auth/domain/dtos/rest/sign-in-user.dto';
+import { IAuthResponse } from 'src/auth/domain/interfaces/auth-response.interface';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import { CreateUserDto } from 'src/users/domain/dtos/rest/user.dto';
+import { IUser } from 'src/users/domain/entities/user.entity';
 
 @Injectable()
 export class AuthUseCases implements IAuthRepository {
