@@ -1,8 +1,8 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { CategoryType } from '../categories/category.type';
-import { ProductItemType } from '../products/product-item.type';
-import { ProductType } from '../products/product.type';
-import { UserObjType } from '../users/user.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { CategoryType } from 'src/categories/domain/object-types/category.type';
+import { ProductItemType } from 'src/product-items/domain/object-types/product-item.type';
+import { ProductType } from 'src/products/domain/object-types/product.type';
+import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @ObjectType()
 export class ImageType {

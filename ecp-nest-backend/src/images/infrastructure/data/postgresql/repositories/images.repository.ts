@@ -1,20 +1,22 @@
-import { IImageRepository } from 'src/core/abstracts/repositories';
+import { LoggerService } from '@nestjs/common';
 import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IImageRepository } from 'src/images/domain/abstracts/repositories/image.repository';
+import {
+  CreateImageDto,
+  UpdateImageDto,
+} from 'src/images/domain/dtos/rest/image.dto';
+import {
+  Repository,
   FindManyOptions,
   FindOptionsRelations,
   FindOptionsWhere,
   ILike,
-  Repository,
 } from 'typeorm';
-import { Image } from '../../entities/outputs/entities';
-import {
-  CreateImageDto,
-  IGenericArgs,
-  PaginationArgs,
-  UpdateImageDto,
-} from 'src/core/dtos';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
+import { Image } from '../entities/Image.entity';
 
 export class ImagesRepository implements IImageRepository<Image> {
   private _repository: Repository<Image>;

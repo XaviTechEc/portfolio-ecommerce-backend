@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { IImageRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import {
+  PaginationArgs,
+  IGenericArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { IImageRepository } from 'src/images/domain/abstracts/repositories/image.repository';
 import {
   CreateImageDto,
-  IGenericArgs,
-  PaginationArgs,
   UpdateImageDto,
-} from 'src/core/dtos';
-import { IImage } from 'src/core/entities';
+} from 'src/images/domain/dtos/rest/image.dto';
+import { IImage } from 'src/images/domain/entities/image.entity';
 import { ImageFactoryService } from './image-factory.service';
 
 @Injectable()

@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateImageDto, UpdateImageDto } from 'src/core/dtos';
-import { IImage } from 'src/core/entities';
+import {
+  CreateImageDto,
+  UpdateImageDto,
+} from 'src/images/domain/dtos/rest/image.dto';
+import { IImage } from 'src/images/domain/entities/image.entity';
 
 @Injectable()
 export class ImageFactoryService {

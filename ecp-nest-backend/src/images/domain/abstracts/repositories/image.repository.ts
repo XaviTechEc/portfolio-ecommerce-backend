@@ -1,4 +1,7 @@
-import { IGenericArgs, PaginationArgs } from 'src/core/dtos';
+import {
+  IGenericArgs,
+  PaginationArgs,
+} from 'src/common/domain/dtos/graphql/args';
 
 export abstract class IImageRepository<T> {
   abstract getAllImages(args?: IGenericArgs<T>): Promise<T[]>;

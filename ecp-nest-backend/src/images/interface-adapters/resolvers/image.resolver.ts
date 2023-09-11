@@ -1,9 +1,12 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Args, ID, Query, Resolver } from '@nestjs/graphql';
-import { PaginationArgs, SearchArgs } from 'src/core/dtos';
-import { IImage } from 'src/core/entities';
-import { ImageType } from 'src/core/object-types';
-import { ImageUseCases } from 'src/use-cases';
+import { Resolver, Args, ID, Query } from '@nestjs/graphql';
+import {
+  PaginationArgs,
+  SearchArgs,
+} from 'src/common/domain/dtos/graphql/args';
+import { ImageUseCases } from 'src/images/application/use-cases/image-use-cases';
+import { IImage } from 'src/images/domain/entities/image.entity';
+import { ImageType } from 'src/images/domain/object-types/image.type';
 
 @Resolver(() => ImageType)
 export class ImageResolver {
