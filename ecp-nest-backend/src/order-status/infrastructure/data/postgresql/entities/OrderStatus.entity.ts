@@ -1,14 +1,14 @@
-import { StatusValue } from 'src/core/enums/orders/status-value.enum';
+import { StatusValue } from 'src/order-status/domain/enums/status-value.enum';
+import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import {
+  Index,
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { ShopOrder } from './ShopOrder.entity';
 
 @Index('order_status_pkey', ['id'], { unique: true })
 @Entity('order_status')

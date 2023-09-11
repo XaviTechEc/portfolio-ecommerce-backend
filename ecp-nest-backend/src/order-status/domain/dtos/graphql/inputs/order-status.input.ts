@@ -1,14 +1,6 @@
-import {
-  Field,
-  ID,
-  InputType,
-  PartialType,
-  registerEnumType,
-} from '@nestjs/graphql';
-import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
-import { StatusValue } from 'src/core/enums';
-
-registerEnumType(StatusValue, { name: 'StatusVal' });
+import { InputType, Field, PartialType, ID } from '@nestjs/graphql';
+import { IsNotEmpty, IsEnum, IsUUID } from 'class-validator';
+import { StatusValue } from 'src/order-status/domain/enums/status-value.enum';
 
 @InputType()
 export class CreateOrderStatusInput {

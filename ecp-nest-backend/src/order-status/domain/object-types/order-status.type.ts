@@ -1,6 +1,6 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { StatusValue } from 'src/core/enums';
-import { ShopOrderType } from './shop-order.type';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.type';
+import { StatusValue } from '../enums/status-value.enum';
 
 @ObjectType()
 export class OrderStatusType {

@@ -1,8 +1,8 @@
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import {
-  IGenericArgs,
   CreateOrderStatusInput,
   UpdateOrderStatusInput,
-} from 'src/core/dtos';
+} from '../../dtos/graphql/inputs/order-status.input';
 
 export abstract class IOrderStatusRepository<T> {
   abstract getAllOrderStatus(args?: IGenericArgs<T>): Promise<T[]>;

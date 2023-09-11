@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { IOrderStatusRepository } from 'src/core/abstracts/repositories';
-import { IDataSourcesService } from 'src/core/abstracts/services/data-services/data-sources.service';
+import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { IOrderStatusRepository } from 'src/order-status/domain/abstracts/repositories/order-status.repository';
+import {
+  CreateOrderStatusInput,
+  UpdateOrderStatusInput,
+} from 'src/order-status/domain/dtos/graphql/inputs/order-status.input';
+import { IOrderStatus } from 'src/order-status/domain/entities/order-status.entity';
 import { OrderStatusFactoryService } from './factory/order-status-factory.service';
-import { CreateOrderStatusInput, UpdateOrderStatusInput } from 'src/core/dtos';
-import { IOrderStatus } from 'src/core/entities';
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
 
 @Injectable()
 export class OrderStatusUseCases

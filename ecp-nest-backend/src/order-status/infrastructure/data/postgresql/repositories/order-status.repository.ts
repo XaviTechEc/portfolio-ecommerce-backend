@@ -1,10 +1,13 @@
-import { IGenericArgs } from 'src/core/dtos/graphql/args/generic-args.repository';
-import { IOrderStatusRepository } from 'src/core/abstracts/repositories';
-import { CreateOrderStatusInput, UpdateOrderStatusInput } from 'src/core/dtos';
-import { FindManyOptions, Repository } from 'typeorm';
-import { OrderStatus } from '../../entities/outputs/entities';
-import { LoggerService } from 'src/infrastructure/logger/logger.service';
-import { ExceptionsService } from 'src/infrastructure/exceptions/exceptions.service';
+import { LoggerService } from '@nestjs/common';
+import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IOrderStatusRepository } from 'src/order-status/domain/abstracts/repositories/order-status.repository';
+import {
+  CreateOrderStatusInput,
+  UpdateOrderStatusInput,
+} from 'src/order-status/domain/dtos/graphql/inputs/order-status.input';
+import { Repository, FindManyOptions } from 'typeorm';
+import { OrderStatus } from '../entities/OrderStatus.entity';
 
 export class OrderStatusRepository
   implements IOrderStatusRepository<OrderStatus>

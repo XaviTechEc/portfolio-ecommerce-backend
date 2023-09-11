@@ -1,4 +1,4 @@
-import { StatusValue } from 'src/core/enums';
+import { StatusValue } from '../enums/status-value.enum';
 
 export class IOrderStatus {
   id: string;
