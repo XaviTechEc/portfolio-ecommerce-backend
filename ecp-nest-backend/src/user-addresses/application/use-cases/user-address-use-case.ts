@@ -3,7 +3,6 @@ import {
   IGenericArgs,
   PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { IUserAddressRepository } from 'src/user-addresses/domain/abstracts/repositories/user-address.repository';
 import { IUserAddressesDataSourceService } from 'src/user-addresses/domain/abstracts/services/user-addresses-datasource.abstract.service';
 import {
   CreateUserAddressInput,
@@ -13,9 +12,7 @@ import { IUserAddress } from 'src/user-addresses/domain/entities/user-address.en
 import { UserAddressFactoryService } from './factory/user-address-factory.service';
 
 @Injectable()
-export class UserAddressUseCases
-  implements IUserAddressRepository<IUserAddress>
-{
+export class UserAddressUseCases {
   constructor(
     private dataService: IUserAddressesDataSourceService,
     private userAddressFactoryService: UserAddressFactoryService,

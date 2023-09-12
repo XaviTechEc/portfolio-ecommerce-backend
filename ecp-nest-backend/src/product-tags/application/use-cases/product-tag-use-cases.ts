@@ -3,7 +3,6 @@ import {
   IGenericArgs,
   PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { IProductTagRepository } from 'src/product-tags/domain/abstracts/repositories/product-tag.repository';
 import { IProductTagsDataSourceService } from 'src/product-tags/domain/abstracts/services/product-tags-datasource.abstract.service';
 import {
   CreateProductTagInput,
@@ -13,7 +12,7 @@ import { IProductTag } from 'src/product-tags/domain/entities/product-tag.entity
 import { ProductTagFactoryService } from './factory/product-tag-factory.service';
 
 @Injectable()
-export class ProductTagUseCases implements IProductTagRepository<IProductTag> {
+export class ProductTagUseCases {
   constructor(
     private dataService: IProductTagsDataSourceService,
     private productTagFactoryService: ProductTagFactoryService,

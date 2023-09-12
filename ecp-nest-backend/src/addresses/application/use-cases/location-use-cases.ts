@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ILocationsRepository } from 'src/addresses/domain/abstracts/repositories/locations.repository';
 import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 import {
   CreateLocationInput,
@@ -9,7 +8,7 @@ import { ILocation } from 'src/addresses/domain/entities/location.entity';
 import { LocationFactoryService } from './factory';
 
 @Injectable()
-export class LocationUseCases implements ILocationsRepository<ILocation> {
+export class LocationUseCases {
   constructor(
     private dataService: IAddressDataSourceService,
     private locationFactoryService: LocationFactoryService,

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { IOrderStatusRepository } from 'src/order-status/domain/abstracts/repositories/order-status.repository';
 import { IOrderStatusDataSourceService } from 'src/order-status/domain/abstracts/services/order-status-datasource.abstract.service';
 import {
   CreateOrderStatusInput,
@@ -10,9 +9,7 @@ import { IOrderStatus } from 'src/order-status/domain/entities/order-status.enti
 import { OrderStatusFactoryService } from './factory/order-status-factory.service';
 
 @Injectable()
-export class OrderStatusUseCases
-  implements IOrderStatusRepository<IOrderStatus>
-{
+export class OrderStatusUseCases {
   constructor(
     private dataService: IOrderStatusDataSourceService,
     private orderStatusFactoryService: OrderStatusFactoryService,

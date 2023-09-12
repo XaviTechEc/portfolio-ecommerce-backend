@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ICategoryPromotionRepository } from 'src/category-promotions/domain/abstracts/repositories/category-promotion.repository';
 import { ICategoryPromotionsDataSourceService } from 'src/category-promotions/domain/abstracts/services/category-promotions-datasource.abstract.service';
 import {
   CreateCategoryPromotionInput,
@@ -13,9 +12,7 @@ import {
 import { CategoryPromotionFactoryService } from './factory/category-promotion-factory.service';
 
 @Injectable()
-export class CategoryPromotionUseCases
-  implements ICategoryPromotionRepository<ICategoryPromotion>
-{
+export class CategoryPromotionUseCases {
   constructor(
     private dataService: ICategoryPromotionsDataSourceService,
     private categoryPromotionFactoryService: CategoryPromotionFactoryService,

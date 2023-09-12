@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { IAuthRepository } from 'src/auth/domain/abstracts/repositories/auth.repository';
 import { IAuthDataSourceService } from 'src/auth/domain/abstracts/services/auth-datasource.abstract.service';
 import { SignInUserDto } from 'src/auth/domain/dtos/rest/sign-in-user.dto';
 import { IAuthResponse } from 'src/auth/domain/interfaces/auth-response.interface';
@@ -7,7 +6,7 @@ import { CreateUserDto } from 'src/users/domain/dtos/rest/user.dto';
 import { IUser } from 'src/users/domain/entities/user.entity';
 
 @Injectable()
-export class AuthUseCases implements IAuthRepository {
+export class AuthUseCases {
   constructor(private dataServices: IAuthDataSourceService) {}
 
   signIn(signInUserDto: SignInUserDto): Promise<IAuthResponse> {

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ICommentsRepository } from 'src/comments/domain/abstracts/repositories/comments.repository';
 import { ICommentsDataSourceService } from 'src/comments/domain/abstracts/services/comments-datasource.abstract.service';
 import {
   CreateCommentInput,
@@ -13,7 +12,7 @@ import {
 import { CommentFactoryService } from './comment-factory.service';
 
 @Injectable()
-export class CommentUseCases implements ICommentsRepository<IComment> {
+export class CommentUseCases {
   constructor(
     private dataService: ICommentsDataSourceService,
     private commentFactoryService: CommentFactoryService,

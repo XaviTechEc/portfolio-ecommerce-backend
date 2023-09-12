@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { IUsersRepository } from 'src/users/domain/abstracts/repositories/users.repository';
 import { IUsersDataSourceService } from 'src/users/domain/abstracts/services/users-datasource.abstract.service';
 import {
   CreateUserDto,
@@ -10,7 +9,7 @@ import { IUser } from 'src/users/domain/entities/user.entity';
 import { UserFactoryService } from './factory/user-factory.service';
 
 @Injectable()
-export class UserUseCases implements IUsersRepository<IUser> {
+export class UserUseCases {
   constructor(
     private dataServices: IUsersDataSourceService,
     private userFactoryService: UserFactoryService,

@@ -3,7 +3,6 @@ import {
   IGenericArgs,
   PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { IVariationOptionsRepository } from 'src/variation-options/domain/abstracts/repositories/variation-options.repository';
 import { IVariationOptionsDataSourceService } from 'src/variation-options/domain/abstracts/services/variation-options-datasource.abstract.service';
 import {
   CreateVariationOptionInput,
@@ -13,9 +12,7 @@ import { IVariationOption } from 'src/variation-options/domain/entities/variatio
 import { VariationOptionFactoryService } from './factory/variation-option-factory.service';
 
 @Injectable()
-export class VariationOptionUseCases
-  implements IVariationOptionsRepository<IVariationOption>
-{
+export class VariationOptionUseCases {
   constructor(
     private dataService: IVariationOptionsDataSourceService,
     private variationOptionFactoryService: VariationOptionFactoryService,

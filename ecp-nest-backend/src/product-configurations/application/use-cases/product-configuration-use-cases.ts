@@ -3,7 +3,6 @@ import {
   IGenericArgs,
   PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { IProductConfigurationRepository } from 'src/product-configurations/domain/abstracts/repositories/product-configuration.repository';
 import { IProductConfigurationDataSourceService } from 'src/product-configurations/domain/abstracts/services/product-configuration-datasource.abstract.service';
 import {
   CreateProductConfigurationInput,
@@ -13,9 +12,7 @@ import { IProductConfiguration } from 'src/product-configurations/domain/entitie
 import { ProductConfigurationFactoryService } from './factory/product-configuration-factory.service';
 
 @Injectable()
-export class ProductConfigurationUseCases
-  implements IProductConfigurationRepository<IProductConfiguration>
-{
+export class ProductConfigurationUseCases {
   constructor(
     private dataService: IProductConfigurationDataSourceService,
     private productConfigurationFactoryService: ProductConfigurationFactoryService,

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { IShippingMethodsRepository } from 'src/shipping-methods/domain/abstracts/repositories/shipping-methods.repository';
 import { IShippingMethodsDataSourceService } from 'src/shipping-methods/domain/abstracts/services/shipping-methods-datasource.abstract.service';
 import {
   CreateShippingMethodInput,
@@ -10,9 +9,7 @@ import { IShippingMethod } from 'src/shipping-methods/domain/entities/shipping-m
 import { ShippingMethodFactoryService } from './factory/shipping-method-factory.service';
 
 @Injectable()
-export class ShippingMethodUseCases
-  implements IShippingMethodsRepository<IShippingMethod>
-{
+export class ShippingMethodUseCases {
   constructor(
     private dataService: IShippingMethodsDataSourceService,
     private shippingMethodFactoryService: ShippingMethodFactoryService,

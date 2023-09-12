@@ -3,7 +3,6 @@ import {
   IGenericArgs,
   PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { IShoppingCartProductItemRepository } from 'src/shopping-cart-product-items/domain/abstracts/repositories/shopping-cart-product-item.repository';
 import { IShoppingCartProductItemsDataSourceService } from 'src/shopping-cart-product-items/domain/abstracts/services/shopping-cart-product-items-datasource.abstract.service';
 import {
   CreateShoppingCartProductItemInput,
@@ -13,9 +12,7 @@ import { IShoppingCartProductItem } from 'src/shopping-cart-product-items/domain
 import { ShoppingCartProductItemFactoryService } from './factory/shopping-cart-product-item-factory.service';
 
 @Injectable()
-export class ShoppingCartProductItemUseCases
-  implements IShoppingCartProductItemRepository<IShoppingCartProductItem>
-{
+export class ShoppingCartProductItemUseCases {
   constructor(
     private dataService: IShoppingCartProductItemsDataSourceService,
     private shoppingCartProductItemFactoryService: ShoppingCartProductItemFactoryService,
