@@ -10,7 +10,10 @@ export class GqlConfigService implements GqlOptionsFactory {
   createGqlOptions(): ApolloDriverConfig {
     return {
       playground: false,
-      autoSchemaFile: join(process.cwd(), 'src/frameworks/graphql/schema.gql'),
+      autoSchemaFile: join(
+        process.cwd(),
+        'src/common/infrastructure/graphql/schema.gql',
+      ),
       sortSchema: true,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       buildSchemaOptions: {

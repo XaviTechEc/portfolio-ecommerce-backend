@@ -47,4 +47,21 @@ export class EnvironmentConfigService {
   getDataSchema(): string {
     return this.configService.get<string>('DATA_SCHEMA');
   }
+
+  // JWT
+  getJwtSecret(): string {
+    return this.configService.get<string>('JWT_SECRET');
+  }
+
+  getJwtExpTime(): string {
+    return this.configService.get<string>('JWT_EXPIRATION_TIME');
+  }
+
+  getJwtRefreshSecret(): string {
+    return this.configService.get<string>('JWT_REFRESH_TOKEN_SECRET');
+  }
+
+  getJwtRefreshExpTime(): string {
+    return this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRATION_TIME');
+  }
 }
