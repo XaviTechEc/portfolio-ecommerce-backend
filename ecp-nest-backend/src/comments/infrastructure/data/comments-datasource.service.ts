@@ -5,14 +5,15 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import { Comment } from './postgresql/entities/Comment.entity';
+import { ICommentsDataSourceService } from 'src/comments/domain/abstracts/services/comments-datasource.abstract.service';
 
 @Injectable()
-export class CommentsDataService implements OnApplicationBootstrap {
-  // Comments
+export class CommentsDataService
+  implements ICommentsDataSourceService, OnApplicationBootstrap
+{
   comments: CommentsRepository;
 
   constructor(
-    // Comments
     @InjectRepository(Comment)
     private commentsRepository: Repository<Comment>,
     private _loggerService: MyLoggerService,
@@ -20,7 +21,6 @@ export class CommentsDataService implements OnApplicationBootstrap {
   ) {}
 
   onApplicationBootstrap() {
-    // Comments
     this.comments = new CommentsRepository(
       this.commentsRepository,
       this._loggerService,

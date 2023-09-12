@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { IUserAddressRepository } from 'src/user-addresses/domain/abstracts/repositories/user-address.repository';
+import { IUserAddressesDataSourceService } from 'src/user-addresses/domain/abstracts/services/user-addresses-datasource.abstract.service';
 import {
   CreateUserAddressInput,
   UpdateUserAddressInput,
@@ -17,7 +17,7 @@ export class UserAddressUseCases
   implements IUserAddressRepository<IUserAddress>
 {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IUserAddressesDataSourceService,
     private userAddressFactoryService: UserAddressFactoryService,
   ) {}
   getUserAddressesBy(

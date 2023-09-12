@@ -5,9 +5,12 @@ import { OrderStatus } from './postgresql/entities/OrderStatus.entity';
 import { OrderStatusRepository } from './postgresql/repositories/order-status.repository';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IOrderStatusDataSourceService } from 'src/order-status/domain/abstracts/services/order-status-datasource.abstract.service';
 
 @Injectable()
-export class OrderStatusDataService implements OnApplicationBootstrap {
+export class OrderStatusDataService
+  implements IOrderStatusDataSourceService, OnApplicationBootstrap
+{
   orderStatus: OrderStatusRepository;
 
   constructor(

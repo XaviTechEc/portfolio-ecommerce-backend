@@ -9,9 +9,12 @@ import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptio
 import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import { Repository } from 'typeorm';
 import { Address, Country, Location } from './postgresql/entities';
+import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 
 @Injectable()
-export class AddressDataSourceService implements OnApplicationBootstrap {
+export class AddressDataSourceService
+  implements IAddressDataSourceService, OnApplicationBootstrap
+{
   // Addresses
   addresses: AddressesRepository;
   countries: CountriesRepository;

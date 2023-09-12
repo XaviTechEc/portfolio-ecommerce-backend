@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { IPromotionsRepository } from 'src/promotions/domain/abstracts/repositories/promotions.repository';
+import { IPromotionsDataSourceService } from 'src/promotions/domain/abstracts/services/promotions-datasource.abstract.service';
 import {
   CreatePromotionInput,
   UpdatePromotionInput,
@@ -12,7 +12,7 @@ import { PromotionFactoryService } from './factory/promotion-factory.service';
 @Injectable()
 export class PromotionUseCases implements IPromotionsRepository<IPromotion> {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IPromotionsDataSourceService,
     private promotionFactoryService: PromotionFactoryService,
   ) {}
   getAllPromotions(args?: IGenericArgs<IPromotion>): Promise<IPromotion[]> {

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { IVariationOptionsRepository } from 'src/variation-options/domain/abstracts/repositories/variation-options.repository';
+import { IVariationOptionsDataSourceService } from 'src/variation-options/domain/abstracts/services/variation-options-datasource.abstract.service';
 import {
   CreateVariationOptionInput,
   UpdateVariationOptionInput,
@@ -17,7 +17,7 @@ export class VariationOptionUseCases
   implements IVariationOptionsRepository<IVariationOption>
 {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IVariationOptionsDataSourceService,
     private variationOptionFactoryService: VariationOptionFactoryService,
   ) {}
   getVariationOptionsBy(

@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
+
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { IUserPaymentMethodsRepository } from 'src/user-payment-methods/domain/abstracts/repositories/user-payment-methods.repository';
+import { IUserPaymentMethodsDataSourceService } from 'src/user-payment-methods/domain/abstracts/services/user-payment-methods-datasource.abstract.service';
 import {
   CreateUserPaymentMethodInput,
   UpdateUserPaymentMethodInput,
@@ -17,7 +18,7 @@ export class UserPaymentMethodUseCases
   implements IUserPaymentMethodsRepository<IUserPaymentMethod>
 {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IUserPaymentMethodsDataSourceService,
     private userPaymentMethodFactoryService: UserPaymentMethodFactoryService,
   ) {}
   getUserPaymentMethodsBy(

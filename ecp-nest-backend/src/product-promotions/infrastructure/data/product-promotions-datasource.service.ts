@@ -5,9 +5,12 @@ import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service
 import { Repository } from 'typeorm';
 import { ProductPromotion } from './postgresql/entities/ProductPromotion.entity';
 import { ProductPromotionsRepository } from './postgresql/repositories/product-promotion.repository';
+import { IProductPromotionsDataSourceService } from 'src/product-promotions/domain/abstracts/services/product-promotions-datasource.abstract.service';
 
 @Injectable()
-export class ProductPromotionsDataService implements OnApplicationBootstrap {
+export class ProductPromotionsDataService
+  implements IProductPromotionsDataSourceService, OnApplicationBootstrap
+{
   productPromotions: ProductPromotionsRepository;
 
   constructor(

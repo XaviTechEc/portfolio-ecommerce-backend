@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Season } from './infrastructure/data/postgresql/entities/Season.entity';
 import { SeasonFactoryService } from './application/use-cases/factory/season-factory.service';
 import { SeasonUseCases } from './application/use-cases/season-use-cases';
+import { SeasonsDataSourceModule } from './infrastructure/data/seasons-datasource.module';
 import { SeasonResolver } from './interface-adapters/resolvers/season.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Season])],
+  imports: [SeasonsDataSourceModule],
   providers: [SeasonFactoryService, SeasonUseCases, SeasonResolver],
   exports: [TypeOrmModule],
 })

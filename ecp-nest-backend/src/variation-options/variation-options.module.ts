@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { VariationOption } from './infrastructure/data/postgresql/entities/VariationOption.entity';
 import { VariationOptionFactoryService } from './application/use-cases/factory/variation-option-factory.service';
 import { VariationOptionUseCases } from './application/use-cases/variation-option-use-cases';
+import { VariationOptionsDataSourceModule } from './infrastructure/data/variation-options-datasource.module';
 import { VariationOptionResolver } from './interface-adapters/resolvers/variation-option.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([VariationOption])],
+  imports: [VariationOptionsDataSourceModule],
   providers: [
     VariationOptionFactoryService,
     VariationOptionUseCases,

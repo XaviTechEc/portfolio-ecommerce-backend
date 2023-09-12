@@ -1,4 +1,4 @@
-import { OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IAuthRepository } from 'src/auth/domain/abstracts/repositories/auth.repository';
 import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
@@ -6,8 +6,12 @@ import { Repository } from 'typeorm';
 import { AuthRepository } from './postgresql/repositories/auth.repository';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IAuthDataSourceService } from 'src/auth/domain/abstracts/services/auth-datasource.abstract.service';
 
-export class AuthDataSourceService implements OnApplicationBootstrap {
+@Injectable()
+export class AuthDataSourceService
+  implements IAuthDataSourceService, OnApplicationBootstrap
+{
   auth: IAuthRepository;
 
   constructor(

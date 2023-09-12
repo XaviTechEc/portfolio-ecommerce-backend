@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { IShippingMethodsRepository } from 'src/shipping-methods/domain/abstracts/repositories/shipping-methods.repository';
+import { IShippingMethodsDataSourceService } from 'src/shipping-methods/domain/abstracts/services/shipping-methods-datasource.abstract.service';
 import {
   CreateShippingMethodInput,
   UpdateShippingMethodInput,
@@ -14,7 +14,7 @@ export class ShippingMethodUseCases
   implements IShippingMethodsRepository<IShippingMethod>
 {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IShippingMethodsDataSourceService,
     private shippingMethodFactoryService: ShippingMethodFactoryService,
   ) {}
   getAllShippingMethods(

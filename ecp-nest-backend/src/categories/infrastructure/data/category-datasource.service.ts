@@ -4,10 +4,13 @@ import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service
 import { Repository } from 'typeorm';
 import { Category } from './postgresql/entities/Category.entity';
 import { CategoriesRepository } from './postgresql/repositories/categories.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { ICategoryDataSourceService } from 'src/categories/domain/abstracts/services/category-datasource.abstract.service';
 
 @Injectable()
-export class CategoryDataSourceService {
+export class CategoryDataSourceService
+  implements ICategoryDataSourceService, OnApplicationBootstrap
+{
   // Categories
   categories: CategoriesRepository;
 

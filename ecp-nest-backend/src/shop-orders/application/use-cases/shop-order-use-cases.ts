@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { IShopOrdersRepository } from 'src/shop-orders/domain/abstracts/repositories/shop-orders.repository';
+import { IShopOrdersDataSourceService } from 'src/shop-orders/domain/abstracts/services/shop-orders-datasource.abstract.service';
 import {
   CreateShopOrderInput,
   UpdateShopOrderInput,
@@ -15,7 +15,7 @@ import { ShopOrderFactoryService } from './factory/shop-order-factory.service';
 @Injectable()
 export class ShopOrderUseCases implements IShopOrdersRepository<IShopOrder> {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IShopOrdersDataSourceService,
     private shopOrderFactoryService: ShopOrderFactoryService,
   ) {}
   getShopOrdersBy(

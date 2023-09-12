@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { ITagsRepository } from 'src/tags/domain/abstracts/repositories/tags.repository';
+import { ITagsDataSourceService } from 'src/tags/domain/abstracts/services/tags-datasource.abstract.service';
 import {
   CreateTagInput,
   UpdateTagInput,
@@ -12,7 +12,7 @@ import { TagFactoryService } from './factory/tag-factory.service';
 @Injectable()
 export class TagUseCases implements ITagsRepository<ITag> {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: ITagsDataSourceService,
     private tagFactoryService: TagFactoryService,
   ) {}
   getAllTags(args?: IGenericArgs<ITag>): Promise<ITag[]> {

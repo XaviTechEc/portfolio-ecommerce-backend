@@ -1,12 +1,16 @@
-import { OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
 import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
 import { Repository } from 'typeorm';
 import { OrderLine } from './postgresql/entities/OrderLine.entity';
 import { OrderLinesRepository } from './postgresql/repositories/order-lines.repository';
+import { IOrderLinesDataSourceService } from 'src/order-lines/domain/abstracts/services/order-lines-datasource.abstract.service';
 
-export class OrderLinesDataService implements OnApplicationBootstrap {
+@Injectable()
+export class OrderLinesDataService
+  implements IOrderLinesDataSourceService, OnApplicationBootstrap
+{
   orderLines: OrderLinesRepository;
 
   constructor(

@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { ICommentsRepository } from 'src/comments/domain/abstracts/repositories/comments.repository';
+import { ICommentsDataSourceService } from 'src/comments/domain/abstracts/services/comments-datasource.abstract.service';
 import {
   CreateCommentInput,
   UpdateCommentInput,
 } from 'src/comments/domain/dtos/graphql/inputs/comment.input';
 import { IComment } from 'src/comments/domain/entities/comment.entity';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { CommentFactoryService } from './comment-factory.service';
 
 @Injectable()
 export class CommentUseCases implements ICommentsRepository<IComment> {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: ICommentsDataSourceService,
     private commentFactoryService: CommentFactoryService,
   ) {}
   getCommentsBy(

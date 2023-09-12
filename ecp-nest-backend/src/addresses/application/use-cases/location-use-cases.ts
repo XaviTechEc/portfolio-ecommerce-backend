@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { ILocationsRepository } from 'src/addresses/domain/abstracts/repositories/locations.repository';
+import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 import {
   CreateLocationInput,
   UpdateLocationInput,
 } from 'src/addresses/domain/dtos/graphql/inputs/location.input';
 import { ILocation } from 'src/addresses/domain/entities/location.entity';
-import { IDataSourcesService } from 'src/common/domain/abstracts/services';
 import { LocationFactoryService } from './factory';
 
 @Injectable()
 export class LocationUseCases implements ILocationsRepository<ILocation> {
   constructor(
-    private dataService: IDataSourcesService,
+    private dataService: IAddressDataSourceService,
     private locationFactoryService: LocationFactoryService,
   ) {}
   getLocationById(id: string): Promise<ILocation> {
