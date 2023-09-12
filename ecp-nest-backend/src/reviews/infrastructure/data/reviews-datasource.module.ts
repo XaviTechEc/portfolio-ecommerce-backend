@@ -12,6 +12,6 @@ import { Review } from './postgresql/entities/Review.entity';
       useClass: ReviewsDataService,
     },
   ],
-  exports: [IReviewsDataSourceService],
+  exports: [IReviewsDataSourceService, TypeOrmModule],
 })
 export class ReviewsDataSourceModule {}

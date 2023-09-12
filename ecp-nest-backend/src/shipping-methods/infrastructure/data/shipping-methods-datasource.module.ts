@@ -12,6 +12,6 @@ import { ShippingMethod } from './postgresql/entities/ShippingMethod.entity';
       useClass: ShippingMethodsDataService,
     },
   ],
-  exports: [IShippingMethodsDataSourceService],
+  exports: [IShippingMethodsDataSourceService, TypeOrmModule],
 })
 export class ShippingMethodsDataSourceModule {}

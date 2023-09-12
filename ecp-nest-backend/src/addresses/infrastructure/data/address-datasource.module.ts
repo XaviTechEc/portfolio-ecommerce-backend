@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AddressDataSourceService } from './address-datasource.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Address, Country } from './postgresql/entities';
+import { Address, Country, Location } from './postgresql/entities';
 import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 
 @Module({
@@ -12,6 +12,6 @@ import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/servic
       useClass: AddressDataSourceService,
     },
   ],
-  exports: [IAddressDataSourceService],
+  exports: [IAddressDataSourceService, TypeOrmModule],
 })
-export class AddressDatasourceModule {}
+export class AddressDataSourceModule {}

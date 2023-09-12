@@ -84,6 +84,14 @@ input CreateCategoryPromotionInput {
   promotion: ID!
 }
 
+input CreateCommentInput {
+  commentParent: ID
+  content: String!
+  review: ID!
+  user: ID!
+  visible: Boolean = true
+}
+
 input CreateCountryInput {
   code: String!
   longName: String!
@@ -102,7 +110,7 @@ input CreateOrderLineInput {
 }
 
 input CreateOrderStatusInput {
-  statusValue: StatusVal! = IN_PROGRESS
+  statusValue: StatusValue! = IN_PROGRESS
 }
 
 input CreatePaymentMethodInput {
@@ -254,6 +262,7 @@ type Mutation {
   createAddress(createAddressInput: CreateAddressInput!): AddressType!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryType!
   createCategoryPromotion(createCategoryPromotionInput: CreateCategoryPromotionInput!): CategoryPromotionType!
+  createComment(createCommentInput: CreateCommentInput!): CommentType!
   createCountry(createCountryInput: CreateCountryInput!): CountryType!
   createLocation(createLocationInput: CreateLocationInput!): LocationType!
   createOrderLine(createOrderLineInput: CreateOrderLineInput!): OrderLineType!
@@ -281,6 +290,7 @@ type Mutation {
   removeAddress(id: ID!): AddressType!
   removeCategory(id: ID!): CategoryType!
   removeCategoryPromotion(id: ID!): CategoryPromotionType!
+  removeComment(id: ID!): CommentType!
   removeCountry(id: ID!): CountryType!
   removeLocation(id: ID!): LocationType!
   removeOrderLine(id: ID!): OrderLineType!
@@ -308,6 +318,7 @@ type Mutation {
   updateAddress(updateAddressInput: UpdateAddressInput!): AddressType!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryType!
   updateCategoryPromotion(updateCategoryPromotionInput: UpdateCategoryPromotionInput!): CategoryPromotionType!
+  updateComment(updateCommentInput: UpdateCommentInput!): CommentType!
   updateCountry(updateCountryInput: UpdateCountryInput!): CountryType!
   updateLocation(id: ID!, updateLocationInput: UpdateLocationInput!): LocationType!
   updateOrderLine(updateOrderLineInput: UpdateOrderLineInput!): OrderLineType!
@@ -346,7 +357,7 @@ type OrderLineType {
 type OrderStatusType {
   id: ID!
   shopOrders: [ShopOrderType!]!
-  statusValue: StatusVal!
+  statusValue: StatusValue!
 }
 
 enum PaymentMethod {
@@ -434,6 +445,11 @@ type Query {
   categoryPromotions(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryPromotionType!]!
   categoryPromotionsByCategory(limit: Int = 10, offset: Int = 0, term: String!): [CategoryPromotionType!]!
   categoryPromotionsByPromotion(limit: Int = 10, offset: Int = 0, term: String!): [CategoryPromotionType!]!
+  comment(id: ID!): CommentType!
+  comments(limit: Int = 10, offset: Int = 0, searchTerm: String): [CommentType!]!
+  commentsByParentComment(limit: Int = 10, offset: Int = 0, term: String!): [CommentType!]!
+  commentsByReview(limit: Int = 10, offset: Int = 0, term: String!): [CommentType!]!
+  commentsByUser(limit: Int = 10, offset: Int = 0, term: String!): [CommentType!]!
   countries(limit: Int = 10, offset: Int = 0, searchTerm: String): [CountryType!]!
   country(id: ID!): CountryType!
   getLocationById(id: ID!): LocationType!
@@ -487,7 +503,7 @@ type Query {
   shopOrderLocationsByShopOrder(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderLocationType!]!
   shopOrders(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShopOrderType!]!
   shopOrdersByAddress(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
-  shopOrdersByOrderStatus(limit: Int = 10, offset: Int = 0, term: StatusVal!): [ShopOrderType!]!
+  shopOrdersByOrderStatus(limit: Int = 10, offset: Int = 0, term: StatusValue!): [ShopOrderType!]!
   shopOrdersByShippingMethod(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
   shopOrdersByUser(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
   shoppingCart(id: ID!): ShoppingCartType!
@@ -582,7 +598,7 @@ type ShoppingCartType {
   user: UserObjType!
 }
 
-enum StatusVal {
+enum StatusValue {
   DELIVERED
   IN_PROGRESS
   PLACED
@@ -629,6 +645,15 @@ input UpdateCategoryPromotionInput {
   id: ID!
 }
 
+input UpdateCommentInput {
+  commentParent: ID
+  content: String
+  id: ID!
+  review: ID
+  user: ID
+  visible: Boolean = true
+}
+
 input UpdateCountryInput {
   code: String
   id: ID!
@@ -651,11 +676,12 @@ input UpdateOrderLineInput {
 
 input UpdateOrderStatusInput {
   id: ID!
-  statusValue: StatusVal = IN_PROGRESS
+  statusValue: StatusValue = IN_PROGRESS
 }
 
 input UpdatePaymentMethodInput {
   id: ID!
+  value: PaymentMethod
 }
 
 input UpdateProductCategoryInput {

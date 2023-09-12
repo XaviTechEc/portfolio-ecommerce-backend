@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { JwtModule as JwtM } from '@nestjs/jwt';
 import { EnvironmentConfigModule } from 'src/configuration/env/env-config.module';
 import { EnvironmentConfigService } from 'src/configuration/env/env-config.service';
@@ -7,6 +7,7 @@ import { MyLoggerService } from './infrastructure/logger/logger.service';
 import { CryptoService } from './infrastructure/services/encryption/crypto.service';
 import { BcryptService } from './infrastructure/services/hashing/bcrypt.service';
 
+@Global()
 @Module({
   imports: [
     EnvironmentConfigModule,

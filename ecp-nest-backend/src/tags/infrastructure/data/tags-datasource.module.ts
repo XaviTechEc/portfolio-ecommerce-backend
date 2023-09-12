@@ -12,6 +12,6 @@ import { Tag } from './postgresql/entities/Tag.entity';
       useClass: TagsDataService,
     },
   ],
-  exports: [ITagsDataSourceService],
+  exports: [ITagsDataSourceService, TypeOrmModule],
 })
 export class TagsDataSourceModule {}

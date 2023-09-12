@@ -12,6 +12,6 @@ import { ProductPromotion } from './postgresql/entities/ProductPromotion.entity'
       useClass: ProductPromotionsDataService,
     },
   ],
-  exports: [IProductPromotionsDataSourceService],
+  exports: [IProductPromotionsDataSourceService, TypeOrmModule],
 })
 export class ProductPromotionsDataSourceModule {}

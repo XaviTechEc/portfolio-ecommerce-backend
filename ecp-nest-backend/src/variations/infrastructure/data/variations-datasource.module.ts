@@ -12,6 +12,6 @@ import { Variation } from './postgresql/entities/Variation.entity';
       useClass: VariationsDataService,
     },
   ],
-  exports: [IVariationsDataSourceService],
+  exports: [IVariationsDataSourceService, TypeOrmModule],
 })
 export class VariationsDataSourceModule {}

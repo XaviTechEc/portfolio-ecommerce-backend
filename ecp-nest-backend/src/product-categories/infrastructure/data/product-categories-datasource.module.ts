@@ -12,6 +12,6 @@ import { ProductCategory } from './postgresql/entities/ProductCategory.entity';
       useClass: ProductCategoriesDataService,
     },
   ],
-  exports: [IProductCategoriesDataSourceService],
+  exports: [IProductCategoriesDataSourceService, TypeOrmModule],
 })
 export class ProductCategoriesDataSourceModule {}

@@ -12,6 +12,5 @@ import { getTypeOrmModuleOptions } from './connection-options';
       useFactory: getTypeOrmModuleOptions,
     }),
   ],
-  exports: [TypeOrmModule],
 })
 export class TypeOrmConfigModule {}

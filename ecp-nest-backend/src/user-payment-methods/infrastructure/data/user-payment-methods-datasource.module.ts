@@ -12,6 +12,6 @@ import { UserPaymentMethod } from './postgresql/entities/UserPaymentMethod.entit
       useClass: UserPaymentMethodsDataService,
     },
   ],
-  exports: [IUserPaymentMethodsDataSourceService],
+  exports: [IUserPaymentMethodsDataSourceService, TypeOrmModule],
 })
 export class UserPaymentMethodsDataSourceModule {}

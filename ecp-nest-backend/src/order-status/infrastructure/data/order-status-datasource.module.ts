@@ -12,6 +12,6 @@ import { OrderStatus } from './postgresql/entities/OrderStatus.entity';
       useClass: OrderStatusDataService,
     },
   ],
-  exports: [],
+  exports: [IOrderStatusDataSourceService, TypeOrmModule],
 })
 export class OrderStatusDataSourceModule {}

@@ -12,6 +12,6 @@ import { Season } from './postgresql/entities/Season.entity';
       useClass: SeasonsDataService,
     },
   ],
-  exports: [ISeasonsDataSourceService],
+  exports: [ISeasonsDataSourceService, TypeOrmModule],
 })
 export class SeasonsDataSourceModule {}

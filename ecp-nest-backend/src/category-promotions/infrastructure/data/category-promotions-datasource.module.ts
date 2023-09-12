@@ -12,6 +12,6 @@ import { CategoryPromotion } from './postgresql/entities/CategoryPromotion.entit
       useClass: CategoryPromotionsDataService,
     },
   ],
-  exports: [ICategoryPromotionsDataSourceService],
+  exports: [ICategoryPromotionsDataSourceService, TypeOrmModule],
 })
 export class CategoryPromotionsDataSourceModule {}

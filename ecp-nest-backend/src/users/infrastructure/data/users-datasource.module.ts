@@ -12,6 +12,6 @@ import { User } from './postgresql/entities/User.entity';
       useClass: UsersDataService,
     },
   ],
-  exports: [IUsersDataSourceService],
+  exports: [IUsersDataSourceService, TypeOrmModule],
 })
 export class UsersDataSourceModule {}

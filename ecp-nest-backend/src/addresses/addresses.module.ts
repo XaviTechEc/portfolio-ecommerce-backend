@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AddressFactoryService,
   AddressesUseCases,
@@ -8,15 +7,15 @@ import {
   LocationFactoryService,
   LocationUseCases,
 } from './application/use-cases';
+import { AddressDataSourceModule } from './infrastructure/data/address-datasource.module';
 import {
   AddressResolver,
   CountryResolver,
   LocationResolver,
 } from './interface-adapters/resolvers';
-import { AddressDatasourceModule } from './infrastructure/data/address-datasource.module';
 
 @Module({
-  imports: [AddressDatasourceModule],
+  imports: [AddressDataSourceModule],
   providers: [
     AddressesUseCases,
     CountryUseCases,
@@ -28,6 +27,5 @@ import { AddressDatasourceModule } from './infrastructure/data/address-datasourc
     CountryResolver,
     LocationResolver,
   ],
-  exports: [TypeOrmModule],
 })
 export class AddressesModule {}

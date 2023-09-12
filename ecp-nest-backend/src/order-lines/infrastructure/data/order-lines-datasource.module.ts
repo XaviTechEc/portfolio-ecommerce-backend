@@ -12,6 +12,6 @@ import { OrderLine } from './postgresql/entities/OrderLine.entity';
       useClass: OrderLinesDataService,
     },
   ],
-  exports: [IOrderLinesDataSourceService],
+  exports: [IOrderLinesDataSourceService, TypeOrmModule],
 })
 export class OrderLinesDataSourceModule {}

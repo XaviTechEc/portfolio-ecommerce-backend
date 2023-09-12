@@ -12,6 +12,6 @@ import { ProductConfiguration } from './postgresql/entities/ProductConfiguration
       useClass: ProductConfigurationDataService,
     },
   ],
-  exports: [IProductConfigurationDataSourceService],
+  exports: [IProductConfigurationDataSourceService, TypeOrmModule],
 })
 export class ProductConfigurationsDataSourceModule {}

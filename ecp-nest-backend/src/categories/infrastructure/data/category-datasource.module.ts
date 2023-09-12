@@ -12,6 +12,6 @@ import { Category } from './postgresql/entities/Category.entity';
       useClass: CategoryDataSourceService,
     },
   ],
-  exports: [ICategoryDataSourceService],
+  exports: [ICategoryDataSourceService, TypeOrmModule],
 })
-export class CategoryDatasourceModule {}
+export class CategoryDataSourceModule {}

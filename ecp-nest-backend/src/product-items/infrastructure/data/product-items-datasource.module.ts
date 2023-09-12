@@ -12,6 +12,6 @@ import { ProductItem } from './postgresql/entities/ProductItem.entity';
       useClass: ProductItemsDataService,
     },
   ],
-  exports: [IProductItemsDataSourceService],
+  exports: [IProductItemsDataSourceService, TypeOrmModule],
 })
 export class ProductItemsDataSourceModule {}

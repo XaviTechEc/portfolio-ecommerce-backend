@@ -12,6 +12,6 @@ import { ProductTag } from './postgresql/entities/ProductTag.entity';
       useClass: ProductTagsDataService,
     },
   ],
-  exports: [IProductTagsDataSourceService],
+  exports: [IProductTagsDataSourceService, TypeOrmModule],
 })
 export class ProductTagsDataSourceModule {}

@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShopOrderLocationFactoryService } from './application/use-cases/factory/shop-order-location-factory.service';
 import { ShopOrderLocationUseCases } from './application/use-cases/shop-order-location-use-cases';
 import { ShopOrderLocationsDataSourceModule } from './infrastructure/data/shop-order-locations-datasource.module';
@@ -12,6 +11,6 @@ import { ShopOrderLocationResolver } from './interface-adapters/resolvers/shop-o
     ShopOrderLocationUseCases,
     ShopOrderLocationResolver,
   ],
-  exports: [TypeOrmModule],
+  exports: [ShopOrderLocationFactoryService, ShopOrderLocationUseCases],
 })
 export class ShopOrderLocationsModule {}

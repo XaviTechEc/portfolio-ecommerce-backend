@@ -11,6 +11,6 @@ import { UserAddress } from './postgresql/entities/UserAddress.entity';
       useClass: UserAddressesDataSourceModule,
     },
   ],
-  exports: [IUserAddressesDataSourceService],
+  exports: [IUserAddressesDataSourceService, TypeOrmModule],
 })
 export class UserAddressesDataSourceModule {}

@@ -12,6 +12,6 @@ import { ShopOrderLocation } from './postgresql/entities/ShopOrderLocation.entit
       useClass: ShopOrderLocationsDataService,
     },
   ],
-  exports: [IShopOrderLocationsDataSourceService],
+  exports: [IShopOrderLocationsDataSourceService, TypeOrmModule],
 })
 export class ShopOrderLocationsDataSourceModule {}

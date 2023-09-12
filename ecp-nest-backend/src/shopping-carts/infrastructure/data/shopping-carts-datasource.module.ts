@@ -12,6 +12,6 @@ import { ShoppingCart } from './postgresql/entities/ShoppingCart.entity';
       useClass: ShoppingCartsDataService,
     },
   ],
-  exports: [IShoppingCartsDataSourceService],
+  exports: [IShoppingCartsDataSourceService, TypeOrmModule],
 })
 export class ShoppingCartsDataSourceModule {}

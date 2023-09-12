@@ -12,6 +12,6 @@ import { ShopOrder } from './postgresql/entities/ShopOrder.entity';
       useClass: ShopOrdersDataService,
     },
   ],
-  exports: [IShopOrdersDataSourceService],
+  exports: [IShopOrdersDataSourceService, TypeOrmModule],
 })
 export class ShopOrdersDataSourceModule {}
