@@ -6,6 +6,8 @@ import { ExceptionsService } from './infrastructure/exceptions/exceptions.servic
 import { MyLoggerService } from './infrastructure/logger/logger.service';
 import { CryptoService } from './infrastructure/services/encryption/crypto.service';
 import { BcryptService } from './infrastructure/services/hashing/bcrypt.service';
+import { JwtStrategy } from './infrastructure/passport/strategies/jwt.strategy';
+import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
 
 @Global()
 @Module({
@@ -26,7 +28,21 @@ import { BcryptService } from './infrastructure/services/hashing/bcrypt.service'
       },
     }),
   ],
-  providers: [MyLoggerService, ExceptionsService, CryptoService, BcryptService],
-  exports: [MyLoggerService, ExceptionsService, CryptoService, BcryptService],
+  providers: [
+    MyLoggerService,
+    ExceptionsService,
+    CryptoService,
+    BcryptService,
+    JwtStrategy,
+    JwtAuthGuard,
+  ],
+  exports: [
+    MyLoggerService,
+    ExceptionsService,
+    CryptoService,
+    BcryptService,
+    JwtStrategy,
+    JwtAuthGuard,
+  ],
 })
 export class CommonModule {}
