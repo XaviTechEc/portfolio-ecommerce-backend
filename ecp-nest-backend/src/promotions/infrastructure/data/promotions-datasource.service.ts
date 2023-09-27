@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Promotion } from './postgresql/entities/Promotion.entity';
 import { PromotionsRepository } from './postgresql/repositories/promotions.repository';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IPromotionsDataSourceService } from 'src/promotions/domain/abstracts/services/promotions-datasource.abstract.service';
 
 @Injectable()
@@ -16,8 +16,8 @@ export class PromotionsDataService
   constructor(
     @InjectRepository(Promotion)
     private promotionsRepository: Repository<Promotion>,
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
   ) {}
   onApplicationBootstrap() {
     this.promotions = new PromotionsRepository(

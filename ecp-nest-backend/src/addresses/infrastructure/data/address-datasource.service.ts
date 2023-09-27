@@ -5,8 +5,8 @@ import {
   LocationsRepository,
 } from './postgresql/repositories';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { Address, Country, Location } from './postgresql/entities';
 import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
@@ -29,8 +29,8 @@ export class AddressDataSourceService
     @InjectRepository(Location)
     private locationsRepository: Repository<Location>,
 
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
   ) {}
   onApplicationBootstrap() {
     // Addresses

@@ -58,8 +58,9 @@ export class User {
     enum: Role,
     default: Role.CLIENT,
     name: 'role',
+    array: true,
   })
-  role: Role;
+  roles: Role[];
 
   @Column({
     type: 'enum',

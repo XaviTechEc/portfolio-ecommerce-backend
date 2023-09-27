@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ILogger } from 'src/common/domain/interfaces/logger/logger.interface';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { EnvironmentConfigService } from 'src/configuration/env/env-config.service';
 
 @Injectable()
-export class MyLoggerService extends Logger implements ILogger {
+export class MyLoggerService extends Logger implements ILoggerService {
   constructor(private environmentConfigService: EnvironmentConfigService) {
     super();
   }

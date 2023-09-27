@@ -4,9 +4,13 @@ import { IAuthRepository } from 'src/auth/domain/abstracts/repositories/auth.rep
 import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import { Repository } from 'typeorm';
 import { AuthRepository } from './postgresql/repositories/auth.repository';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IAuthDataSourceService } from 'src/auth/domain/abstracts/services/auth-datasource.abstract.service';
+import {
+  IJwtService,
+  IHashService,
+} from 'src/common/domain/abstracts/services';
 
 @Injectable()
 export class AuthDataSourceService
@@ -16,17 +20,21 @@ export class AuthDataSourceService
 
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _repository: Repository<User>,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
+    private _jwtService: IJwtService,
+    private _bcryptService: IHashService,
   ) {}
 
   onApplicationBootstrap() {
     // Auth
     this.auth = new AuthRepository(
-      this.usersRepository,
+      this._repository,
       this._loggerService,
       this._exceptionsService,
+      this._jwtService,
+      this._bcryptService,
     );
   }
 }

@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './postgresql/entities/User.entity';
 import { UsersRepository } from './postgresql/repositories/users.repository';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IUsersDataSourceService } from 'src/users/domain/abstracts/services/users-datasource.abstract.service';
 
 @Injectable()
@@ -16,8 +16,8 @@ export class UsersDataService
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {
