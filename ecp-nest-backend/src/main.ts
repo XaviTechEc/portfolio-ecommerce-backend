@@ -4,7 +4,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const logger = new Logger('Bootstrap');
   const configService = app.get(ConfigService);
 
@@ -21,8 +21,6 @@ async function bootstrap() {
       // forbidNonWhitelisted: true,
     }),
   );
-
-  app.enableCors();
 
   const serverPort = configService.get<number>('SERVER_PORT');
   await app.listen(serverPort);

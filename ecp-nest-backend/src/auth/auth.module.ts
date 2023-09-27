@@ -4,17 +4,18 @@ import { AuthDatasourceModule } from './infrastructure/data/auth-datasource.modu
 import { AuthController } from './interface-adapters/controllers/auth.controller';
 import { EnvironmentConfigModule } from 'src/configuration/env/env-config.module';
 import { PassportModule } from '@nestjs/passport';
-import { CommonModule } from 'src/common/common.module';
+import { JwtAuthGuard } from 'src/categories/infrastructure/guards/jwt-auth.guard';
+import { UsersDataSourceModule } from 'src/users/infrastructure/data/users-datasource.module';
 
 @Module({
   imports: [
     AuthDatasourceModule,
+    UsersDataSourceModule,
     EnvironmentConfigModule,
     PassportModule,
-    CommonModule,
   ],
-  providers: [AuthUseCases],
+  providers: [AuthUseCases, JwtAuthGuard],
   controllers: [AuthController],
-  exports: [PassportModule],
+  exports: [PassportModule, JwtAuthGuard],
 })
 export class AuthModule {}

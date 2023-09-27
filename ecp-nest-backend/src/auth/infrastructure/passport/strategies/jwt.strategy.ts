@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AuthUseCases } from 'src/auth/application/use-cases/auth-use-cases';
 import { IJwtPayload } from 'src/common/domain/interfaces/jwt/jwt-payload.interface';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { EnvironmentConfigService } from 'src/configuration/env/env-config.service';
 import { IUser } from 'src/users/domain/entities/user.entity';
 
@@ -12,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private authUseCases: AuthUseCases,
     private environmentConfigService: EnvironmentConfigService,
-    private exceptionsService: ExceptionsService,
+    private exceptionsService: IExceptionsService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { UserAddress } from './postgresql/entities/UserAddress.entity';
 import { UserAddressesRepository } from './postgresql/repositories/user-address.repository';
@@ -15,8 +15,8 @@ export class UserAddressesDataService
   constructor(
     @InjectRepository(UserAddress)
     private userAddressesRepository: Repository<UserAddress>,
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
   ) {}
   onApplicationBootstrap() {
     this.userAddresses = new UserAddressesRepository(

@@ -3,8 +3,8 @@ import { PaymentMethod } from './postgresql/entities/PaymentMethod.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaymentMethodsRepository } from './postgresql/repositories/payment-methods.repository';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IPaymentMethodsDataSourceService } from 'src/payment-methods/domain/abstracts/services/payment-methods-datasource.abstract.service';
 
 @Injectable()
@@ -16,8 +16,8 @@ export class PaymentMethodsDataService
   constructor(
     @InjectRepository(PaymentMethod)
     private paymentMethodsRepository: Repository<PaymentMethod>,
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {

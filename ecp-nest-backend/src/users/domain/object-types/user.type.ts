@@ -30,8 +30,8 @@ export class UserObjType {
   @Field(() => UserType)
   userType: UserType;
 
-  @Field(() => Role)
-  role: Role;
+  @Field(() => [Role])
+  roles: Role[];
 
   @Field(() => Gender)
   gender: Gender;

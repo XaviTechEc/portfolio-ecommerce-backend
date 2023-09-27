@@ -1,9 +1,9 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IProductTagRepository } from 'src/product-tags/domain/abstracts/repositories/product-tag.repository';
 import {
   CreateProductTagInput,
@@ -22,13 +22,13 @@ export class ProductTagsRepository
   implements IProductTagRepository<ProductTag>
 {
   private _repository: Repository<ProductTag>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<ProductTag>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;

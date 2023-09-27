@@ -1,9 +1,9 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IProductConfigurationRepository } from 'src/product-configurations/domain/abstracts/repositories/product-configuration.repository';
 import {
   CreateProductConfigurationInput,
@@ -22,13 +22,13 @@ export class ProductConfigurationsRepository
   implements IProductConfigurationRepository<ProductConfiguration>
 {
   private _repository: Repository<ProductConfiguration>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<ProductConfiguration>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;

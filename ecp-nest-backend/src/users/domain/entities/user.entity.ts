@@ -8,7 +8,7 @@ export class IUser {
   fullName: string;
   phoneNumber?: string;
   userType: UserType;
-  role: Role;
+  roles: Role[];
   gender?: Gender;
   avatarImg?: string;
   active?: boolean;

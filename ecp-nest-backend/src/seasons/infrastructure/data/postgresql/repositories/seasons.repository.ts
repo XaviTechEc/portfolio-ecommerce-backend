@@ -1,6 +1,6 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { ISeasonsRepository } from 'src/seasons/domain/abstracts/repositories/seasons.repository';
 import {
   CreateSeasonInput,
@@ -11,13 +11,13 @@ import { Season } from '../entities/Season.entity';
 
 export class SeasonsRepository implements ISeasonsRepository<Season> {
   private _repository: Repository<Season>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<Season>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;

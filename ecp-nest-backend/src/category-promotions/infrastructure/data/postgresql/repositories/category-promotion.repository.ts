@@ -7,7 +7,7 @@ import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import {
   Repository,
   FindManyOptions,
@@ -16,19 +16,19 @@ import {
   ILike,
 } from 'typeorm';
 import { CategoryPromotion } from '../entities/CategoryPromotion.entity';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 
 export class CategoryPromotionsRepository
   implements ICategoryPromotionRepository<CategoryPromotion>
 {
   private _repository: Repository<CategoryPromotion>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<CategoryPromotion>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;

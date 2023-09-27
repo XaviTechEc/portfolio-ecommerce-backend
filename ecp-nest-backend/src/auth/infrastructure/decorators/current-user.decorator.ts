@@ -7,6 +7,7 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { IUser } from 'src/users/domain/entities/user.entity';
 import { Role } from 'src/users/domain/enums';
+import { matchRoles } from '../helpers/match-roles.helper';
 
 export const CurrentUser = createParamDecorator(
   (roles: Role[] = [], context: ExecutionContext) => {
@@ -19,7 +20,7 @@ export const CurrentUser = createParamDecorator(
 
     if (!roles.length) return user;
 
-    const rolesMatch = roles.some((role) => user.role === role);
+    const rolesMatch = matchRoles(roles, user.roles || []);
 
     if (!rolesMatch) {
       throw new ForbiddenException('User role is not valid');

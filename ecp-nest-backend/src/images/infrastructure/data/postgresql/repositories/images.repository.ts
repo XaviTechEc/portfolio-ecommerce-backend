@@ -2,7 +2,7 @@ import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IImageRepository } from 'src/images/domain/abstracts/repositories/image.repository';
 import {
   CreateImageDto,
@@ -16,17 +16,17 @@ import {
   ILike,
 } from 'typeorm';
 import { Image } from '../entities/Image.entity';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 
 export class ImagesRepository implements IImageRepository<Image> {
   private _repository: Repository<Image>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<Image>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
