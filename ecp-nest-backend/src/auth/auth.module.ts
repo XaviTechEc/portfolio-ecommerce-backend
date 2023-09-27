@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
+
+import { EnvironmentConfigModule } from 'src/configuration/env/env-config.module';
+import { UsersDataSourceModule } from 'src/users/infrastructure/data/users-datasource.module';
 import { AuthUseCases } from './application/use-cases/auth-use-cases';
 import { AuthDatasourceModule } from './infrastructure/data/auth-datasource.module';
+import { GqlAuthGuard } from './infrastructure/guards/gql-auth.guard';
+import { UserRolesGqlGuard } from './infrastructure/guards/user-role-gql.guard';
+import { UserRolesGuard } from './infrastructure/guards/user-role.guard';
 import { AuthController } from './interface-adapters/controllers/auth.controller';
-import { EnvironmentConfigModule } from 'src/configuration/env/env-config.module';
-import { PassportModule } from '@nestjs/passport';
-import { JwtAuthGuard } from 'src/categories/infrastructure/guards/jwt-auth.guard';
-import { UsersDataSourceModule } from 'src/users/infrastructure/data/users-datasource.module';
+import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -14,8 +18,20 @@ import { UsersDataSourceModule } from 'src/users/infrastructure/data/users-datas
     EnvironmentConfigModule,
     PassportModule,
   ],
-  providers: [AuthUseCases, JwtAuthGuard],
+  providers: [
+    AuthUseCases,
+    JwtAuthGuard,
+    GqlAuthGuard,
+    UserRolesGqlGuard,
+    UserRolesGuard,
+  ],
   controllers: [AuthController],
-  exports: [PassportModule, JwtAuthGuard],
+  exports: [
+    PassportModule,
+    JwtAuthGuard,
+    GqlAuthGuard,
+    UserRolesGqlGuard,
+    UserRolesGuard,
+  ],
 })
 export class AuthModule {}

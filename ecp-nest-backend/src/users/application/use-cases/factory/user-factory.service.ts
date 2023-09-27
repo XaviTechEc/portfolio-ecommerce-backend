@@ -24,7 +24,7 @@ export class UserFactoryService {
     newUser.fullName = updateUserDto.fullName;
     newUser.phoneNumber = updateUserDto.phoneNumber;
     newUser.userType = updateUserDto.userType;
-    newUser.role = updateUserDto.role;
+    newUser.roles = updateUserDto.roles;
     newUser.gender = updateUserDto.gender;
     newUser.avatarImg = updateUserDto.avatarImg;
     newUser.active = updateUserDto.active;
