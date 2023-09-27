@@ -56,7 +56,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: Role,
-    default: Role.CLIENT,
+    default: [Role.CLIENT],
     name: 'role',
     array: true,
   })
