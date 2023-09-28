@@ -49,15 +49,32 @@ export class AuthRepository implements IAuthRepository {
   async signIn(signInUserDto: SignInUserDto): Promise<IAuthResponse> {
     try {
       const { email, password } = signInUserDto;
-      const user = await this._repository.findOneBy({ email });
-      if (!user) {
+      const user = await this._repository.findOne({
+        where: { email },
+        select: [
+          'id',
+          'fullName',
+          'username',
+          'email',
+          'avatarImg',
+          'active',
+          'password',
+        ],
+      });
+
+      if (!user || !user.active) {
         return this._exceptionsService.notFound({
-          message: `The user with email ${email} could not be found`,
+          message: `The user with email ${email} could not be found | User not active`,
         });
       }
 
       // Compare encrypted passwords
       await this._comparePasswords(password, user.password);
+
+      // Delete password from user before send
+      if (user.password) {
+        delete user.password;
+      }
 
       const token = await this._getJWT({ email: user.email, uid: user.id });
 

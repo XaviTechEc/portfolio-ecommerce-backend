@@ -24,6 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: IJwtPayload): Promise<IUser> {
     const { uid } = payload;
     const user = await this.authUseCases.validateUserForJwtStrategy(uid);
+
     if (!user || !user.active) {
       return this.exceptionsService.unauthorized({
         message: 'Invalid token | User does not exists | User is not active',

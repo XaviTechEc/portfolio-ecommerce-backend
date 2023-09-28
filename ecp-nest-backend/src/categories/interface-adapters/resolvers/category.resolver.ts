@@ -1,14 +1,13 @@
-import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { ParseUUIDPipe } from '@nestjs/common';
 import {
-  Resolver,
   Args,
   ID,
   Mutation,
-  ResolveField,
   Parent,
   Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
-import { UserRolesGqlGuard } from 'src/auth/infrastructure/guards/user-role-gql.guard';
 import { CategoryUseCases } from 'src/categories/application/use-cases/category-use-cases';
 import {
   CreateCategoryInput,
@@ -34,7 +33,6 @@ export class CategoryResolver {
   ) {}
 
   @Query(() => [CategoryType], { name: 'categories' })
-  @UseGuards(UserRolesGqlGuard)
   getAllCategories(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,

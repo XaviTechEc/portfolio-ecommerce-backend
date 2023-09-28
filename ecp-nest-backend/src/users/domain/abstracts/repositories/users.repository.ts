@@ -6,4 +6,5 @@ export abstract class IUsersRepository<T> {
   abstract createUser(data: T): Promise<T>;
   abstract updateUser(id: string, data: T): Promise<T>;
   abstract removeUser(id: string): Promise<T>;
+  abstract getShortUserById(id: string): Promise<T>;
 }

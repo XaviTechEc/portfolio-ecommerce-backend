@@ -10,6 +10,7 @@ import { UserRolesGqlGuard } from './infrastructure/guards/user-role-gql.guard';
 import { UserRolesGuard } from './infrastructure/guards/user-role.guard';
 import { AuthController } from './interface-adapters/controllers/auth.controller';
 import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
+import { JwtStrategy } from './infrastructure/passport/strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
     GqlAuthGuard,
     UserRolesGqlGuard,
     UserRolesGuard,
+    JwtStrategy,
   ],
   controllers: [AuthController],
   exports: [
@@ -32,6 +34,7 @@ import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
     GqlAuthGuard,
     UserRolesGqlGuard,
     UserRolesGuard,
+    JwtStrategy,
   ],
 })
 export class AuthModule {}
