@@ -24,6 +24,6 @@ export class AuthUseCases {
   }
 
   validateUserForJwtStrategy(uid: string): Promise<IUser> {
-    return this.usersDataServices.users.getUserById(uid);
+    return this.usersDataServices.users.getShortUserById(uid);
   }
 }

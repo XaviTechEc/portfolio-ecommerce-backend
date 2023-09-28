@@ -57,11 +57,33 @@ export class UsersRepository implements IUsersRepository<User> {
     if (!userFound) {
       return this._exceptionsService.notFound({
         message: `The user with id ${id} could not be found`,
-        code_error: 404,
       });
     }
-    return this._repository.save(userFound);
+    return userFound;
   }
+
+  async getShortUserById(id: string): Promise<User> {
+    const userFound = await this._repository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'fullName',
+        'username',
+        'email',
+        'avatarImg',
+        'lastConnection',
+        'active',
+        'roles',
+      ],
+    });
+    if (!userFound) {
+      return this._exceptionsService.notFound({
+        message: `The user with id ${id} could not be found`,
+      });
+    }
+    return userFound;
+  }
+
   async createUser(data: CreateUserDto): Promise<User> {
     const newUser = this._repository.create({ ...data });
     return newUser;
