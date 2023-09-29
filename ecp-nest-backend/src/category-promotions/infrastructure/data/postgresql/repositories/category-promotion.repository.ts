@@ -18,6 +18,8 @@ import {
 import { CategoryPromotion } from '../entities/CategoryPromotion.entity';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 
+const CONTEXT = 'CategoryPromotionsRepository';
+
 export class CategoryPromotionsRepository
   implements ICategoryPromotionRepository<CategoryPromotion>
 {
@@ -39,97 +41,117 @@ export class CategoryPromotionsRepository
     fields: (keyof CategoryPromotion)[],
     paginationArgs: PaginationArgs,
   ): Promise<CategoryPromotion[]> {
-    let queryOptions: FindManyOptions<CategoryPromotion> = {};
-    let relations: FindOptionsRelations<CategoryPromotion> = {};
-    let where: FindOptionsWhere<CategoryPromotion> = {};
+    try {
+      let queryOptions: FindManyOptions<CategoryPromotion> = {};
+      let relations: FindOptionsRelations<CategoryPromotion> = {};
+      let where: FindOptionsWhere<CategoryPromotion> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'category') {
-        relations = { ...relations, category: true };
-        where = {
-          ...where,
-          category: [
-            { value: ILike(`%${term}%`) },
-            { description: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
       }
 
-      if (field === 'promotion') {
-        relations = { ...relations, promotion: true };
-        where = {
-          ...where,
-          promotion: [{ description: ILike(`%${term}%`) }, { id: term }],
-        };
+      for (const field of fields) {
+        if (field === 'category') {
+          relations = { ...relations, category: true };
+          where = {
+            ...where,
+            category: [
+              { value: ILike(`%${term}%`) },
+              { description: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'promotion') {
+          relations = { ...relations, promotion: true };
+          where = {
+            ...where,
+            promotion: [{ description: ILike(`%${term}%`) }, { id: term }],
+          };
+        }
       }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const categoryPromotionsBy =
+        (await this._repository.find(queryOptions)) ?? [];
+      return categoryPromotionsBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const categoryPromotionsBy = await this._repository.find(queryOptions);
-    return categoryPromotionsBy;
   }
 
   async getAllCategoryPromotion(
     args?: IGenericArgs<CategoryPromotion>,
   ): Promise<CategoryPromotion[]> {
-    let qb = this._repository.createQueryBuilder('categoryPromotion');
+    try {
+      let qb = this._repository.createQueryBuilder('categoryPromotion');
 
-    if (args) {
-      const { paginationArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
       }
-    }
 
-    const categoryPromotions = await qb.getMany();
-    return categoryPromotions;
+      const categoryPromotions = (await qb.getMany()) ?? [];
+      return categoryPromotions;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async getCategoryPromotionById(id: string): Promise<CategoryPromotion> {
-    const categoryPromotionFound = await this._repository.findOneBy({ id });
-    if (!categoryPromotionFound) {
-      return this._exceptionsService.notFound({
-        message: `The categoryPromotion with id ${id} could not be found`,
-      });
+    try {
+      const categoryPromotionFound = await this._repository.findOneBy({ id });
+      if (!categoryPromotionFound) {
+        return this._exceptionsService.notFound({
+          message: `The categoryPromotion with id ${id} could not be found`,
+        });
+      }
+      return categoryPromotionFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(categoryPromotionFound);
   }
 
   async createCategoryPromotion(
     createCategoryPromotionInput: CreateCategoryPromotionInput,
   ): Promise<CategoryPromotion> {
-    const newCategoryPromotion = this._repository.create({
-      ...createCategoryPromotionInput,
-    });
-    return newCategoryPromotion;
+    try {
+      const newCategoryPromotion = this._repository.create({
+        ...createCategoryPromotionInput,
+      });
+      return this._repository.save(newCategoryPromotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateCategoryPromotion(
     id: string,
     updateCategoryPromotionInput: UpdateCategoryPromotionInput,
   ): Promise<CategoryPromotion> {
-    await this.getCategoryPromotionById(id);
-    const newCategoryPromotion = await this._repository.preload({
-      ...updateCategoryPromotionInput,
-    });
-    if (!newCategoryPromotion) {
-      return this._exceptionsService.notFound({
-        message: 'The CategoryPromotion could not be preloaded',
+    try {
+      await this.getCategoryPromotionById(id);
+      const newCategoryPromotion = await this._repository.preload({
+        ...updateCategoryPromotionInput,
       });
+      return this._repository.save(newCategoryPromotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newCategoryPromotion);
   }
 
   async removeCategoryPromotion(id: string): Promise<CategoryPromotion> {
-    const categoryPromotion = await this.getCategoryPromotionById(id);
-    return this._repository.remove(categoryPromotion);
+    try {
+      const categoryPromotion = await this.getCategoryPromotionById(id);
+      return this._repository.remove(categoryPromotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

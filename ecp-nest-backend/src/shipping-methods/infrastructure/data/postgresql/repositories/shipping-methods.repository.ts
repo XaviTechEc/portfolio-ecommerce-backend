@@ -9,6 +9,8 @@ import {
 import { Repository, FindManyOptions } from 'typeorm';
 import { ShippingMethod } from '../entities/ShippingMethod.entity';
 
+const CONTEXT = 'ShippingMethodsRepository';
+
 export class ShippingMethodsRepository
   implements IShippingMethodsRepository<ShippingMethod>
 {
@@ -29,54 +31,69 @@ export class ShippingMethodsRepository
   async getAllShippingMethods(
     args?: IGenericArgs<ShippingMethod>,
   ): Promise<ShippingMethod[]> {
-    let queryOptions: FindManyOptions<ShippingMethod> = {};
+    try {
+      let queryOptions: FindManyOptions<ShippingMethod> = {};
 
-    if (args?.paginationArgs) {
-      const { limit = 10, offset = 0 } = args.paginationArgs;
-      queryOptions = { take: limit, skip: offset };
+      if (args?.paginationArgs) {
+        const { limit = 10, offset = 0 } = args.paginationArgs;
+        queryOptions = { take: limit, skip: offset };
+      }
+
+      const shippingMethods = (await this._repository.find(queryOptions)) ?? [];
+      return shippingMethods;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    const shippingMethods = await this._repository.find(queryOptions);
-    return shippingMethods;
   }
 
   async getShippingMethodById(id: string): Promise<ShippingMethod> {
-    const shippingMethodFound = await this._repository.findOneBy({ id });
-    if (!shippingMethodFound) {
-      return this._exceptionsService.notFound({
-        message: `The shipping method with id ${id} could not be found`,
-      });
+    try {
+      const shippingMethodFound = await this._repository.findOneBy({ id });
+      if (!shippingMethodFound) {
+        return this._exceptionsService.notFound({
+          message: `The shipping method with id ${id} could not be found`,
+        });
+      }
+      return shippingMethodFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return shippingMethodFound;
   }
 
   async createShippingMethod(
     createShippingMethodInput: CreateShippingMethodInput,
   ): Promise<ShippingMethod> {
-    const newShippingMethod = await this._repository.create({
-      ...createShippingMethodInput,
-    });
-    return this._repository.save(newShippingMethod);
+    try {
+      const newShippingMethod = this._repository.create({
+        ...createShippingMethodInput,
+      });
+      return this._repository.save(newShippingMethod);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateShippingMethod(
     id: string,
     updateShippingMethodInput: UpdateShippingMethodInput,
   ): Promise<ShippingMethod> {
-    await this.getShippingMethodById(id);
-    const newShippingMethod = await this._repository.preload({
-      ...updateShippingMethodInput,
-    });
-    if (!newShippingMethod) {
-      return this._exceptionsService.notFound({
-        message: 'The shipping method could not be preloaded',
+    try {
+      await this.getShippingMethodById(id);
+      const newShippingMethod = await this._repository.preload({
+        ...updateShippingMethodInput,
       });
+      return this._repository.save(newShippingMethod);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newShippingMethod);
   }
 
   async removeShippingMethod(id: string): Promise<ShippingMethod> {
-    const shippingMethod = await this.getShippingMethodById(id);
-    return this._repository.remove(shippingMethod);
+    try {
+      const shippingMethod = await this.getShippingMethodById(id);
+      return this._repository.remove(shippingMethod);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

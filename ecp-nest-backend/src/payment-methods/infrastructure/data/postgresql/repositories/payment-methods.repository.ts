@@ -9,6 +9,8 @@ import {
 import { Repository, FindManyOptions } from 'typeorm';
 import { PaymentMethod } from '../entities/PaymentMethod.entity';
 
+const CONTEXT = 'PaymentMethodsRepository';
+
 export class PaymentMethodsRepository
   implements IPaymentMethodsRepository<PaymentMethod>
 {
@@ -28,49 +30,69 @@ export class PaymentMethodsRepository
   async getAllPaymentMethods(
     args?: IGenericArgs<PaymentMethod>,
   ): Promise<PaymentMethod[]> {
-    let queryOptions: FindManyOptions<PaymentMethod> = {};
-    if (args) {
-      const { paginationArgs } = args;
+    try {
+      let queryOptions: FindManyOptions<PaymentMethod> = {};
+      if (args) {
+        const { paginationArgs } = args;
 
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        queryOptions = { take: limit, skip: offset };
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          queryOptions = { take: limit, skip: offset };
+        }
       }
+      const paymentMethods = (await this._repository.find(queryOptions)) ?? [];
+      return paymentMethods;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    const paymentMethods = await this._repository.find(queryOptions);
-    return paymentMethods;
   }
 
   async getPaymentMethodById(id: string): Promise<PaymentMethod> {
-    const paymentMethodFound = await this._repository.findOneBy({ id });
-    return this._repository.save(paymentMethodFound);
+    try {
+      const paymentMethodFound = await this._repository.findOneBy({ id });
+      if (!paymentMethodFound) {
+        this._exceptionsService.notFound({
+          message: `Payment Method with id ${id} could not be found`,
+        });
+      }
+      return paymentMethodFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async createPaymentMethod(
     data: CreatePaymentMethodInput,
   ): Promise<PaymentMethod> {
-    const newPaymentMethod = this._repository.create({ ...data });
-    return newPaymentMethod;
+    try {
+      const newPaymentMethod = this._repository.create({ ...data });
+      return this._repository.save(newPaymentMethod);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updatePaymentMethod(
     id: string,
     data: UpdatePaymentMethodInput,
   ): Promise<PaymentMethod> {
-    await this.getPaymentMethodById(id);
-    const newPaymentMethod = await this._repository.preload({
-      ...data,
-    });
-    if (!newPaymentMethod) {
-      return this._exceptionsService.notFound({
-        message: 'The PaymentMethod could not be preloaded',
+    try {
+      await this.getPaymentMethodById(id);
+      const newPaymentMethod = await this._repository.preload({
+        ...data,
       });
+      return this._repository.save(newPaymentMethod);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newPaymentMethod);
   }
 
   async removePaymentMethod(id: string): Promise<PaymentMethod> {
-    const paymentMethod = await this.getPaymentMethodById(id);
-    return this._repository.remove(paymentMethod);
+    try {
+      const paymentMethod = await this.getPaymentMethodById(id);
+      return this._repository.remove(paymentMethod);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

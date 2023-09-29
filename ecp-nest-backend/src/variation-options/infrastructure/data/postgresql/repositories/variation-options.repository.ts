@@ -18,6 +18,8 @@ import {
 } from 'typeorm';
 import { VariationOption } from '../entities/VariationOption.entity';
 
+const CONTEXT = 'VariationOptionsRepository';
+
 export class VariationOptionsRepository
   implements IVariationOptionsRepository<VariationOption>
 {
@@ -39,92 +41,115 @@ export class VariationOptionsRepository
     fields: (keyof VariationOption)[],
     paginationArgs: PaginationArgs,
   ): Promise<VariationOption[]> {
-    let queryOptions: FindManyOptions<VariationOption> = {};
-    let relations: FindOptionsRelations<VariationOption> = {};
-    let where: FindOptionsWhere<VariationOption> = {};
+    try {
+      let queryOptions: FindManyOptions<VariationOption> = {};
+      let relations: FindOptionsRelations<VariationOption> = {};
+      let where: FindOptionsWhere<VariationOption> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'variation') {
-        relations = { ...relations, variation: true };
-        where = {
-          ...where,
-          variation: [{ name: ILike(`%${term}%`) }, { id: term }],
-        };
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
       }
+
+      for (const field of fields) {
+        if (field === 'variation') {
+          relations = { ...relations, variation: true };
+          where = {
+            ...where,
+            variation: [{ name: ILike(`%${term}%`) }, { id: term }],
+          };
+        }
+      }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const variationOptionsBy =
+        (await this._repository.find(queryOptions)) ?? [];
+      return variationOptionsBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const variationOptionsBy = await this._repository.find(queryOptions);
-    return variationOptionsBy;
   }
 
   async getAllVariationOptions(
     args?: IGenericArgs<VariationOption>,
   ): Promise<VariationOption[]> {
-    let qb = this._repository.createQueryBuilder('variationOption');
+    try {
+      let qb = this._repository.createQueryBuilder('variationOption');
 
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
+
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
+
+          qb = qb
+            .where(`variationOption.value ILIKE LOWER(:value)`)
+            .setParameters({
+              value: `%${searchTerm}%`,
+            });
+        }
       }
 
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
-
-        qb = qb
-          .where(`variationOption.value ILIKE LOWER(:value)`)
-          .setParameters({
-            value: `%${searchTerm}%`,
-          });
-      }
+      const variationOptions = (await qb.getMany()) ?? [];
+      return variationOptions;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    const variationOptions = await qb.getMany();
-    return variationOptions;
   }
 
   async getVariationOptionById(id: string): Promise<VariationOption> {
-    const variationOptionFound = await this._repository.findOneBy({ id });
-    if (!variationOptionFound) {
-      return this._exceptionsService.notFound({
-        message: `The variationOption with id ${id} could not be found`,
-      });
+    try {
+      const variationOptionFound = await this._repository.findOneBy({ id });
+      if (!variationOptionFound) {
+        return this._exceptionsService.notFound({
+          message: `The variationOption with id ${id} could not be found`,
+        });
+      }
+      return variationOptionFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(variationOptionFound);
   }
+
   async createVariationOption(
     createVariationOptionInput: CreateVariationOptionInput,
   ): Promise<VariationOption> {
-    const newVariationOption = this._repository.create({
-      ...createVariationOptionInput,
-    });
-    return newVariationOption;
+    try {
+      const newVariationOption = this._repository.create({
+        ...createVariationOptionInput,
+      });
+      return this._repository.save(newVariationOption);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
+
   async updateVariationOption(
     id: string,
     updateVariationOptionInput: UpdateVariationOptionInput,
   ): Promise<VariationOption> {
-    await this.getVariationOptionById(id);
-    const newVariationOption = await this._repository.preload({
-      ...updateVariationOptionInput,
-    });
-    if (!newVariationOption) {
-      return this._exceptionsService.notFound({
-        message: 'The VariationOption could not be preloaded',
+    try {
+      await this.getVariationOptionById(id);
+      const newVariationOption = await this._repository.preload({
+        ...updateVariationOptionInput,
       });
+      return this._repository.save(newVariationOption);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newVariationOption);
   }
+
   async removeVariationOption(id: string): Promise<VariationOption> {
-    const variationOption = await this.getVariationOptionById(id);
-    return this._repository.remove(variationOption);
+    try {
+      const variationOption = await this.getVariationOptionById(id);
+      return this._repository.remove(variationOption);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

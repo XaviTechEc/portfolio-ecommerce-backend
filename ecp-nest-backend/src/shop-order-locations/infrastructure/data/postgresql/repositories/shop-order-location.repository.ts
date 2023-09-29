@@ -17,6 +17,8 @@ import {
 } from 'typeorm';
 import { ShopOrderLocation } from '../entities/ShopOrderLocation.entity';
 
+const CONTEXT = 'ShopOrderLocationsRepository';
+
 export class ShopOrderLocationsRepository
   implements IShopOrderLocationRepository<ShopOrderLocation>
 {
@@ -38,93 +40,113 @@ export class ShopOrderLocationsRepository
     fields: (keyof ShopOrderLocation)[],
     paginationArgs: PaginationArgs,
   ): Promise<ShopOrderLocation[]> {
-    let queryOptions: FindManyOptions<ShopOrderLocation> = {};
-    let relations: FindOptionsRelations<ShopOrderLocation> = {};
-    let where: FindOptionsWhere<ShopOrderLocation> = {};
+    try {
+      let queryOptions: FindManyOptions<ShopOrderLocation> = {};
+      let relations: FindOptionsRelations<ShopOrderLocation> = {};
+      let where: FindOptionsWhere<ShopOrderLocation> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'shopOrder') {
-        relations = { ...relations, shopOrder: true };
-        where = {
-          ...where,
-          shopOrder: [{ id: term }],
-        };
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
       }
 
-      if (field === 'location') {
-        relations = { ...relations, location: true };
-        where = {
-          ...where,
-          location: [{ id: term }],
-        };
+      for (const field of fields) {
+        if (field === 'shopOrder') {
+          relations = { ...relations, shopOrder: true };
+          where = {
+            ...where,
+            shopOrder: [{ id: term }],
+          };
+        }
+
+        if (field === 'location') {
+          relations = { ...relations, location: true };
+          where = {
+            ...where,
+            location: [{ id: term }],
+          };
+        }
       }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const shopOrderLocationsBy =
+        (await this._repository.find(queryOptions)) ?? [];
+      return shopOrderLocationsBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const shopOrderLocationsBy = await this._repository.find(queryOptions);
-    return shopOrderLocationsBy;
   }
 
   async getAllShopOrderLocation(
     args?: IGenericArgs<ShopOrderLocation>,
   ): Promise<ShopOrderLocation[]> {
-    let qb = this._repository.createQueryBuilder('shopOrderLocation');
+    try {
+      let qb = this._repository.createQueryBuilder('shopOrderLocation');
 
-    if (args) {
-      const { paginationArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
       }
-    }
 
-    const shopOrderLocations = await qb.getMany();
-    return shopOrderLocations;
+      const shopOrderLocations = (await qb.getMany()) ?? [];
+      return shopOrderLocations;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async getShopOrderLocationById(id: string): Promise<ShopOrderLocation> {
-    const shopOrderLocationFound = await this._repository.findOneBy({ id });
-    if (!shopOrderLocationFound) {
-      return this._exceptionsService.notFound({
-        message: `The shopOrderLocation with id ${id} could not be found`,
-      });
+    try {
+      const shopOrderLocationFound = await this._repository.findOneBy({ id });
+      if (!shopOrderLocationFound) {
+        return this._exceptionsService.notFound({
+          message: `The shopOrderLocation with id ${id} could not be found`,
+        });
+      }
+      return shopOrderLocationFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(shopOrderLocationFound);
   }
 
   async createShopOrderLocation(
     createShopOrderLocationInput: CreateShopOrderLocationInput,
   ): Promise<ShopOrderLocation> {
-    const newShopOrderLocation = this._repository.create({
-      ...createShopOrderLocationInput,
-    });
-    return newShopOrderLocation;
+    try {
+      const newShopOrderLocation = this._repository.create({
+        ...createShopOrderLocationInput,
+      });
+      return this._repository.save(newShopOrderLocation);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateShopOrderLocation(
     id: string,
     updateShopOrderLocationInput: UpdateShopOrderLocationInput,
   ): Promise<ShopOrderLocation> {
-    await this.getShopOrderLocationById(id);
-    const newShopOrderLocation = await this._repository.preload({
-      ...updateShopOrderLocationInput,
-    });
-    if (!newShopOrderLocation) {
-      return this._exceptionsService.notFound({
-        message: 'The ShopOrderLocation could not be preloaded',
+    try {
+      await this.getShopOrderLocationById(id);
+      const newShopOrderLocation = await this._repository.preload({
+        ...updateShopOrderLocationInput,
       });
+      return this._repository.save(newShopOrderLocation);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newShopOrderLocation);
   }
 
   async removeShopOrderLocation(id: string): Promise<ShopOrderLocation> {
-    const shopOrderLocation = await this.getShopOrderLocationById(id);
-    return this._repository.remove(shopOrderLocation);
+    try {
+      const shopOrderLocation = await this.getShopOrderLocationById(id);
+      return this._repository.remove(shopOrderLocation);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

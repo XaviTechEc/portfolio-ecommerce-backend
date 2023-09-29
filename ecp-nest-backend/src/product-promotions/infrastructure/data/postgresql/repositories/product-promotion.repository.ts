@@ -18,6 +18,8 @@ import {
 } from 'typeorm';
 import { ProductPromotion } from '../entities/ProductPromotion.entity';
 
+const CONTEXT = 'ProductPromotionRepository';
+
 export class ProductPromotionsRepository
   implements IProductPromotionRepository<ProductPromotion>
 {
@@ -39,98 +41,118 @@ export class ProductPromotionsRepository
     fields: (keyof ProductPromotion)[],
     paginationArgs: PaginationArgs,
   ): Promise<ProductPromotion[]> {
-    let queryOptions: FindManyOptions<ProductPromotion> = {};
-    let relations: FindOptionsRelations<ProductPromotion> = {};
-    let where: FindOptionsWhere<ProductPromotion> = {};
+    try {
+      let queryOptions: FindManyOptions<ProductPromotion> = {};
+      let relations: FindOptionsRelations<ProductPromotion> = {};
+      let where: FindOptionsWhere<ProductPromotion> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'product') {
-        relations = { ...relations, product: true };
-        where = {
-          ...where,
-          product: [
-            { title: ILike(`%${term}%`) },
-            { subtitle: ILike(`%${term}%`) },
-            { description: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
       }
 
-      if (field === 'promotion') {
-        relations = { ...relations, promotion: true };
-        where = {
-          ...where,
-          promotion: [{ description: ILike(`%${term}%`) }, { id: term }],
-        };
+      for (const field of fields) {
+        if (field === 'product') {
+          relations = { ...relations, product: true };
+          where = {
+            ...where,
+            product: [
+              { title: ILike(`%${term}%`) },
+              { subtitle: ILike(`%${term}%`) },
+              { description: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'promotion') {
+          relations = { ...relations, promotion: true };
+          where = {
+            ...where,
+            promotion: [{ description: ILike(`%${term}%`) }, { id: term }],
+          };
+        }
       }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const productPromotionsBy =
+        (await this._repository.find(queryOptions)) ?? [];
+      return productPromotionsBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const productPromotionsBy = await this._repository.find(queryOptions);
-    return productPromotionsBy;
   }
 
   async getAllProductPromotion(
     args?: IGenericArgs<ProductPromotion>,
   ): Promise<ProductPromotion[]> {
-    let qb = this._repository.createQueryBuilder('productPromotion');
+    try {
+      let qb = this._repository.createQueryBuilder('productPromotion');
 
-    if (args) {
-      const { paginationArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
       }
-    }
 
-    const productPromotions = await qb.getMany();
-    return productPromotions;
+      const productPromotions = (await qb.getMany()) ?? [];
+      return productPromotions;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async getProductPromotionById(id: string): Promise<ProductPromotion> {
-    const productPromotionFound = await this._repository.findOneBy({ id });
-    if (!productPromotionFound) {
-      return this._exceptionsService.notFound({
-        message: `The productPromotion with id ${id} could not be found`,
-      });
+    try {
+      const productPromotionFound = await this._repository.findOneBy({ id });
+      if (!productPromotionFound) {
+        return this._exceptionsService.notFound({
+          message: `The productPromotion with id ${id} could not be found`,
+        });
+      }
+      return productPromotionFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(productPromotionFound);
   }
 
   async createProductPromotion(
     createProductPromotionInput: CreateProductPromotionInput,
   ): Promise<ProductPromotion> {
-    const newProductPromotion = this._repository.create({
-      ...createProductPromotionInput,
-    });
-    return newProductPromotion;
+    try {
+      const newProductPromotion = this._repository.create({
+        ...createProductPromotionInput,
+      });
+      return this._repository.save(newProductPromotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateProductPromotion(
     id: string,
     updateProductPromotionInput: UpdateProductPromotionInput,
   ): Promise<ProductPromotion> {
-    await this.getProductPromotionById(id);
-    const newProductPromotion = await this._repository.preload({
-      ...updateProductPromotionInput,
-    });
-    if (!newProductPromotion) {
-      return this._exceptionsService.notFound({
-        message: 'The ProductPromotion could not be preloaded',
+    try {
+      await this.getProductPromotionById(id);
+      const newProductPromotion = await this._repository.preload({
+        ...updateProductPromotionInput,
       });
+      return this._repository.save(newProductPromotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newProductPromotion);
   }
 
   async removeProductPromotion(id: string): Promise<ProductPromotion> {
-    const productPromotion = await this.getProductPromotionById(id);
-    return this._repository.remove(productPromotion);
+    try {
+      const productPromotion = await this.getProductPromotionById(id);
+      return this._repository.remove(productPromotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

@@ -18,6 +18,8 @@ import {
 } from 'typeorm';
 import { ProductCategory } from '../entities/ProductCategory.entity';
 
+const CONTEXT = 'ProductCategoriesRepository';
+
 export class ProductCategoriesRepository
   implements IProductCategoryRepository<ProductCategory>
 {
@@ -40,98 +42,121 @@ export class ProductCategoriesRepository
     fields: (keyof ProductCategory)[],
     paginationArgs: PaginationArgs,
   ): Promise<ProductCategory[]> {
-    let queryOptions: FindManyOptions<ProductCategory> = {};
-    let relations: FindOptionsRelations<ProductCategory> = {};
-    let where: FindOptionsWhere<ProductCategory> = {};
+    try {
+      let queryOptions: FindManyOptions<ProductCategory> = {};
+      let relations: FindOptionsRelations<ProductCategory> = {};
+      let where: FindOptionsWhere<ProductCategory> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'category') {
-        relations = { ...relations, category: true };
-        where = {
-          ...where,
-          category: [
-            { value: ILike(`%${term}%`) },
-            { description: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
       }
 
-      if (field === 'product') {
-        relations = { ...relations, product: true };
-        where = {
-          ...where,
-          product: [
-            { title: ILike(`%${term}%`) },
-            { subtitle: ILike(`%${term}%`) },
-            { description: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
+      for (const field of fields) {
+        if (field === 'category') {
+          relations = { ...relations, category: true };
+          where = {
+            ...where,
+            category: [
+              { value: ILike(`%${term}%`) },
+              { description: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'product') {
+          relations = { ...relations, product: true };
+          where = {
+            ...where,
+            product: [
+              { title: ILike(`%${term}%`) },
+              { subtitle: ILike(`%${term}%`) },
+              { description: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
       }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const productCategoriesBy =
+        (await this._repository.find(queryOptions)) ?? [];
+      return productCategoriesBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const productCategoriesBy = await this._repository.find(queryOptions);
-    return productCategoriesBy;
   }
 
   async getAllProductCategory(
     args?: IGenericArgs<ProductCategory>,
   ): Promise<ProductCategory[]> {
-    let qb = this._repository.createQueryBuilder('productCategory');
+    try {
+      let qb = this._repository.createQueryBuilder('productCategory');
 
-    if (args) {
-      const { paginationArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
       }
-    }
 
-    const productCategories = await qb.getMany();
-    return productCategories;
-  }
-  async getProductCategoryById(id: string): Promise<ProductCategory> {
-    const productCategoryFound = await this._repository.findOneBy({ id });
-    if (!productCategoryFound) {
-      return this._exceptionsService.notFound({
-        message: `The productCategory with id ${id} could not be found`,
-      });
+      const productCategories = (await qb.getMany()) ?? [];
+      return productCategories;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(productCategoryFound);
   }
+
+  async getProductCategoryById(id: string): Promise<ProductCategory> {
+    try {
+      const productCategoryFound = await this._repository.findOneBy({ id });
+      if (!productCategoryFound) {
+        return this._exceptionsService.notFound({
+          message: `The productCategory with id ${id} could not be found`,
+        });
+      }
+      return productCategoryFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+
   async createProductCategory(
     createProductCategoryInput: CreateProductCategoryInput,
   ): Promise<ProductCategory> {
-    const newProductCategory = this._repository.create({
-      ...createProductCategoryInput,
-    });
-    return newProductCategory;
+    try {
+      const newProductCategory = this._repository.create({
+        ...createProductCategoryInput,
+      });
+      return this._repository.save(newProductCategory);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
+
   async updateProductCategory(
     id: string,
     updateProductCategoryInput: UpdateProductCategoryInput,
   ): Promise<ProductCategory> {
-    await this.getProductCategoryById(id);
-    const newProductCategory = await this._repository.preload({
-      ...updateProductCategoryInput,
-    });
-    if (!newProductCategory) {
-      return this._exceptionsService.notFound({
-        message: 'The ProductCategory could not be preloaded',
+    try {
+      await this.getProductCategoryById(id);
+      const newProductCategory = await this._repository.preload({
+        ...updateProductCategoryInput,
       });
+      return this._repository.save(newProductCategory);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newProductCategory);
   }
   async removeProductCategory(id: string): Promise<ProductCategory> {
-    const productCategory = await this.getProductCategoryById(id);
-    return this._repository.remove(productCategory);
+    try {
+      const productCategory = await this.getProductCategoryById(id);
+      return this._repository.remove(productCategory);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }
