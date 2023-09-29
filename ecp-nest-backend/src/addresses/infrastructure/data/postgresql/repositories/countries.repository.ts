@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { Country } from '../entities';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 
+const CONTEXT = 'CountriesRepository';
+
 export class CountriesRepository implements ICountriesRepository<Country> {
   private _repository: Repository<Country>;
   private _loggerService: ILoggerService;
@@ -25,71 +27,85 @@ export class CountriesRepository implements ICountriesRepository<Country> {
   }
 
   async getAllCountries(args?: IGenericArgs<Country>): Promise<Country[]> {
-    let qb = this._repository.createQueryBuilder('country');
+    try {
+      let qb = this._repository.createQueryBuilder('country');
 
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
 
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.limit(limit).skip(offset);
-      }
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.limit(limit).skip(offset);
+        }
 
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
 
-        if (searchTerm) {
-          qb = qb
-            .where(`country.code = UPPER(:code)`)
-            .orWhere('country.long_name ILIKE LOWER(longName)')
-            .setParameters({
-              code: `${searchTerm}`,
-              longName: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where(`country.code = UPPER(:code)`)
+              .orWhere('country.long_name ILIKE LOWER(longName)')
+              .setParameters({
+                code: `${searchTerm}`,
+                longName: `%${searchTerm}%`,
+              });
+          }
         }
       }
-    }
 
-    const countries = qb.getMany();
-    return countries;
+      const countries = (await qb.getMany()) ?? [];
+      return countries;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async getCountryById(id: string): Promise<Country> {
-    const country = await this._repository.findOneBy({ id });
-    if (!country) {
-      return this._exceptionsService.notFound({
-        message: `Country with id ${id} could not be found`,
-        code_error: 404,
-      });
+    try {
+      const country = await this._repository.findOneBy({ id });
+      if (!country) {
+        return this._exceptionsService.notFound({
+          message: `Country with id ${id} could not be found`,
+        });
+      }
+      return country;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return country;
   }
 
   async createCountry(
     createCountryInput: CreateCountryInput,
   ): Promise<Country> {
-    const newCountry = this._repository.create({ ...createCountryInput });
-    return this._repository.save(newCountry);
+    try {
+      const newCountry = this._repository.create({ ...createCountryInput });
+      return this._repository.save(newCountry);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateCountry(
     id: string,
     updateCountryInput: UpdateCountryInput,
   ): Promise<Country> {
-    await this.getCountryById(id);
-    const newCountry = await this._repository.preload({
-      ...updateCountryInput,
-    });
-    if (!newCountry) {
-      return this._exceptionsService.notFound({
-        message: 'The country could not be preloaded',
+    try {
+      await this.getCountryById(id);
+      const newCountry = await this._repository.preload({
+        ...updateCountryInput,
       });
+      return this._repository.save(newCountry);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newCountry);
   }
 
   async removeCountry(id: string): Promise<Country> {
-    const list = await this.getCountryById(id);
-    return this._repository.remove(list);
+    try {
+      const list = await this.getCountryById(id);
+      return this._repository.remove(list);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }
