@@ -1,3 +1,4 @@
+import { Billboard } from 'src/billboard/infrastructure/data/postgresql/entities/billboard.entity';
 import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
 import {
   Index,
@@ -36,4 +37,7 @@ export class Season {
   // Relations
   @OneToMany(() => Category, (category) => category.season)
   category: Category[];
+
+  @OneToMany(() => Billboard, (billboard) => billboard.season)
+  billboards: Billboard[];
 }
