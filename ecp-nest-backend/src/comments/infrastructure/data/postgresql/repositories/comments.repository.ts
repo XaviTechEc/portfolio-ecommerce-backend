@@ -17,8 +17,11 @@ import {
 } from 'typeorm';
 import { Comment } from '../entities/Comment.entity';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+<<<<<<< HEAD
 
 const CONTEXT = 'CommentsRepository';
+=======
+>>>>>>> auth-module
 
 export class CommentsRepository implements ICommentsRepository<Comment> {
   private _repository: Repository<Comment>;
