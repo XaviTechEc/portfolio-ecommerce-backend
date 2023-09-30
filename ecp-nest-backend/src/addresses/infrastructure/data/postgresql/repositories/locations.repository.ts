@@ -7,11 +7,8 @@ import { IExceptionsService } from 'src/common/domain/abstracts/services/excepti
 import { Repository } from 'typeorm';
 import { Location } from '../entities';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
-<<<<<<< HEAD
 
 const CONTEXT = 'LocationsRepository';
-=======
->>>>>>> auth-module
 
 export class LocationsRepository implements ILocationsRepository<Location> {
   private _repository: Repository<Location>;

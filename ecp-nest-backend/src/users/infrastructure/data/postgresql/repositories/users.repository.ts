@@ -60,7 +60,6 @@ export class UsersRepository implements IUsersRepository<User> {
   }
 
   async getUserById(id: string): Promise<User> {
-<<<<<<< HEAD
     try {
       const userFound = await this._repository.findOneBy({ id });
       if (!userFound) {
@@ -98,37 +97,6 @@ export class UsersRepository implements IUsersRepository<User> {
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
-=======
-    const userFound = await this._repository.findOneBy({ id });
-    if (!userFound) {
-      return this._exceptionsService.notFound({
-        message: `The user with id ${id} could not be found`,
-      });
-    }
-    return userFound;
-  }
-
-  async getShortUserById(id: string): Promise<User> {
-    const userFound = await this._repository.findOne({
-      where: { id },
-      select: [
-        'id',
-        'fullName',
-        'username',
-        'email',
-        'avatarImg',
-        'lastConnection',
-        'active',
-        'roles',
-      ],
-    });
-    if (!userFound) {
-      return this._exceptionsService.notFound({
-        message: `The user with id ${id} could not be found`,
-      });
-    }
-    return userFound;
->>>>>>> auth-module
   }
 
   async createUser(data: CreateUserDto): Promise<User> {

@@ -17,11 +17,8 @@ import {
 } from 'typeorm';
 import { CategoryPromotion } from '../entities/CategoryPromotion.entity';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
-<<<<<<< HEAD
 
 const CONTEXT = 'CategoryPromotionsRepository';
-=======
->>>>>>> auth-module
 
 export class CategoryPromotionsRepository
   implements ICategoryPromotionRepository<CategoryPromotion>

@@ -17,11 +17,8 @@ import {
 } from 'typeorm';
 import { Category } from '../entities/Category.entity';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
-<<<<<<< HEAD
 
 const CONTEXT = 'CategoriesRepository';
-=======
->>>>>>> auth-module
 
 export class CategoriesRepository implements ICategoriesRepository<Category> {
   private _repository: Repository<Category>;
