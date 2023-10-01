@@ -1,3 +1,4 @@
+import { IBillboard } from 'src/billboard/domain/entities/billboard.entity';
 import { ICategory } from 'src/categories/domain/entities/category.entity';
 import { IProductItem } from 'src/product-items/domain/entities/product-item.entity';
 import { IProduct } from 'src/products/domain/entities/product.entity';
@@ -13,5 +14,5 @@ export class IImage {
   productItem?: IProductItem;
   category?: ICategory;
   user: IUser;
-  billboard?: string;
+  billboard?: IBillboard;
 }
