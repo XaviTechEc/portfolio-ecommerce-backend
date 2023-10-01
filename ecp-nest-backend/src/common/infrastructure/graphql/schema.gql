@@ -18,6 +18,16 @@ type AddressType {
   userAddresses: [UserAddressType!]!
 }
 
+type BillboardType {
+  createdAt: Timestamp!
+  id: ID!
+  images: [ImageType!]!
+  season: SeasonType!
+  store: StoreType!
+  title: String!
+  updatedAt: Timestamp
+}
+
 type CategoryPromotionType {
   category: CategoryType!
   promotion: PromotionType!
@@ -34,6 +44,7 @@ type CategoryType {
   products(limit: Int = 10, offset: Int = 0): [ProductType!]!
   promotions(limit: Int = 10, offset: Int = 0): [PromotionType!]!
   season: SeasonType!
+  store: StoreType!
   value: String!
   variations: [VariationType!]!
 }
@@ -70,11 +81,18 @@ input CreateAddressInput {
   unitNumber: Int
 }
 
+input CreateBillboardInput {
+  season: ID!
+  store: ID!
+  title: String!
+}
+
 input CreateCategoryInput {
   active: Boolean = true
   description: String!
   parentCategory: ID
   season: ID!
+  store: ID!
   user: ID!
   value: String!
 }
@@ -202,6 +220,13 @@ input CreateShoppingCartProductItemInput {
   shoppingCart: ID!
 }
 
+input CreateStoreInput {
+  description: String
+  name: String!
+  slug: String!
+  user: ID!
+}
+
 input CreateTagInput {
   code: String!
   value: String!
@@ -239,6 +264,7 @@ enum Gender {
 }
 
 type ImageType {
+  billboard: BillboardType!
   category: CategoryType
   createdAt: Timestamp!
   extension: String!
@@ -260,6 +286,7 @@ type LocationType {
 
 type Mutation {
   createAddress(createAddressInput: CreateAddressInput!): AddressType!
+  createBillboard(createBillboardInput: CreateBillboardInput!): BillboardType!
   createCategory(createCategoryInput: CreateCategoryInput!): CategoryType!
   createCategoryPromotion(createCategoryPromotionInput: CreateCategoryPromotionInput!): CategoryPromotionType!
   createComment(createCommentInput: CreateCommentInput!): CommentType!
@@ -282,11 +309,13 @@ type Mutation {
   createShopOrderLocation(createShopOrderLocationInput: CreateShopOrderLocationInput!): ShopOrderLocationType!
   createShoppingCart(createShoppingCartInput: CreateShoppingCartInput!): ShoppingCartType!
   createShoppingCartProductItem(createShoppingCartProductItemInput: CreateShoppingCartProductItemInput!): ShoppingCartProductItemType!
+  createStore(createStoreInput: CreateStoreInput!): StoreType!
   createTag(createTagInput: CreateTagInput!): TagType!
   createUserAddress(createUserAddressInput: CreateUserAddressInput!): UserAddressType!
   createUserPaymentMethod(createUserPaymentMethodInput: CreateUserPaymentMethodInput!): UserPaymentMethodType!
   createVariation(createVariationInput: CreateVariationInput!): VariationType!
   createVariationOption(createVariationOptionInput: CreateVariationOptionInput!): VariationOptionType!
+  deleteBillboard(id: ID!): BillboardType!
   removeAddress(id: ID!): AddressType!
   removeCategory(id: ID!): CategoryType!
   removeCategoryPromotion(id: ID!): CategoryPromotionType!
@@ -310,12 +339,14 @@ type Mutation {
   removeShopOrderLocation(id: ID!): ShopOrderLocationType!
   removeShoppingCart(id: ID!): ShoppingCartType!
   removeShoppingCartProductItem(id: ID!): ShoppingCartProductItemType!
+  removeStore(id: String!): StoreType!
   removeTag(id: ID!): TagType!
   removeUserAddress(id: ID!): UserAddressType!
   removeUserPaymentMethod(id: ID!): UserPaymentMethodType!
   removeVariation(id: ID!): VariationType!
   removeVariationOption(id: ID!): VariationOptionType!
   updateAddress(updateAddressInput: UpdateAddressInput!): AddressType!
+  updateBillboard(updateBillboardInput: UpdateBillboardInput!): BillboardType!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryType!
   updateCategoryPromotion(updateCategoryPromotionInput: UpdateCategoryPromotionInput!): CategoryPromotionType!
   updateComment(updateCommentInput: UpdateCommentInput!): CommentType!
@@ -338,6 +369,7 @@ type Mutation {
   updateShopOrderLocation(updateShopOrderLocationInput: UpdateShopOrderLocationInput!): ShopOrderLocationType!
   updateShoppingCart(updateShoppingCartInput: UpdateShoppingCartInput!): ShoppingCartType!
   updateShoppingCartProductItem(updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput!): ShoppingCartProductItemType!
+  updateStore(updateStoreInput: UpdateStoreInput!): StoreType!
   updateTag(updateTagInput: UpdateTagInput!): TagType!
   updateUserAddress(updateUserAddressInput: UpdateUserAddressInput!): UserAddressType!
   updateUserPaymentMethod(updateUserPaymentMethodInput: UpdateUserPaymentMethodInput!): UserPaymentMethodType!
@@ -436,6 +468,8 @@ type Query {
   addressesByCountry(limit: Int = 10, offset: Int = 0, term: String!): [AddressType!]!
   addressesByLocation(limit: Int = 10, offset: Int = 0, term: String!): [AddressType!]!
   allOrderStatus(limit: Int = 10, offset: Int = 0, searchTerm: String): [OrderStatusType!]!
+  billboard(id: ID!): BillboardType!
+  billboards(limit: Int = 10, offset: Int = 0, searchTerm: String): [BillboardType!]!
   categories(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryType!]!
   categoriesByParentCategory(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
   categoriesBySeason(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
@@ -513,6 +547,8 @@ type Query {
   shoppingCartProductItemsByShoppingCart(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartProductItemType!]!
   shoppingCarts(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShoppingCartType!]!
   shoppingCartsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartType!]!
+  store(id: String!): StoreType!
+  stores(limit: Int = 10, offset: Int = 0, searchTerm: String): [StoreType!]!
   tag(id: ID!): TagType!
   tags(limit: Int = 10, offset: Int = 0, searchTerm: String): [TagType!]!
   user(id: ID!): UserObjType!
@@ -552,6 +588,7 @@ enum Role {
 }
 
 type SeasonType {
+  billboards: [BillboardType!]!
   categories: CategoryType!
   description: String!
   endDate: Timestamp
@@ -605,6 +642,16 @@ enum StatusValue {
   PROCESSING
 }
 
+type StoreType {
+  billboards: [BillboardType!]!
+  categories: [CategoryType!]!
+  description: String
+  id: ID!
+  slug: String!
+  title: String!
+  user: UserObjType!
+}
+
 type TagType {
   code: String!
   id: ID!
@@ -631,12 +678,20 @@ input UpdateAddressInput {
   unitNumber: Int
 }
 
+input UpdateBillboardInput {
+  id: ID!
+  season: ID
+  store: ID
+  title: String
+}
+
 input UpdateCategoryInput {
   active: Boolean = true
   description: String
   id: String!
   parentCategory: ID
   season: ID
+  store: ID
   user: ID
   value: String
 }
@@ -765,6 +820,14 @@ input UpdateShoppingCartProductItemInput {
   id: ID!
 }
 
+input UpdateStoreInput {
+  description: String
+  id: ID!
+  name: String
+  slug: String
+  user: ID
+}
+
 input UpdateTagInput {
   code: String
   id: ID!
@@ -808,15 +871,17 @@ type UserObjType {
   fullName: String!
   gender: Gender!
   id: ID!
+  images: [ImageType!]!
   lastConnection: Timestamp
   password: String!
   paymentMethods(limit: Int = 10, offset: Int = 0): [PaymentMethodType!]!
   phoneNumber: String
   products: [ProductType!]!
   reviews: [ReviewType!]!
-  role: Role!
+  roles: [Role!]!
   shopOrders: [ShopOrderType!]!
   shoppingCarts: [ShoppingCartType!]!
+  stores: [StoreType!]!
   updatedAt: Timestamp
   userType: UserType!
   username: String!

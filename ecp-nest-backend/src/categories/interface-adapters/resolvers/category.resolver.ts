@@ -1,12 +1,12 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
-  Resolver,
   Args,
   ID,
   Mutation,
-  ResolveField,
   Parent,
   Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
 import { CategoryUseCases } from 'src/categories/application/use-cases/category-use-cases';
 import {

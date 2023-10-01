@@ -3,7 +3,6 @@ import {
   IGenericArgs,
   PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { IReviewsRepository } from 'src/reviews/domain/abstracts/repositories/reviews.repository';
 import { IReviewsDataSourceService } from 'src/reviews/domain/abstracts/services/reviews-datasource.abstract.service';
 import {
   CreateReviewInput,
@@ -13,7 +12,7 @@ import { IReview } from 'src/reviews/domain/entities/review.entity';
 import { ReviewFactoryService } from './factory/review-factory.service';
 
 @Injectable()
-export class ReviewUseCases implements IReviewsRepository<IReview> {
+export class ReviewUseCases {
   constructor(
     private dataService: IReviewsDataSourceService,
     private reviewFactoryService: ReviewFactoryService,

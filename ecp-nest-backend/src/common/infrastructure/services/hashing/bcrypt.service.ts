@@ -11,6 +11,7 @@ export class BcryptService implements IHashService {
     const hashedData = await bcrypt.hash(data, salt);
     return hashedData;
   }
+
   async compare(data: string, hash: string): Promise<boolean> {
     const isValid = await bcrypt.compare(data, hash);
     return isValid;

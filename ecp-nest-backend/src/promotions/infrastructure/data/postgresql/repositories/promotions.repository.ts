@@ -1,6 +1,6 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IPromotionsRepository } from 'src/promotions/domain/abstracts/repositories/promotions.repository';
 import {
   CreatePromotionInput,
@@ -9,15 +9,17 @@ import {
 import { Repository } from 'typeorm';
 import { Promotion } from '../entities/Promotion.entity';
 
+const CONTEXT = 'PromotionsRepository';
+
 export class PromotionsRepository implements IPromotionsRepository<Promotion> {
   private _repository: Repository<Promotion>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<Promotion>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -25,60 +27,79 @@ export class PromotionsRepository implements IPromotionsRepository<Promotion> {
   }
 
   async getAllPromotions(args?: IGenericArgs<Promotion>): Promise<Promotion[]> {
-    let qb = this._repository.createQueryBuilder('promotion');
+    try {
+      let qb = this._repository.createQueryBuilder('promotion');
 
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
+
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
+
+          qb = qb
+            .where('promotion.description ILIKE LOWER(:description)')
+            .setParameters({
+              description: `%${searchTerm}%`,
+            });
+        }
       }
-
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
-
-        qb = qb
-          .where('promotion.description ILIKE LOWER(:description)')
-          .setParameters({
-            description: `%${searchTerm}%`,
-          });
-      }
+      const promotions = (await qb.getMany()) ?? [];
+      return promotions;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    const promotions = await qb.getMany();
-    return promotions;
   }
+
   async getPromotionById(id: string): Promise<Promotion> {
-    const promotionFound = await this._repository.findOneBy({ id });
-    if (!promotionFound) {
-      return this._exceptionsService.notFound({
-        message: `The promotion with id ${id} could not be found`,
-      });
+    try {
+      const promotionFound = await this._repository.findOneBy({ id });
+      if (!promotionFound) {
+        return this._exceptionsService.notFound({
+          message: `The promotion with id ${id} could not be found`,
+        });
+      }
+      return promotionFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(promotionFound);
   }
+
   async createPromotion(
     createPromotionInput: CreatePromotionInput,
   ): Promise<Promotion> {
-    const newPromotion = this._repository.create({ ...createPromotionInput });
-    return newPromotion;
+    try {
+      const newPromotion = this._repository.create({ ...createPromotionInput });
+      return this._repository.save(newPromotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
+
   async updatePromotion(
     id: string,
     updatePromotionInput: UpdatePromotionInput,
   ): Promise<Promotion> {
-    await this.getPromotionById(id);
-    const newPromotion = await this._repository.preload({
-      ...updatePromotionInput,
-    });
-    if (!newPromotion) {
-      return this._exceptionsService.notFound({
-        message: 'The Promotion could not be preloaded',
+    try {
+      await this.getPromotionById(id);
+      const newPromotion = await this._repository.preload({
+        ...updatePromotionInput,
       });
+      return this._repository.save(newPromotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newPromotion);
   }
+
   async removePromotion(id: string): Promise<Promotion> {
-    const promotion = await this.getPromotionById(id);
-    return this._repository.remove(promotion);
+    try {
+      const promotion = await this.getPromotionById(id);
+      return this._repository.remove(promotion);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

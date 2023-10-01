@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ICountriesRepository } from 'src/addresses/domain/abstracts/repositories/countries.repository';
 import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 import {
   CreateCountryInput,
@@ -10,7 +9,7 @@ import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { CountryFactoryService } from './factory';
 
 @Injectable()
-export class CountryUseCases implements ICountriesRepository<ICountry> {
+export class CountryUseCases {
   constructor(
     private dataService: IAddressDataSourceService,
     private countryFactoryService: CountryFactoryService,

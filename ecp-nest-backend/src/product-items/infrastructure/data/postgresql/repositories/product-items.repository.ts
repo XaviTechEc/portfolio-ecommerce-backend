@@ -1,9 +1,9 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IProductItemsRepository } from 'src/product-items/domain/abstracts/repositories/product-item.repository';
 import {
   CreateProductItemInput,
@@ -18,17 +18,19 @@ import {
 } from 'typeorm';
 import { ProductItem } from '../entities/ProductItem.entity';
 
+const CONTEXT = 'ProductItemsRepository';
+
 export class ProductItemsRepository
   implements IProductItemsRepository<ProductItem>
 {
   private _repository: Repository<ProductItem>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<ProductItem>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -39,97 +41,121 @@ export class ProductItemsRepository
     fields: (keyof ProductItem)[],
     paginationArgs: PaginationArgs,
   ): Promise<ProductItem[]> {
-    let queryOptions: FindManyOptions<ProductItem> = {};
-    let relations: FindOptionsRelations<ProductItem> = {};
-    let where: FindOptionsWhere<ProductItem> = {};
+    try {
+      let queryOptions: FindManyOptions<ProductItem> = {};
+      let relations: FindOptionsRelations<ProductItem> = {};
+      let where: FindOptionsWhere<ProductItem> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'product') {
-        relations = { ...relations, product: true };
-        where = {
-          ...where,
-          product: [
-            { title: ILike(`%${term}%`) },
-            { subtitle: ILike(`%${term}%`) },
-            { description: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
       }
+
+      for (const field of fields) {
+        if (field === 'product') {
+          relations = { ...relations, product: true };
+          where = {
+            ...where,
+            product: [
+              { title: ILike(`%${term}%`) },
+              { subtitle: ILike(`%${term}%`) },
+              { description: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+      }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const productItemsBy = (await this._repository.find(queryOptions)) ?? [];
+      return productItemsBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const productItemsBy = await this._repository.find(queryOptions);
-    return productItemsBy;
   }
 
   async getAllProductItems(
     args?: IGenericArgs<ProductItem>,
   ): Promise<ProductItem[]> {
-    let qb = this._repository.createQueryBuilder('productItem');
+    try {
+      let qb = this._repository.createQueryBuilder('productItem');
 
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
+
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
+
+          qb = qb
+            .where(`productItem.sku ILIKE LOWER(:sku)`)
+            .orWhere('productItem.slug ILIKE LOWER(:slug)')
+            .setParameters({
+              sku: `%${searchTerm}%`,
+              slug: `%${searchTerm}%`,
+            });
+        }
       }
 
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
-
-        qb = qb
-          .where(`productItem.sku ILIKE LOWER(:sku)`)
-          .orWhere('productItem.slug ILIKE LOWER(:slug)')
-          .setParameters({
-            sku: `%${searchTerm}%`,
-            slug: `%${searchTerm}%`,
-          });
-      }
+      const productItems = (await qb.getMany()) ?? [];
+      return productItems;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    const productItems = await qb.getMany();
-    return productItems;
   }
 
   async getProductItemById(id: string): Promise<ProductItem> {
-    const productItemFound = await this._repository.findOneBy({ id });
-    return this._repository.save(productItemFound);
+    try {
+      const productItemFound = await this._repository.findOneBy({ id });
+      if (!productItemFound) {
+        return this._exceptionsService.notFound({
+          message: `The product item with id ${id} could not be found`,
+        });
+      }
+      return productItemFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async createProductItem(
     createProductItemInput: CreateProductItemInput,
   ): Promise<ProductItem> {
-    const newProductItem = this._repository.create({
-      ...createProductItemInput,
-    });
-    return newProductItem;
+    try {
+      const newProductItem = this._repository.create({
+        ...createProductItemInput,
+      });
+      return this._repository.save(newProductItem);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateProductItem(
     id: string,
     updateProductItemInput: UpdateProductItemInput,
   ): Promise<ProductItem> {
-    await this.getProductItemById(id);
-    const newProductItem = await this._repository.preload({
-      ...updateProductItemInput,
-    });
-    if (!newProductItem) {
-      return this._exceptionsService.notFound({
-        message: 'The product item could not be preloaded',
+    try {
+      await this.getProductItemById(id);
+      const newProductItem = await this._repository.preload({
+        ...updateProductItemInput,
       });
+      return this._repository.save(newProductItem);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newProductItem);
   }
 
   async removeProductItem(id: string): Promise<ProductItem> {
-    const productItem = await this.getProductItemById(id);
-    return this._repository.remove(productItem);
+    try {
+      const productItem = await this.getProductItemById(id);
+      return this._repository.remove(productItem);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

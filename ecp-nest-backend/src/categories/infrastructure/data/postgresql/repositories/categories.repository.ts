@@ -7,7 +7,7 @@ import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import {
   Repository,
   FindManyOptions,
@@ -16,17 +16,19 @@ import {
   ILike,
 } from 'typeorm';
 import { Category } from '../entities/Category.entity';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+
+const CONTEXT = 'CategoriesRepository';
 
 export class CategoriesRepository implements ICategoriesRepository<Category> {
   private _repository: Repository<Category>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<Category>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -37,117 +39,137 @@ export class CategoriesRepository implements ICategoriesRepository<Category> {
     fields: (keyof Category)[],
     paginationArgs: PaginationArgs,
   ): Promise<Category[]> {
-    let queryOptions: FindManyOptions<Category> = {};
-    let relations: FindOptionsRelations<Category> = {};
-    let where: FindOptionsWhere<Category> = {};
-
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'season') {
-        relations = { ...relations, season: true };
-        where = {
-          ...where,
-          season: [{ description: ILike(`%${term}%`) }, { id: term }],
-        };
-      }
-
-      if (field === 'parentCategory') {
-        relations = { ...relations, category: true };
-        where = {
-          ...where,
-          category: [
-            { value: ILike(`%${term}%`) },
-            { description: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
-      }
-
-      if (field === 'user') {
-        relations = { ...relations, user: true };
-        where = {
-          ...where,
-          user: [
-            { username: ILike(`%${term}%`) },
-            { email: ILike(`%${term}%`) },
-            { fullName: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
-      }
-    }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const categoriesBy = await this._repository.find(queryOptions);
-    return categoriesBy;
-  }
-
-  async getAllCategories(args?: IGenericArgs<Category>): Promise<Category[]> {
-    let qb = this._repository.createQueryBuilder('category');
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
+    try {
+      let queryOptions: FindManyOptions<Category> = {};
+      let relations: FindOptionsRelations<Category> = {};
+      let where: FindOptionsWhere<Category> = {};
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+        queryOptions = { take: limit, skip: offset };
       }
 
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
+      for (const field of fields) {
+        if (field === 'season') {
+          relations = { ...relations, season: true };
+          where = {
+            ...where,
+            season: [{ description: ILike(`%${term}%`) }, { id: term }],
+          };
+        }
 
-        qb = qb
-          .where('category.value ILIKE LOWER(:value)')
-          .orWhere('category.description ILIKE LOWER(:description)')
-          .setParameters({
-            value: `%${searchTerm}%`,
-            description: `%${searchTerm}%`,
-          });
+        if (field === 'parentCategory') {
+          relations = { ...relations, category: true };
+          where = {
+            ...where,
+            category: [
+              { value: ILike(`%${term}%`) },
+              { description: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'user') {
+          relations = { ...relations, user: true };
+          where = {
+            ...where,
+            user: [
+              { username: ILike(`%${term}%`) },
+              { email: ILike(`%${term}%`) },
+              { fullName: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
       }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const categoriesBy = (await this._repository.find(queryOptions)) ?? [];
+
+      return categoriesBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    const categories = await qb.getMany();
-    return categories;
+  }
+
+  async getAllCategories(args?: IGenericArgs<Category>): Promise<Category[]> {
+    try {
+      let qb = this._repository.createQueryBuilder('category');
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
+
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
+
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
+
+          qb = qb
+            .where('category.value ILIKE LOWER(:value)')
+            .orWhere('category.description ILIKE LOWER(:description)')
+            .setParameters({
+              value: `%${searchTerm}%`,
+              description: `%${searchTerm}%`,
+            });
+        }
+      }
+      const categories = (await qb.getMany()) ?? [];
+      return categories;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async getCategoryById(id: string): Promise<Category> {
-    const categoryFound = await this._repository.findOneBy({ id });
-    if (!categoryFound) {
-      return this._exceptionsService.notFound({
-        message: `The category with id ${id} could not be found`,
-      });
+    try {
+      const categoryFound = await this._repository.findOneBy({ id });
+      if (!categoryFound) {
+        return this._exceptionsService.notFound({
+          message: `The category with id ${id} could not be found`,
+        });
+      }
+      return categoryFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return categoryFound;
   }
 
   async createCategory(
     createCategoryInput: CreateCategoryInput,
   ): Promise<Category> {
-    const newCategory = this._repository.create({ ...createCategoryInput });
-    return this._repository.save(newCategory);
+    try {
+      const newCategory = this._repository.create({ ...createCategoryInput });
+      return this._repository.save(newCategory);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateCategory(
     id: string,
     updateCategoryInput: UpdateCategoryInput,
   ): Promise<Category> {
-    await this.getCategoryById(id);
-    const newCategory = await this._repository.preload({
-      ...updateCategoryInput,
-    });
-    if (!newCategory) {
-      return this._exceptionsService.notFound({
-        message: 'The category could not be preloaded',
+    try {
+      await this.getCategoryById(id);
+      const newCategory = await this._repository.preload({
+        ...updateCategoryInput,
       });
+      return this._repository.save(newCategory);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newCategory);
   }
 
   async removeCategory(id: string): Promise<Category> {
-    const category = await this.getCategoryById(id);
-    return this._repository.remove(category);
+    try {
+      const category = await this.getCategoryById(id);
+      return this._repository.remove(category);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

@@ -3,7 +3,6 @@ import {
   IGenericArgs,
   PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { IShopOrdersRepository } from 'src/shop-orders/domain/abstracts/repositories/shop-orders.repository';
 import { IShopOrdersDataSourceService } from 'src/shop-orders/domain/abstracts/services/shop-orders-datasource.abstract.service';
 import {
   CreateShopOrderInput,
@@ -13,7 +12,7 @@ import { IShopOrder } from 'src/shop-orders/domain/entities/shop-order.entity';
 import { ShopOrderFactoryService } from './factory/shop-order-factory.service';
 
 @Injectable()
-export class ShopOrderUseCases implements IShopOrdersRepository<IShopOrder> {
+export class ShopOrderUseCases {
   constructor(
     private dataService: IShopOrdersDataSourceService,
     private shopOrderFactoryService: ShopOrderFactoryService,

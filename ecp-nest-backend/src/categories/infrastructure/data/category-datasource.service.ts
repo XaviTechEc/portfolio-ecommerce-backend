@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { Category } from './postgresql/entities/Category.entity';
 import { CategoriesRepository } from './postgresql/repositories/categories.repository';
@@ -18,8 +18,8 @@ export class CategoryDataSourceService
     // Categories
     @InjectRepository(Category)
     private categoriesRepository: Repository<Category>,
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {

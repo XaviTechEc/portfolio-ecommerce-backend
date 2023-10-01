@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { CategoryPromotion } from './postgresql/entities/CategoryPromotion.entity';
 import { CategoryPromotionsRepository } from './postgresql/repositories/category-promotion.repository';
@@ -16,8 +16,8 @@ export class CategoryPromotionsDataService
   constructor(
     @InjectRepository(CategoryPromotion)
     private categoryPromotionsRepository: Repository<CategoryPromotion>,
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
   ) {}
   onApplicationBootstrap() {
     this.categoryPromotions = new CategoryPromotionsRepository(

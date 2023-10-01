@@ -15,6 +15,7 @@ export class CategoryFactoryService {
     newCategory.parentCategory = createCategoryInput.parentCategory;
     newCategory.active = createCategoryInput.active;
     newCategory.user = createCategoryInput.user;
+    newCategory.store = createCategoryInput.store;
     return newCategory;
   }
   updateCategory(updateCategoryInput: UpdateCategoryInput) {
@@ -25,6 +26,7 @@ export class CategoryFactoryService {
     newCategory.parentCategory = updateCategoryInput.parentCategory;
     newCategory.active = updateCategoryInput.active;
     newCategory.user = updateCategoryInput.user;
+    newCategory.store = updateCategoryInput.store;
     return newCategory;
   }
 }

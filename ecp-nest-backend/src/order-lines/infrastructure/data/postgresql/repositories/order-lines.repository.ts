@@ -1,9 +1,9 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IOrderLinesRepository } from 'src/order-lines/domain/abstracts/repositories/order-lines.repository';
 import {
   CreateOrderLineInput,
@@ -18,15 +18,17 @@ import {
 } from 'typeorm';
 import { OrderLine } from '../entities/OrderLine.entity';
 
+const CONTEXT = 'OrderLinesRepository';
+
 export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
   private _repository: Repository<OrderLine>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<OrderLine>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -37,89 +39,108 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     fields: (keyof OrderLine)[],
     paginationArgs: PaginationArgs,
   ): Promise<OrderLine[]> {
-    let queryOptions: FindManyOptions<OrderLine> = {};
-    let relations: FindOptionsRelations<OrderLine> = {};
-    let where: FindOptionsWhere<OrderLine> = {};
+    try {
+      let queryOptions: FindManyOptions<OrderLine> = {};
+      let relations: FindOptionsRelations<OrderLine> = {};
+      let where: FindOptionsWhere<OrderLine> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'productItem') {
-        relations = { ...relations, productItem: true };
-        where = {
-          ...where,
-          productItem: [
-            { sku: ILike(`%${term}%`) },
-            { slug: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
-      }
-
-      if (field === 'shopOrder') {
-        relations = { ...relations, shopOrder: true };
-        where = { ...where, shopOrder: { id: term } };
-      }
-    }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const orderLinesBy = await this._repository.find(queryOptions);
-    return orderLinesBy;
-  }
-  async getAllOrderLines(args?: IGenericArgs<OrderLine>): Promise<OrderLine[]> {
-    let queryOptions: FindManyOptions<OrderLine> = {};
-
-    if (args) {
-      const { paginationArgs } = args;
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
         queryOptions = { take: limit, skip: offset };
       }
-    }
 
-    const orderLines = await this._repository.find(queryOptions);
-    return orderLines;
+      for (const field of fields) {
+        if (field === 'productItem') {
+          relations = { ...relations, productItem: true };
+          where = {
+            ...where,
+            productItem: [
+              { sku: ILike(`%${term}%`) },
+              { slug: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'shopOrder') {
+          relations = { ...relations, shopOrder: true };
+          where = { ...where, shopOrder: { id: term } };
+        }
+      }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const orderLinesBy = (await this._repository.find(queryOptions)) ?? [];
+      return orderLinesBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+  async getAllOrderLines(args?: IGenericArgs<OrderLine>): Promise<OrderLine[]> {
+    try {
+      let queryOptions: FindManyOptions<OrderLine> = {};
+
+      if (args) {
+        const { paginationArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          queryOptions = { take: limit, skip: offset };
+        }
+      }
+
+      const orderLines = (await this._repository.find(queryOptions)) ?? [];
+      return orderLines;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async getOrderLineById(id: string): Promise<OrderLine> {
-    const orderLine = await this._repository.findOneBy({ id });
-    if (!orderLine) {
-      return this._exceptionsService.notFound({
-        message: `Order line with id ${id} could not be found`,
-      });
+    try {
+      const orderLine = await this._repository.findOneBy({ id });
+      if (!orderLine) {
+        return this._exceptionsService.notFound({
+          message: `Order line with id ${id} could not be found`,
+        });
+      }
+      return orderLine;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return orderLine;
   }
 
   async createOrderLine(
     createOrderLineInput: CreateOrderLineInput,
   ): Promise<OrderLine> {
-    const newOrderLine = this._repository.create({ ...createOrderLineInput });
-    return this._repository.save(newOrderLine);
+    try {
+      const newOrderLine = this._repository.create({ ...createOrderLineInput });
+      return this._repository.save(newOrderLine);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateOrderLine(
     id: string,
     updateOrderLineInput: UpdateOrderLineInput,
   ): Promise<OrderLine> {
-    await this.getOrderLineById(id);
-    const newOrderLine = await this._repository.preload({
-      ...updateOrderLineInput,
-    });
-    if (!newOrderLine) {
-      return this._exceptionsService.internalServerError({
-        message: 'This order line could not be preloaded',
+    try {
+      await this.getOrderLineById(id);
+      const newOrderLine = await this._repository.preload({
+        ...updateOrderLineInput,
       });
+      return this._repository.save(newOrderLine);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newOrderLine);
   }
 
   async removeOrderLine(id: string): Promise<OrderLine> {
-    const orderLine = await this.getOrderLineById(id);
-    return this._repository.remove(orderLine);
+    try {
+      const orderLine = await this.getOrderLineById(id);
+      return this._repository.remove(orderLine);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

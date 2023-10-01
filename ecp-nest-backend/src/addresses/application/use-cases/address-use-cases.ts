@@ -1,19 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { IAddressesRepository } from 'src/addresses/domain/abstracts/repositories/addresses.repository';
+import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 import {
   CreateAddressInput,
   UpdateAddressInput,
 } from 'src/addresses/domain/dtos/graphql/inputs/address.input';
 import { IAddress } from 'src/addresses/domain/entities/address.entity';
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
 import { AddressFactoryService } from './factory';
-import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 
 @Injectable()
-export class AddressesUseCases implements IAddressesRepository<IAddress> {
+export class AddressesUseCases {
   constructor(
     private dataServices: IAddressDataSourceService,
     private addressFactoryService: AddressFactoryService,

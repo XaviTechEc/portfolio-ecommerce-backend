@@ -25,6 +25,10 @@ export class CreateImageDto {
   @IsNotEmpty()
   @IsUUID()
   user: any;
+
+  @IsOptional()
+  @IsUUID()
+  billboard?: any;
 }
 
 export class UpdateImageDto extends PartialType(CreateImageDto) {}

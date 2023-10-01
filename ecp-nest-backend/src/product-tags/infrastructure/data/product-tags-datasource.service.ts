@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { ProductTag } from './postgresql/entities/ProductTag.entity';
 import { ProductTagsRepository } from './postgresql/repositories/product-tag.repository';
@@ -16,8 +16,8 @@ export class ProductTagsDataService
   constructor(
     @InjectRepository(ProductTag)
     private productTagsRepository: Repository<ProductTag>,
-    private _loggerService: MyLoggerService,
-    private _exceptionsService: ExceptionsService,
+    private _loggerService: ILoggerService,
+    private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {

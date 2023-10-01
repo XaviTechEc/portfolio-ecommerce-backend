@@ -1,6 +1,6 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IUsersRepository } from 'src/users/domain/abstracts/repositories/users.repository';
 import {
   CreateUserDto,
@@ -9,15 +9,17 @@ import {
 import { Repository } from 'typeorm';
 import { User } from '../entities/User.entity';
 
+const CONTEXT = 'UsersRepository';
+
 export class UsersRepository implements IUsersRepository<User> {
   private _repository: Repository<User>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<User>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -25,61 +27,105 @@ export class UsersRepository implements IUsersRepository<User> {
   }
 
   async getAllUsers(args?: IGenericArgs<User>): Promise<User[]> {
-    let qb = this._repository.createQueryBuilder('user');
+    try {
+      let qb = this._repository.createQueryBuilder('user');
 
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
+
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
+
+          qb = qb
+            .where(`user.full_name ILIKE LOWER(:fullName)`)
+            .orWhere('user.username ILIKE LOWER(:username)')
+            .orWhere('user.email ILIKE LOWER(:email)')
+            .setParameters({
+              fullName: `%${searchTerm}%`,
+              username: `%${searchTerm}%`,
+              email: `%${searchTerm}%`,
+            });
+        }
       }
 
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
-
-        qb = qb
-          .where(`user.full_name ILIKE LOWER(:fullName)`)
-          .orWhere('user.username ILIKE LOWER(:username)')
-          .orWhere('user.email ILIKE LOWER(:email)')
-          .setParameters({
-            fullName: `%${searchTerm}%`,
-            username: `%${searchTerm}%`,
-            email: `%${searchTerm}%`,
-          });
-      }
+      const users = (await qb.getMany()) ?? [];
+      return users;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    const users = await qb.getMany();
-    return users;
   }
+
   async getUserById(id: string): Promise<User> {
-    const userFound = await this._repository.findOneBy({ id });
-    if (!userFound) {
-      return this._exceptionsService.notFound({
-        message: `The user with id ${id} could not be found`,
-        code_error: 404,
-      });
+    try {
+      const userFound = await this._repository.findOneBy({ id });
+      if (!userFound) {
+        return this._exceptionsService.notFound({
+          message: `The user with id ${id} could not be found`,
+        });
+      }
+      return userFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(userFound);
   }
+
+  async getShortUserById(id: string): Promise<User> {
+    try {
+      const userFound = await this._repository.findOne({
+        where: { id },
+        select: [
+          'id',
+          'fullName',
+          'username',
+          'email',
+          'avatarImg',
+          'lastConnection',
+          'active',
+          'roles',
+        ],
+      });
+      if (!userFound) {
+        return this._exceptionsService.notFound({
+          message: `The user with id ${id} could not be found`,
+        });
+      }
+      return userFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+
   async createUser(data: CreateUserDto): Promise<User> {
-    const newUser = this._repository.create({ ...data });
-    return newUser;
-  }
-  async updateUser(id: string, data: UpdateUserDto): Promise<User> {
-    await this.getUserById(id);
-    const newUser = await this._repository.preload({
-      ...data,
-    });
-    if (!newUser) {
-      return this._exceptionsService.notFound({
-        message: 'The User could not be preloaded',
-      });
+    try {
+      const newUser = this._repository.create({ ...data });
+      return this._repository.save(newUser);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newUser);
   }
+
+  async updateUser(id: string, data: UpdateUserDto): Promise<User> {
+    try {
+      await this.getUserById(id);
+      const newUser = await this._repository.preload({
+        ...data,
+      });
+      return this._repository.save(newUser);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+
   async removeUser(id: string): Promise<User> {
-    const user = await this.getUserById(id);
-    return this._repository.remove(user);
+    try {
+      const user = await this.getUserById(id);
+      return this._repository.remove(user);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

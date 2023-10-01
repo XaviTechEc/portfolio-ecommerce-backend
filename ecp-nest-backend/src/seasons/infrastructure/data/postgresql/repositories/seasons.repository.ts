@@ -1,6 +1,6 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { ISeasonsRepository } from 'src/seasons/domain/abstracts/repositories/seasons.repository';
 import {
   CreateSeasonInput,
@@ -9,74 +9,95 @@ import {
 import { Repository } from 'typeorm';
 import { Season } from '../entities/Season.entity';
 
+const CONTEXT = 'SeasonsRepository';
+
 export class SeasonsRepository implements ISeasonsRepository<Season> {
   private _repository: Repository<Season>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<Season>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
   }
   async getAllSeasons(args?: IGenericArgs<Season>): Promise<Season[]> {
-    let qb = this._repository.createQueryBuilder('season');
+    try {
+      let qb = this._repository.createQueryBuilder('season');
 
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
+
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
+
+          qb = qb
+            .where(`season.description ILIKE LOWER(:description)`)
+            .setParameters({
+              description: `%${searchTerm}%`,
+            });
+        }
       }
 
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
-
-        qb = qb
-          .where(`season.description ILIKE LOWER(:description)`)
-          .setParameters({
-            description: `%${searchTerm}%`,
-          });
-      }
+      const seasons = (await qb.getMany()) ?? [];
+      return seasons;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    const seasons = await qb.getMany();
-    return seasons;
   }
+
   async getSeasonById(id: string): Promise<Season> {
-    const seasonFound = await this._repository.findOneBy({ id });
-    if (!seasonFound) {
-      return this._exceptionsService.notFound({
-        message: `The season with id ${id} could not be found`,
-      });
+    try {
+      const seasonFound = await this._repository.findOneBy({ id });
+      if (!seasonFound) {
+        return this._exceptionsService.notFound({
+          message: `The season with id ${id} could not be found`,
+        });
+      }
+      return seasonFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(seasonFound);
   }
+
   async createSeason(createSeasonInput: CreateSeasonInput): Promise<Season> {
-    const newSeason = this._repository.create({ ...createSeasonInput });
-    return newSeason;
+    try {
+      const newSeason = this._repository.create({ ...createSeasonInput });
+      return this._repository.save(newSeason);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
+
   async updateSeason(
     id: string,
     updateSeasonInput: UpdateSeasonInput,
   ): Promise<Season> {
-    await this.getSeasonById(id);
-    const newSeason = await this._repository.preload({
-      ...updateSeasonInput,
-    });
-    if (!newSeason) {
-      return this._exceptionsService.notFound({
-        message: 'The Season could not be preloaded',
+    try {
+      await this.getSeasonById(id);
+      const newSeason = await this._repository.preload({
+        ...updateSeasonInput,
       });
+      return this._repository.save(newSeason);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newSeason);
   }
+
   async removeSeason(id: string): Promise<Season> {
-    const season = await this.getSeasonById(id);
-    return this._repository.remove(season);
+    try {
+      const season = await this.getSeasonById(id);
+      return this._repository.remove(season);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

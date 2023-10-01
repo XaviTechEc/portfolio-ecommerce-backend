@@ -3,20 +3,22 @@ import {
   CreateLocationInput,
   UpdateLocationInput,
 } from 'src/addresses/domain/dtos/graphql/inputs/location.input';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { Repository } from 'typeorm';
 import { Location } from '../entities';
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+
+const CONTEXT = 'LocationsRepository';
 
 export class LocationsRepository implements ILocationsRepository<Location> {
   private _repository: Repository<Location>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<Location>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -24,38 +26,49 @@ export class LocationsRepository implements ILocationsRepository<Location> {
   }
 
   async getLocationById(id: string): Promise<Location> {
-    const location = this._repository.findOneBy({ id });
-    if (!location) {
-      return this._exceptionsService.notFound({
-        message: `The location with id ${id} could not be found`,
-      });
+    try {
+      const location = this._repository.findOneBy({ id });
+      if (!location) {
+        return this._exceptionsService.notFound({
+          message: `The location with id ${id} could not be found`,
+        });
+      }
+      return location;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return location;
   }
 
   async createLocation(
     createLocationInput: CreateLocationInput,
   ): Promise<Location> {
-    const newLocation = this._repository.create({ ...createLocationInput });
-    return this._repository.save(newLocation);
+    try {
+      const newLocation = this._repository.create({ ...createLocationInput });
+      return this._repository.save(newLocation);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
   async updateLocation(
     id: string,
     updateLocationInput: UpdateLocationInput,
   ): Promise<Location> {
-    await this.getLocationById(id);
-    const newLocation = await this._repository.preload({
-      ...updateLocationInput,
-    });
-    if (!newLocation) {
-      return this._exceptionsService.notFound({
-        message: 'The location could not be preloaded',
+    try {
+      await this.getLocationById(id);
+      const newLocation = await this._repository.preload({
+        ...updateLocationInput,
       });
+      return this._repository.save(newLocation);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newLocation);
   }
   async removeLocation(id: string): Promise<Location> {
-    const location = await this.getLocationById(id);
-    return this._repository.remove(location);
+    try {
+      const location = await this.getLocationById(id);
+      return this._repository.remove(location);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

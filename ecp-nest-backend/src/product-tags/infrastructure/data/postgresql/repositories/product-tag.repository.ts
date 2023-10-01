@@ -1,9 +1,9 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IProductTagRepository } from 'src/product-tags/domain/abstracts/repositories/product-tag.repository';
 import {
   CreateProductTagInput,
@@ -18,17 +18,19 @@ import {
 } from 'typeorm';
 import { ProductTag } from '../entities/ProductTag.entity';
 
+const CONTEXT = 'ProductTagRepository';
+
 export class ProductTagsRepository
   implements IProductTagRepository<ProductTag>
 {
   private _repository: Repository<ProductTag>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<ProductTag>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -39,102 +41,121 @@ export class ProductTagsRepository
     fields: (keyof ProductTag)[],
     paginationArgs: PaginationArgs,
   ): Promise<ProductTag[]> {
-    let queryOptions: FindManyOptions<ProductTag> = {};
-    let relations: FindOptionsRelations<ProductTag> = {};
-    let where: FindOptionsWhere<ProductTag> = {};
+    try {
+      let queryOptions: FindManyOptions<ProductTag> = {};
+      let relations: FindOptionsRelations<ProductTag> = {};
+      let where: FindOptionsWhere<ProductTag> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'product') {
-        relations = { ...relations, product: true };
-        where = {
-          ...where,
-          product: [
-            { title: ILike(`%${term}%`) },
-            { subtitle: ILike(`%${term}%`) },
-            { description: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
       }
 
-      if (field === 'tag') {
-        relations = { ...relations, tag: true };
-        where = {
-          ...where,
-          tag: [
-            { code: ILike(`%${term}%`) },
-            { value: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
+      for (const field of fields) {
+        if (field === 'product') {
+          relations = { ...relations, product: true };
+          where = {
+            ...where,
+            product: [
+              { title: ILike(`%${term}%`) },
+              { subtitle: ILike(`%${term}%`) },
+              { description: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'tag') {
+          relations = { ...relations, tag: true };
+          where = {
+            ...where,
+            tag: [
+              { code: ILike(`%${term}%`) },
+              { value: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
       }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const productTagsBy = (await this._repository.find(queryOptions)) ?? [];
+      return productTagsBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const productTagsBy = await this._repository.find(queryOptions);
-    return productTagsBy;
   }
 
   async getAllProductTag(
     args?: IGenericArgs<ProductTag>,
   ): Promise<ProductTag[]> {
-    let qb = this._repository.createQueryBuilder('productTag');
+    try {
+      let qb = this._repository.createQueryBuilder('productTag');
 
-    if (args) {
-      const { paginationArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
       }
-    }
 
-    const productTags = await qb.getMany();
-    return productTags;
+      const productTags = (await qb.getMany()) ?? [];
+      return productTags;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async getProductTagById(id: string): Promise<ProductTag> {
-    const productTagFound = await this._repository.findOneBy({ id });
-    if (!productTagFound) {
-      return this._exceptionsService.notFound({
-        message: `The productTag with id ${id} could not be found`,
-      });
+    try {
+      const productTagFound = await this._repository.findOneBy({ id });
+      if (!productTagFound) {
+        return this._exceptionsService.notFound({
+          message: `The productTag with id ${id} could not be found`,
+        });
+      }
+      return productTagFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(productTagFound);
   }
 
   async createProductTag(
     createProductTagInput: CreateProductTagInput,
   ): Promise<ProductTag> {
-    const newProductTag = this._repository.create({
-      ...createProductTagInput,
-    });
-    return newProductTag;
+    try {
+      const newProductTag = this._repository.create({
+        ...createProductTagInput,
+      });
+      return this._repository.save(newProductTag);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async updateProductTag(
     id: string,
     updateProductTagInput: UpdateProductTagInput,
   ): Promise<ProductTag> {
-    await this.getProductTagById(id);
-    const newProductTag = await this._repository.preload({
-      ...updateProductTagInput,
-    });
-    if (!newProductTag) {
-      return this._exceptionsService.notFound({
-        message: 'The ProductTag could not be preloaded',
+    try {
+      await this.getProductTagById(id);
+      const newProductTag = await this._repository.preload({
+        ...updateProductTagInput,
       });
+      return this._repository.save(newProductTag);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newProductTag);
   }
 
   async removeProductTag(id: string): Promise<ProductTag> {
-    const productTag = await this.getProductTagById(id);
-    return this._repository.remove(productTag);
+    try {
+      const productTag = await this.getProductTagById(id);
+      return this._repository.remove(productTag);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

@@ -5,6 +5,7 @@ import { Product } from 'src/products/infrastructure/data/postgresql/entities/Pr
 import { Review } from 'src/reviews/infrastructure/data/postgresql/entities/Review.entity';
 import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import { ShoppingCart } from 'src/shopping-carts/infrastructure/data/postgresql/entities/ShoppingCart.entity';
+import { Store } from 'src/stores/infrastructure/data/postgresql/entities/Store.entity';
 import { UserAddress } from 'src/user-addresses/infrastructure/data/postgresql/entities/UserAddress.entity';
 import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/entities/UserPaymentMethod.entity';
 import { UserType, Role, Gender } from 'src/users/domain/enums';
@@ -55,10 +56,11 @@ export class User {
   @Column({
     type: 'enum',
     enum: Role,
-    default: Role.CLIENT,
+    default: [Role.CLIENT],
     name: 'role',
+    array: true,
   })
-  role: Role;
+  roles: Role[];
 
   @Column({
     type: 'enum',
@@ -116,6 +118,9 @@ export class User {
 
   @OneToMany(() => Image, (image) => image.product)
   image: Image[];
+
+  @OneToMany(() => Store, (store) => store.user)
+  stores: Store[];
 
   @BeforeInsert()
   checkFields() {

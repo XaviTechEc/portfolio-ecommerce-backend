@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { ISeasonsRepository } from 'src/seasons/domain/abstracts/repositories/seasons.repository';
 import { ISeasonsDataSourceService } from 'src/seasons/domain/abstracts/services/seasons-datasource.abstract.service';
 import {
   CreateSeasonInput,
@@ -10,7 +9,7 @@ import { ISeason } from 'src/seasons/domain/entities/season.entity';
 import { SeasonFactoryService } from './factory/season-factory.service';
 
 @Injectable()
-export class SeasonUseCases implements ISeasonsRepository<ISeason> {
+export class SeasonUseCases {
   constructor(
     private dataService: ISeasonsDataSourceService,
     private seasonFactoryService: SeasonFactoryService,

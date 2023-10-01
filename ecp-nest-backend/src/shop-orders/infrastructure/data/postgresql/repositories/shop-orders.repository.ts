@@ -1,9 +1,9 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IShopOrdersRepository } from 'src/shop-orders/domain/abstracts/repositories/shop-orders.repository';
 import {
   CreateShopOrderInput,
@@ -18,15 +18,17 @@ import {
 } from 'typeorm';
 import { ShopOrder } from '../entities/ShopOrder.entity';
 
+const CONTEXT = 'ShopOrdersRepository';
+
 export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
   private _repository: Repository<ShopOrder>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<ShopOrder>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -37,114 +39,135 @@ export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
     fields: (keyof ShopOrder)[],
     paginationArgs: PaginationArgs,
   ): Promise<ShopOrder[]> {
-    let queryOptions: FindManyOptions<ShopOrder> = {};
-    let relations: FindOptionsRelations<ShopOrder> = {};
-    let where: FindOptionsWhere<ShopOrder> = {};
+    try {
+      let queryOptions: FindManyOptions<ShopOrder> = {};
+      let relations: FindOptionsRelations<ShopOrder> = {};
+      let where: FindOptionsWhere<ShopOrder> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'user') {
-        relations = { ...relations, user: true };
-        where = {
-          ...where,
-          user: [
-            { username: ILike(`%${term}%`) },
-            { email: ILike(`%${term}%`) },
-            { fullName: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
-      }
-
-      if (field === 'address') {
-        relations = { ...relations, address: true };
-        where = {
-          ...where,
-          address: [
-            { addressLine1: ILike(`%${term}%`) },
-            { addressLine2: ILike(`%${term}%`) },
-            { reference: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
-      }
-
-      if (field === 'shippingMethod') {
-        relations = { ...relations, shippingMethod: true };
-        where = {
-          ...where,
-          shippingMethod: [{ name: ILike(`%${term}%`) }, { id: term }],
-        };
-      }
-
-      if (field === 'orderStatus') {
-        relations = { ...relations, orderStatus: true };
-        where = {
-          ...where,
-          orderStatus: [{ statusValue: term }, { id: term }],
-        };
-      }
-    }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const shopOrdersBy = await this._repository.find(queryOptions);
-    return shopOrdersBy;
-  }
-  async getAllShopOrders(args?: IGenericArgs<ShopOrder>): Promise<ShopOrder[]> {
-    let queryOptions: FindManyOptions<ShopOrder> = {};
-
-    if (args) {
-      const { paginationArgs } = args;
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
         queryOptions = { take: limit, skip: offset };
       }
-    }
 
-    const shippingMethods = await this._repository.find(queryOptions);
-    return shippingMethods;
+      for (const field of fields) {
+        if (field === 'user') {
+          relations = { ...relations, user: true };
+          where = {
+            ...where,
+            user: [
+              { username: ILike(`%${term}%`) },
+              { email: ILike(`%${term}%`) },
+              { fullName: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'address') {
+          relations = { ...relations, address: true };
+          where = {
+            ...where,
+            address: [
+              { addressLine1: ILike(`%${term}%`) },
+              { addressLine2: ILike(`%${term}%`) },
+              { reference: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'shippingMethod') {
+          relations = { ...relations, shippingMethod: true };
+          where = {
+            ...where,
+            shippingMethod: [{ name: ILike(`%${term}%`) }, { id: term }],
+          };
+        }
+
+        if (field === 'orderStatus') {
+          relations = { ...relations, orderStatus: true };
+          where = {
+            ...where,
+            orderStatus: [{ statusValue: term }, { id: term }],
+          };
+        }
+      }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const shopOrdersBy = (await this._repository.find(queryOptions)) ?? [];
+      return shopOrdersBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+  async getAllShopOrders(args?: IGenericArgs<ShopOrder>): Promise<ShopOrder[]> {
+    try {
+      let queryOptions: FindManyOptions<ShopOrder> = {};
+
+      if (args) {
+        const { paginationArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          queryOptions = { take: limit, skip: offset };
+        }
+      }
+
+      const shippingMethods = (await this._repository.find(queryOptions)) ?? [];
+      return shippingMethods;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async getShopOrderById(id: string): Promise<ShopOrder> {
-    const shopOrder = await this._repository.findOneBy({ id });
-    if (!shopOrder) {
-      return this._exceptionsService.notFound({
-        message: `The shop order with id ${id} could not be found`,
-      });
+    try {
+      const shopOrder = await this._repository.findOneBy({ id });
+      if (!shopOrder) {
+        return this._exceptionsService.notFound({
+          message: `The shop order with id ${id} could not be found`,
+        });
+      }
+      return shopOrder;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return shopOrder;
   }
 
   async createShopOrder(
     createShopOrderInput: CreateShopOrderInput,
   ): Promise<ShopOrder> {
-    const newShopOrder = await this._repository.create({
-      ...createShopOrderInput,
-    });
-    return this._repository.save(newShopOrder);
+    try {
+      const newShopOrder = await this._repository.create({
+        ...createShopOrderInput,
+      });
+      return this._repository.save(newShopOrder);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
+
   async updateShopOrder(
     id: string,
     updateShopOrderInput: UpdateShopOrderInput,
   ): Promise<ShopOrder> {
-    await this.getShopOrderById(id);
-    const newShopOrder = await this._repository.create({
-      ...updateShopOrderInput,
-    });
-    if (!newShopOrder) {
-      return this._exceptionsService.notFound({
-        message: 'The shop order could not be found',
+    try {
+      await this.getShopOrderById(id);
+      const newShopOrder = await this._repository.create({
+        ...updateShopOrderInput,
       });
+      return this._repository.save(newShopOrder);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newShopOrder);
   }
+
   async removeShopOrder(id: string): Promise<ShopOrder> {
-    const shopOrder = await this.getShopOrderById(id);
-    return this._repository.save(shopOrder);
+    try {
+      const shopOrder = await this.getShopOrderById(id);
+      return this._repository.save(shopOrder);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { Billboard } from 'src/billboard/infrastructure/data/postgresql/entities/billboard.entity';
 import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
 import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
 import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
@@ -53,4 +54,8 @@ export class Image {
   @ManyToOne(() => User, (user) => user.image, { nullable: true })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
+
+  @ManyToOne(() => Billboard, (billboard) => billboard.images)
+  @JoinColumn([{ name: 'billboard_id', referencedColumnName: 'id' }])
+  billboard: Billboard;
 }

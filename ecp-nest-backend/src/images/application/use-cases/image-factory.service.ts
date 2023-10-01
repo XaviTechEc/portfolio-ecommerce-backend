@@ -15,6 +15,7 @@ export class ImageFactoryService {
     newImage.productItem = createImageDto.productItem;
     newImage.category = createImageDto.category;
     newImage.user = createImageDto.user;
+    newImage.billboard = createImageDto.billboard;
     return newImage;
   }
   updateImage(updateImageDto: UpdateImageDto) {
@@ -25,6 +26,7 @@ export class ImageFactoryService {
     newImage.productItem = updateImageDto.productItem;
     newImage.category = updateImageDto.category;
     newImage.user = updateImageDto.user;
+    newImage.billboard = updateImageDto.billboard;
     return newImage;
   }
 }

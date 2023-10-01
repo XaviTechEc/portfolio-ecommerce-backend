@@ -1,6 +1,6 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { ITagsRepository } from 'src/tags/domain/abstracts/repositories/tags.repository';
 import {
   CreateTagInput,
@@ -9,73 +9,95 @@ import {
 import { Repository } from 'typeorm';
 import { Tag } from '../entities/Tag.entity';
 
+const CONTEXT = 'TagsRepository';
+
 export class TagsRepository implements ITagsRepository<Tag> {
   private _repository: Repository<Tag>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<Tag>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
     this._exceptionsService = exceptionsService;
   }
+
   async getAllTags(args?: IGenericArgs<Tag>): Promise<Tag[]> {
-    let qb = this._repository.createQueryBuilder('tag');
+    try {
+      let qb = this._repository.createQueryBuilder('tag');
 
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
+
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
+
+          qb = qb
+            .where(`tag.code ILIKE LOWER(:code)`)
+            .orWhere('tag.value ILIKE LOWER(:value)')
+            .setParameters({
+              code: `%${searchTerm}%`,
+              value: `%${searchTerm}%`,
+            });
+        }
       }
 
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
-
-        qb = qb
-          .where(`tag.code ILIKE LOWER(:code)`)
-          .orWhere('tag.value ILIKE LOWER(:value)')
-          .setParameters({
-            code: `%${searchTerm}%`,
-            value: `%${searchTerm}%`,
-          });
-      }
+      const seasons = (await qb.getMany()) ?? [];
+      return seasons;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    const seasons = await qb.getMany();
-    return seasons;
   }
+
   async getTagById(id: string): Promise<Tag> {
-    const tagFound = await this._repository.findOneBy({ id });
-    if (!tagFound) {
-      return this._exceptionsService.notFound({
-        message: `The tag with id ${id} could not be found`,
-      });
+    try {
+      const tagFound = await this._repository.findOneBy({ id });
+      if (!tagFound) {
+        return this._exceptionsService.notFound({
+          message: `The tag with id ${id} could not be found`,
+        });
+      }
+      return tagFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(tagFound);
   }
+
   async createTag(createTagInput: CreateTagInput): Promise<Tag> {
-    const newTag = this._repository.create({ ...createTagInput });
-    return newTag;
-  }
-  async updateTag(id: string, updateTagInput: UpdateTagInput): Promise<Tag> {
-    await this.getTagById(id);
-    const newTag = await this._repository.preload({
-      ...updateTagInput,
-    });
-    if (!newTag) {
-      return this._exceptionsService.notFound({
-        message: 'The Tag could not be preloaded',
-      });
+    try {
+      const newTag = this._repository.create({ ...createTagInput });
+      return this._repository.save(newTag);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newTag);
   }
+
+  async updateTag(id: string, updateTagInput: UpdateTagInput): Promise<Tag> {
+    try {
+      await this.getTagById(id);
+      const newTag = await this._repository.preload({
+        ...updateTagInput,
+      });
+      return this._repository.save(newTag);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+
   async removeTag(id: string): Promise<Tag> {
-    const tag = await this.getTagById(id);
-    return this._repository.remove(tag);
+    try {
+      const tag = await this.getTagById(id);
+      return this._repository.remove(tag);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

@@ -1,9 +1,9 @@
-import { MyLoggerService } from 'src/common/infrastructure/logger/logger.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import {
   PaginationArgs,
   IGenericArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { ExceptionsService } from 'src/common/infrastructure/exceptions/exceptions.service';
+import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { IReviewsRepository } from 'src/reviews/domain/abstracts/repositories/reviews.repository';
 import {
   CreateReviewInput,
@@ -18,15 +18,17 @@ import {
 } from 'typeorm';
 import { Review } from '../entities/Review.entity';
 
+const CONTEXT = 'ReviewsRepository';
+
 export class ReviewsRepository implements IReviewsRepository<Review> {
   private _repository: Repository<Review>;
-  private _loggerService: MyLoggerService;
-  private _exceptionsService: ExceptionsService;
+  private _loggerService: ILoggerService;
+  private _exceptionsService: IExceptionsService;
 
   constructor(
     repository: Repository<Review>,
-    loggerService: MyLoggerService,
-    exceptionsService: ExceptionsService,
+    loggerService: ILoggerService,
+    exceptionsService: IExceptionsService,
   ) {
     this._repository = repository;
     this._loggerService = loggerService;
@@ -37,97 +39,119 @@ export class ReviewsRepository implements IReviewsRepository<Review> {
     fields: (keyof Review)[],
     paginationArgs: PaginationArgs,
   ): Promise<Review[]> {
-    let queryOptions: FindManyOptions<Review> = {};
-    let relations: FindOptionsRelations<Review> = {};
-    let where: FindOptionsWhere<Review> = {};
+    try {
+      let queryOptions: FindManyOptions<Review> = {};
+      let relations: FindOptionsRelations<Review> = {};
+      let where: FindOptionsWhere<Review> = {};
 
-    if (paginationArgs) {
-      const { limit = 10, offset = 0 } = paginationArgs;
-      queryOptions = { take: limit, skip: offset };
-    }
-
-    for (const field of fields) {
-      if (field === 'user') {
-        relations = { ...relations, user: true };
-        where = {
-          ...where,
-          user: [
-            { username: ILike(`%${term}%`) },
-            { email: ILike(`%${term}%`) },
-            { fullName: ILike(`%${term}%`) },
-            { id: term },
-          ],
-        };
+      if (paginationArgs) {
+        const { limit = 10, offset = 0 } = paginationArgs;
+        queryOptions = { take: limit, skip: offset };
       }
 
-      if (field === 'orderLine') {
-        relations = { ...relations, orderLine: true };
-        where = {
-          ...where,
-          orderLine: { id: term },
-        };
+      for (const field of fields) {
+        if (field === 'user') {
+          relations = { ...relations, user: true };
+          where = {
+            ...where,
+            user: [
+              { username: ILike(`%${term}%`) },
+              { email: ILike(`%${term}%`) },
+              { fullName: ILike(`%${term}%`) },
+              { id: term },
+            ],
+          };
+        }
+
+        if (field === 'orderLine') {
+          relations = { ...relations, orderLine: true };
+          where = {
+            ...where,
+            orderLine: { id: term },
+          };
+        }
       }
+
+      queryOptions = { ...queryOptions, relations, where };
+
+      const reviewsBy = (await this._repository.find(queryOptions)) ?? [];
+      return reviewsBy;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    queryOptions = { ...queryOptions, relations, where };
-
-    const reviewsBy = await this._repository.find(queryOptions);
-    return reviewsBy;
   }
 
   async getAllReviews(args?: IGenericArgs<Review>): Promise<Review[]> {
-    let qb = this._repository.createQueryBuilder('review');
+    try {
+      let qb = this._repository.createQueryBuilder('review');
 
-    if (args) {
-      const { paginationArgs, searchArgs } = args;
-      if (paginationArgs) {
-        const { limit = 10, offset = 0 } = paginationArgs;
-        qb = qb.take(limit).skip(offset);
+      if (args) {
+        const { paginationArgs, searchArgs } = args;
+        if (paginationArgs) {
+          const { limit = 10, offset = 0 } = paginationArgs;
+          qb = qb.take(limit).skip(offset);
+        }
+
+        if (searchArgs) {
+          const { searchTerm } = searchArgs;
+
+          qb = qb.where(`review.content ILIKE LOWER(:content)`).setParameters({
+            content: `%${searchTerm}%`,
+          });
+        }
       }
 
-      if (searchArgs) {
-        const { searchTerm } = searchArgs;
-
-        qb = qb.where(`review.content ILIKE LOWER(:content)`).setParameters({
-          content: `%${searchTerm}%`,
-        });
-      }
+      const reviews = (await qb.getMany()) ?? [];
+      return reviews;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-
-    const reviews = await qb.getMany();
-    return reviews;
   }
 
   async getReviewById(id: string): Promise<Review> {
-    const reviewFound = await this._repository.findOneBy({ id });
-    if (!reviewFound) {
-      return this._exceptionsService.notFound({
-        message: `The review with id ${id} could not be found`,
-      });
+    try {
+      const reviewFound = await this._repository.findOneBy({ id });
+      if (!reviewFound) {
+        return this._exceptionsService.notFound({
+          message: `The review with id ${id} could not be found`,
+        });
+      }
+      return reviewFound;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(reviewFound);
   }
+
   async createReview(createReviewInput: CreateReviewInput): Promise<Review> {
-    const newReview = this._repository.create({ ...createReviewInput });
-    return newReview;
+    try {
+      const newReview = this._repository.create({ ...createReviewInput });
+      return this._repository.save(newReview);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
+
   async updateReview(
     id: string,
     updateReviewInput: UpdateReviewInput,
   ): Promise<Review> {
-    await this.getReviewById(id);
-    const newReview = await this._repository.preload({
-      ...updateReviewInput,
-    });
-    if (!newReview) {
-      return this._exceptionsService.notFound({
-        message: 'The Review could not be preloaded',
+    try {
+      await this.getReviewById(id);
+      const newReview = await this._repository.preload({
+        ...updateReviewInput,
       });
+      return this._repository.save(newReview);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
     }
-    return this._repository.save(newReview);
   }
+
   async removeReview(id: string): Promise<Review> {
-    const review = await this.getReviewById(id);
-    return this._repository.remove(review);
+    try {
+      const review = await this.getReviewById(id);
+      return this._repository.remove(review);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 }

@@ -1,20 +1,19 @@
 import { Injectable } from '@nestjs/common';
 
 import {
-  PaginationArgs,
   IGenericArgs,
+  PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { IImageRepository } from 'src/images/domain/abstracts/repositories/image.repository';
+import { IImagesDataSourceService } from 'src/images/domain/abstracts/services/images-datasource.abstract.service';
 import {
   CreateImageDto,
   UpdateImageDto,
 } from 'src/images/domain/dtos/rest/image.dto';
 import { IImage } from 'src/images/domain/entities/image.entity';
 import { ImageFactoryService } from './image-factory.service';
-import { IImagesDataSourceService } from 'src/images/domain/abstracts/services/images-datasource.abstract.service';
 
 @Injectable()
-export class ImageUseCases implements IImageRepository<IImage> {
+export class ImageUseCases {
   constructor(
     private dataService: IImagesDataSourceService,
     private imageFactoryService: ImageFactoryService,

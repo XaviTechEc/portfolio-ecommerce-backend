@@ -7,6 +7,8 @@ import {
   IsMobilePhone,
   IsEnum,
   IsBoolean,
+  IsArray,
+  IsDate,
 } from 'class-validator';
 import { UserType, Role, Gender } from '../../enums';
 import { PartialType } from '@nestjs/swagger';
@@ -45,8 +47,9 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   userType?: UserType;
 
   @IsOptional()
-  @IsEnum(Role)
-  role?: Role;
+  @IsEnum(Role, { each: true })
+  @IsArray()
+  roles?: Role[];
 
   @IsOptional()
   @IsEnum(Gender)
@@ -59,4 +62,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @IsBoolean()
   active?: boolean;
+
+  @IsOptional()
+  @IsDate()
+  lastConnection?: Date;
 }
