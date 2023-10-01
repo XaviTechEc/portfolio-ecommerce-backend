@@ -32,6 +32,11 @@ export class CreateImageInput {
   @IsNotEmpty()
   @IsUUID()
   user: any;
+
+  @Field(() => ID, { nullable: true })
+  @IsNotEmpty()
+  @IsUUID()
+  billboard: any;
 }
 
 @InputType()

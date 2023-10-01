@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { BillboardType } from 'src/billboard/domain/object-types/billboard.type';
 import { CategoryType } from 'src/categories/domain/object-types/category.type';
 import { ProductItemType } from 'src/product-items/domain/object-types/product-item.type';
 import { ProductType } from 'src/products/domain/object-types/product.type';
@@ -32,4 +33,7 @@ export class ImageType {
 
   @Field(() => UserObjType)
   user: UserObjType;
+
+  @Field(() => BillboardType)
+  billboard: BillboardType;
 }

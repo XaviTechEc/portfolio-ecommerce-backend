@@ -13,4 +13,5 @@ export class IImage {
   productItem?: IProductItem;
   category?: ICategory;
   user: IUser;
+  billboard?: string;
 }
