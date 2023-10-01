@@ -15,7 +15,7 @@ export class CreateStoreInput {
   @IsString()
   @MinLength(3)
   @MaxLength(50)
-  title: string;
+  name: string;
 
   @Field(() => String, { nullable: true })
   @IsOptional()

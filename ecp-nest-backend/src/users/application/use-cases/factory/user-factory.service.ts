@@ -28,6 +28,7 @@ export class UserFactoryService {
     newUser.gender = updateUserDto.gender;
     newUser.avatarImg = updateUserDto.avatarImg;
     newUser.active = updateUserDto.active;
+    newUser.lastConnection = updateUserDto.lastConnection;
     return newUser;
   }
 }

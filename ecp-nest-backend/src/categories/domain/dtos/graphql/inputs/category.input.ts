@@ -41,6 +41,11 @@ export class CreateCategoryInput {
   @IsNotEmpty()
   @IsUUID()
   user: any;
+
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  store: any;
 }
 
 @InputType()

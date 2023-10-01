@@ -20,6 +20,7 @@ export class CreateBillboardInput {
   season: any;
 }
 
+@InputType()
 export class UpdateBillboardInput extends PartialType(CreateBillboardInput) {
   @Field(() => ID)
   @IsNotEmpty()

@@ -18,8 +18,8 @@ export class BillboardResolver {
 
   @Query(() => [BillboardType], { name: 'billboards' })
   getAllBillboards(
-    @Args('paginationArgs') paginationArgs: PaginationArgs,
-    @Args('searchArgs') searchArgs: SearchArgs,
+    @Args() paginationArgs: PaginationArgs,
+    @Args() searchArgs: SearchArgs,
   ): Promise<IBillboard[]> {
     return this.billboardUseCases.getAllBillboards({
       paginationArgs,

@@ -9,7 +9,7 @@ import { IStore } from '../../domain/entities/store.entity';
 export class StoreFactoryService {
   createStore(createStoreInput: CreateStoreInput) {
     const newStore = new IStore();
-    newStore.title = createStoreInput.title;
+    newStore.name = createStoreInput.name;
     newStore.description = createStoreInput.description;
     newStore.slug = createStoreInput.slug;
     newStore.user = createStoreInput.user;
@@ -18,7 +18,7 @@ export class StoreFactoryService {
 
   updateStore(updateStoreInput: UpdateStoreInput) {
     const newStore = new IStore();
-    newStore.title = updateStoreInput.title;
+    newStore.name = updateStoreInput.name;
     newStore.description = updateStoreInput.description;
     newStore.slug = updateStoreInput.slug;
     newStore.user = updateStoreInput.user;

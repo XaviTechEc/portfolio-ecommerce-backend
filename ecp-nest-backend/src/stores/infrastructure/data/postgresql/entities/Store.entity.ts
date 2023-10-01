@@ -21,7 +21,7 @@ export class Store {
   id: string;
 
   @Column('character varying', { name: 'title' })
-  title: string;
+  name: string;
 
   @Column('character varying', { name: 'description', nullable: true })
   description?: string;

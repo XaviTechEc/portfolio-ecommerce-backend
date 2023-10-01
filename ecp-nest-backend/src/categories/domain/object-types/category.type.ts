@@ -1,6 +1,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { ImageType } from 'src/images/domain/object-types/image.type';
 import { SeasonType } from 'src/seasons/domain/object-types/season.type';
+import { StoreType } from 'src/stores/domain/object-types/store-type';
 import { UserObjType } from 'src/users/domain/object-types/user.type';
 import { VariationType } from 'src/variations/domain/object-types/variation.entity.type';
 
@@ -36,6 +37,9 @@ export class CategoryType {
 
   @Field(() => [ImageType])
   images: ImageType[];
+
+  @Field(() => StoreType)
+  store: StoreType;
 
   //? Unnecessary field - query in parent
   // @Field(() => [ProductCategoryType])

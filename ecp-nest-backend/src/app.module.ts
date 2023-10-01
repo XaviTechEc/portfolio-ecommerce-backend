@@ -30,11 +30,14 @@ import { UserPaymentMethodsModule } from './user-payment-methods/user-payment-me
 import { UsersModule } from './users/users.module';
 import { VariationOptionsModule } from './variation-options/variation-options.module';
 import { VariationsModule } from './variations/variations.module';
+import { BillboardsModule } from './billboard/billboards.module';
+import { StoresModule } from './stores/stores.module';
 
 @Module({
   imports: [
     AddressesModule,
     AuthModule,
+    BillboardsModule,
     CategoriesModule,
     CategoryPromotionsModule,
     CommentsModule,
@@ -58,6 +61,7 @@ import { VariationsModule } from './variations/variations.module';
     ShopOrdersModule,
     ShoppingCartProductItemsModule,
     ShoppingCartsModule,
+    StoresModule,
     TagsModule,
     UserAddressesModule,
     UserPaymentMethodsModule,
