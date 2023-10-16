@@ -17,7 +17,7 @@ import { JwtStrategy } from './infrastructure/passport/strategies/jwt.strategy';
     AuthDatasourceModule,
     UsersDataSourceModule,
     EnvironmentConfigModule,
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt', session: true }),
   ],
   providers: [
     AuthUseCases,
