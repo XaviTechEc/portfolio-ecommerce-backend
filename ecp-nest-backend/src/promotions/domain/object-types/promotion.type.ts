@@ -19,6 +19,12 @@ export class PromotionType {
   @Field(() => Date, { nullable: true })
   endDate?: Date;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => [ProductPromotionType])
   productPromotions: ProductPromotionType[];

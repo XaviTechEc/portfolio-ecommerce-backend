@@ -4,6 +4,13 @@ import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.ty
 
 @ObjectType()
 export class ShopOrderLocationType {
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
+  // Locations
   @Field(() => ShopOrderType)
   shopOrder: ShopOrderType;
 

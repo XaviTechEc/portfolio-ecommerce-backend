@@ -10,6 +10,12 @@ export class PaymentMethodType {
   @Field(() => PaymentMethod)
   value: PaymentMethod;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => [UserPaymentMethodType])
   userPaymentMethods: UserPaymentMethodType[];

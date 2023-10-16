@@ -7,7 +7,7 @@ import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.ty
 import { ShoppingCartType } from 'src/shopping-carts/domain/object-types/shopping-cart.type';
 import { UserType, Role, Gender } from '../enums';
 import { ImageType } from 'src/images/domain/object-types/image.type';
-import { StoreType } from 'src/stores/domain/object-types/store-type';
+import { StoreType } from 'src/stores/domain/object-types/store.type';
 
 @ObjectType()
 export class UserObjType {

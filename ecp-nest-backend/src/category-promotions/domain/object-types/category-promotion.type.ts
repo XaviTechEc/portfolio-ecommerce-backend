@@ -4,6 +4,12 @@ import { PromotionType } from 'src/promotions/domain/object-types/promotion.type
 
 @ObjectType()
 export class CategoryPromotionType {
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => CategoryType)
   category: CategoryType;

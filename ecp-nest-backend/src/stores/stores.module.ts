@@ -3,9 +3,11 @@ import { StoresDataSourceModule } from './infrastructure/data/stores-datasource.
 import { StoreFactoryService } from './application/use-cases/store-factory.service';
 import { StoreUseCases } from './application/use-cases/store-use-cases';
 import { StoreResolver } from './interface-adapters/resolvers/store.resolver';
+import { BillboardsModule } from 'src/billboard/billboards.module';
+import { CategoriesModule } from 'src/categories/categories.module';
 
 @Module({
-  imports: [StoresDataSourceModule],
+  imports: [StoresDataSourceModule, BillboardsModule, CategoriesModule],
   providers: [StoreFactoryService, StoreUseCases, StoreResolver],
 })
 export class StoresModule {}

@@ -1,5 +1,4 @@
-import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { PartialType } from '@nestjs/swagger';
+import { Field, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 import {
   IsBoolean,
   IsInt,

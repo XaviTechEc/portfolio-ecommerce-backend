@@ -4,6 +4,12 @@ import { ProductType } from 'src/products/domain/object-types/product.type';
 
 @ObjectType()
 export class ProductCategoryType {
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => ProductType)
   product: ProductType;

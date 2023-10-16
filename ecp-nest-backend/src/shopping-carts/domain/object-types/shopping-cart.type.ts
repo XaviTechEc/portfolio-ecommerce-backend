@@ -6,6 +6,12 @@ export class ShoppingCartType {
   @Field(() => ID)
   id: string;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => UserObjType)
   user: UserObjType;

@@ -10,7 +10,7 @@ import {
   UpdateVariationInput,
 } from 'src/variations/domain/dtos/graphql/inputs/variation.input';
 import { IVariation } from 'src/variations/domain/entities/variation.entity';
-import { VariationType } from 'src/variations/domain/object-types/variation.entity.type';
+import { VariationType } from 'src/variations/domain/object-types/variation.type';
 
 @Resolver(() => VariationType)
 export class VariationResolver {

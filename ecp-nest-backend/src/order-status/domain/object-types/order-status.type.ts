@@ -10,6 +10,12 @@ export class OrderStatusType {
   @Field(() => StatusValue)
   statusValue: StatusValue;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => [ShopOrderType])
   shopOrders: ShopOrderType[];

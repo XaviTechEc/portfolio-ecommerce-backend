@@ -21,6 +21,12 @@ export class ProductItemType {
   @Field(() => String)
   slug: string;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => [ShoppingCartProductItemType])
   shoppingCartProductItems: ShoppingCartProductItemType[];

@@ -7,5 +7,6 @@ import { BillboardResolver } from './interface-adapters/resolvers/billboard.reso
 @Module({
   imports: [BillboardDataSourceModule],
   providers: [BillboardFactoryService, BillboardUseCases, BillboardResolver],
+  exports: [BillboardFactoryService, BillboardUseCases],
 })
 export class BillboardsModule {}

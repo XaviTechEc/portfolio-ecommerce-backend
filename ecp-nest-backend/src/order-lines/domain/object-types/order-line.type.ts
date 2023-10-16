@@ -14,6 +14,12 @@ export class OrderLineType {
   @Field(() => Float)
   totalPrice: number;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => [ReviewType])
   reviews: ReviewType[];

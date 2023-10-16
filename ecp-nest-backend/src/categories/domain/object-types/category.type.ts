@@ -1,9 +1,9 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { ImageType } from 'src/images/domain/object-types/image.type';
 import { SeasonType } from 'src/seasons/domain/object-types/season.type';
-import { StoreType } from 'src/stores/domain/object-types/store-type';
+import { StoreType } from 'src/stores/domain/object-types/store.type';
 import { UserObjType } from 'src/users/domain/object-types/user.type';
-import { VariationType } from 'src/variations/domain/object-types/variation.entity.type';
+import { VariationType } from 'src/variations/domain/object-types/variation.type';
 
 @ObjectType()
 export class CategoryType {
@@ -18,6 +18,12 @@ export class CategoryType {
 
   @Field(() => Boolean, { nullable: true })
   active?: boolean;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
 
   // Relations
   @Field(() => UserObjType)
