@@ -66,11 +66,15 @@ export class AuthRepository implements IAuthRepository {
       const token = await this._getJWT({
         email: userDB.email,
         uid: userDB.id,
-        isGoogle: true,
       });
       return { user: userDB, token };
     } catch (error) {
-      this._exceptionsService.handler(error, CONTEXT);
+      this._loggerService.error(
+        CONTEXT,
+        'Google sign in error, check console logs',
+      );
+      console.log(error);
+      return { user: null, token: null };
     }
   }
 

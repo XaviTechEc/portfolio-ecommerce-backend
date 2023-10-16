@@ -17,6 +17,10 @@ export class EnvironmentConfigService {
     return this.configService.get<string>('STAGE');
   }
 
+  getFrontendWebAdminURL(): string {
+    return this.configService.get<string>('FRONTEND_WEB_ADMIN');
+  }
+
   getDbPassword(): string {
     return this.configService.get<string>('DB_PASSWORD');
   }

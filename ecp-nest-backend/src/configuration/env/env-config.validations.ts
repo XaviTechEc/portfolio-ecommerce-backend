@@ -9,12 +9,17 @@ enum Stage {
 }
 
 class EnvironmentVariables {
+  // APP
   @IsString()
   APP_VERSION: string;
 
   @IsEnum(Stage)
   STAGE: Stage;
 
+  @IsString()
+  FRONTEND_WEB_ADMIN: string;
+
+  // DATABASE
   @IsString()
   DB_PASSWORD: string;
 
