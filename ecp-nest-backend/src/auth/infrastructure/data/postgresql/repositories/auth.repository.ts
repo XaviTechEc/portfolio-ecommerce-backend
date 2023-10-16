@@ -26,6 +26,54 @@ export class AuthRepository implements IAuthRepository {
     private _bcryptService: IHashService,
   ) {}
 
+  async googleLogin(user: IUser): Promise<IAuthResponse> {
+    try {
+      const { email, password = 'SomePassword@123', ...rest } = user; // TODO: Generate a secure password for google users
+      const userDB = await this._repository.findOne({
+        where: { email },
+        select: [
+          'id',
+          'fullName',
+          'username',
+          'email',
+          'avatarImg',
+          'lastConnection',
+          'active',
+          'roles',
+        ],
+      });
+      // If user do not exists then register
+      if (!userDB) {
+        const hashedPassword = await this._encryptPassword(password);
+        const newUser = this._repository.create({
+          ...rest,
+          email,
+          password: hashedPassword,
+        });
+
+        await this._repository.save(newUser);
+
+        const token = await this._getJWT({
+          email: newUser.email,
+          uid: newUser.id,
+        });
+
+        return {
+          user: newUser,
+          token,
+        };
+      }
+      const token = await this._getJWT({
+        email: userDB.email,
+        uid: userDB.id,
+        isGoogle: true,
+      });
+      return { user: userDB, token };
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+
   async register(createUserDto: CreateUserDto): Promise<IAuthResponse> {
     try {
       const { password, ...data } = createUserDto;

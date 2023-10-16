@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { IGoogleUser } from 'src/auth/domain/interfaces/google-user.interface';
 import {
   CreateUserDto,
   UpdateUserDto,
 } from 'src/users/domain/dtos/rest/user.dto';
 import { IUser } from 'src/users/domain/entities/user.entity';
+import { UserType } from 'src/users/domain/enums';
 
 @Injectable()
 export class UserFactoryService {
@@ -29,6 +31,16 @@ export class UserFactoryService {
     newUser.avatarImg = updateUserDto.avatarImg;
     newUser.active = updateUserDto.active;
     newUser.lastConnection = updateUserDto.lastConnection;
+    return newUser;
+  }
+
+  createGoogleUser(googleUser: IGoogleUser) {
+    const newUser = new IUser();
+    newUser.username = googleUser.username;
+    newUser.email = googleUser.email;
+    newUser.fullName = googleUser.fullName;
+    newUser.avatarImg = googleUser.picture;
+    newUser.userType = UserType.GOOGLE;
     return newUser;
   }
 }

@@ -35,6 +35,30 @@ class EnvironmentVariables {
 
   @IsString()
   HOST_API: string;
+
+  @IsString()
+  DATA_SCHEMA: string;
+
+  @IsString()
+  JWT_SECRET: string;
+
+  @IsString()
+  JWT_EXPIRATION_TIME: string;
+
+  @IsString()
+  JWT_REFRESH_TOKEN_SECRET: string;
+
+  @IsString()
+  JWT_REFRESH_TOKEN_EXPIRATION_TIME: string;
+
+  @IsString()
+  GOOGLE_CLIENT_ID: string;
+
+  @IsString()
+  GOOGLE_CLIENT_SECRET: string;
+
+  @IsString()
+  GOOGLE_CALLBACK_URL: string;
 }
 
 export function validate(config: Record<string, unknown>) {

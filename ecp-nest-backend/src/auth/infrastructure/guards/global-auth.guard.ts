@@ -25,16 +25,14 @@ export class GlobalJWTAuthGuard extends AuthGuard('jwt') {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     let ctx: ExecutionContext | GraphQLExecutionContext = context;
-    let isPublic: boolean;
     // Graphql context
     if (context.getType<ContextType | 'graphql'>() === 'graphql') {
       ctx = GqlExecutionContext.create(context);
-      isPublic = this.reflector.get<boolean>(IS_PUBLIC_KEY, ctx.getHandler());
     }
 
-    isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      ctx.getHandler(),
+      ctx.getClass(),
     ]);
 
     if (!isPublic) {

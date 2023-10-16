@@ -64,4 +64,17 @@ export class EnvironmentConfigService {
   getJwtRefreshExpTime(): string {
     return this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRATION_TIME');
   }
+
+  // Google
+  getGoogleClientId(): string {
+    return this.configService.get<string>('GOOGLE_CLIENT_ID');
+  }
+
+  getGoogleClientSecret(): string {
+    return this.configService.get<string>('GOOGLE_CLIENT_SECRET');
+  }
+
+  getCallbackURL(): string {
+    return this.configService.get<string>('GOOGLE_CALLBACK_URL');
+  }
 }
