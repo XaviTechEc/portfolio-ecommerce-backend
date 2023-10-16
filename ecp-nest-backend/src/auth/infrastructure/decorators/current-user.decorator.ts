@@ -39,6 +39,18 @@ export const CurrentUser = createParamDecorator(
       }
     }
 
+    if (Array.isArray(data)) {
+      dataToSend = {};
+      data.forEach((property) => {
+        if (!user[property]) {
+          throw new InternalServerErrorException(
+            `Property ${property} not found in user`,
+          );
+        }
+        dataToSend[property] = user[property];
+      });
+    }
+
     return dataToSend;
   },
 );
