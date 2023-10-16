@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 @Injectable()
-export class GlobalAuthGuard extends AuthGuard('jwt') {
+export class GlobalJWTAuthGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
     super();
   }

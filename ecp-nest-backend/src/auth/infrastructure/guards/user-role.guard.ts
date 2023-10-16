@@ -1,31 +1,46 @@
 import {
   CanActivate,
+  ContextType,
   ExecutionContext,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
 import { META_ROLES } from 'src/auth/domain/constants/meta.constants';
 import { Role } from 'src/users/domain/enums';
 import { matchRoles } from '../helpers/match-roles.helper';
-import { IUser } from 'src/users/domain/entities/user.entity';
 
 @Injectable()
 export class UserRolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<Role[]>(META_ROLES, context.getHandler());
-    if (!roles) return true;
-    if (!roles.length) return true;
+    let ctx: GraphQLExecutionContext | ExecutionContext;
+    let user: any;
 
-    const request = context.switchToHttp().getRequest();
-    const user = request.user as IUser;
-
-    if (!user) {
-      throw new InternalServerErrorException('User not found');
+    // Graphql
+    if (context.getType<ContextType | 'graphql'>() === 'graphql') {
+      ctx = GqlExecutionContext.create(context);
+      user = (ctx as GraphQLExecutionContext).getContext().req.user;
     }
 
-    return matchRoles(roles, user.roles);
+    // Rest
+    ctx = context;
+    user = ctx.switchToHttp().getRequest().user;
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(META_ROLES, [
+      ctx.getHandler(),
+      ctx.getClass(),
+    ]);
+
+    // Validations
+    if (!requiredRoles) return true;
+    if (!requiredRoles.length) return true;
+
+    if (!user) {
+      throw new InternalServerErrorException('User is not authenticated');
+    }
+
+    return matchRoles(requiredRoles, user.roles);
   }
 }

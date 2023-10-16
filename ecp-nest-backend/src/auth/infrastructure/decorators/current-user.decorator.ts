@@ -1,20 +1,44 @@
 import {
+  ContextType,
   ExecutionContext,
   InternalServerErrorException,
   createParamDecorator,
 } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
-import { IUser } from 'src/users/domain/entities/user.entity';
+import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
 
 export const CurrentUser = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
-    const ctx = GqlExecutionContext.create(context);
-    const user: IUser = ctx.getContext().req.user;
+    let ctx: GraphQLExecutionContext | ExecutionContext;
+    let user: any;
+    let dataToSend: any;
+
+    // Graphql
+    if (context.getType<ContextType | 'graphql'>() === 'graphql') {
+      ctx = GqlExecutionContext.create(context);
+      user = (ctx as GraphQLExecutionContext).getContext().req.user;
+    }
+
+    // Rest
+    ctx = context;
+    user = ctx.switchToHttp().getRequest().user;
 
     if (!user) {
       throw new InternalServerErrorException('No user in request');
     }
 
-    return user;
+    if (!data) {
+      dataToSend = user;
+    }
+
+    if (typeof data === 'string') {
+      dataToSend = user[data];
+      if (!dataToSend) {
+        throw new InternalServerErrorException(
+          `Property ${data} not found in user`,
+        );
+      }
+    }
+
+    return dataToSend;
   },
 );
