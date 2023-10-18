@@ -15,9 +15,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private exceptionsService: IExceptionsService,
   ) {
     super({
+      secretOrKey: environmentConfigService.getJwtSecret(),
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: environmentConfigService.getJwtSecret(),
     });
   }
 
