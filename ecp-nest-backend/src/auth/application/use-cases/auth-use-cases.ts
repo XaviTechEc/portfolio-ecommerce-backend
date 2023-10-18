@@ -35,4 +35,12 @@ export class AuthUseCases {
   validateUserForJwtStrategy(uid: string): Promise<IUser> {
     return this.usersDataServices.users.getShortUserById(uid);
   }
+
+  validateUserLocal(email: string, password: string): Promise<IUser | null> {
+    return this.authDataService.auth.validateUser(email, password);
+  }
+
+  renewToken(token: string): Promise<IAuthResponse> {
+    return this.authDataService.auth.renewToken(token);
+  }
 }

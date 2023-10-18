@@ -23,7 +23,7 @@ export const CurrentUser = createParamDecorator(
     user = ctx.switchToHttp().getRequest().user;
 
     if (!user) {
-      throw new InternalServerErrorException('No user in request');
+      throw new InternalServerErrorException('[PARAM] - No user in request');
     }
 
     if (!data) {

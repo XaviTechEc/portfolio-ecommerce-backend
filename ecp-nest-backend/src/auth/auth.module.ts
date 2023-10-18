@@ -13,6 +13,8 @@ import { GlobalJWTAuthGuard } from './infrastructure/guards/global-auth.guard';
 import { GoogleStrategy } from './infrastructure/passport/strategies/google.strategy';
 import { GoogleOAuthGuard } from './infrastructure/guards/google-auth.guard';
 import { UsersModule } from 'src/users/users.module';
+import { LocalStrategy } from './infrastructure/passport/strategies/local.strategy';
+import { LocalAuthGuard } from './infrastructure/guards/local-auth.guard';
 
 // @Global()
 @Module({
@@ -20,16 +22,18 @@ import { UsersModule } from 'src/users/users.module';
     AuthDatasourceModule,
     UsersModule,
     EnvironmentConfigModule,
-    PassportModule.register({ defaultStrategy: 'jwt', session: true }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   providers: [
     AuthUseCases,
     GlobalJWTAuthGuard,
     GqlAuthGuard,
     JwtAuthGuard,
+    LocalAuthGuard,
     UserRolesGuard,
     JwtStrategy,
     GoogleStrategy,
+    LocalStrategy,
     GoogleOAuthGuard,
   ],
   controllers: [AuthController],
@@ -38,9 +42,11 @@ import { UsersModule } from 'src/users/users.module';
     GlobalJWTAuthGuard,
     GqlAuthGuard,
     JwtAuthGuard,
+    LocalAuthGuard,
     UserRolesGuard,
     JwtStrategy,
     GoogleStrategy,
+    LocalStrategy,
     GoogleOAuthGuard,
   ],
 })

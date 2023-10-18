@@ -100,7 +100,7 @@ export class AuthRepository implements IAuthRepository {
 
   async signIn(signInUserDto: SignInUserDto): Promise<IAuthResponse> {
     try {
-      const { email, password } = signInUserDto;
+      const { email } = signInUserDto;
       const user = await this._repository.findOne({
         where: { email },
         select: [
@@ -109,27 +109,12 @@ export class AuthRepository implements IAuthRepository {
           'username',
           'email',
           'avatarImg',
+          'lastConnection',
           'active',
-          'password',
+          'roles',
         ],
       });
-
-      if (!user || !user.active) {
-        return this._exceptionsService.notFound({
-          message: `The user with email ${email} could not be found | User not active`,
-        });
-      }
-
-      // Compare encrypted passwords
-      await this._comparePasswords(password, user.password);
-
-      // Delete password from user before send
-      if (user.password) {
-        delete user.password;
-      }
-
-      const token = await this._getJWT({ email: user.email, uid: user.id });
-
+      const token = await this._getJWT({ uid: user.id, email: user.email });
       return { user, token };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
@@ -139,6 +124,45 @@ export class AuthRepository implements IAuthRepository {
   async checkAuthStatus(user: IUser): Promise<IAuthResponse> {
     const token = await this._getJWT({ email: user.email, uid: user.id });
     return { user: { ...user }, token };
+  }
+
+  async validateUser(email: string, password: string): Promise<User> {
+    try {
+      const userFound = await this._repository.findOne({
+        where: { email },
+        select: ['email', 'password'],
+      });
+
+      if (!userFound) {
+        return null;
+      }
+      const isValid = await this._comparePasswords(
+        password,
+        userFound.password,
+      );
+      delete userFound.password;
+      return isValid ? userFound : null;
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+
+  async renewToken(token: string): Promise<IAuthResponse> {
+    try {
+      if (!token) {
+        return this._exceptionsService.unauthorized({
+          message: 'Invalid token',
+        });
+      }
+      const decoded = await this._jwtService.verifyToken(token);
+      const user = await this._repository.findOne({
+        where: { email: decoded.email },
+      });
+      const newToken = await this._getJWT({ uid: user.id, email: user.email });
+      return { user, token: newToken };
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   private async _getJWT(payload: IJwtPayload): Promise<string> {

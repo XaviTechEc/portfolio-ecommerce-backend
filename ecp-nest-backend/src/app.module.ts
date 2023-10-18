@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
+import { BillboardsModule } from './billboard/billboards.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CategoryPromotionsModule } from './category-promotions/category-promotions.module';
 import { CommentsModule } from './comments/comments.module';
 import { CommonModule } from './common/common.module';
 import { ConfigurationModule } from './configuration/configuration.module';
+import { FilesModule } from './files/files.module';
 import { ImagesModule } from './images/images.module';
 import { OrderLinesModule } from './order-lines/order-lines.module';
 import { OrderStatusModule } from './order-status/order-status.module';
@@ -24,14 +26,15 @@ import { ShopOrderLocationsModule } from './shop-order-locations/shop-order-loca
 import { ShopOrdersModule } from './shop-orders/shop-orders.module';
 import { ShoppingCartProductItemsModule } from './shopping-cart-product-items/shopping-cart-product-items.module';
 import { ShoppingCartsModule } from './shopping-carts/shopping-carts.module';
+import { StoresModule } from './stores/stores.module';
 import { TagsModule } from './tags/tags.module';
 import { UserAddressesModule } from './user-addresses/user-addresses.module';
 import { UserPaymentMethodsModule } from './user-payment-methods/user-payment-methods.module';
 import { UsersModule } from './users/users.module';
 import { VariationOptionsModule } from './variation-options/variation-options.module';
 import { VariationsModule } from './variations/variations.module';
-import { BillboardsModule } from './billboard/billboards.module';
-import { StoresModule } from './stores/stores.module';
+import { APP_GUARD } from '@nestjs/core';
+import { GlobalJWTAuthGuard } from './auth/infrastructure/guards/global-auth.guard';
 
 @Module({
   imports: [
@@ -68,6 +71,13 @@ import { StoresModule } from './stores/stores.module';
     UsersModule,
     VariationOptionsModule,
     VariationsModule,
+    FilesModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: GlobalJWTAuthGuard,
+    },
   ],
 })
 export class AppModule {}
