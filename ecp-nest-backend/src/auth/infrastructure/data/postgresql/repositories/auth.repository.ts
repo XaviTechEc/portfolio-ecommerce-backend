@@ -121,9 +121,21 @@ export class AuthRepository implements IAuthRepository {
     }
   }
 
-  async checkAuthStatus(user: IUser): Promise<IAuthResponse> {
-    const token = await this._getJWT({ email: user.email, uid: user.id });
-    return { user: { ...user }, token };
+  async checkAuthStatus(token: string): Promise<IAuthResponse> {
+    try {
+      if (!token) {
+        return this._exceptionsService.unauthorized({
+          message: 'No token provided',
+        });
+      }
+      const decoded = await this._jwtService.verifyToken(token);
+      const user = await this._repository.findOne({
+        where: { email: decoded.email },
+      });
+      return { user, token };
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
   }
 
   async validateUser(email: string, password: string): Promise<User> {

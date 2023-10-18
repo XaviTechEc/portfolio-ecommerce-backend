@@ -6,6 +6,7 @@ import {
   Post,
   Res,
   UseGuards,
+  Headers,
 } from '@nestjs/common';
 import { AuthUseCases } from 'src/auth/application/use-cases/auth-use-cases';
 import { IGoogleUser } from 'src/auth/domain/interfaces/google-user.interface';
@@ -18,6 +19,7 @@ import { CreateUserDto } from 'src/users/domain/dtos/rest/user.dto';
 import { IJwtService } from '../../../common/domain/abstracts/services/jwt/jwt.abstract.service';
 import { EnvironmentConfigService } from '../../../configuration/env/env-config.service';
 
+@Public()
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -26,22 +28,20 @@ export class AuthController {
     private jwtService: IJwtService,
   ) {}
 
-  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   signIn(@CurrentUser() user) {
     return this.authUseCases.signIn(user);
   }
 
-  @Public()
   @Post('/register')
   register(@Body() createUserDto: CreateUserDto) {
     return this.authUseCases.register(createUserDto);
   }
 
   @Get('/check-auth-status')
-  checkAuthStatus(@CurrentUser() user) {
-    return this.authUseCases.checkAuthStatus(user);
+  checkAuthStatus(@Headers('x-token') token: string) {
+    return this.authUseCases.checkAuthStatus(token);
   }
 
   @Get('/renew/:token')
@@ -49,12 +49,10 @@ export class AuthController {
     return this.authUseCases.renewToken(token);
   }
 
-  @Public()
   @UseGuards(GoogleOAuthGuard)
   @Get('/google')
   googleLogin() {}
 
-  @Public()
   @Get('/google/callback')
   @UseGuards(GoogleOAuthGuard)
   async googleLoginCallback(@Res() res, @CurrentUser() user: IGoogleUser) {

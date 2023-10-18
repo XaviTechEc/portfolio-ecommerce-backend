@@ -23,8 +23,8 @@ export class AuthUseCases {
     const newUser = this.userFactoryService.createUser(createUserDto);
     return this.authDataService.auth.register(newUser);
   }
-  checkAuthStatus(user: IUser): Promise<IAuthResponse> {
-    return this.authDataService.auth.checkAuthStatus(user);
+  checkAuthStatus(token: string): Promise<IAuthResponse> {
+    return this.authDataService.auth.checkAuthStatus(token);
   }
 
   googleLoginCallback(user: IGoogleUser): Promise<IAuthResponse> {
