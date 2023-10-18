@@ -10,6 +10,12 @@ export class ShoppingCartProductItemType {
   @Field(() => Float)
   quantity: number;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => ShoppingCartType)
   shoppingCart: ShoppingCartType;

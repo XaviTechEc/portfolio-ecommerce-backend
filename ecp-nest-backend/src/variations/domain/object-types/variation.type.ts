@@ -10,6 +10,12 @@ export class VariationType {
   @Field(() => String)
   name: string;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => [VariationOptionType])
   variationOptions: VariationOptionType[];

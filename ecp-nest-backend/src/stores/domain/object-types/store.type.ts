@@ -1,6 +1,4 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { BillboardType } from 'src/billboard/domain/object-types/billboard.type';
-import { CategoryType } from 'src/categories/domain/object-types/category.type';
 import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @ObjectType()
@@ -17,12 +15,13 @@ export class StoreType {
   @Field(() => String)
   slug: string;
 
-  // Relations
-  @Field(() => [BillboardType])
-  billboards: BillboardType[];
+  @Field(() => Date)
+  createdAt: Date;
 
-  @Field(() => [CategoryType])
-  categories: CategoryType[];
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
+  // Relations
 
   @Field(() => UserObjType)
   user: UserObjType;

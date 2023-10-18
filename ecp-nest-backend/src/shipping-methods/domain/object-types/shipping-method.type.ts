@@ -12,6 +12,12 @@ export class ShippingMethodType {
   @Field(() => Float, { defaultValue: 0 })
   price: number;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => [ShopOrderType])
   shopOrders: ShopOrderType[];

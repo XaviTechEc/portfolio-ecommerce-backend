@@ -12,6 +12,12 @@ export class TagType {
   @Field(() => String)
   value: string;
 
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
   // Relations
   @Field(() => [ProductTagType])
   productTags: ProductTagType[];

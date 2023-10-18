@@ -15,5 +15,6 @@ import { UserPaymentMethodsModule } from 'src/user-payment-methods/user-payment-
   ],
   providers: [UserFactoryService, UserUseCases, UserResolver],
   controllers: [UserController],
+  exports: [UserFactoryService, UserUseCases, UsersDataSourceModule],
 })
 export class UsersModule {}

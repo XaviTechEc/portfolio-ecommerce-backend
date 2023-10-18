@@ -13,5 +13,6 @@ import { CategoryPromotionsModule } from 'src/category-promotions/category-promo
     CategoryPromotionsModule,
   ],
   providers: [CategoryFactoryService, CategoryUseCases, CategoryResolver],
+  exports: [CategoryFactoryService, CategoryUseCases],
 })
 export class CategoriesModule {}

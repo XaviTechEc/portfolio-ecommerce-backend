@@ -4,6 +4,13 @@ import { VariationOptionType } from 'src/variation-options/domain/object-types/v
 
 @ObjectType()
 export class ProductConfigurationType {
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date;
+
+  // Relations
   @Field(() => ProductItemType)
   productItem: ProductItemType;
 

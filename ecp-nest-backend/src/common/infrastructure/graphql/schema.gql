@@ -30,12 +30,15 @@ type BillboardType {
 
 type CategoryPromotionType {
   category: CategoryType!
+  createdAt: Timestamp!
   promotion: PromotionType!
+  updatedAt: Timestamp
 }
 
 type CategoryType {
   active: Boolean
   categories: [CategoryType!]
+  createdAt: Timestamp!
   createdBy: UserObjType!
   description: String!
   id: ID!
@@ -45,6 +48,7 @@ type CategoryType {
   promotions(limit: Int = 10, offset: Int = 0): [PromotionType!]!
   season: SeasonType!
   store: StoreType!
+  updatedAt: Timestamp
   value: String!
   variations: [VariationType!]!
 }
@@ -378,18 +382,22 @@ type Mutation {
 }
 
 type OrderLineType {
+  createdAt: Timestamp!
   id: ID!
   productItem: ProductItemType!
   quantity: Float!
   reviews: [ReviewType!]!
   shopOrder: ShopOrderType!
   totalPrice: Float!
+  updatedAt: Timestamp
 }
 
 type OrderStatusType {
+  createdAt: Timestamp!
   id: ID!
   shopOrders: [ShopOrderType!]!
   statusValue: StatusValue!
+  updatedAt: Timestamp
 }
 
 enum PaymentMethod {
@@ -399,22 +407,29 @@ enum PaymentMethod {
 }
 
 type PaymentMethodType {
+  createdAt: Timestamp!
   id: ID!
+  updatedAt: Timestamp
   userPaymentMethods: [UserPaymentMethodType!]!
   value: PaymentMethod!
 }
 
 type ProductCategoryType {
   category: CategoryType!
+  createdAt: Timestamp!
   product: ProductType!
+  updatedAt: Timestamp
 }
 
 type ProductConfigurationType {
+  createdAt: Timestamp!
   productItem: ProductItemType!
+  updatedAt: Timestamp
   variationOption: VariationOptionType!
 }
 
 type ProductItemType {
+  createdAt: Timestamp!
   id: ID!
   images: [ImageType!]!
   orderLines: [OrderLineType!]!
@@ -424,17 +439,22 @@ type ProductItemType {
   shoppingCartProductItems: [ShoppingCartProductItemType!]!
   sku: String!
   slug: String!
+  updatedAt: Timestamp
   variationOptions(limit: Int = 10, offset: Int = 0): [VariationOptionType!]!
 }
 
 type ProductPromotionType {
+  createdAt: Timestamp!
   product: ProductType!
   promotion: PromotionType!
+  updatedAt: Timestamp
 }
 
 type ProductTagType {
+  createdAt: Timestamp!
   product: ProductType!
   tag: TagType!
+  updatedAt: Timestamp
 }
 
 type ProductType {
@@ -454,12 +474,14 @@ type ProductType {
 
 type PromotionType {
   categoryPromotions: [CategoryPromotionType!]!
+  createdAt: Timestamp!
   description: String!
   endDate: Timestamp
   id: ID!
   percentageDiscount: Int
   productPromotions: [ProductPromotionType!]!
   startDate: Timestamp
+  updatedAt: Timestamp
 }
 
 type Query {
@@ -590,22 +612,28 @@ enum Role {
 type SeasonType {
   billboards: [BillboardType!]!
   categories: CategoryType!
+  createdAt: Timestamp!
   description: String!
   endDate: Timestamp
   id: String!
   startDate: Timestamp
+  updatedAt: Timestamp
 }
 
 type ShippingMethodType {
+  createdAt: Timestamp!
   id: ID!
   name: String!
   price: Float!
   shopOrders: [ShopOrderType!]!
+  updatedAt: Timestamp
 }
 
 type ShopOrderLocationType {
+  createdAt: Timestamp!
   location: LocationType!
   shopOrder: ShopOrderType!
+  updatedAt: Timestamp
 }
 
 type ShopOrderType {
@@ -623,15 +651,19 @@ type ShopOrderType {
 }
 
 type ShoppingCartProductItemType {
+  createdAt: Timestamp!
   id: ID!
   productItem: ProductItemType!
   quantity: Float!
   shoppingCart: ShoppingCartType!
+  updatedAt: Timestamp
 }
 
 type ShoppingCartType {
+  createdAt: Timestamp!
   id: ID!
   productItems(limit: Int = 10, offset: Int = 0): [ProductItemType!]!
+  updatedAt: Timestamp
   user: UserObjType!
 }
 
@@ -643,19 +675,23 @@ enum StatusValue {
 }
 
 type StoreType {
-  billboards: [BillboardType!]!
-  categories: [CategoryType!]!
+  billboards(limit: Int = 10, offset: Int = 0, searchTerm: String): [BillboardType!]!
+  categories(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryType!]!
+  createdAt: Timestamp!
   description: String
   id: ID!
   slug: String!
   title: String!
+  updatedAt: Timestamp
   user: UserObjType!
 }
 
 type TagType {
   code: String!
+  createdAt: Timestamp!
   id: ID!
   productTags: [ProductTagType!]!
+  updatedAt: Timestamp
   value: String!
 }
 
@@ -697,7 +733,9 @@ input UpdateCategoryInput {
 }
 
 input UpdateCategoryPromotionInput {
+  category: ID
   id: ID!
+  promotion: ID
 }
 
 input UpdateCommentInput {
@@ -740,11 +778,15 @@ input UpdatePaymentMethodInput {
 }
 
 input UpdateProductCategoryInput {
+  category: ID
   id: ID!
+  product: ID
 }
 
 input UpdateProductConfigurationInput {
   id: ID!
+  productItem: ID
+  variationOption: ID
 }
 
 input UpdateProductInput {
@@ -766,10 +808,14 @@ input UpdateProductItemInput {
 
 input UpdateProductPromotionInput {
   id: ID!
+  product: ID
+  promotion: ID
 }
 
 input UpdateProductTagInput {
   id: ID!
+  product: ID
+  tag: ID
 }
 
 input UpdatePromotionInput {
@@ -781,7 +827,12 @@ input UpdatePromotionInput {
 }
 
 input UpdateReviewInput {
+  content: String
   id: ID!
+  orderLine: ID
+  ratingValue: Int
+  user: ID
+  visible: Boolean = true
 }
 
 input UpdateSeasonInput {
@@ -809,6 +860,8 @@ input UpdateShopOrderInput {
 
 input UpdateShopOrderLocationInput {
   id: ID!
+  location: ID
+  shopOrder: ID
 }
 
 input UpdateShoppingCartInput {
@@ -818,6 +871,9 @@ input UpdateShoppingCartInput {
 
 input UpdateShoppingCartProductItemInput {
   id: ID!
+  productItem: ID
+  quantity: Int
+  shoppingCart: ID
 }
 
 input UpdateStoreInput {
@@ -835,11 +891,20 @@ input UpdateTagInput {
 }
 
 input UpdateUserAddressInput {
+  address: ID
   id: ID!
+  isDefault: Boolean
+  user: ID
 }
 
 input UpdateUserPaymentMethodInput {
+  accountNumber: Timestamp
+  expiryDate: Timestamp
   id: ID!
+  isDefault: Boolean
+  paymentMethod: ID
+  provider: String
+  user: ID
 }
 
 input UpdateVariationInput {
@@ -856,7 +921,9 @@ input UpdateVariationOptionInput {
 
 type UserAddressType {
   address: AddressType!
+  createdAt: Timestamp!
   isDefault: Boolean
+  updatedAt: Timestamp
   user: UserObjType!
 }
 
@@ -904,15 +971,19 @@ enum UserType {
 }
 
 type VariationOptionType {
+  createdAt: Timestamp!
   id: ID!
   productConfigurations: [ProductConfigurationType!]!
+  updatedAt: Timestamp
   value: String!
   variation: VariationType!
 }
 
 type VariationType {
   category: CategoryType!
+  createdAt: Timestamp!
   id: ID!
   name: String!
+  updatedAt: Timestamp
   variationOptions: [VariationOptionType!]!
 }

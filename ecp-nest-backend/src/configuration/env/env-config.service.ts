@@ -17,6 +17,10 @@ export class EnvironmentConfigService {
     return this.configService.get<string>('STAGE');
   }
 
+  getFrontendWebAdminURL(): string {
+    return this.configService.get<string>('FRONTEND_WEB_ADMIN');
+  }
+
   getDbPassword(): string {
     return this.configService.get<string>('DB_PASSWORD');
   }
@@ -63,5 +67,18 @@ export class EnvironmentConfigService {
 
   getJwtRefreshExpTime(): string {
     return this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRATION_TIME');
+  }
+
+  // Google
+  getGoogleClientId(): string {
+    return this.configService.get<string>('GOOGLE_CLIENT_ID');
+  }
+
+  getGoogleClientSecret(): string {
+    return this.configService.get<string>('GOOGLE_CLIENT_SECRET');
+  }
+
+  getCallbackURL(): string {
+    return this.configService.get<string>('GOOGLE_CALLBACK_URL');
   }
 }

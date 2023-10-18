@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ImageType } from 'src/images/domain/object-types/image.type';
 import { SeasonType } from 'src/seasons/domain/object-types/season.type';
-import { StoreType } from 'src/stores/domain/object-types/store-type';
+import { StoreType } from 'src/stores/domain/object-types/store.type';
 
 @ObjectType()
 export class BillboardType {

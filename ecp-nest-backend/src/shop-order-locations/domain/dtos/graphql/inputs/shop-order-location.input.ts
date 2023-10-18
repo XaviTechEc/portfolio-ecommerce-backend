@@ -1,5 +1,5 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
-import { PartialType } from '@nestjs/swagger';
+import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
+
 import { IsNotEmpty, IsUUID } from 'class-validator';
 
 @InputType()
