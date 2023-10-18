@@ -28,6 +28,8 @@ export class UserRolesGuard implements CanActivate {
     // Rest
     ctx = context;
     user = ctx.switchToHttp().getRequest().user;
+
+    // Metadata
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(META_ROLES, [
       ctx.getHandler(),
       ctx.getClass(),
@@ -38,7 +40,7 @@ export class UserRolesGuard implements CanActivate {
     if (!requiredRoles.length) return true;
 
     if (!user) {
-      throw new InternalServerErrorException('User is not authenticated');
+      throw new InternalServerErrorException('[GUARD] - No user in request');
     }
 
     return matchRoles(requiredRoles, user.roles);
