@@ -7,7 +7,7 @@ export class StoreType {
   id: string;
 
   @Field(() => String)
-  title: string;
+  name: string;
 
   @Field(() => String, { nullable: true })
   description?: string;

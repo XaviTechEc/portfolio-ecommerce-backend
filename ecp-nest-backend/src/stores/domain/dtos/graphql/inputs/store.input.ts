@@ -26,11 +26,6 @@ export class CreateStoreInput {
   @IsNotEmpty()
   @IsString()
   slug: string;
-
-  @Field(() => ID)
-  @IsNotEmpty()
-  @IsUUID()
-  user: any;
 }
 
 @InputType()

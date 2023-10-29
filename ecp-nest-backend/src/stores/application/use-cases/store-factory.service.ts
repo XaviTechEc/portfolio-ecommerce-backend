@@ -12,7 +12,6 @@ export class StoreFactoryService {
     newStore.name = createStoreInput.name;
     newStore.description = createStoreInput.description;
     newStore.slug = createStoreInput.slug;
-    newStore.user = createStoreInput.user;
     return newStore;
   }
 
@@ -21,7 +20,6 @@ export class StoreFactoryService {
     newStore.name = updateStoreInput.name;
     newStore.description = updateStoreInput.description;
     newStore.slug = updateStoreInput.slug;
-    newStore.user = updateStoreInput.user;
     return newStore;
   }
 }

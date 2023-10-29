@@ -1,5 +1,12 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Args, Resolver, Query, Mutation, ResolveField } from '@nestjs/graphql';
+import {
+  Args,
+  Resolver,
+  Query,
+  Mutation,
+  ResolveField,
+  ID,
+} from '@nestjs/graphql';
 import { BillboardType } from 'src/billboard/domain/object-types/billboard.type';
 import {
   PaginationArgs,

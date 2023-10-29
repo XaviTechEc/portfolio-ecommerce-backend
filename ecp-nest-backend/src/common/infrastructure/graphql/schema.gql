@@ -228,7 +228,6 @@ input CreateStoreInput {
   description: String
   name: String!
   slug: String!
-  user: ID!
 }
 
 input CreateTagInput {
@@ -680,8 +679,8 @@ type StoreType {
   createdAt: Timestamp!
   description: String
   id: ID!
+  name: String!
   slug: String!
-  title: String!
   updatedAt: Timestamp
   user: UserObjType!
 }
@@ -881,7 +880,6 @@ input UpdateStoreInput {
   id: ID!
   name: String
   slug: String
-  user: ID
 }
 
 input UpdateTagInput {

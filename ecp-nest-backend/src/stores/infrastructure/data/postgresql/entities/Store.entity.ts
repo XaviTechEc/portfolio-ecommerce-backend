@@ -20,7 +20,7 @@ export class Store {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('character varying', { name: 'title' })
+  @Column('character varying', { name: 'name' })
   name: string;
 
   @Column('character varying', { name: 'description', nullable: true })

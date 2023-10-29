@@ -28,29 +28,28 @@ export class StoresRepository implements IStoresRepository<Store> {
 
   async getAllStores(args?: IGenericArgs<Store>): Promise<Store[]> {
     try {
-      let qb = this._repository.createQueryBuilder('store');
+      const qb = this._repository.createQueryBuilder('store');
       if (args) {
         const { paginationArgs, searchArgs } = args;
 
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
-          qb = qb.limit(limit).skip(offset);
+          qb.limit(limit).skip(offset);
         }
 
         if (searchArgs) {
           const { searchTerm } = searchArgs;
-          qb = qb
-            .where('store.name ILIKE LOWER(:name)')
+          qb.where('store.name ILIKE LOWER(:name)')
             .orWhere('store.description ILIKE LOWER(:description)')
             .setParameters({
               name: `%${searchTerm}%`,
               description: `%${searchTerm}%`,
             });
         }
-
-        const stores = (await qb.getMany()) ?? [];
-        return stores;
       }
+      const stores = await qb.getMany();
+      console.log({ stores });
+      return stores;
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -64,6 +63,7 @@ export class StoresRepository implements IStoresRepository<Store> {
           message: `Store with id ${id} not found`,
         });
       }
+      return storeFound;
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
