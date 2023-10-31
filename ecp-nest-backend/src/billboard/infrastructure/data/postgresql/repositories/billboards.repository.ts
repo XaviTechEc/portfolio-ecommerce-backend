@@ -39,9 +39,11 @@ export class BillboardsRepository implements IBillboardsRepository<Billboard> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb.where(`billboard.title ILIKE LOWER(:title)`).setParameters({
-            title: `%${searchTerm}%`,
-          });
+          if (searchTerm) {
+            qb = qb.where(`billboard.title ILIKE LOWER(:title)`).setParameters({
+              title: `%${searchTerm}%`,
+            });
+          }
         }
       }
 

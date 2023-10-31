@@ -103,9 +103,13 @@ export class CommentsRepository implements ICommentsRepository<Comment> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb.where(`comment.content ILIKE LOWER(:content)`).setParameters({
-            content: `%${searchTerm}%`,
-          });
+          if (searchTerm) {
+            qb = qb
+              .where(`comment.content ILIKE LOWER(:content)`)
+              .setParameters({
+                content: `%${searchTerm}%`,
+              });
+          }
         }
       }
 

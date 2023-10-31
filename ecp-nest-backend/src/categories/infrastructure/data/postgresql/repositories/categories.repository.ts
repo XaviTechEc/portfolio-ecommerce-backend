@@ -108,13 +108,15 @@ export class CategoriesRepository implements ICategoriesRepository<Category> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb
-            .where('category.value ILIKE LOWER(:value)')
-            .orWhere('category.description ILIKE LOWER(:description)')
-            .setParameters({
-              value: `%${searchTerm}%`,
-              description: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where('category.value ILIKE LOWER(:value)')
+              .orWhere('category.description ILIKE LOWER(:description)')
+              .setParameters({
+                value: `%${searchTerm}%`,
+                description: `%${searchTerm}%`,
+              });
+          }
         }
       }
       const categories = (await qb.getMany()) ?? [];

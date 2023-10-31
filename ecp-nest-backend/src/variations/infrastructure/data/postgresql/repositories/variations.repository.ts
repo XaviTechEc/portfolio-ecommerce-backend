@@ -87,9 +87,11 @@ export class VariationsRepository implements IVariationsRepository<Variation> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb.where(`variation.name ILIKE LOWER(:name)`).setParameters({
-            name: `%${searchTerm}%`,
-          });
+          if (searchTerm) {
+            qb = qb.where(`variation.name ILIKE LOWER(:name)`).setParameters({
+              name: `%${searchTerm}%`,
+            });
+          }
         }
       }
 

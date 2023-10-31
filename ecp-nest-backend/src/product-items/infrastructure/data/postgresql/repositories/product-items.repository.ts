@@ -91,13 +91,15 @@ export class ProductItemsRepository
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb
-            .where(`productItem.sku ILIKE LOWER(:sku)`)
-            .orWhere('productItem.slug ILIKE LOWER(:slug)')
-            .setParameters({
-              sku: `%${searchTerm}%`,
-              slug: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where(`productItem.sku ILIKE LOWER(:sku)`)
+              .orWhere('productItem.slug ILIKE LOWER(:slug)')
+              .setParameters({
+                sku: `%${searchTerm}%`,
+                slug: `%${searchTerm}%`,
+              });
+          }
         }
       }
 

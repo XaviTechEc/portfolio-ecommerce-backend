@@ -44,7 +44,7 @@ export class StoreResolver {
 
   @Query(() => StoreType, { name: 'store' })
   async getStoreById(
-    @Args('id', { type: () => String }, ParseUUIDPipe) id: string,
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
   ): Promise<IStore> {
     return this.storeUseCases.getStoreById(id);
   }

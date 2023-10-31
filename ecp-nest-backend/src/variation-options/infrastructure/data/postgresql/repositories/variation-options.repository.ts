@@ -86,12 +86,13 @@ export class VariationOptionsRepository
 
         if (searchArgs) {
           const { searchTerm } = searchArgs;
-
-          qb = qb
-            .where(`variationOption.value ILIKE LOWER(:value)`)
-            .setParameters({
-              value: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where(`variationOption.value ILIKE LOWER(:value)`)
+              .setParameters({
+                value: `%${searchTerm}%`,
+              });
+          }
         }
       }
 

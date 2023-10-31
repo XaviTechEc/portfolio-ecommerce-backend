@@ -28,27 +28,29 @@ export class StoresRepository implements IStoresRepository<Store> {
 
   async getAllStores(args?: IGenericArgs<Store>): Promise<Store[]> {
     try {
-      const qb = this._repository.createQueryBuilder('store');
+      let qb = this._repository.createQueryBuilder('store');
       if (args) {
         const { paginationArgs, searchArgs } = args;
 
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
-          qb.limit(limit).skip(offset);
+          qb = qb.limit(limit).skip(offset);
         }
 
         if (searchArgs) {
           const { searchTerm } = searchArgs;
-          qb.where('store.name ILIKE LOWER(:name)')
-            .orWhere('store.description ILIKE LOWER(:description)')
-            .setParameters({
-              name: `%${searchTerm}%`,
-              description: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where('store.name ILIKE LOWER(:name)')
+              .orWhere('store.description ILIKE LOWER(:description)')
+              .setParameters({
+                name: `%${searchTerm}%`,
+                description: `%${searchTerm}%`,
+              });
+          }
         }
       }
       const stores = await qb.getMany();
-      console.log({ stores });
       return stores;
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);

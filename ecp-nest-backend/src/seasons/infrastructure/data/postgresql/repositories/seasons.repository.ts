@@ -39,11 +39,13 @@ export class SeasonsRepository implements ISeasonsRepository<Season> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb
-            .where(`season.description ILIKE LOWER(:description)`)
-            .setParameters({
-              description: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where(`season.description ILIKE LOWER(:description)`)
+              .setParameters({
+                description: `%${searchTerm}%`,
+              });
+          }
         }
       }
 

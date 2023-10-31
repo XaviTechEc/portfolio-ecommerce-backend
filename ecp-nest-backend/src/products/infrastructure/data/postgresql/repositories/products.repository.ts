@@ -87,15 +87,17 @@ export class ProductsRepository implements IProductsRepository<Product> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb
-            .where('product.title ILIKE LOWER(:title)')
-            .orWhere('product.subtitle ILIKE LOWER(:subtitle)')
-            .orWhere('product.description ILIKE LOWER(:description)')
-            .setParameters({
-              title: `%${searchTerm}%`,
-              subtitle: `%${searchTerm}%`,
-              description: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where('product.title ILIKE LOWER(:title)')
+              .orWhere('product.subtitle ILIKE LOWER(:subtitle)')
+              .orWhere('product.description ILIKE LOWER(:description)')
+              .setParameters({
+                title: `%${searchTerm}%`,
+                subtitle: `%${searchTerm}%`,
+                description: `%${searchTerm}%`,
+              });
+          }
         }
       }
 

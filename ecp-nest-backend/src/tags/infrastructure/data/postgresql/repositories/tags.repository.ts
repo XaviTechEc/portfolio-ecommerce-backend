@@ -40,13 +40,15 @@ export class TagsRepository implements ITagsRepository<Tag> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb
-            .where(`tag.code ILIKE LOWER(:code)`)
-            .orWhere('tag.value ILIKE LOWER(:value)')
-            .setParameters({
-              code: `%${searchTerm}%`,
-              value: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where(`tag.code ILIKE LOWER(:code)`)
+              .orWhere('tag.value ILIKE LOWER(:value)')
+              .setParameters({
+                code: `%${searchTerm}%`,
+                value: `%${searchTerm}%`,
+              });
+          }
         }
       }
 

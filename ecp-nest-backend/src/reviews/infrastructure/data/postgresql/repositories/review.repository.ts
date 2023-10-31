@@ -95,9 +95,13 @@ export class ReviewsRepository implements IReviewsRepository<Review> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb.where(`review.content ILIKE LOWER(:content)`).setParameters({
-            content: `%${searchTerm}%`,
-          });
+          if (searchTerm) {
+            qb = qb
+              .where(`review.content ILIKE LOWER(:content)`)
+              .setParameters({
+                content: `%${searchTerm}%`,
+              });
+          }
         }
       }
 

@@ -40,11 +40,13 @@ export class PromotionsRepository implements IPromotionsRepository<Promotion> {
         if (searchArgs) {
           const { searchTerm } = searchArgs;
 
-          qb = qb
-            .where('promotion.description ILIKE LOWER(:description)')
-            .setParameters({
-              description: `%${searchTerm}%`,
-            });
+          if (searchTerm) {
+            qb = qb
+              .where('promotion.description ILIKE LOWER(:description)')
+              .setParameters({
+                description: `%${searchTerm}%`,
+              });
+          }
         }
       }
       const promotions = (await qb.getMany()) ?? [];

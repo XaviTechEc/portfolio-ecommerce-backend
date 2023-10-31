@@ -568,7 +568,7 @@ type Query {
   shoppingCartProductItemsByShoppingCart(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartProductItemType!]!
   shoppingCarts(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShoppingCartType!]!
   shoppingCartsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartType!]!
-  store(id: String!): StoreType!
+  store(id: ID!): StoreType!
   stores(limit: Int = 10, offset: Int = 0, searchTerm: String): [StoreType!]!
   tag(id: ID!): TagType!
   tags(limit: Int = 10, offset: Int = 0, searchTerm: String): [TagType!]!
