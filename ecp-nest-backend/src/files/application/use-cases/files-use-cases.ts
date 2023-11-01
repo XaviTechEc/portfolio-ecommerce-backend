@@ -20,7 +20,7 @@ export class FilesUseCases<T> {
   ): Promise<string> {
     return this.dataService.files.findByName(name, destination);
   }
-  async findAll(): Promise<T[]> {
+  async findAll() {
     return this.dataService.files.findAll();
   }
 }

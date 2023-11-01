@@ -21,16 +21,14 @@ export class ProductConfigurationUseCases {
     term: string,
     fields: (keyof IProductConfiguration)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IProductConfiguration[]> {
+  ) {
     return this.dataService.productConfigurations.getProductConfigurationsBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllProductConfiguration(
-    args?: IGenericArgs<IProductConfiguration>,
-  ): Promise<IProductConfiguration[]> {
+  getAllProductConfiguration(args?: IGenericArgs<IProductConfiguration>) {
     return this.dataService.productConfigurations.getAllProductConfiguration(
       args,
     );

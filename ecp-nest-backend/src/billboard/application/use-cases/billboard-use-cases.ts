@@ -15,7 +15,7 @@ export class BillboardUseCases {
     private billboardFactoryService: BillboardFactoryService,
   ) {}
 
-  getAllBillboards(args?: IGenericArgs<IBillboard>): Promise<IBillboard[]> {
+  getAllBillboards(args?: IGenericArgs<IBillboard>) {
     return this.dataService.billboards.getAllBillboards(args);
   }
 

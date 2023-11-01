@@ -21,14 +21,14 @@ export class AddressesUseCases {
     term: string,
     fields: (keyof IAddress)[],
     paginationArgs?: PaginationArgs,
-  ): Promise<IAddress[]> {
+  ) {
     return this.dataServices.addresses.getAddressesBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllAddresses(args?: IGenericArgs<IAddress>): Promise<IAddress[]> {
+  getAllAddresses(args?: IGenericArgs<IAddress>) {
     return this.dataServices.addresses.getAllAddresses(args);
   }
   getAddressById(id: string): Promise<IAddress> {

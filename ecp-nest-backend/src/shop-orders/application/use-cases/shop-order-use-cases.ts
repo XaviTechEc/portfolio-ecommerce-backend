@@ -21,14 +21,14 @@ export class ShopOrderUseCases {
     term: string,
     fields: (keyof IShopOrder)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IShopOrder[]> {
+  ) {
     return this.dataService.shopOrders.getShopOrdersBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllShopOrders(args?: IGenericArgs<IShopOrder>): Promise<IShopOrder[]> {
+  getAllShopOrders(args?: IGenericArgs<IShopOrder>) {
     return this.dataService.shopOrders.getAllShopOrders(args);
   }
 

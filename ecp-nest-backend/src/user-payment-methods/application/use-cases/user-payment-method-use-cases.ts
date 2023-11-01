@@ -25,16 +25,14 @@ export class UserPaymentMethodUseCases
     term: string,
     fields: (keyof IUserPaymentMethod)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IUserPaymentMethod[]> {
+  ) {
     return this.dataService.userPaymentMethods.getUserPaymentMethodsBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllUserPaymentMethods(
-    args?: IGenericArgs<IUserPaymentMethod>,
-  ): Promise<IUserPaymentMethod[]> {
+  getAllUserPaymentMethods(args?: IGenericArgs<IUserPaymentMethod>) {
     return this.dataService.userPaymentMethods.getAllUserPaymentMethods(args);
   }
   getUserPaymentMethodById(id: string): Promise<IUserPaymentMethod> {

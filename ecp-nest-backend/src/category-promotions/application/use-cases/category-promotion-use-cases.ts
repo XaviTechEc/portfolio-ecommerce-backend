@@ -21,16 +21,14 @@ export class CategoryPromotionUseCases {
     term: string,
     fields: (keyof ICategoryPromotion)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ICategoryPromotion[]> {
+  ) {
     return this.dataService.categoryPromotions.getCategoryPromotionBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllCategoryPromotion(
-    args?: IGenericArgs<ICategoryPromotion>,
-  ): Promise<ICategoryPromotion[]> {
+  getAllCategoryPromotion(args?: IGenericArgs<ICategoryPromotion>) {
     return this.dataService.categoryPromotions.getAllCategoryPromotion(args);
   }
   getCategoryPromotionById(id: string): Promise<ICategoryPromotion> {

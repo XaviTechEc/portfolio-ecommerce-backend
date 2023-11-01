@@ -21,16 +21,14 @@ export class UserAddressUseCases {
     term: string,
     fields: (keyof IUserAddress)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IUserAddress[]> {
+  ) {
     return this.dataService.userAddresses.getUserAddressesBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllUserAddress(
-    args?: IGenericArgs<IUserAddress>,
-  ): Promise<IUserAddress[]> {
+  getAllUserAddress(args?: IGenericArgs<IUserAddress>) {
     return this.dataService.userAddresses.getAllUserAddress(args);
   }
   getUserAddressById(id: string): Promise<IUserAddress> {

@@ -14,7 +14,7 @@ export class CountryUseCases {
     private dataService: IAddressDataSourceService,
     private countryFactoryService: CountryFactoryService,
   ) {}
-  getAllCountries(args?: IGenericArgs<ICountry>): Promise<ICountry[]> {
+  getAllCountries(args?: IGenericArgs<ICountry>) {
     return this.dataService.countries.getAllCountries(args);
   }
   getCountryById(id: string): Promise<ICountry> {

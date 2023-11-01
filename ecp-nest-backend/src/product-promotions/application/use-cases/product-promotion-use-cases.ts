@@ -21,16 +21,14 @@ export class ProductPromotionUseCases {
     term: string,
     fields: (keyof IProductPromotion)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IProductPromotion[]> {
+  ) {
     return this.dataService.productPromotions.getProductPromotionsBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllProductPromotion(
-    args?: IGenericArgs<IProductPromotion>,
-  ): Promise<IProductPromotion[]> {
+  getAllProductPromotion(args?: IGenericArgs<IProductPromotion>) {
     return this.dataService.productPromotions.getAllProductPromotion(args);
   }
   getProductPromotionById(id: string): Promise<IProductPromotion> {

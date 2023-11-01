@@ -14,9 +14,7 @@ export class ShippingMethodUseCases {
     private dataService: IShippingMethodsDataSourceService,
     private shippingMethodFactoryService: ShippingMethodFactoryService,
   ) {}
-  getAllShippingMethods(
-    args?: IGenericArgs<IShippingMethod>,
-  ): Promise<IShippingMethod[]> {
+  getAllShippingMethods(args?: IGenericArgs<IShippingMethod>) {
     return this.dataService.shippingMethods.getAllShippingMethods(args);
   }
   getShippingMethodById(id: string): Promise<IShippingMethod> {

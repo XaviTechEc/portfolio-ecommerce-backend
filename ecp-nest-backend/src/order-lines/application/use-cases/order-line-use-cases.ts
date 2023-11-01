@@ -21,14 +21,14 @@ export class OrderLineUseCases {
     term: string,
     fields: (keyof IOrderLine)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IOrderLine[]> {
+  ) {
     return this.dataService.orderLines.getOrderLinesBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllOrderLines(args?: IGenericArgs<IOrderLine>): Promise<IOrderLine[]> {
+  getAllOrderLines(args?: IGenericArgs<IOrderLine>) {
     return this.dataService.orderLines.getAllOrderLines(args);
   }
 

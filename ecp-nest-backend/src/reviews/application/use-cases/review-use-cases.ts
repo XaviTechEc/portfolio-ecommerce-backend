@@ -21,10 +21,10 @@ export class ReviewUseCases {
     term: string,
     fields: (keyof IReview)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IReview[]> {
+  ) {
     return this.dataService.reviews.getReviewsBy(term, fields, paginationArgs);
   }
-  getAllReviews(args?: IGenericArgs<IReview>): Promise<IReview[]> {
+  getAllReviews(args?: IGenericArgs<IReview>) {
     return this.dataService.reviews.getAllReviews(args);
   }
 

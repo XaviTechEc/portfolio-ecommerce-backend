@@ -14,9 +14,7 @@ export class PaymentMethodUseCases {
     private dataService: IPaymentMethodsDataSourceService,
     private paymentMethodFactoryService: PaymentMethodFactoryService,
   ) {}
-  getAllPaymentMethods(
-    args?: IGenericArgs<IPaymentMethod>,
-  ): Promise<IPaymentMethod[]> {
+  getAllPaymentMethods(args?: IGenericArgs<IPaymentMethod>) {
     return this.dataService.paymentMethods.getAllPaymentMethods(args);
   }
   getPaymentMethodById(id: string): Promise<IPaymentMethod> {

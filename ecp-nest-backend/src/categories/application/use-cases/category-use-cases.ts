@@ -21,14 +21,14 @@ export class CategoryUseCases {
     term: string,
     fields: (keyof ICategory)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ICategory[]> {
+  ) {
     return this.dataService.categories.getCategoriesBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllCategories(args?: IGenericArgs<ICategory>): Promise<ICategory[]> {
+  getAllCategories(args?: IGenericArgs<ICategory>) {
     return this.dataService.categories.getAllCategories(args);
   }
 

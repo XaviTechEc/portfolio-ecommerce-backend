@@ -14,7 +14,7 @@ export class UserUseCases {
     private dataServices: IUsersDataSourceService,
     private userFactoryService: UserFactoryService,
   ) {}
-  getAllUsers(args?: IGenericArgs<IUser>): Promise<IUser[]> {
+  getAllUsers(args?: IGenericArgs<IUser>) {
     return this.dataServices.users.getAllUsers(args);
   }
   getUserById(id: string): Promise<IUser> {

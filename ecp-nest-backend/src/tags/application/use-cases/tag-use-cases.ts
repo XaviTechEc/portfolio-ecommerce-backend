@@ -14,7 +14,7 @@ export class TagUseCases {
     private dataService: ITagsDataSourceService,
     private tagFactoryService: TagFactoryService,
   ) {}
-  getAllTags(args?: IGenericArgs<ITag>): Promise<ITag[]> {
+  getAllTags(args?: IGenericArgs<ITag>) {
     return this.dataService.tags.getAllTags(args);
   }
   getTagById(id: string): Promise<ITag> {

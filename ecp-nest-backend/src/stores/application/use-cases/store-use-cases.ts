@@ -14,7 +14,7 @@ export class StoreUseCases {
     private dataService: IStoresDataSourceService,
     private storeFactoryService: StoreFactoryService,
   ) {}
-  async getAllStores(args?: IGenericArgs<IStore>): Promise<IStore[]> {
+  async getAllStores(args?: IGenericArgs<IStore>) {
     return this.dataService.stores.getAllStores(args);
   }
 

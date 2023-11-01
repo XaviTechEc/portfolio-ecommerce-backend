@@ -14,7 +14,7 @@ export class SeasonUseCases {
     private dataService: ISeasonsDataSourceService,
     private seasonFactoryService: SeasonFactoryService,
   ) {}
-  getAllSeasons(args?: IGenericArgs<ISeason>): Promise<ISeason[]> {
+  getAllSeasons(args?: IGenericArgs<ISeason>) {
     return this.dataService.seasons.getAllSeasons(args);
   }
   getSeasonById(id: string): Promise<ISeason> {

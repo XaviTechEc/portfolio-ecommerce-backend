@@ -21,16 +21,14 @@ export class VariationOptionUseCases {
     term: string,
     fields: (keyof IVariationOption)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IVariationOption[]> {
+  ) {
     return this.dataService.variationOptions.getVariationOptionsBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllVariationOptions(
-    args?: IGenericArgs<IVariationOption>,
-  ): Promise<IVariationOption[]> {
+  getAllVariationOptions(args?: IGenericArgs<IVariationOption>) {
     return this.dataService.variationOptions.getAllVariationOptions(args);
   }
   getVariationOptionById(id: string): Promise<IVariationOption> {

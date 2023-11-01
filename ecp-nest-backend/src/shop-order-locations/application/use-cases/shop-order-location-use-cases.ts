@@ -21,16 +21,14 @@ export class ShopOrderLocationUseCases {
     term: string,
     fields: (keyof IShopOrderLocation)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IShopOrderLocation[]> {
+  ) {
     return this.dataService.shopOrderLocations.getShopOrderLocationsBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllShopOrderLocation(
-    args?: IGenericArgs<IShopOrderLocation>,
-  ): Promise<IShopOrderLocation[]> {
+  getAllShopOrderLocation(args?: IGenericArgs<IShopOrderLocation>) {
     return this.dataService.shopOrderLocations.getAllShopOrderLocation(args);
   }
   getShopOrderLocationById(id: string): Promise<IShopOrderLocation> {

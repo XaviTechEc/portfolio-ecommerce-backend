@@ -22,10 +22,10 @@ export class ImageUseCases {
     term: string,
     fields: (keyof IImage)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IImage[]> {
+  ) {
     return this.dataService.images.getImagesBy(term, fields, paginationArgs);
   }
-  getAllImages(args?: IGenericArgs<IImage>): Promise<IImage[]> {
+  getAllImages(args?: IGenericArgs<IImage>) {
     return this.dataService.images.getAllImages(args);
   }
   getImageById(id: string): Promise<IImage> {

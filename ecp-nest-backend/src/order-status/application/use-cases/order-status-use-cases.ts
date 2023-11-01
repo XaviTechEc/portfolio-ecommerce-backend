@@ -14,9 +14,7 @@ export class OrderStatusUseCases {
     private dataService: IOrderStatusDataSourceService,
     private orderStatusFactoryService: OrderStatusFactoryService,
   ) {}
-  getAllOrderStatus(
-    args?: IGenericArgs<IOrderStatus>,
-  ): Promise<IOrderStatus[]> {
+  getAllOrderStatus(args?: IGenericArgs<IOrderStatus>) {
     return this.dataService.orderStatus.getAllOrderStatus(args);
   }
   getOrderStatusById(id: string): Promise<IOrderStatus> {

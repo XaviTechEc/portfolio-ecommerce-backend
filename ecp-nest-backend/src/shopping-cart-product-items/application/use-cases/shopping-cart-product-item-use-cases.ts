@@ -21,16 +21,14 @@ export class ShoppingCartProductItemUseCases {
     term: string,
     fields: (keyof IShoppingCartProductItem)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IShoppingCartProductItem[]> {
+  ) {
     return this.dataService.shoppingCartProductItems.getShoppingCartProductItemsBy(
       term,
       fields,
       paginationArgs,
     );
   }
-  getAllShoppingCartProductItem(
-    args?: IGenericArgs<IShoppingCartProductItem>,
-  ): Promise<IShoppingCartProductItem[]> {
+  getAllShoppingCartProductItem(args?: IGenericArgs<IShoppingCartProductItem>) {
     return this.dataService.shoppingCartProductItems.getAllShoppingCartProductItem(
       args,
     );

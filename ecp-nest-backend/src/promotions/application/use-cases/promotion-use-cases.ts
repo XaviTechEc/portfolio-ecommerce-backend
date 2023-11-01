@@ -14,7 +14,7 @@ export class PromotionUseCases {
     private dataService: IPromotionsDataSourceService,
     private promotionFactoryService: PromotionFactoryService,
   ) {}
-  getAllPromotions(args?: IGenericArgs<IPromotion>): Promise<IPromotion[]> {
+  getAllPromotions(args?: IGenericArgs<IPromotion>) {
     return this.dataService.promotions.getAllPromotions(args);
   }
   getPromotionById(id: string): Promise<IPromotion> {

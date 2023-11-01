@@ -21,7 +21,7 @@ export class CommentUseCases {
     term: string,
     fields: (keyof IComment)[],
     paginationArgs: PaginationArgs,
-  ): Promise<IComment[]> {
+  ) {
     return this.dataService.comments.getCommentsBy(
       term,
       fields,
@@ -31,7 +31,7 @@ export class CommentUseCases {
   getCommentById(id: string): Promise<IComment> {
     return this.dataService.comments.getCommentById(id);
   }
-  getAllComments(args?: IGenericArgs<IComment>): Promise<IComment[]> {
+  getAllComments(args?: IGenericArgs<IComment>) {
     return this.dataService.comments.getAllComments(args);
   }
   createComment(createCommentInput: CreateCommentInput): Promise<IComment> {
