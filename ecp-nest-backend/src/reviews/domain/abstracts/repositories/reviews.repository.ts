@@ -6,9 +6,12 @@ import {
   CreateReviewInput,
   UpdateReviewInput,
 } from '../../dtos/graphql/inputs/review.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IReviewsRepository<T> {
-  abstract getAllReviews(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllReviews(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getReviewById(id: string): Promise<T>;
   abstract createReview(createReviewInput: CreateReviewInput): Promise<T>;
   abstract updateReview(
@@ -20,5 +23,5 @@ export abstract class IReviewsRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

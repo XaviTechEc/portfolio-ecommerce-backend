@@ -17,6 +17,8 @@ import {
 } from 'typeorm';
 import { Category } from '../entities/Category.entity';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 const CONTEXT = 'CategoriesRepository';
 
@@ -38,14 +40,16 @@ export class CategoriesRepository implements ICategoriesRepository<Category> {
     term: string,
     fields: (keyof Category)[],
     paginationArgs: PaginationArgs,
-  ): Promise<Category[]> {
+  ): Promise<GetAllGenericResponse<Category>> {
     try {
       let queryOptions: FindManyOptions<Category> = {};
       let relations: FindOptionsRelations<Category> = {};
       let where: FindOptionsWhere<Category> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -86,22 +90,26 @@ export class CategoriesRepository implements ICategoriesRepository<Category> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const categoriesBy = (await this._repository.find(queryOptions)) ?? [];
+      const [items, total] = await this._repository.findAndCount(queryOptions);
 
-      return categoriesBy;
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
 
-  async getAllCategories(args?: IGenericArgs<Category>): Promise<Category[]> {
+  async getAllCategories(
+    args?: IGenericArgs<Category>,
+  ): Promise<GetAllGenericResponse<Category>> {
     try {
       let qb = this._repository.createQueryBuilder('category');
+      let pageSize;
       if (args) {
         const { paginationArgs, searchArgs } = args;
 
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -119,8 +127,8 @@ export class CategoriesRepository implements ICategoriesRepository<Category> {
           }
         }
       }
-      const categories = (await qb.getMany()) ?? [];
-      return categories;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

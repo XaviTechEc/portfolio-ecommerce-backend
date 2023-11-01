@@ -16,6 +16,8 @@ import {
   FindOptionsWhere,
 } from 'typeorm';
 import { ShopOrderLocation } from '../entities/ShopOrderLocation.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ShopOrderLocationsRepository';
 
@@ -39,14 +41,16 @@ export class ShopOrderLocationsRepository
     term: string,
     fields: (keyof ShopOrderLocation)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ShopOrderLocation[]> {
+  ): Promise<GetAllGenericResponse<ShopOrderLocation>> {
     try {
       let queryOptions: FindManyOptions<ShopOrderLocation> = {};
       let relations: FindOptionsRelations<ShopOrderLocation> = {};
       let where: FindOptionsWhere<ShopOrderLocation> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -70,9 +74,8 @@ export class ShopOrderLocationsRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const shopOrderLocationsBy =
-        (await this._repository.find(queryOptions)) ?? [];
-      return shopOrderLocationsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -80,20 +83,22 @@ export class ShopOrderLocationsRepository
 
   async getAllShopOrderLocation(
     args?: IGenericArgs<ShopOrderLocation>,
-  ): Promise<ShopOrderLocation[]> {
+  ): Promise<GetAllGenericResponse<ShopOrderLocation>> {
     try {
       let qb = this._repository.createQueryBuilder('shopOrderLocation');
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
       }
 
-      const shopOrderLocations = (await qb.getMany()) ?? [];
-      return shopOrderLocations;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

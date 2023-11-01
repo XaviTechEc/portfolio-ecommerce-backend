@@ -17,6 +17,8 @@ import {
 } from 'typeorm';
 import { Comment } from '../entities/Comment.entity';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'CommentsRepository';
 
@@ -38,14 +40,16 @@ export class CommentsRepository implements ICommentsRepository<Comment> {
     term: string,
     fields: (keyof Comment)[],
     paginationArgs: PaginationArgs,
-  ): Promise<Comment[]> {
+  ): Promise<GetAllGenericResponse<Comment>> {
     try {
       let queryOptions: FindManyOptions<Comment> = {};
       let relations: FindOptionsRelations<Comment> = {};
       let where: FindOptionsWhere<Comment> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -82,21 +86,24 @@ export class CommentsRepository implements ICommentsRepository<Comment> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const commentsBy = (await this._repository.find(queryOptions)) ?? [];
-      return commentsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
 
-  async getAllComments(args?: IGenericArgs<Comment>): Promise<Comment[]> {
+  async getAllComments(
+    args?: IGenericArgs<Comment>,
+  ): Promise<GetAllGenericResponse<Comment>> {
     try {
       let qb = this._repository.createQueryBuilder('comment');
-
+      let pageSize;
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -113,8 +120,8 @@ export class CommentsRepository implements ICommentsRepository<Comment> {
         }
       }
 
-      const comments = (await qb.getMany()) ?? [];
-      return comments;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

@@ -6,9 +6,12 @@ import {
   CreateShoppingCartInput,
   UpdateShoppingCartInput,
 } from '../../dtos/graphql/inputs/shopping-cart.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IShoppingCartsRepository<T> {
-  abstract getAllShoppingCarts(args: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllShoppingCarts(
+    args: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getShoppingCartById(id: string): Promise<T>;
   abstract createShoppingCart(
     createShoppingCartInput: CreateShoppingCartInput,
@@ -23,5 +26,5 @@ export abstract class IShoppingCartsRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

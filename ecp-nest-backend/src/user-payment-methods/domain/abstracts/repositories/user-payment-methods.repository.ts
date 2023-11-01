@@ -6,9 +6,12 @@ import {
   CreateUserPaymentMethodInput,
   UpdateUserPaymentMethodInput,
 } from '../../dtos/graphql/inputs/user-payment-method.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IUserPaymentMethodsRepository<T> {
-  abstract getAllUserPaymentMethods(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllUserPaymentMethods(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
 
   abstract getUserPaymentMethodById(id: string): Promise<T>;
   abstract createUserPaymentMethod(
@@ -23,5 +26,5 @@ export abstract class IUserPaymentMethodsRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

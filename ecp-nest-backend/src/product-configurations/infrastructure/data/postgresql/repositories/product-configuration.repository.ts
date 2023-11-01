@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { ProductConfiguration } from '../entities/ProductConfiguration.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ProductConfigurationsRepository';
 
@@ -40,14 +42,16 @@ export class ProductConfigurationsRepository
     term: string,
     fields: (keyof ProductConfiguration)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ProductConfiguration[]> {
+  ): Promise<GetAllGenericResponse<ProductConfiguration>> {
     try {
       let queryOptions: FindManyOptions<ProductConfiguration> = {};
       let relations: FindOptionsRelations<ProductConfiguration> = {};
       let where: FindOptionsWhere<ProductConfiguration> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -75,9 +79,8 @@ export class ProductConfigurationsRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const productConfigurationsBy =
-        (await this._repository.find(queryOptions)) ?? [];
-      return productConfigurationsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -85,20 +88,22 @@ export class ProductConfigurationsRepository
 
   async getAllProductConfiguration(
     args?: IGenericArgs<ProductConfiguration>,
-  ): Promise<ProductConfiguration[]> {
+  ): Promise<GetAllGenericResponse<ProductConfiguration>> {
     try {
       let qb = this._repository.createQueryBuilder('productConfiguration');
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
       }
 
-      const productConfigurations = (await qb.getMany()) ?? [];
-      return productConfigurations;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

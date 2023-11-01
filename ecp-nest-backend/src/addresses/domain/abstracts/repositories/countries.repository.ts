@@ -3,9 +3,12 @@ import {
   CreateCountryInput,
   UpdateCountryInput,
 } from '../../dtos/graphql/inputs/country.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class ICountriesRepository<T> {
-  abstract getAllCountries(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllCountries(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getCountryById(id: string): Promise<T>;
   abstract createCountry(createCountryInput: CreateCountryInput): Promise<T>;
   abstract updateCountry(

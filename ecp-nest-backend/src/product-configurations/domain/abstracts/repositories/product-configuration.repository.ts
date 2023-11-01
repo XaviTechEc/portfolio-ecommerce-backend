@@ -6,9 +6,12 @@ import {
   CreateProductConfigurationInput,
   UpdateProductConfigurationInput,
 } from '../../dtos/graphql/inputs/product-configuration.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IProductConfigurationRepository<T> {
-  abstract getAllProductConfiguration(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllProductConfiguration(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getProductConfigurationById(id: string): Promise<T>;
   abstract createProductConfiguration(
     createProductConfigurationInput: CreateProductConfigurationInput,
@@ -22,5 +25,5 @@ export abstract class IProductConfigurationRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

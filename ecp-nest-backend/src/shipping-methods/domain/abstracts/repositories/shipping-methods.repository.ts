@@ -3,9 +3,12 @@ import {
   CreateShippingMethodInput,
   UpdateShippingMethodInput,
 } from '../../dtos/graphql/inputs/shipping-method.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IShippingMethodsRepository<T> {
-  abstract getAllShippingMethods(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllShippingMethods(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getShippingMethodById(id: string): Promise<T>;
   abstract createShippingMethod(
     createShippingMethodInput: CreateShippingMethodInput,

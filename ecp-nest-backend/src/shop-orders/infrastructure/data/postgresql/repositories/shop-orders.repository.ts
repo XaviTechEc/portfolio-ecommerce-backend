@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { ShopOrder } from '../entities/ShopOrder.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ShopOrdersRepository';
 
@@ -38,14 +40,16 @@ export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
     term: any,
     fields: (keyof ShopOrder)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ShopOrder[]> {
+  ): Promise<GetAllGenericResponse<ShopOrder>> {
     try {
       let queryOptions: FindManyOptions<ShopOrder> = {};
       let relations: FindOptionsRelations<ShopOrder> = {};
       let where: FindOptionsWhere<ShopOrder> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -95,26 +99,30 @@ export class ShopOrdersRepository implements IShopOrdersRepository<ShopOrder> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const shopOrdersBy = (await this._repository.find(queryOptions)) ?? [];
-      return shopOrdersBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
-  async getAllShopOrders(args?: IGenericArgs<ShopOrder>): Promise<ShopOrder[]> {
+  async getAllShopOrders(
+    args?: IGenericArgs<ShopOrder>,
+  ): Promise<GetAllGenericResponse<ShopOrder>> {
     try {
       let queryOptions: FindManyOptions<ShopOrder> = {};
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           queryOptions = { take: limit, skip: offset };
         }
       }
 
-      const shippingMethods = (await this._repository.find(queryOptions)) ?? [];
-      return shippingMethods;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

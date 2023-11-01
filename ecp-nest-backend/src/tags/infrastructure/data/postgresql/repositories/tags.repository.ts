@@ -8,6 +8,8 @@ import {
 } from 'src/tags/domain/dtos/graphql/inputs/tag.input';
 import { Repository } from 'typeorm';
 import { Tag } from '../entities/Tag.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'TagsRepository';
 
@@ -26,14 +28,18 @@ export class TagsRepository implements ITagsRepository<Tag> {
     this._exceptionsService = exceptionsService;
   }
 
-  async getAllTags(args?: IGenericArgs<Tag>): Promise<Tag[]> {
+  async getAllTags(
+    args?: IGenericArgs<Tag>,
+  ): Promise<GetAllGenericResponse<Tag>> {
     try {
       let qb = this._repository.createQueryBuilder('tag');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -52,8 +58,8 @@ export class TagsRepository implements ITagsRepository<Tag> {
         }
       }
 
-      const seasons = (await qb.getMany()) ?? [];
-      return seasons;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

@@ -8,6 +8,8 @@ import {
 } from 'src/order-status/domain/dtos/graphql/inputs/order-status.input';
 import { Repository, FindManyOptions } from 'typeorm';
 import { OrderStatus } from '../entities/OrderStatus.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'OrderStatusRepository';
 
@@ -30,19 +32,20 @@ export class OrderStatusRepository
 
   async getAllOrderStatus(
     args?: IGenericArgs<OrderStatus>,
-  ): Promise<OrderStatus[]> {
+  ): Promise<GetAllGenericResponse<OrderStatus>> {
     try {
       let queryOptions: FindManyOptions<OrderStatus> = {};
+      let pageSize;
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           queryOptions = { take: limit, skip: offset };
         }
       }
-      const orderStatusFound =
-        (await this._repository.find(queryOptions)) ?? [];
-      return orderStatusFound;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

@@ -8,6 +8,8 @@ import {
 } from 'src/users/domain/dtos/rest/user.dto';
 import { Repository } from 'typeorm';
 import { User } from '../entities/User.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'UsersRepository';
 
@@ -26,14 +28,18 @@ export class UsersRepository implements IUsersRepository<User> {
     this._exceptionsService = exceptionsService;
   }
 
-  async getAllUsers(args?: IGenericArgs<User>): Promise<User[]> {
+  async getAllUsers(
+    args?: IGenericArgs<User>,
+  ): Promise<GetAllGenericResponse<User>> {
     try {
       let qb = this._repository.createQueryBuilder('user');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -54,8 +60,8 @@ export class UsersRepository implements IUsersRepository<User> {
         }
       }
 
-      const users = (await qb.getMany()) ?? [];
-      return users;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

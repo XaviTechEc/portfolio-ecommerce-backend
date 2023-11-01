@@ -6,9 +6,12 @@ import {
   CreateUserAddressInput,
   UpdateUserAddressInput,
 } from '../../dtos/graphql/inputs/user-address.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IUserAddressRepository<T> {
-  abstract getAllUserAddress(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllUserAddress(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getUserAddressById(id: string): Promise<T>;
   abstract createUserAddress(
     createUserAddressInput: CreateUserAddressInput,
@@ -23,5 +26,5 @@ export abstract class IUserAddressRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

@@ -17,6 +17,8 @@ import {
 } from 'typeorm';
 import { Address } from '../entities';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'AddressesRepository';
 
@@ -38,14 +40,16 @@ export class AddressesRepository implements IAddressesRepository<Address> {
     term: string,
     fields: (keyof Address)[],
     paginationArgs?: PaginationArgs,
-  ): Promise<Address[]> {
+  ): Promise<GetAllGenericResponse<Address>> {
     try {
       let queryOptions: FindManyOptions<Address> = {};
       let relations: FindOptionsRelations<Address> = {};
       let where: FindOptionsWhere<Address> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -70,28 +74,25 @@ export class AddressesRepository implements IAddressesRepository<Address> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const addressesBy = await this._repository.find(queryOptions);
-
-      if (!addressesBy) {
-        return this._exceptionsService.notFound({
-          message: `The addresses with ${term} could not be found`,
-        });
-      }
-
-      return addressesBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
 
-  async getAllAddresses(args?: IGenericArgs<Address>): Promise<Address[]> {
+  async getAllAddresses(
+    args?: IGenericArgs<Address>,
+  ): Promise<GetAllGenericResponse<Address>> {
     try {
       let qb = this._repository.createQueryBuilder('address');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.limit(limit).skip(offset);
         }
 
@@ -111,9 +112,8 @@ export class AddressesRepository implements IAddressesRepository<Address> {
         }
       }
 
-      const addressesFound = (await qb.getMany()) ?? [];
-
-      return addressesFound;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

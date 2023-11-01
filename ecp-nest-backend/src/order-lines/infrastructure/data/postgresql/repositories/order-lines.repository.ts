@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { OrderLine } from '../entities/OrderLine.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'OrderLinesRepository';
 
@@ -38,14 +40,16 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
     term: string,
     fields: (keyof OrderLine)[],
     paginationArgs: PaginationArgs,
-  ): Promise<OrderLine[]> {
+  ): Promise<GetAllGenericResponse<OrderLine>> {
     try {
       let queryOptions: FindManyOptions<OrderLine> = {};
       let relations: FindOptionsRelations<OrderLine> = {};
       let where: FindOptionsWhere<OrderLine> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -70,26 +74,30 @@ export class OrderLinesRepository implements IOrderLinesRepository<OrderLine> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const orderLinesBy = (await this._repository.find(queryOptions)) ?? [];
-      return orderLinesBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
-  async getAllOrderLines(args?: IGenericArgs<OrderLine>): Promise<OrderLine[]> {
+  async getAllOrderLines(
+    args?: IGenericArgs<OrderLine>,
+  ): Promise<GetAllGenericResponse<OrderLine>> {
     try {
       let queryOptions: FindManyOptions<OrderLine> = {};
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           queryOptions = { take: limit, skip: offset };
         }
       }
 
-      const orderLines = (await this._repository.find(queryOptions)) ?? [];
-      return orderLines;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

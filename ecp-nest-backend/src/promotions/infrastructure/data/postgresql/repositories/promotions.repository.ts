@@ -8,6 +8,8 @@ import {
 } from 'src/promotions/domain/dtos/graphql/inputs/promotion.input';
 import { Repository } from 'typeorm';
 import { Promotion } from '../entities/Promotion.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'PromotionsRepository';
 
@@ -26,14 +28,18 @@ export class PromotionsRepository implements IPromotionsRepository<Promotion> {
     this._exceptionsService = exceptionsService;
   }
 
-  async getAllPromotions(args?: IGenericArgs<Promotion>): Promise<Promotion[]> {
+  async getAllPromotions(
+    args?: IGenericArgs<Promotion>,
+  ): Promise<GetAllGenericResponse<Promotion>> {
     try {
       let qb = this._repository.createQueryBuilder('promotion');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -49,8 +55,8 @@ export class PromotionsRepository implements IPromotionsRepository<Promotion> {
           }
         }
       }
-      const promotions = (await qb.getMany()) ?? [];
-      return promotions;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

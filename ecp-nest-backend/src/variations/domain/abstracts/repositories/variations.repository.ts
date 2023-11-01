@@ -6,9 +6,12 @@ import {
   CreateVariationInput,
   UpdateVariationInput,
 } from '../../dtos/graphql/inputs/variation.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IVariationsRepository<T> {
-  abstract getAllVariations(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllVariations(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getVariationById(id: string): Promise<T>;
   abstract createVariation(
     createVariationInput: CreateVariationInput,
@@ -22,5 +25,5 @@ export abstract class IVariationsRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

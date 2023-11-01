@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { ProductItem } from '../entities/ProductItem.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ProductItemsRepository';
 
@@ -40,14 +42,16 @@ export class ProductItemsRepository
     term: string,
     fields: (keyof ProductItem)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ProductItem[]> {
+  ): Promise<GetAllGenericResponse<ProductItem>> {
     try {
       let queryOptions: FindManyOptions<ProductItem> = {};
       let relations: FindOptionsRelations<ProductItem> = {};
       let where: FindOptionsWhere<ProductItem> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -68,8 +72,8 @@ export class ProductItemsRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const productItemsBy = (await this._repository.find(queryOptions)) ?? [];
-      return productItemsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -77,14 +81,16 @@ export class ProductItemsRepository
 
   async getAllProductItems(
     args?: IGenericArgs<ProductItem>,
-  ): Promise<ProductItem[]> {
+  ): Promise<GetAllGenericResponse<ProductItem>> {
     try {
       let qb = this._repository.createQueryBuilder('productItem');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -103,8 +109,8 @@ export class ProductItemsRepository
         }
       }
 
-      const productItems = (await qb.getMany()) ?? [];
-      return productItems;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

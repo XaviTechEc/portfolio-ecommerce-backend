@@ -8,6 +8,8 @@ import {
 } from 'src/shipping-methods/domain/dtos/graphql/inputs/shipping-method.input';
 import { Repository, FindManyOptions } from 'typeorm';
 import { ShippingMethod } from '../entities/ShippingMethod.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ShippingMethodsRepository';
 
@@ -30,17 +32,19 @@ export class ShippingMethodsRepository
 
   async getAllShippingMethods(
     args?: IGenericArgs<ShippingMethod>,
-  ): Promise<ShippingMethod[]> {
+  ): Promise<GetAllGenericResponse<ShippingMethod>> {
     try {
       let queryOptions: FindManyOptions<ShippingMethod> = {};
+      let pageSize;
 
       if (args?.paginationArgs) {
         const { limit = 10, offset = 0 } = args.paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
-      const shippingMethods = (await this._repository.find(queryOptions)) ?? [];
-      return shippingMethods;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

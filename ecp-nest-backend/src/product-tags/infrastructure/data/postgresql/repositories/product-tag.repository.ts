@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { ProductTag } from '../entities/ProductTag.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ProductTagRepository';
 
@@ -40,14 +42,16 @@ export class ProductTagsRepository
     term: string,
     fields: (keyof ProductTag)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ProductTag[]> {
+  ): Promise<GetAllGenericResponse<ProductTag>> {
     try {
       let queryOptions: FindManyOptions<ProductTag> = {};
       let relations: FindOptionsRelations<ProductTag> = {};
       let where: FindOptionsWhere<ProductTag> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -80,8 +84,8 @@ export class ProductTagsRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const productTagsBy = (await this._repository.find(queryOptions)) ?? [];
-      return productTagsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -89,9 +93,10 @@ export class ProductTagsRepository
 
   async getAllProductTag(
     args?: IGenericArgs<ProductTag>,
-  ): Promise<ProductTag[]> {
+  ): Promise<GetAllGenericResponse<ProductTag>> {
     try {
       let qb = this._repository.createQueryBuilder('productTag');
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
@@ -101,8 +106,8 @@ export class ProductTagsRepository
         }
       }
 
-      const productTags = (await qb.getMany()) ?? [];
-      return productTags;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

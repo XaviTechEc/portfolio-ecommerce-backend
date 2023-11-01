@@ -6,9 +6,12 @@ import {
   CreateCategoryPromotionInput,
   UpdateCategoryPromotionInput,
 } from '../../dtos/graphql/inputs/category-promotion.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class ICategoryPromotionRepository<T> {
-  abstract getAllCategoryPromotion(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllCategoryPromotion(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getCategoryPromotionById(id: string): Promise<T>;
   abstract createCategoryPromotion(
     createCategoryPromotionInput: CreateCategoryPromotionInput,
@@ -23,5 +26,5 @@ export abstract class ICategoryPromotionRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

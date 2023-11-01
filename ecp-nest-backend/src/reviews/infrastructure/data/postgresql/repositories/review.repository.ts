@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { Review } from '../entities/Review.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ReviewsRepository';
 
@@ -38,14 +40,16 @@ export class ReviewsRepository implements IReviewsRepository<Review> {
     term: string,
     fields: (keyof Review)[],
     paginationArgs: PaginationArgs,
-  ): Promise<Review[]> {
+  ): Promise<GetAllGenericResponse<Review>> {
     try {
       let queryOptions: FindManyOptions<Review> = {};
       let relations: FindOptionsRelations<Review> = {};
       let where: FindOptionsWhere<Review> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -74,21 +78,25 @@ export class ReviewsRepository implements IReviewsRepository<Review> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const reviewsBy = (await this._repository.find(queryOptions)) ?? [];
-      return reviewsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
 
-  async getAllReviews(args?: IGenericArgs<Review>): Promise<Review[]> {
+  async getAllReviews(
+    args?: IGenericArgs<Review>,
+  ): Promise<GetAllGenericResponse<Review>> {
     try {
       let qb = this._repository.createQueryBuilder('review');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -105,8 +113,8 @@ export class ReviewsRepository implements IReviewsRepository<Review> {
         }
       }
 
-      const reviews = (await qb.getMany()) ?? [];
-      return reviews;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

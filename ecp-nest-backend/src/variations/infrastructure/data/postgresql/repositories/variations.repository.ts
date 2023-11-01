@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { Variation } from '../entities/Variation.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'VariationsRepository';
 
@@ -39,14 +41,16 @@ export class VariationsRepository implements IVariationsRepository<Variation> {
     term: string,
     fields: (keyof Variation)[],
     paginationArgs: PaginationArgs,
-  ): Promise<Variation[]> {
+  ): Promise<GetAllGenericResponse<Variation>> {
     try {
       let queryOptions: FindManyOptions<Variation> = {};
       let relations: FindOptionsRelations<Variation> = {};
       let where: FindOptionsWhere<Variation> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -66,21 +70,25 @@ export class VariationsRepository implements IVariationsRepository<Variation> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const variationsBy = (await this._repository.find(queryOptions)) ?? [];
-      return variationsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
 
-  async getAllVariations(args?: IGenericArgs<Variation>): Promise<Variation[]> {
+  async getAllVariations(
+    args?: IGenericArgs<Variation>,
+  ): Promise<GetAllGenericResponse<Variation>> {
     try {
       let qb = this._repository.createQueryBuilder('variation');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -95,8 +103,8 @@ export class VariationsRepository implements IVariationsRepository<Variation> {
         }
       }
 
-      const variations = (await qb.getMany()) ?? [];
-      return variations;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

@@ -6,9 +6,12 @@ import {
   CreateShopOrderInput,
   UpdateShopOrderInput,
 } from '../../dtos/graphql/inputs/shop-order.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IShopOrdersRepository<T> {
-  abstract getAllShopOrders(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllShopOrders(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
 
   abstract getShopOrderById(id: string): Promise<T>;
 
@@ -25,5 +28,5 @@ export abstract class IShopOrdersRepository<T> {
     term: any,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

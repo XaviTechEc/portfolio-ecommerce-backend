@@ -8,6 +8,8 @@ import {
 } from 'src/payment-methods/domain/dtos/graphql/inputs/payment-method.input';
 import { Repository, FindManyOptions } from 'typeorm';
 import { PaymentMethod } from '../entities/PaymentMethod.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'PaymentMethodsRepository';
 
@@ -29,19 +31,21 @@ export class PaymentMethodsRepository
   }
   async getAllPaymentMethods(
     args?: IGenericArgs<PaymentMethod>,
-  ): Promise<PaymentMethod[]> {
+  ): Promise<GetAllGenericResponse<PaymentMethod>> {
     try {
       let queryOptions: FindManyOptions<PaymentMethod> = {};
+      let pageSize;
       if (args) {
         const { paginationArgs } = args;
 
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           queryOptions = { take: limit, skip: offset };
         }
       }
-      const paymentMethods = (await this._repository.find(queryOptions)) ?? [];
-      return paymentMethods;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

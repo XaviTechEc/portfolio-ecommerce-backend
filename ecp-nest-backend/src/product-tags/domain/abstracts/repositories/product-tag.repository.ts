@@ -6,9 +6,12 @@ import {
   CreateProductTagInput,
   UpdateProductTagInput,
 } from '../../dtos/graphql/inputs/product-tag.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IProductTagRepository<T> {
-  abstract getAllProductTag(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllProductTag(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getProductTagById(id: string): Promise<T>;
   abstract createProductTag(
     createProductTagInput: CreateProductTagInput,
@@ -22,5 +25,5 @@ export abstract class IProductTagRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { UserAddress } from '../entities/UserAddress.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'UserAddressesRepository';
 
@@ -40,14 +42,16 @@ export class UserAddressesRepository
     term: string,
     fields: (keyof UserAddress)[],
     paginationArgs: PaginationArgs,
-  ): Promise<UserAddress[]> {
+  ): Promise<GetAllGenericResponse<UserAddress>> {
     try {
       let queryOptions: FindManyOptions<UserAddress> = {};
       let relations: FindOptionsRelations<UserAddress> = {};
       let where: FindOptionsWhere<UserAddress> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -81,8 +85,8 @@ export class UserAddressesRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const userAddressesBy = (await this._repository.find(queryOptions)) ?? [];
-      return userAddressesBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -90,20 +94,22 @@ export class UserAddressesRepository
 
   async getAllUserAddress(
     args?: IGenericArgs<UserAddress>,
-  ): Promise<UserAddress[]> {
+  ): Promise<GetAllGenericResponse<UserAddress>> {
     try {
       let qb = this._repository.createQueryBuilder('userAddress');
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
       }
 
-      const userAddresses = (await qb.getMany()) ?? [];
-      return userAddresses;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

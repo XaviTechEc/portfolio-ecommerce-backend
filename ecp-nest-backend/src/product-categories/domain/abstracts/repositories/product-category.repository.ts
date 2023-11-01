@@ -6,9 +6,12 @@ import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
 } from '../../dtos/graphql/inputs/product-category.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IProductCategoryRepository<T> {
-  abstract getAllProductCategory(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllProductCategory(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
   abstract getProductCategoryById(id: string): Promise<T>;
   abstract createProductCategory(
     createProductCategoryInput: CreateProductCategoryInput,
@@ -22,5 +25,5 @@ export abstract class IProductCategoryRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

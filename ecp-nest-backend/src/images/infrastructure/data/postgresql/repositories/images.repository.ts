@@ -17,6 +17,8 @@ import {
 } from 'typeorm';
 import { Image } from '../entities/Image.entity';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ImagesRepository';
 
@@ -38,14 +40,16 @@ export class ImagesRepository implements IImageRepository<Image> {
     term: string,
     fields: (keyof Image)[],
     paginationArgs: PaginationArgs,
-  ): Promise<Image[]> {
+  ): Promise<GetAllGenericResponse<Image>> {
     try {
       let queryOptions: FindManyOptions<Image> = {};
       let relations: FindOptionsRelations<Image> = {};
       let where: FindOptionsWhere<Image> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -103,27 +107,30 @@ export class ImagesRepository implements IImageRepository<Image> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const imagesBy = (await this._repository.find(queryOptions)) ?? [];
-      return imagesBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
 
-  async getAllImages(args?: IGenericArgs<Image>): Promise<Image[]> {
+  async getAllImages(
+    args?: IGenericArgs<Image>,
+  ): Promise<GetAllGenericResponse<Image>> {
     try {
       let qb = this._repository.createQueryBuilder('image');
-
+      let pageSize;
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
       }
 
-      const images = (await qb.getMany()) ?? [];
-      return images;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { UserPaymentMethod } from '../entities/UserPaymentMethod.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'UserPaymentMethodsRepository';
 
@@ -41,14 +43,16 @@ export class UserPaymentMethodsRepository
     term: string,
     fields: (keyof UserPaymentMethod)[],
     paginationArgs: PaginationArgs,
-  ): Promise<UserPaymentMethod[]> {
+  ): Promise<GetAllGenericResponse<UserPaymentMethod>> {
     try {
       let queryOptions: FindManyOptions<UserPaymentMethod> = {};
       let relations: FindOptionsRelations<UserPaymentMethod> = {};
       let where: FindOptionsWhere<UserPaymentMethod> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -77,9 +81,8 @@ export class UserPaymentMethodsRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const userPaymentMethodsBy =
-        (await this._repository.find(queryOptions)) ?? [];
-      return userPaymentMethodsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -87,20 +90,22 @@ export class UserPaymentMethodsRepository
 
   async getAllUserPaymentMethods(
     args?: IGenericArgs<UserPaymentMethod>,
-  ): Promise<UserPaymentMethod[]> {
+  ): Promise<GetAllGenericResponse<UserPaymentMethod>> {
     try {
       let qb = this._repository.createQueryBuilder('userPaymentMethod');
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
       }
 
-      const userPaymentMethods = (await qb.getMany()) ?? [];
-      return userPaymentMethods;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

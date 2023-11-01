@@ -8,6 +8,8 @@ import {
 } from 'src/stores/domain/dtos/graphql/inputs/store.input';
 import { Repository } from 'typeorm';
 import { Store } from '../entities/Store.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'StoresRepository';
 
@@ -26,14 +28,18 @@ export class StoresRepository implements IStoresRepository<Store> {
     this._exceptionsService = exceptionsService;
   }
 
-  async getAllStores(args?: IGenericArgs<Store>): Promise<Store[]> {
+  async getAllStores(
+    args?: IGenericArgs<Store>,
+  ): Promise<GetAllGenericResponse<Store>> {
     try {
       let qb = this._repository.createQueryBuilder('store');
+      let pageSize;
       if (args) {
         const { paginationArgs, searchArgs } = args;
 
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.limit(limit).skip(offset);
         }
 
@@ -50,8 +56,8 @@ export class StoresRepository implements IStoresRepository<Store> {
           }
         }
       }
-      const stores = await qb.getMany();
-      return stores;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

@@ -6,9 +6,12 @@ import {
   CreateProductItemInput,
   UpdateProductItemInput,
 } from '../../dtos/graphql/inputs/product-item.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IProductItemsRepository<T> {
-  abstract getAllProductItems(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllProductItems(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
 
   abstract getProductItemById(id: string): Promise<T>;
 
@@ -25,5 +28,5 @@ export abstract class IProductItemsRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

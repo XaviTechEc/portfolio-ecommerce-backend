@@ -8,6 +8,8 @@ import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logg
 import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { Repository } from 'typeorm';
 import { Billboard } from './../entities/Billboard.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'BillboardsRepository';
 
@@ -26,13 +28,17 @@ export class BillboardsRepository implements IBillboardsRepository<Billboard> {
     this._exceptionsService = exceptionsService;
   }
 
-  async getAllBillboards(args?: IGenericArgs<Billboard>): Promise<Billboard[]> {
+  async getAllBillboards(
+    args?: IGenericArgs<Billboard>,
+  ): Promise<GetAllGenericResponse<Billboard>> {
     try {
       let qb = this._repository.createQueryBuilder('billboard');
+      let pageSize;
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -47,8 +53,8 @@ export class BillboardsRepository implements IBillboardsRepository<Billboard> {
         }
       }
 
-      const billboards = (await qb.getMany()) ?? [];
-      return billboards;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

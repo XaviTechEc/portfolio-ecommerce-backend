@@ -6,9 +6,12 @@ import {
   CreateOrderLineInput,
   UpdateOrderLineInput,
 } from '../../dtos/graphql/inputs/order-line.input';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
 
 export abstract class IOrderLinesRepository<T> {
-  abstract getAllOrderLines(args?: IGenericArgs<T>): Promise<T[]>;
+  abstract getAllOrderLines(
+    args?: IGenericArgs<T>,
+  ): Promise<GetAllGenericResponse<T>>;
 
   abstract getOrderLineById(id: string): Promise<T>;
   abstract createOrderLine(
@@ -24,5 +27,5 @@ export abstract class IOrderLinesRepository<T> {
     term: string,
     fields: (keyof T)[],
     paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+  ): Promise<GetAllGenericResponse<T>>;
 }

@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { ShoppingCart } from '../entities/ShoppingCart.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ShoppingCartsRepository';
 
@@ -40,11 +42,12 @@ export class ShoppingCartsRepository
     term: string,
     fields: (keyof ShoppingCart)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ShoppingCart[]> {
+  ): Promise<GetAllGenericResponse<ShoppingCart>> {
     try {
       let queryOptions: FindManyOptions<ShoppingCart> = {};
       let relations: FindOptionsRelations<ShoppingCart> = {};
       let where: FindOptionsWhere<ShoppingCart> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
@@ -68,8 +71,8 @@ export class ShoppingCartsRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const shoppingCartsBy = (await this._repository.find(queryOptions)) ?? [];
-      return shoppingCartsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -77,20 +80,22 @@ export class ShoppingCartsRepository
 
   async getAllShoppingCarts(
     args: IGenericArgs<ShoppingCart>,
-  ): Promise<ShoppingCart[]> {
+  ): Promise<GetAllGenericResponse<ShoppingCart>> {
     try {
       let queryOptions: FindManyOptions<ShoppingCart> = {};
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           queryOptions = { take: limit, skip: offset };
         }
       }
 
-      const shippingMethods = (await this._repository.find(queryOptions)) ?? [];
-      return shippingMethods;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

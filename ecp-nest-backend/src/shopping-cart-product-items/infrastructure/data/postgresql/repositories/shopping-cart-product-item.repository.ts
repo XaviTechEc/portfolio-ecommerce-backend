@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { ShoppingCartProductItem } from '../entities/ShoppingCartProductItem.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ShoppingCartProductItemsRepository';
 
@@ -40,14 +42,16 @@ export class ShoppingCartProductItemsRepository
     term: string,
     fields: (keyof ShoppingCartProductItem)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ShoppingCartProductItem[]> {
+  ): Promise<GetAllGenericResponse<ShoppingCartProductItem>> {
     try {
       let queryOptions: FindManyOptions<ShoppingCartProductItem> = {};
       let relations: FindOptionsRelations<ShoppingCartProductItem> = {};
       let where: FindOptionsWhere<ShoppingCartProductItem> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -75,9 +79,8 @@ export class ShoppingCartProductItemsRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const shoppingCartProductItemsBy =
-        (await this._repository.find(queryOptions)) ?? [];
-      return shoppingCartProductItemsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -85,20 +88,22 @@ export class ShoppingCartProductItemsRepository
 
   async getAllShoppingCartProductItem(
     args?: IGenericArgs<ShoppingCartProductItem>,
-  ): Promise<ShoppingCartProductItem[]> {
+  ): Promise<GetAllGenericResponse<ShoppingCartProductItem>> {
     try {
       let qb = this._repository.createQueryBuilder('shoppingCartPI');
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
       }
 
-      const shoppingCartPIs = (await qb.getMany()) ?? [];
-      return shoppingCartPIs;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

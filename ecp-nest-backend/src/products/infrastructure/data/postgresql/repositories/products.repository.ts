@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { Product } from '../entities/Product.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ProductsRepository';
 
@@ -38,14 +40,16 @@ export class ProductsRepository implements IProductsRepository<Product> {
     term: string,
     fields: (keyof Product)[],
     paginationArgs: PaginationArgs,
-  ): Promise<Product[]> {
+  ): Promise<GetAllGenericResponse<Product>> {
     try {
       let queryOptions: FindManyOptions<Product> = {};
       let relations: FindOptionsRelations<Product> = {};
       let where: FindOptionsWhere<Product> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -66,21 +70,25 @@ export class ProductsRepository implements IProductsRepository<Product> {
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const productsBy = (await this._repository.find(queryOptions)) ?? [];
-      return productsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
   }
 
-  async getAllProducts(args?: IGenericArgs<Product>): Promise<Product[]> {
+  async getAllProducts(
+    args?: IGenericArgs<Product>,
+  ): Promise<GetAllGenericResponse<Product>> {
     try {
       let qb = this._repository.createQueryBuilder('product');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
 
@@ -101,9 +109,8 @@ export class ProductsRepository implements IProductsRepository<Product> {
         }
       }
 
-      const products = (await qb.getMany()) ?? [];
-
-      return products;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

@@ -17,6 +17,8 @@ import {
   ILike,
 } from 'typeorm';
 import { ProductPromotion } from '../entities/ProductPromotion.entity';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'ProductPromotionRepository';
 
@@ -40,14 +42,16 @@ export class ProductPromotionsRepository
     term: string,
     fields: (keyof ProductPromotion)[],
     paginationArgs: PaginationArgs,
-  ): Promise<ProductPromotion[]> {
+  ): Promise<GetAllGenericResponse<ProductPromotion>> {
     try {
       let queryOptions: FindManyOptions<ProductPromotion> = {};
       let relations: FindOptionsRelations<ProductPromotion> = {};
       let where: FindOptionsWhere<ProductPromotion> = {};
+      let pageSize;
 
       if (paginationArgs) {
         const { limit = 10, offset = 0 } = paginationArgs;
+        pageSize = limit;
         queryOptions = { take: limit, skip: offset };
       }
 
@@ -76,9 +80,8 @@ export class ProductPromotionsRepository
 
       queryOptions = { ...queryOptions, relations, where };
 
-      const productPromotionsBy =
-        (await this._repository.find(queryOptions)) ?? [];
-      return productPromotionsBy;
+      const [items, total] = await this._repository.findAndCount(queryOptions);
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -86,20 +89,22 @@ export class ProductPromotionsRepository
 
   async getAllProductPromotion(
     args?: IGenericArgs<ProductPromotion>,
-  ): Promise<ProductPromotion[]> {
+  ): Promise<GetAllGenericResponse<ProductPromotion>> {
     try {
       let qb = this._repository.createQueryBuilder('productPromotion');
+      let pageSize;
 
       if (args) {
         const { paginationArgs } = args;
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.take(limit).skip(offset);
         }
       }
 
-      const productPromotions = (await qb.getMany()) ?? [];
-      return productPromotions;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
