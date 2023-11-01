@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateVariationInput,
   UpdateVariationInput,
 } from 'src/variations/domain/dtos/graphql/inputs/variation.input';
-import { IVariation } from 'src/variations/domain/entities/variation.entity';
 import { VariationType } from 'src/variations/domain/object-types/variation.type';
 
 @Resolver(() => VariationType)
@@ -20,7 +19,7 @@ export class VariationResolver {
   getAllVariation(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IVariation[]> {
+  ) {
     return this.variationUseCases.getAllVariations({
       paginationArgs,
       searchArgs,
@@ -31,7 +30,7 @@ export class VariationResolver {
   getVariationsByCategory(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IVariation[]> {
+  ) {
     return this.variationUseCases.getVariationsBy(
       term,
       ['category'],
@@ -40,23 +39,21 @@ export class VariationResolver {
   }
 
   @Query(() => VariationType, { name: 'variation' })
-  getVariationById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IVariation> {
+  getVariationById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.variationUseCases.getVariationById(id);
   }
 
   @Mutation(() => VariationType)
   createVariation(
     @Args('createVariationInput') createVariationInput: CreateVariationInput,
-  ): Promise<IVariation> {
+  ) {
     return this.variationUseCases.createVariation(createVariationInput);
   }
 
   @Mutation(() => VariationType)
   updateVariation(
     @Args('updateVariationInput') updateVariationInput: UpdateVariationInput,
-  ): Promise<IVariation> {
+  ) {
     return this.variationUseCases.updateVariation(
       updateVariationInput.id,
       updateVariationInput,
@@ -64,9 +61,7 @@ export class VariationResolver {
   }
 
   @Mutation(() => VariationType)
-  removeVariation(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IVariation> {
+  removeVariation(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.variationUseCases.removeVariation(id);
   }
 }

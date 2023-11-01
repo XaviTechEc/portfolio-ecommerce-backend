@@ -5,7 +5,6 @@ import {
   CreateBillboardInput,
   UpdateBillboardInput,
 } from 'src/billboard/domain/dtos/graphql/inputs/billboard.input';
-import { IBillboard } from 'src/billboard/domain/entities/billboard.entity';
 import { BillboardType } from 'src/billboard/domain/object-types/billboard.type';
 import {
   PaginationArgs,
@@ -20,7 +19,7 @@ export class BillboardResolver {
   getAllBillboards(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IBillboard[]> {
+  ) {
     return this.billboardUseCases.getAllBillboards({
       paginationArgs,
       searchArgs,
@@ -28,23 +27,21 @@ export class BillboardResolver {
   }
 
   @Query(() => BillboardType, { name: 'billboard' })
-  getBillboard(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IBillboard> {
+  getBillboard(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.billboardUseCases.getBillboardById(id);
   }
 
   @Mutation(() => BillboardType, { name: 'createBillboard' })
   createBillboard(
     @Args('createBillboardInput') createBillboardInput: CreateBillboardInput,
-  ): Promise<IBillboard> {
+  ) {
     return this.billboardUseCases.createBillboard(createBillboardInput);
   }
 
   @Mutation(() => BillboardType, { name: 'updateBillboard' })
   updateBillboard(
     @Args('updateBillboardInput') updateBillboardInput: UpdateBillboardInput,
-  ): Promise<IBillboard> {
+  ) {
     return this.billboardUseCases.updateBillboard(
       updateBillboardInput.id,
       updateBillboardInput,
@@ -52,9 +49,7 @@ export class BillboardResolver {
   }
 
   @Mutation(() => BillboardType, { name: 'deleteBillboard' })
-  deleteBillboard(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IBillboard> {
+  deleteBillboard(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.billboardUseCases.removeBillboard(id);
   }
 }

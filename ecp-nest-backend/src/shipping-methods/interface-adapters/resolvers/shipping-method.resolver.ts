@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateShippingMethodInput,
   UpdateShippingMethodInput,
 } from 'src/shipping-methods/domain/dtos/graphql/inputs/shipping-method.input';
-import { IShippingMethod } from 'src/shipping-methods/domain/entities/shipping-method.entity';
 import { ShippingMethodType } from 'src/shipping-methods/domain/object-types/shipping-method.type';
 
 @Resolver(() => ShippingMethodType)
@@ -20,7 +19,7 @@ export class ShippingMethodResolver {
   getAllShippingMethod(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IShippingMethod[]> {
+  ) {
     return this.shippingMethodUseCases.getAllShippingMethods({
       paginationArgs,
       searchArgs,
@@ -30,7 +29,7 @@ export class ShippingMethodResolver {
   @Query(() => ShippingMethodType, { name: 'shippingMethod' })
   getShippingMethodById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShippingMethod> {
+  ) {
     return this.shippingMethodUseCases.getShippingMethodById(id);
   }
 
@@ -38,7 +37,7 @@ export class ShippingMethodResolver {
   createShippingMethod(
     @Args('createShippingMethodInput')
     createShippingMethodInput: CreateShippingMethodInput,
-  ): Promise<IShippingMethod> {
+  ) {
     return this.shippingMethodUseCases.createShippingMethod(
       createShippingMethodInput,
     );
@@ -48,7 +47,7 @@ export class ShippingMethodResolver {
   updateShippingMethod(
     @Args('updateShippingMethodInput')
     updateShippingMethodInput: UpdateShippingMethodInput,
-  ): Promise<IShippingMethod> {
+  ) {
     return this.shippingMethodUseCases.updateShippingMethod(
       updateShippingMethodInput.id,
       updateShippingMethodInput,
@@ -58,7 +57,7 @@ export class ShippingMethodResolver {
   @Mutation(() => ShippingMethodType)
   removeShippingMethod(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShippingMethod> {
+  ) {
     return this.shippingMethodUseCases.removeShippingMethod(id);
   }
 }

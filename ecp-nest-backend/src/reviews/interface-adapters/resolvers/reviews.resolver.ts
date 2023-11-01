@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateReviewInput,
   UpdateReviewInput,
 } from 'src/reviews/domain/dtos/graphql/inputs/review.input';
-import { IReview } from 'src/reviews/domain/entities/review.entity';
 import { ReviewType } from 'src/reviews/domain/object-types/review.type';
 
 @Resolver(() => ReviewType)
@@ -20,7 +19,7 @@ export class ReviewResolver {
   getAllReview(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IReview[]> {
+  ) {
     return this.reviewUseCases.getAllReviews({
       paginationArgs,
       searchArgs,
@@ -31,7 +30,7 @@ export class ReviewResolver {
   getReviewsByUser(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IReview[]> {
+  ) {
     return this.reviewUseCases.getReviewsBy(term, ['user'], paginationArgs);
   }
 
@@ -39,7 +38,7 @@ export class ReviewResolver {
   getReviewsByOrderLine(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IReview[]> {
+  ) {
     return this.reviewUseCases.getReviewsBy(
       term,
       ['orderLine'],
@@ -48,23 +47,21 @@ export class ReviewResolver {
   }
 
   @Query(() => ReviewType, { name: 'review' })
-  getReviewById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IReview> {
+  getReviewById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.reviewUseCases.getReviewById(id);
   }
 
   @Mutation(() => ReviewType)
   createReview(
     @Args('createReviewInput') createReviewInput: CreateReviewInput,
-  ): Promise<IReview> {
+  ) {
     return this.reviewUseCases.createReview(createReviewInput);
   }
 
   @Mutation(() => ReviewType)
   updateReview(
     @Args('updateReviewInput') updateReviewInput: UpdateReviewInput,
-  ): Promise<IReview> {
+  ) {
     return this.reviewUseCases.updateReview(
       updateReviewInput.id,
       updateReviewInput,
@@ -72,9 +69,7 @@ export class ReviewResolver {
   }
 
   @Mutation(() => ReviewType)
-  removeReview(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IReview> {
+  removeReview(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.reviewUseCases.removeReview(id);
   }
 }

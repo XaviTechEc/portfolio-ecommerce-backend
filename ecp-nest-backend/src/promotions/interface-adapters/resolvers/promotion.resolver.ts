@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreatePromotionInput,
   UpdatePromotionInput,
 } from 'src/promotions/domain/dtos/graphql/inputs/promotion.input';
-import { IPromotion } from 'src/promotions/domain/entities/promotion.entity';
 import { PromotionType } from 'src/promotions/domain/object-types/promotion.type';
 
 @Resolver(() => PromotionType)
@@ -20,7 +19,7 @@ export class PromotionResolver {
   getAllPromotion(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IPromotion[]> {
+  ) {
     return this.promotionUseCases.getAllPromotions({
       paginationArgs,
       searchArgs,
@@ -28,23 +27,21 @@ export class PromotionResolver {
   }
 
   @Query(() => PromotionType, { name: 'promotion' })
-  getPromotionById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IPromotion> {
+  getPromotionById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.promotionUseCases.getPromotionById(id);
   }
 
   @Mutation(() => PromotionType)
   createPromotion(
     @Args('createPromotionInput') createPromotionInput: CreatePromotionInput,
-  ): Promise<IPromotion> {
+  ) {
     return this.promotionUseCases.createPromotion(createPromotionInput);
   }
 
   @Mutation(() => PromotionType)
   updatePromotion(
     @Args('updatePromotionInput') updatePromotionInput: UpdatePromotionInput,
-  ): Promise<IPromotion> {
+  ) {
     return this.promotionUseCases.updatePromotion(
       updatePromotionInput.id,
       updatePromotionInput,
@@ -52,9 +49,7 @@ export class PromotionResolver {
   }
 
   @Mutation(() => PromotionType)
-  removePromotion(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IPromotion> {
+  removePromotion(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.promotionUseCases.removePromotion(id);
   }
 }

@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateSeasonInput,
   UpdateSeasonInput,
 } from 'src/seasons/domain/dtos/graphql/inputs/season.input';
-import { ISeason } from 'src/seasons/domain/entities/season.entity';
 import { SeasonType } from 'src/seasons/domain/object-types/season.type';
 
 @Resolver(() => SeasonType)
@@ -20,7 +19,7 @@ export class SeasonResolver {
   getAllSeason(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<ISeason[]> {
+  ) {
     return this.seasonUseCases.getAllSeasons({
       paginationArgs,
       searchArgs,
@@ -28,23 +27,21 @@ export class SeasonResolver {
   }
 
   @Query(() => SeasonType, { name: 'season' })
-  getSeasonById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<ISeason> {
+  getSeasonById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.seasonUseCases.getSeasonById(id);
   }
 
   @Mutation(() => SeasonType)
   createSeason(
     @Args('createSeasonInput') createSeasonInput: CreateSeasonInput,
-  ): Promise<ISeason> {
+  ) {
     return this.seasonUseCases.createSeason(createSeasonInput);
   }
 
   @Mutation(() => SeasonType)
   updateSeason(
     @Args('updateSeasonInput') updateSeasonInput: UpdateSeasonInput,
-  ): Promise<ISeason> {
+  ) {
     return this.seasonUseCases.updateSeason(
       updateSeasonInput.id,
       updateSeasonInput,
@@ -52,9 +49,7 @@ export class SeasonResolver {
   }
 
   @Mutation(() => SeasonType)
-  removeSeason(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<ISeason> {
+  removeSeason(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.seasonUseCases.removeSeason(id);
   }
 }

@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateShoppingCartProductItemInput,
   UpdateShoppingCartProductItemInput,
 } from 'src/shopping-cart-product-items/domain/dtos/graphql/inputs/shopping-cart-product-item.input';
-import { IShoppingCartProductItem } from 'src/shopping-cart-product-items/domain/entities/shopping-cart-product-item.entity';
 import { ShoppingCartProductItemType } from 'src/shopping-cart-product-items/domain/object-types/shopping-cart-product-item.type';
 
 @Resolver(() => ShoppingCartProductItemType)
@@ -24,7 +23,7 @@ export class ShoppingCartProductItemResolver {
   getAllShoppingCartProductItem(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IShoppingCartProductItem[]> {
+  ) {
     return this.shoppingCartProductItemUseCases.getAllShoppingCartProductItem({
       paginationArgs,
       searchArgs,
@@ -37,7 +36,7 @@ export class ShoppingCartProductItemResolver {
   getAllByShoppingCart(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IShoppingCartProductItem[]> {
+  ) {
     return this.shoppingCartProductItemUseCases.getShoppingCartProductItemsBy(
       term,
       ['shoppingCart'],
@@ -51,7 +50,7 @@ export class ShoppingCartProductItemResolver {
   getAllByProductItem(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IShoppingCartProductItem[]> {
+  ) {
     return this.shoppingCartProductItemUseCases.getShoppingCartProductItemsBy(
       term,
       ['productItem'],
@@ -62,7 +61,7 @@ export class ShoppingCartProductItemResolver {
   @Query(() => ShoppingCartProductItemType, { name: 'shoppingCartProductItem' })
   getShoppingCartProductItemById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShoppingCartProductItem> {
+  ) {
     return this.shoppingCartProductItemUseCases.getShoppingCartProductItemById(
       id,
     );
@@ -72,7 +71,7 @@ export class ShoppingCartProductItemResolver {
   createShoppingCartProductItem(
     @Args('createShoppingCartProductItemInput')
     createShoppingCartProductItemInput: CreateShoppingCartProductItemInput,
-  ): Promise<IShoppingCartProductItem> {
+  ) {
     return this.shoppingCartProductItemUseCases.createShoppingCartProductItem(
       createShoppingCartProductItemInput,
     );
@@ -82,7 +81,7 @@ export class ShoppingCartProductItemResolver {
   updateShoppingCartProductItem(
     @Args('updateShoppingCartProductItemInput')
     updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput,
-  ): Promise<IShoppingCartProductItem> {
+  ) {
     return this.shoppingCartProductItemUseCases.updateShoppingCartProductItem(
       updateShoppingCartProductItemInput.id,
       updateShoppingCartProductItemInput,
@@ -92,7 +91,7 @@ export class ShoppingCartProductItemResolver {
   @Mutation(() => ShoppingCartProductItemType)
   removeShoppingCartProductItem(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShoppingCartProductItem> {
+  ) {
     return this.shoppingCartProductItemUseCases.removeShoppingCartProductItem(
       id,
     );

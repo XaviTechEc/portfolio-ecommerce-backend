@@ -1,12 +1,12 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
-  Resolver,
   Args,
   ID,
   Mutation,
-  ResolveField,
   Parent,
   Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
 import {
   PaginationArgs,
@@ -18,7 +18,6 @@ import {
   CreateProductItemInput,
   UpdateProductItemInput,
 } from 'src/product-items/domain/dtos/graphql/inputs/product-item.input';
-import { IProductItem } from 'src/product-items/domain/entities/product-item.entity';
 import { ProductItemType } from 'src/product-items/domain/object-types/product-item.type';
 import { VariationOptionType } from 'src/variation-options/domain/object-types/variation-option.type';
 
@@ -33,7 +32,7 @@ export class ProductItemResolver {
   getAllProductItems(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IProductItem[]> {
+  ) {
     return this.productItemUseCases.getAllProductItems({
       paginationArgs,
       searchArgs,
@@ -44,7 +43,7 @@ export class ProductItemResolver {
   getProductItemsByProduct(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductItem[]> {
+  ) {
     return this.productItemUseCases.getProductItemsBy(
       term,
       ['product'],
@@ -55,7 +54,7 @@ export class ProductItemResolver {
   @Query(() => ProductItemType, { name: 'productItem' })
   getProductItemById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductItem> {
+  ) {
     return this.productItemUseCases.getProductItemById(id);
   }
 
@@ -63,7 +62,7 @@ export class ProductItemResolver {
   createProductItem(
     @Args('createProductItemInput')
     createProductItemInput: CreateProductItemInput,
-  ): Promise<IProductItem> {
+  ) {
     return this.productItemUseCases.createProductItem(createProductItemInput);
   }
 
@@ -71,7 +70,7 @@ export class ProductItemResolver {
   updateProductItem(
     @Args('updateProductItemInput')
     updateProductItemInput: UpdateProductItemInput,
-  ): Promise<IProductItem> {
+  ) {
     return this.productItemUseCases.updateProductItem(
       updateProductItemInput.id,
       updateProductItemInput,
@@ -79,9 +78,7 @@ export class ProductItemResolver {
   }
 
   @Mutation(() => ProductItemType)
-  removeProductItem(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductItem> {
+  removeProductItem(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.productItemUseCases.removeProductItem(id);
   }
 

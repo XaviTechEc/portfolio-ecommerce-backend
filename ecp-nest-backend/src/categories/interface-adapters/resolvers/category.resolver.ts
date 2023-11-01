@@ -13,7 +13,6 @@ import {
   CreateCategoryInput,
   UpdateCategoryInput,
 } from 'src/categories/domain/dtos/graphql/inputs/category.input';
-import { ICategory } from 'src/categories/domain/entities/category.entity';
 import { CategoryType } from 'src/categories/domain/object-types/category.type';
 import { CategoryPromotionUseCases } from 'src/category-promotions/application/use-cases/category-promotion-use-cases';
 import {
@@ -36,7 +35,7 @@ export class CategoryResolver {
   getAllCategories(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<ICategory[]> {
+  ) {
     return this.categoryUseCases.getAllCategories({
       paginationArgs,
       searchArgs,
@@ -47,7 +46,7 @@ export class CategoryResolver {
   getCategoriesBySeason(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<ICategory[]> {
+  ) {
     return this.categoryUseCases.getCategoriesBy(
       term,
       ['season'],
@@ -59,7 +58,7 @@ export class CategoryResolver {
   getCategoriesByUser(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<ICategory[]> {
+  ) {
     return this.categoryUseCases.getCategoriesBy(
       term,
       ['user'],
@@ -71,7 +70,7 @@ export class CategoryResolver {
   getCategoriesByParentCategory(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<ICategory[]> {
+  ) {
     return this.categoryUseCases.getCategoriesBy(
       term,
       ['parentCategory'],
@@ -80,23 +79,21 @@ export class CategoryResolver {
   }
 
   @Query(() => CategoryType, { name: 'category' })
-  getCategoryById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<ICategory> {
+  getCategoryById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.categoryUseCases.getCategoryById(id);
   }
 
   @Mutation(() => CategoryType)
   createCategory(
     @Args('createCategoryInput') createCategoryInput: CreateCategoryInput,
-  ): Promise<ICategory> {
+  ) {
     return this.categoryUseCases.createCategory(createCategoryInput);
   }
 
   @Mutation(() => CategoryType)
   updateCategory(
     @Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput,
-  ): Promise<ICategory> {
+  ) {
     return this.categoryUseCases.updateCategory(
       updateCategoryInput.id,
       updateCategoryInput,
@@ -104,9 +101,7 @@ export class CategoryResolver {
   }
 
   @Mutation(() => CategoryType)
-  removeCategory(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<ICategory> {
+  removeCategory(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.categoryUseCases.removeCategory(id);
   }
 

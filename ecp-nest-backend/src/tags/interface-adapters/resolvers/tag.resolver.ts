@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateTagInput,
   UpdateTagInput,
 } from 'src/tags/domain/dtos/graphql/inputs/tag.input';
-import { ITag } from 'src/tags/domain/entities/tag.entity';
 import { TagType } from 'src/tags/domain/object-types/tag.type';
 
 @Resolver(() => TagType)
@@ -20,7 +19,7 @@ export class TagResolver {
   getAllTag(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<ITag[]> {
+  ) {
     return this.tagUseCases.getAllTags({
       paginationArgs,
       searchArgs,
@@ -28,30 +27,22 @@ export class TagResolver {
   }
 
   @Query(() => TagType, { name: 'tag' })
-  getTagById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<ITag> {
+  getTagById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.tagUseCases.getTagById(id);
   }
 
   @Mutation(() => TagType)
-  createTag(
-    @Args('createTagInput') createTagInput: CreateTagInput,
-  ): Promise<ITag> {
+  createTag(@Args('createTagInput') createTagInput: CreateTagInput) {
     return this.tagUseCases.createTag(createTagInput);
   }
 
   @Mutation(() => TagType)
-  updateTag(
-    @Args('updateTagInput') updateTagInput: UpdateTagInput,
-  ): Promise<ITag> {
+  updateTag(@Args('updateTagInput') updateTagInput: UpdateTagInput) {
     return this.tagUseCases.updateTag(updateTagInput.id, updateTagInput);
   }
 
   @Mutation(() => TagType)
-  removeTag(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<ITag> {
+  removeTag(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.tagUseCases.removeTag(id);
   }
 }

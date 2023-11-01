@@ -1,13 +1,15 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
   Args,
-  Resolver,
-  Query,
-  Mutation,
-  ResolveField,
   ID,
+  Mutation,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
 import { BillboardType } from 'src/billboard/domain/object-types/billboard.type';
+import { CategoryUseCases } from 'src/categories/application/use-cases/category-use-cases';
+import { CategoryType } from 'src/categories/domain/object-types/category.type';
 import {
   PaginationArgs,
   SearchArgs,
@@ -17,11 +19,8 @@ import {
   CreateStoreInput,
   UpdateStoreInput,
 } from 'src/stores/domain/dtos/graphql/inputs/store.input';
-import { IStore } from 'src/stores/domain/entities/store.entity';
 import { StoreType } from 'src/stores/domain/object-types/store.type';
 import { BillboardUseCases } from '../../../billboard/application/use-cases/billboard-use-cases';
-import { CategoryType } from 'src/categories/domain/object-types/category.type';
-import { CategoryUseCases } from 'src/categories/application/use-cases/category-use-cases';
 
 @Resolver(() => StoreType)
 export class StoreResolver {
@@ -35,7 +34,7 @@ export class StoreResolver {
   async getAllStores(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IStore[]> {
+  ) {
     return this.storeUseCases.getAllStores({
       paginationArgs,
       searchArgs,
@@ -45,14 +44,14 @@ export class StoreResolver {
   @Query(() => StoreType, { name: 'store' })
   async getStoreById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IStore> {
+  ) {
     return this.storeUseCases.getStoreById(id);
   }
 
   @Mutation(() => StoreType)
   async createStore(
     @Args('createStoreInput') createStoreInput: CreateStoreInput,
-  ): Promise<IStore> {
+  ) {
     return this.storeUseCases.createStore(createStoreInput);
   }
 

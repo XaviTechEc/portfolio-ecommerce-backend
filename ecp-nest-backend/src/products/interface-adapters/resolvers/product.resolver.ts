@@ -1,12 +1,12 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
-  Resolver,
   Args,
   ID,
   Mutation,
-  ResolveField,
   Parent,
   Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
 import {
   PaginationArgs,
@@ -19,7 +19,6 @@ import {
   CreateProductInput,
   UpdateProductInput,
 } from 'src/products/domain/dtos/graphql/inputs/product.input';
-import { IProduct } from 'src/products/domain/entities/product.entity';
 import { ProductType } from 'src/products/domain/object-types/product.type';
 import { PromotionType } from 'src/promotions/domain/object-types/promotion.type';
 import { TagType } from 'src/tags/domain/object-types/tag.type';
@@ -36,7 +35,7 @@ export class ProductResolver {
   getAllProduct(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IProduct[]> {
+  ) {
     return this.productUseCases.getAllProducts({
       paginationArgs,
       searchArgs,
@@ -47,28 +46,26 @@ export class ProductResolver {
   getProductsByUser(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProduct[]> {
+  ) {
     return this.productUseCases.getProductsBy(term, ['user'], paginationArgs);
   }
 
   @Query(() => ProductType, { name: 'product' })
-  getProductById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProduct> {
+  getProductById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.productUseCases.getProductById(id);
   }
 
   @Mutation(() => ProductType)
   createProduct(
     @Args('createProductInput') createProductInput: CreateProductInput,
-  ): Promise<IProduct> {
+  ) {
     return this.productUseCases.createProduct(createProductInput);
   }
 
   @Mutation(() => ProductType)
   updateProduct(
     @Args('updateProductInput') updateProductInput: UpdateProductInput,
-  ): Promise<IProduct> {
+  ) {
     return this.productUseCases.updateProduct(
       updateProductInput.id,
       updateProductInput,
@@ -76,9 +73,7 @@ export class ProductResolver {
   }
 
   @Mutation(() => ProductType)
-  removeProduct(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProduct> {
+  removeProduct(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.productUseCases.removeProduct(id);
   }
 

@@ -1,22 +1,23 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import {
-  Resolver,
-  Args,
-  ID,
-  ResolveField,
-  Parent,
-  Query,
-} from '@nestjs/graphql';
+import
+  {
+    Args,
+    ID,
+    Parent,
+    Query,
+    ResolveField,
+    Resolver,
+  } from '@nestjs/graphql';
 import { AddressType } from 'src/addresses/domain/object-types/address.type';
-import {
-  PaginationArgs,
-  SearchArgs,
-} from 'src/common/domain/dtos/graphql/args';
+import
+  {
+    PaginationArgs,
+    SearchArgs,
+  } from 'src/common/domain/dtos/graphql/args';
 import { PaymentMethodType } from 'src/payment-methods/domain/object-types/payment-method.type';
 import { UserAddressUseCases } from 'src/user-addresses/application/use-cases/user-address-use-case';
 import { UserPaymentMethodUseCases } from 'src/user-payment-methods/application/use-cases/user-payment-method-use-cases';
 import { UserUseCases } from 'src/users/application/use-cases/user-use-cases';
-import { IUser } from 'src/users/domain/entities/user.entity';
 import { UserObjType } from 'src/users/domain/object-types/user.type';
 
 @Resolver(() => UserObjType)
@@ -31,7 +32,7 @@ export class UserResolver {
   getAllUsers(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IUser[]> {
+  ) {
     return this.userUseCases.getAllUsers({
       paginationArgs,
       searchArgs,
@@ -39,9 +40,7 @@ export class UserResolver {
   }
 
   @Query(() => UserObjType, { name: 'user' })
-  getUserById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IUser> {
+  getUserById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.userUseCases.getUserById(id);
   }
 

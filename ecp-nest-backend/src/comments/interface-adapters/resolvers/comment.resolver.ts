@@ -1,11 +1,10 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommentUseCases } from 'src/comments/application/use-cases/comment-use-cases';
 import {
   CreateCommentInput,
   UpdateCommentInput,
 } from 'src/comments/domain/dtos/graphql/inputs/comment.input';
-import { IComment } from 'src/comments/domain/entities/comment.entity';
 import { CommentType } from 'src/comments/domain/object-types/comment.type';
 import {
   PaginationArgs,
@@ -19,7 +18,7 @@ export class CommentResolver {
   getAllComments(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IComment[]> {
+  ) {
     return this.commentUseCases.getAllComments({
       paginationArgs,
       searchArgs,
@@ -30,7 +29,7 @@ export class CommentResolver {
   getCommentsByUser(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IComment[]> {
+  ) {
     return this.commentUseCases.getCommentsBy(term, ['user'], paginationArgs);
   }
 
@@ -38,7 +37,7 @@ export class CommentResolver {
   getCommentsByReview(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IComment[]> {
+  ) {
     return this.commentUseCases.getCommentsBy(term, ['review'], paginationArgs);
   }
 
@@ -46,7 +45,7 @@ export class CommentResolver {
   getCommentsByParentComment(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IComment[]> {
+  ) {
     return this.commentUseCases.getCommentsBy(
       term,
       ['comment'],
@@ -55,23 +54,21 @@ export class CommentResolver {
   }
 
   @Query(() => CommentType, { name: 'comment' })
-  getCommentById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IComment> {
+  getCommentById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.commentUseCases.getCommentById(id);
   }
 
   @Mutation(() => CommentType)
   createComment(
     @Args('createCommentInput') createCommentInput: CreateCommentInput,
-  ): Promise<IComment> {
+  ) {
     return this.commentUseCases.createComment(createCommentInput);
   }
 
   @Mutation(() => CommentType)
   updateComment(
     @Args('updateCommentInput') updateCommentInput: UpdateCommentInput,
-  ): Promise<IComment> {
+  ) {
     return this.commentUseCases.updateComment(
       updateCommentInput.id,
       updateCommentInput,
@@ -79,9 +76,7 @@ export class CommentResolver {
   }
 
   @Mutation(() => CommentType)
-  removeComment(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IComment> {
+  removeComment(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.commentUseCases.removeComment(id);
   }
 }

@@ -1,12 +1,12 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
-  Query,
-  Resolver,
   Args,
   ID,
   Mutation,
-  ResolveField,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
 import {
   PaginationArgs,
@@ -19,7 +19,6 @@ import {
   CreateShoppingCartInput,
   UpdateShoppingCartInput,
 } from 'src/shopping-carts/domain/dtos/graphql/inputs/shopping-cart.input';
-import { IShoppingCart } from 'src/shopping-carts/domain/entities/shopping-cart.entity';
 import { ShoppingCartType } from 'src/shopping-carts/domain/object-types/shopping-cart.type';
 
 @Resolver(() => ShoppingCartType)
@@ -33,7 +32,7 @@ export class ShoppingCartResolver {
   getAllShoppingCarts(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IShoppingCart[]> {
+  ) {
     return this.shoppingCartUseCases.getAllShoppingCarts({
       paginationArgs,
       searchArgs,
@@ -44,7 +43,7 @@ export class ShoppingCartResolver {
   getShoppingCartsByUser(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IShoppingCart[]> {
+  ) {
     return this.shoppingCartUseCases.getShoppingCartsBy(
       term,
       ['user'],
@@ -55,7 +54,7 @@ export class ShoppingCartResolver {
   @Query(() => ShoppingCartType, { name: 'shoppingCart' })
   getShoppingCartById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShoppingCart> {
+  ) {
     return this.shoppingCartUseCases.getShoppingCartById(id);
   }
 
@@ -63,7 +62,7 @@ export class ShoppingCartResolver {
   createShoppingCart(
     @Args('createShoppingCartInput')
     createShoppingCartInput: CreateShoppingCartInput,
-  ): Promise<IShoppingCart> {
+  ) {
     return this.shoppingCartUseCases.createShoppingCart(
       createShoppingCartInput,
     );
@@ -73,7 +72,7 @@ export class ShoppingCartResolver {
   updateShoppingCart(
     @Args('updateShoppingCartInput')
     updateShoppingCartInput: UpdateShoppingCartInput,
-  ): Promise<IShoppingCart> {
+  ) {
     return this.shoppingCartUseCases.updateShoppingCart(
       updateShoppingCartInput.id,
       updateShoppingCartInput,
@@ -83,7 +82,7 @@ export class ShoppingCartResolver {
   @Mutation(() => ShoppingCartType)
   removeShoppingCart(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShoppingCart> {
+  ) {
     return this.shoppingCartUseCases.removeShoppingCart(id);
   }
 

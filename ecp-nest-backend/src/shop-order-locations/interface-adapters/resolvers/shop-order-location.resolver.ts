@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateShopOrderLocationInput,
   UpdateShopOrderLocationInput,
 } from 'src/shop-order-locations/domain/dtos/graphql/inputs/shop-order-location.input';
-import { IShopOrderLocation } from 'src/shop-order-locations/domain/entities/shop-order-locations.entity';
 import { ShopOrderLocationType } from 'src/shop-order-locations/domain/object-types/shop-order-location.type';
 
 @Resolver(() => ShopOrderLocationType)
@@ -20,7 +19,7 @@ export class ShopOrderLocationResolver {
   getAllShopOrderLocation(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IShopOrderLocation[]> {
+  ) {
     return this.shopOrderLocationUseCases.getAllShopOrderLocation({
       paginationArgs,
       searchArgs,
@@ -33,7 +32,7 @@ export class ShopOrderLocationResolver {
   getShopOrderLocationsByShopOrder(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IShopOrderLocation[]> {
+  ) {
     return this.shopOrderLocationUseCases.getShopOrderLocationsBy(
       term,
       ['shopOrder'],
@@ -47,7 +46,7 @@ export class ShopOrderLocationResolver {
   getShopOrderLocationsByLocation(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IShopOrderLocation[]> {
+  ) {
     return this.shopOrderLocationUseCases.getShopOrderLocationsBy(
       term,
       ['location'],
@@ -58,7 +57,7 @@ export class ShopOrderLocationResolver {
   @Query(() => ShopOrderLocationType, { name: 'shopOrderLocation' })
   getShopOrderLocationById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShopOrderLocation> {
+  ) {
     return this.shopOrderLocationUseCases.getShopOrderLocationById(id);
   }
 
@@ -66,7 +65,7 @@ export class ShopOrderLocationResolver {
   createShopOrderLocation(
     @Args('createShopOrderLocationInput')
     createShopOrderLocationInput: CreateShopOrderLocationInput,
-  ): Promise<IShopOrderLocation> {
+  ) {
     return this.shopOrderLocationUseCases.createShopOrderLocation(
       createShopOrderLocationInput,
     );
@@ -76,7 +75,7 @@ export class ShopOrderLocationResolver {
   updateShopOrderLocation(
     @Args('updateShopOrderLocationInput')
     updateShopOrderLocationInput: UpdateShopOrderLocationInput,
-  ): Promise<IShopOrderLocation> {
+  ) {
     return this.shopOrderLocationUseCases.updateShopOrderLocation(
       updateShopOrderLocationInput.id,
       updateShopOrderLocationInput,
@@ -86,7 +85,7 @@ export class ShopOrderLocationResolver {
   @Mutation(() => ShopOrderLocationType)
   removeShopOrderLocation(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShopOrderLocation> {
+  ) {
     return this.shopOrderLocationUseCases.removeShopOrderLocation(id);
   }
 }

@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
 } from 'src/product-categories/domain/dtos/graphql/inputs/product-category.input';
-import { IProductCategory } from 'src/product-categories/domain/entities/product-category.entity';
 import { ProductCategoryType } from 'src/product-categories/domain/object-types/product-category.type';
 
 @Resolver(() => ProductCategoryType)
@@ -20,7 +19,7 @@ export class ProductCategoryResolver {
   getAllProductCategory(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IProductCategory[]> {
+  ) {
     return this.productCategoryUseCases.getAllProductCategory({
       paginationArgs,
       searchArgs,
@@ -31,7 +30,7 @@ export class ProductCategoryResolver {
   getProductCategoryByCategory(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductCategory[]> {
+  ) {
     return this.productCategoryUseCases.getProductCategoriesBy(
       term,
       ['category'],
@@ -43,7 +42,7 @@ export class ProductCategoryResolver {
   getProductCategoryByProduct(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductCategory[]> {
+  ) {
     return this.productCategoryUseCases.getProductCategoriesBy(
       term,
       ['product'],
@@ -54,7 +53,7 @@ export class ProductCategoryResolver {
   @Query(() => ProductCategoryType, { name: 'productCategory' })
   getProductCategoryById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductCategory> {
+  ) {
     return this.productCategoryUseCases.getProductCategoryById(id);
   }
 
@@ -62,7 +61,7 @@ export class ProductCategoryResolver {
   createProductCategory(
     @Args('createProductCategoryInput')
     createProductCategoryInput: CreateProductCategoryInput,
-  ): Promise<IProductCategory> {
+  ) {
     return this.productCategoryUseCases.createProductCategory(
       createProductCategoryInput,
     );
@@ -72,7 +71,7 @@ export class ProductCategoryResolver {
   updateProductCategory(
     @Args('updateProductCategoryInput')
     updateProductCategoryInput: UpdateProductCategoryInput,
-  ): Promise<IProductCategory> {
+  ) {
     return this.productCategoryUseCases.updateProductCategory(
       updateProductCategoryInput.id,
       updateProductCategoryInput,
@@ -82,7 +81,7 @@ export class ProductCategoryResolver {
   @Mutation(() => ProductCategoryType)
   removeProductCategory(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductCategory> {
+  ) {
     return this.productCategoryUseCases.removeProductCategory(id);
   }
 }

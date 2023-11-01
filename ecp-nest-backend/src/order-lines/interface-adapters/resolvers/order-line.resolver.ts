@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateOrderLineInput,
   UpdateOrderLineInput,
 } from 'src/order-lines/domain/dtos/graphql/inputs/order-line.input';
-import { IOrderLine } from 'src/order-lines/domain/entities/order-line.entity';
 import { OrderLineType } from 'src/order-lines/domain/object-types/order-line.type';
 
 @Resolver(() => OrderLineType)
@@ -20,7 +19,7 @@ export class OrderLineResolver {
   getAllOrderLines(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IOrderLine[]> {
+  ) {
     return this.orderLineUseCases.getAllOrderLines({
       paginationArgs,
       searchArgs,
@@ -52,23 +51,21 @@ export class OrderLineResolver {
   }
 
   @Query(() => OrderLineType, { name: 'orderLine' })
-  getOrderLineById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IOrderLine> {
+  getOrderLineById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.orderLineUseCases.getOrderLineById(id);
   }
 
   @Mutation(() => OrderLineType)
   createOrderLine(
     @Args('createOrderLineInput') createOrderLineInput: CreateOrderLineInput,
-  ): Promise<IOrderLine> {
+  ) {
     return this.orderLineUseCases.createOrderLine(createOrderLineInput);
   }
 
   @Mutation(() => OrderLineType)
   updateOrderLine(
     @Args('updateOrderLineInput') updateOrderLineInput: UpdateOrderLineInput,
-  ): Promise<IOrderLine> {
+  ) {
     return this.orderLineUseCases.updateOrderLine(
       updateOrderLineInput.id,
       updateOrderLineInput,
@@ -76,9 +73,7 @@ export class OrderLineResolver {
   }
 
   @Mutation(() => OrderLineType)
-  removeOrderLine(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IOrderLine> {
+  removeOrderLine(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.orderLineUseCases.removeOrderLine(id);
   }
 }

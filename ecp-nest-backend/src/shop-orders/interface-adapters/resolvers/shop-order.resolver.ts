@@ -1,12 +1,12 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import {
-  Resolver,
   Args,
   ID,
   Mutation,
-  ResolveField,
   Parent,
   Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql';
 import { LocationType } from 'src/addresses/domain/object-types/location.type';
 import {
@@ -15,13 +15,11 @@ import {
 } from 'src/common/domain/dtos/graphql/args';
 import { StatusValue } from 'src/order-status/domain/enums/status-value.enum';
 import { ShopOrderLocationUseCases } from 'src/shop-order-locations/application/use-cases/shop-order-location-use-cases';
-import { IShopOrderLocation } from 'src/shop-order-locations/domain/entities/shop-order-locations.entity';
 import { ShopOrderUseCases } from 'src/shop-orders/application/use-cases/shop-order-use-cases';
 import {
   CreateShopOrderInput,
   UpdateShopOrderInput,
 } from 'src/shop-orders/domain/dtos/graphql/inputs/shop-order.input';
-import { IShopOrder } from 'src/shop-orders/domain/entities/shop-order.entity';
 import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.type';
 
 @Resolver(() => ShopOrderType)
@@ -35,7 +33,7 @@ export class ShopOrderResolver {
   getAllShopOrders(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IShopOrder[]> {
+  ) {
     return this.shopOrderUseCases.getAllShopOrders({
       paginationArgs,
       searchArgs,
@@ -91,23 +89,21 @@ export class ShopOrderResolver {
   }
 
   @Query(() => ShopOrderType, { name: 'shopOrder' })
-  getShopOrderById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShopOrder> {
+  getShopOrderById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.shopOrderUseCases.getShopOrderById(id);
   }
 
   @Mutation(() => ShopOrderType)
   createShopOrder(
     @Args('createShopOrderInput') createShopOrderInput: CreateShopOrderInput,
-  ): Promise<IShopOrder> {
+  ) {
     return this.shopOrderUseCases.createShopOrder(createShopOrderInput);
   }
 
   @Mutation(() => ShopOrderType)
   updateShopOrder(
     @Args('updateShopOrderInput') updateShopOrderInput: UpdateShopOrderInput,
-  ): Promise<IShopOrder> {
+  ) {
     return this.shopOrderUseCases.updateShopOrder(
       updateShopOrderInput.id,
       updateShopOrderInput,
@@ -115,9 +111,7 @@ export class ShopOrderResolver {
   }
 
   @Mutation(() => ShopOrderType)
-  removeShopOrder(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IShopOrder> {
+  removeShopOrder(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.shopOrderUseCases.removeShopOrder(id);
   }
 
@@ -126,7 +120,7 @@ export class ShopOrderResolver {
   async getLocations(
     @Parent() shopOrder: ShopOrderType,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IShopOrderLocation[]> {
+  ) {
     return this.shopOrderLocationUseCases.getShopOrderLocationsBy(
       shopOrder.id,
       ['shopOrder'],

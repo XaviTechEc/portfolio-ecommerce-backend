@@ -8,6 +8,8 @@ import { IExceptionsService } from 'src/common/domain/abstracts/services/excepti
 import { Repository } from 'typeorm';
 import { Country } from '../entities';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'CountriesRepository';
 
@@ -26,15 +28,19 @@ export class CountriesRepository implements ICountriesRepository<Country> {
     this._exceptionsService = exceptionsService;
   }
 
-  async getAllCountries(args?: IGenericArgs<Country>): Promise<Country[]> {
+  async getAllCountries(
+    args?: IGenericArgs<Country>,
+  ): Promise<GetAllGenericResponse<Country>> {
     try {
       let qb = this._repository.createQueryBuilder('country');
+      let pageSize;
 
       if (args) {
         const { paginationArgs, searchArgs } = args;
 
         if (paginationArgs) {
           const { limit = 10, offset = 0 } = paginationArgs;
+          pageSize = limit;
           qb = qb.limit(limit).skip(offset);
         }
 
@@ -53,8 +59,8 @@ export class CountriesRepository implements ICountriesRepository<Country> {
         }
       }
 
-      const countries = (await qb.getMany()) ?? [];
-      return countries;
+      const [items, total] = await qb.getManyAndCount();
+      return { items, total, pageCount: getPageCount(total, pageSize) };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

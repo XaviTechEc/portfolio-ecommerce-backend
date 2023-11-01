@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateOrderStatusInput,
   UpdateOrderStatusInput,
 } from 'src/order-status/domain/dtos/graphql/inputs/order-status.input';
-import { IOrderStatus } from 'src/order-status/domain/entities/order-status.entity';
 import { OrderStatusType } from 'src/order-status/domain/object-types/order-status.type';
 
 @Resolver(() => OrderStatusType)
@@ -20,7 +19,7 @@ export class OrderStatusResolver {
   getAllOrderStatus(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IOrderStatus[]> {
+  ) {
     return this.orderStatusUseCases.getAllOrderStatus({
       paginationArgs,
       searchArgs,
@@ -30,7 +29,7 @@ export class OrderStatusResolver {
   @Query(() => OrderStatusType, { name: 'orderStatus' })
   getOrderStatusById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IOrderStatus> {
+  ) {
     return this.orderStatusUseCases.getOrderStatusById(id);
   }
 
@@ -38,7 +37,7 @@ export class OrderStatusResolver {
   createOrderStatus(
     @Args('createOrderStatusInput')
     createOrderStatusInput: CreateOrderStatusInput,
-  ): Promise<IOrderStatus> {
+  ) {
     return this.orderStatusUseCases.createOrderStatus(createOrderStatusInput);
   }
 
@@ -46,7 +45,7 @@ export class OrderStatusResolver {
   updateOrderStatus(
     @Args('updateOrderStatusInput')
     updateOrderStatusInput: UpdateOrderStatusInput,
-  ): Promise<IOrderStatus> {
+  ) {
     return this.orderStatusUseCases.updateOrderStatus(
       updateOrderStatusInput.id,
       updateOrderStatusInput,
@@ -54,9 +53,7 @@ export class OrderStatusResolver {
   }
 
   @Mutation(() => OrderStatusType)
-  removeOrderStatus(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IOrderStatus> {
+  removeOrderStatus(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.orderStatusUseCases.removeOrderStatus(id);
   }
 }

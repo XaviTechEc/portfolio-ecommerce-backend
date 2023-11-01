@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateVariationOptionInput,
   UpdateVariationOptionInput,
 } from 'src/variation-options/domain/dtos/graphql/inputs/variation-option.input';
-import { IVariationOption } from 'src/variation-options/domain/entities/variation-option.entity';
 import { VariationOptionType } from 'src/variation-options/domain/object-types/variation-option.type';
 
 @Resolver(() => VariationOptionType)
@@ -20,7 +19,7 @@ export class VariationOptionResolver {
   getAllVariationOption(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IVariationOption[]> {
+  ) {
     return this.variationOptionUseCases.getAllVariationOptions({
       paginationArgs,
       searchArgs,
@@ -31,7 +30,7 @@ export class VariationOptionResolver {
   getVariationOptionsByVariation(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IVariationOption[]> {
+  ) {
     return this.variationOptionUseCases.getVariationOptionsBy(
       term,
       ['variation'],
@@ -42,7 +41,7 @@ export class VariationOptionResolver {
   @Query(() => VariationOptionType, { name: 'variationOption' })
   getVariationOptionById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IVariationOption> {
+  ) {
     return this.variationOptionUseCases.getVariationOptionById(id);
   }
 
@@ -50,7 +49,7 @@ export class VariationOptionResolver {
   createVariationOption(
     @Args('createVariationOptionInput')
     createVariationOptionInput: CreateVariationOptionInput,
-  ): Promise<IVariationOption> {
+  ) {
     return this.variationOptionUseCases.createVariationOption(
       createVariationOptionInput,
     );
@@ -60,7 +59,7 @@ export class VariationOptionResolver {
   updateVariationOption(
     @Args('updateVariationOptionInput')
     updateVariationOptionInput: UpdateVariationOptionInput,
-  ): Promise<IVariationOption> {
+  ) {
     return this.variationOptionUseCases.updateVariationOption(
       updateVariationOptionInput.id,
       updateVariationOptionInput,
@@ -70,7 +69,7 @@ export class VariationOptionResolver {
   @Mutation(() => VariationOptionType)
   removeVariationOption(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IVariationOption> {
+  ) {
     return this.variationOptionUseCases.removeVariationOption(id);
   }
 }

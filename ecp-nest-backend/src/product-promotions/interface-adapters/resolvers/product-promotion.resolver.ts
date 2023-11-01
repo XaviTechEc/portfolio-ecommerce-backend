@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateProductPromotionInput,
   UpdateProductPromotionInput,
 } from 'src/product-promotions/domain/dtos/graphql/inputs/product-promotion.input';
-import { IProductPromotion } from 'src/product-promotions/domain/entities/product-promotion.entity';
 import { ProductPromotionType } from 'src/product-promotions/domain/object-types/product-promotion.type';
 
 @Resolver(() => ProductPromotionType)
@@ -20,7 +19,7 @@ export class ProductPromotionResolver {
   getAllProductPromotion(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IProductPromotion[]> {
+  ) {
     return this.productPromotionUseCases.getAllProductPromotion({
       paginationArgs,
       searchArgs,
@@ -31,7 +30,7 @@ export class ProductPromotionResolver {
   getProductPromotionByProduct(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductPromotion[]> {
+  ) {
     return this.productPromotionUseCases.getProductPromotionsBy(
       term,
       ['product'],
@@ -42,7 +41,7 @@ export class ProductPromotionResolver {
   getProductPromotionByPromotion(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductPromotion[]> {
+  ) {
     return this.productPromotionUseCases.getProductPromotionsBy(
       term,
       ['promotion'],
@@ -53,7 +52,7 @@ export class ProductPromotionResolver {
   @Query(() => ProductPromotionType, { name: 'productPromotion' })
   getProductPromotionById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductPromotion> {
+  ) {
     return this.productPromotionUseCases.getProductPromotionById(id);
   }
 
@@ -61,7 +60,7 @@ export class ProductPromotionResolver {
   createProductPromotion(
     @Args('createProductPromotionInput')
     createProductPromotionInput: CreateProductPromotionInput,
-  ): Promise<IProductPromotion> {
+  ) {
     return this.productPromotionUseCases.createProductPromotion(
       createProductPromotionInput,
     );
@@ -71,7 +70,7 @@ export class ProductPromotionResolver {
   updateProductPromotion(
     @Args('updateProductPromotionInput')
     updateProductPromotionInput: UpdateProductPromotionInput,
-  ): Promise<IProductPromotion> {
+  ) {
     return this.productPromotionUseCases.updateProductPromotion(
       updateProductPromotionInput.id,
       updateProductPromotionInput,
@@ -81,7 +80,7 @@ export class ProductPromotionResolver {
   @Mutation(() => ProductPromotionType)
   removeProductPromotion(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductPromotion> {
+  ) {
     return this.productPromotionUseCases.removeProductPromotion(id);
   }
 }

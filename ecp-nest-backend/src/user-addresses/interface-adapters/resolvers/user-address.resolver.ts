@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateUserAddressInput,
   UpdateUserAddressInput,
 } from 'src/user-addresses/domain/dtos/graphql/inputs/user-address.input';
-import { IUserAddress } from 'src/user-addresses/domain/entities/user-address.entity';
 import { UserAddressType } from 'src/user-addresses/domain/object-types/user-address.type';
 
 @Resolver(() => UserAddressType)
@@ -20,7 +19,7 @@ export class UserAddressResolver {
   getAllUserAddress(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IUserAddress[]> {
+  ) {
     return this.userAddressUseCases.getAllUserAddress({
       paginationArgs,
       searchArgs,
@@ -31,7 +30,7 @@ export class UserAddressResolver {
   getUserAddressByUser(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IUserAddress[]> {
+  ) {
     return this.userAddressUseCases.getUserAddressesBy(
       term,
       ['user'],
@@ -43,7 +42,7 @@ export class UserAddressResolver {
   getUserAddressByAddress(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IUserAddress[]> {
+  ) {
     return this.userAddressUseCases.getUserAddressesBy(
       term,
       ['address'],
@@ -54,7 +53,7 @@ export class UserAddressResolver {
   @Query(() => UserAddressType, { name: 'userAddress' })
   getUserAddressById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IUserAddress> {
+  ) {
     return this.userAddressUseCases.getUserAddressById(id);
   }
 
@@ -62,7 +61,7 @@ export class UserAddressResolver {
   createUserAddress(
     @Args('createUserAddressInput')
     createUserAddressInput: CreateUserAddressInput,
-  ): Promise<IUserAddress> {
+  ) {
     return this.userAddressUseCases.createUserAddress(createUserAddressInput);
   }
 
@@ -70,7 +69,7 @@ export class UserAddressResolver {
   updateUserAddress(
     @Args('updateUserAddressInput')
     updateUserAddressInput: UpdateUserAddressInput,
-  ): Promise<IUserAddress> {
+  ) {
     return this.userAddressUseCases.updateUserAddress(
       updateUserAddressInput.id,
       updateUserAddressInput,
@@ -78,9 +77,7 @@ export class UserAddressResolver {
   }
 
   @Mutation(() => UserAddressType)
-  removeUserAddress(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IUserAddress> {
+  removeUserAddress(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.userAddressUseCases.removeUserAddress(id);
   }
 }

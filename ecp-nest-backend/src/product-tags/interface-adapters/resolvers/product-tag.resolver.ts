@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateProductTagInput,
   UpdateProductTagInput,
 } from 'src/product-tags/domain/dtos/graphql/inputs/product-tag.input';
-import { IProductTag } from 'src/product-tags/domain/entities/product-tag.entity';
 import { ProductTagType } from 'src/product-tags/domain/object-types/product-tag.type';
 
 @Resolver(() => ProductTagType)
@@ -20,7 +19,7 @@ export class ProductTagResolver {
   getAllProductTag(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IProductTag[]> {
+  ) {
     return this.productTagUseCases.getAllProductTag({
       paginationArgs,
       searchArgs,
@@ -31,7 +30,7 @@ export class ProductTagResolver {
   getProductTagsByProduct(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductTag[]> {
+  ) {
     return this.productTagUseCases.getProductTagsBy(
       term,
       ['product'],
@@ -43,7 +42,7 @@ export class ProductTagResolver {
   getProductTagsByTag(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductTag[]> {
+  ) {
     return this.productTagUseCases.getProductTagsBy(
       term,
       ['tag'],
@@ -52,23 +51,21 @@ export class ProductTagResolver {
   }
 
   @Query(() => ProductTagType, { name: 'productTag' })
-  getProductTagById(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductTag> {
+  getProductTagById(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.productTagUseCases.getProductTagById(id);
   }
 
   @Mutation(() => ProductTagType)
   createProductTag(
     @Args('createProductTagInput') createProductTagInput: CreateProductTagInput,
-  ): Promise<IProductTag> {
+  ) {
     return this.productTagUseCases.createProductTag(createProductTagInput);
   }
 
   @Mutation(() => ProductTagType)
   updateProductTag(
     @Args('updateProductTagInput') updateProductTagInput: UpdateProductTagInput,
-  ): Promise<IProductTag> {
+  ) {
     return this.productTagUseCases.updateProductTag(
       updateProductTagInput.id,
       updateProductTagInput,
@@ -76,9 +73,7 @@ export class ProductTagResolver {
   }
 
   @Mutation(() => ProductTagType)
-  removeProductTag(
-    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductTag> {
+  removeProductTag(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string) {
     return this.productTagUseCases.removeProductTag(id);
   }
 }

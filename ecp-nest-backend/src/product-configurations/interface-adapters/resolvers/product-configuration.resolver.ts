@@ -1,5 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
-import { Resolver, Args, ID, Mutation, Query } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   PaginationArgs,
   SearchArgs,
@@ -9,7 +9,6 @@ import {
   CreateProductConfigurationInput,
   UpdateProductConfigurationInput,
 } from 'src/product-configurations/domain/dtos/graphql/inputs/product-configuration.input';
-import { IProductConfiguration } from 'src/product-configurations/domain/entities/product-configuration.entity';
 import { ProductConfigurationType } from 'src/product-configurations/domain/object-types/product-configuration.type';
 
 @Resolver(() => ProductConfigurationType)
@@ -22,7 +21,7 @@ export class ProductConfigurationResolver {
   getAllProductConfiguration(
     @Args() paginationArgs: PaginationArgs,
     @Args() searchArgs: SearchArgs,
-  ): Promise<IProductConfiguration[]> {
+  ) {
     return this.productConfigurationUseCases.getAllProductConfiguration({
       paginationArgs,
       searchArgs,
@@ -35,7 +34,7 @@ export class ProductConfigurationResolver {
   getProductConfigurationsByProductItem(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductConfiguration[]> {
+  ) {
     return this.productConfigurationUseCases.getProductConfigurationsBy(
       term,
       ['productItem'],
@@ -49,7 +48,7 @@ export class ProductConfigurationResolver {
   getProductConfigurationsByVariationOption(
     @Args({ name: 'term', type: () => String }) term: string,
     @Args() paginationArgs: PaginationArgs,
-  ): Promise<IProductConfiguration[]> {
+  ) {
     return this.productConfigurationUseCases.getProductConfigurationsBy(
       term,
       ['variationOption'],
@@ -60,7 +59,7 @@ export class ProductConfigurationResolver {
   @Query(() => ProductConfigurationType, { name: 'productConfiguration' })
   getProductConfigurationById(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductConfiguration> {
+  ) {
     return this.productConfigurationUseCases.getProductConfigurationById(id);
   }
 
@@ -68,7 +67,7 @@ export class ProductConfigurationResolver {
   createProductConfiguration(
     @Args('createProductConfigurationInput')
     createProductConfigurationInput: CreateProductConfigurationInput,
-  ): Promise<IProductConfiguration> {
+  ) {
     return this.productConfigurationUseCases.createProductConfiguration(
       createProductConfigurationInput,
     );
@@ -78,7 +77,7 @@ export class ProductConfigurationResolver {
   updateProductConfiguration(
     @Args('updateProductConfigurationInput')
     updateProductConfigurationInput: UpdateProductConfigurationInput,
-  ): Promise<IProductConfiguration> {
+  ) {
     return this.productConfigurationUseCases.updateProductConfiguration(
       updateProductConfigurationInput.id,
       updateProductConfigurationInput,
@@ -88,7 +87,7 @@ export class ProductConfigurationResolver {
   @Mutation(() => ProductConfigurationType)
   removeProductConfiguration(
     @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
-  ): Promise<IProductConfiguration> {
+  ) {
     return this.productConfigurationUseCases.removeProductConfiguration(id);
   }
 }
