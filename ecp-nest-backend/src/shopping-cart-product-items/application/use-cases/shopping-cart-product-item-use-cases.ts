@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IShoppingCartProductItemsDataSourceService } from 'src/shopping-cart-product-items/domain/abstracts/services/shopping-cart-product-items-datasource.abstract.service';
 import {
   CreateShoppingCartProductItemInput,
@@ -14,59 +17,43 @@ import { ShoppingCartProductItemFactoryService } from './factory/shopping-cart-p
 @Injectable()
 export class ShoppingCartProductItemUseCases {
   constructor(
-    private dataService: IShoppingCartProductItemsDataSourceService,
+    private dataServices: IShoppingCartProductItemsDataSourceService,
     private shoppingCartProductItemFactoryService: ShoppingCartProductItemFactoryService,
   ) {}
-  getShoppingCartProductItemsBy(
-    term: string,
-    fields: (keyof IShoppingCartProductItem)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.shoppingCartProductItems.getShoppingCartProductItemsBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<IShoppingCartProductItem>) {
+    return this.dataServices.shoppingCartProductItems.getMany({ ...props });
   }
-  getAllShoppingCartProductItem(args?: IGenericArgs<IShoppingCartProductItem>) {
-    return this.dataService.shoppingCartProductItems.getAllShoppingCartProductItem(
-      args,
-    );
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.shoppingCartProductItems.getOneById({ ...props });
   }
-  getShoppingCartProductItemById(
-    id: string,
-  ): Promise<IShoppingCartProductItem> {
-    return this.dataService.shoppingCartProductItems.getShoppingCartProductItemById(
-      id,
-    );
-  }
-  createShoppingCartProductItem(
-    createShoppingCartProductItemInput: CreateShoppingCartProductItemInput,
-  ): Promise<IShoppingCartProductItem> {
-    const shoppingCartProductItem =
+
+  create(props: CreateProps<CreateShoppingCartProductItemInput>) {
+    const newShoppingCartProductItem =
       this.shoppingCartProductItemFactoryService.createShoppingCartProductItem(
-        createShoppingCartProductItemInput,
+        props.data,
       );
-    return this.dataService.shoppingCartProductItems.createShoppingCartProductItem(
-      shoppingCartProductItem,
-    );
+    return this.dataServices.shoppingCartProductItems.create({
+      ...props,
+      data: newShoppingCartProductItem,
+    });
   }
-  updateShoppingCartProductItem(
-    id: string,
-    updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput,
-  ): Promise<IShoppingCartProductItem> {
-    const shoppingCartProductItem =
+
+  updateOneById(props: UpdateOneByIdProps<UpdateShoppingCartProductItemInput>) {
+    const newShoppingCartProductItem =
       this.shoppingCartProductItemFactoryService.updateShoppingCartProductItem(
-        updateShoppingCartProductItemInput,
+        props.data,
       );
-    return this.dataService.shoppingCartProductItems.updateShoppingCartProductItem(
-      id,
-      shoppingCartProductItem,
-    );
+    return this.dataServices.shoppingCartProductItems.updateOneById({
+      ...props,
+      data: newShoppingCartProductItem,
+    });
   }
-  removeShoppingCartProductItem(id: string): Promise<IShoppingCartProductItem> {
-    return this.dataService.shoppingCartProductItems.removeShoppingCartProductItem(
-      id,
-    );
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.shoppingCartProductItems.deleteOneById({
+      ...props,
+    });
   }
 }

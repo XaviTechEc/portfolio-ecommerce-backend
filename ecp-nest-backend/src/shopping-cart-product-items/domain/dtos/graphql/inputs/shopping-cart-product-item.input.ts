@@ -1,8 +1,9 @@
 import { Field, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 import { IsInt, IsNotEmpty, IsPositive, IsUUID, Min } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateShoppingCartProductItemInput {
+export class CreateShoppingCartProductItemInput extends IGenericAdditionalProps {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()

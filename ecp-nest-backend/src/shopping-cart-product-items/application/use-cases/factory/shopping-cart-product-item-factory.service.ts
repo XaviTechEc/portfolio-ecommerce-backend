@@ -17,18 +17,23 @@ export class ShoppingCartProductItemFactoryService {
       createShoppingCartProductItemInput.shoppingCart;
     newShoppingCartProductItem.productItem =
       createShoppingCartProductItemInput.productItem;
+    newShoppingCartProductItem.active =
+      createShoppingCartProductItemInput.active;
     return newShoppingCartProductItem;
   }
   updateShoppingCartProductItem(
     updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput,
   ) {
     const newShoppingCartProductItem = new IShoppingCartProductItem();
+    newShoppingCartProductItem.id = updateShoppingCartProductItemInput.id;
     newShoppingCartProductItem.quantity =
       updateShoppingCartProductItemInput.quantity;
     newShoppingCartProductItem.shoppingCart =
       updateShoppingCartProductItemInput.shoppingCart;
     newShoppingCartProductItem.productItem =
       updateShoppingCartProductItemInput.productItem;
+    newShoppingCartProductItem.active =
+      updateShoppingCartProductItemInput.active;
     return newShoppingCartProductItem;
   }
 }
