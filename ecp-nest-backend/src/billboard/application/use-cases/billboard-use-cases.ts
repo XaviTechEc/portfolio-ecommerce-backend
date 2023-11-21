@@ -1,44 +1,55 @@
-import { IBillboardDataSourceService } from 'src/billboard/domain/abstracts/services/billboard-datasource.abstract.service';
+import { Injectable } from '@nestjs/common';
 import {
   CreateBillboardInput,
   UpdateBillboardInput,
 } from 'src/billboard/domain/dtos/graphql/inputs/billboard.input';
 import { IBillboard } from 'src/billboard/domain/entities/billboard.entity';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { BillboardFactoryService } from './billboard-factory.service';
-import { Injectable } from '@nestjs/common';
+import { IBillboardsDataSourceService } from 'src/billboard/domain/abstracts/services/billboards-datasource.abstract.service';
 
 @Injectable()
 export class BillboardUseCases {
   constructor(
-    private dataService: IBillboardDataSourceService,
+    private dataServices: IBillboardsDataSourceService,
     private billboardFactoryService: BillboardFactoryService,
   ) {}
 
-  getAllBillboards(args?: IGenericArgs<IBillboard>) {
-    return this.dataService.billboards.getAllBillboards(args);
+  getMany(props: GetManyProps<IBillboard>) {
+    return this.dataServices.billboards.getMany({ ...props });
   }
 
-  getBillboardById(id: string): Promise<IBillboard> {
-    return this.dataService.billboards.getBillboardById(id);
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.billboards.getOneById({ ...props });
   }
-  createBillboard(
-    createBillboardInput: CreateBillboardInput,
-  ): Promise<IBillboard> {
-    const billboard =
-      this.billboardFactoryService.createBillboard(createBillboardInput);
 
-    return this.dataService.billboards.createBillboard(billboard);
+  create(props: CreateProps<CreateBillboardInput>) {
+    const newBillboard = this.billboardFactoryService.createBillboard(
+      props.data,
+    );
+    return this.dataServices.billboards.create({
+      ...props,
+      data: newBillboard,
+    });
   }
-  updateBillboard(
-    id: string,
-    updateBillboardInput: UpdateBillboardInput,
-  ): Promise<IBillboard> {
-    const billboard =
-      this.billboardFactoryService.updateBillboard(updateBillboardInput);
-    return this.dataService.billboards.updateBillboard(id, billboard);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateBillboardInput>) {
+    const newBillboard = this.billboardFactoryService.updateBillboard(
+      props.data,
+    );
+    return this.dataServices.billboards.updateOneById({
+      ...props,
+      data: newBillboard,
+    });
   }
-  removeBillboard(id: string): Promise<IBillboard> {
-    return this.dataService.billboards.removeBillboard(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.billboards.deleteOneById({ ...props });
   }
 }

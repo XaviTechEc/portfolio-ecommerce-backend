@@ -1,19 +1,19 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { IBillboardsRepository } from 'src/billboard/domain/abstracts/repositories/billboards.repository';
-import { IBillboardDataSourceService } from 'src/billboard/domain/abstracts/services/billboard-datasource.abstract.service';
+import { IBillboardsDataSourceService } from 'src/billboard/domain/abstracts/services/billboards-datasource.abstract.service';
 import { IBillboard } from 'src/billboard/domain/entities/billboard.entity';
-import { Billboard } from './entities/billboard.entity';
+import { Billboard } from './postgresql/entities/billboard.entity';
 import { Repository } from 'typeorm';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BillboardsRepository } from './repositories/billboards.repository';
+import { BillboardsRepository } from './postgresql/repositories/billboards.repository';
 
 @Injectable()
 export class BillboardDataService
-  implements IBillboardDataSourceService, OnApplicationBootstrap
+  implements IBillboardsDataSourceService, OnApplicationBootstrap
 {
-  billboards: IBillboardsRepository<IBillboard>;
+  billboards: BillboardsRepository<Billboard>;
 
   constructor(
     @InjectRepository(Billboard)
@@ -27,6 +27,8 @@ export class BillboardDataService
       this._billboardsRepository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name,
+      'billboard',
     );
   }
 }

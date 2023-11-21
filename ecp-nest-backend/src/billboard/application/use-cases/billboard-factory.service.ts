@@ -12,14 +12,19 @@ export class BillboardFactoryService {
     newBillboard.title = createBillboardInput.title;
     newBillboard.store = createBillboardInput.store;
     newBillboard.season = createBillboardInput.season;
+    newBillboard.active = createBillboardInput.active;
+    newBillboard.description = createBillboardInput.description;
     return newBillboard;
   }
 
   updateBillboard(updateBillboardInput: UpdateBillboardInput) {
     const newBillboard = new IBillboard();
+    newBillboard.id = updateBillboardInput.id;
     newBillboard.title = updateBillboardInput.title;
     newBillboard.store = updateBillboardInput.store;
     newBillboard.season = updateBillboardInput.season;
+    newBillboard.active = updateBillboardInput.active;
+    newBillboard.description = updateBillboardInput.description;
     return newBillboard;
   }
 }
