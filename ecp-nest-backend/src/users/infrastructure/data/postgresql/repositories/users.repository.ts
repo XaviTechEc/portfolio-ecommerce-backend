@@ -8,7 +8,7 @@ import {
 } from 'src/users/domain/dtos/rest/user.dto';
 import { Repository } from 'typeorm';
 import { User } from '../entities/User.entity';
-import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { ICustomGenericResponseWithPagination } from 'src/common/domain/interfaces/responses/custom-generic-response.interface';
 import { getPageCount } from 'src/common/infrastructure/helpers/get-page-count.helper';
 
 const CONTEXT = 'UsersRepository';
@@ -30,7 +30,7 @@ export class UsersRepository implements IUsersRepository<User> {
 
   async getAllUsers(
     args?: IGenericArgs<User>,
-  ): Promise<GetAllGenericResponse<User>> {
+  ): Promise<ICustomGenericResponseWithPagination<User>> {
     try {
       let qb = this._repository.createQueryBuilder('user');
       let pageSize;
@@ -44,7 +44,7 @@ export class UsersRepository implements IUsersRepository<User> {
         }
 
         if (searchArgs) {
-          const { searchTerm } = searchArgs;
+          const { term: searchTerm } = searchArgs;
 
           if (searchTerm) {
             qb = qb
@@ -60,8 +60,15 @@ export class UsersRepository implements IUsersRepository<User> {
         }
       }
 
-      const [items, total] = await qb.getManyAndCount();
-      return { items, total, pageCount: getPageCount(total, pageSize) };
+      const [data, total] = await qb.getManyAndCount();
+      return {
+        success: true,
+        data,
+        pagination: {
+          total,
+          pageCount: getPageCount(total, pageSize),
+        },
+      };
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }
@@ -69,32 +76,16 @@ export class UsersRepository implements IUsersRepository<User> {
 
   async getUserById(id: string): Promise<User> {
     try {
-      const userFound = await this._repository.findOneBy({ id });
-      if (!userFound) {
-        return this._exceptionsService.notFound({
-          message: `The user with id ${id} could not be found`,
-        });
-      }
-      return userFound;
-    } catch (error) {
-      this._exceptionsService.handler(error, CONTEXT);
-    }
-  }
-
-  async getShortUserById(id: string): Promise<User> {
-    try {
       const userFound = await this._repository.findOne({
         where: { id },
-        select: [
-          'id',
-          'fullName',
-          'username',
-          'email',
-          'avatarImg',
-          'lastConnection',
-          'active',
-          'roles',
-        ],
+        relations: {
+          roles: true,
+        },
+        select: {
+          roles: {
+            value: true,
+          },
+        },
       });
       if (!userFound) {
         return this._exceptionsService.notFound({
@@ -132,6 +123,16 @@ export class UsersRepository implements IUsersRepository<User> {
     try {
       const user = await this.getUserById(id);
       return this._repository.remove(user);
+    } catch (error) {
+      this._exceptionsService.handler(error, CONTEXT);
+    }
+  }
+
+  async restoreUserById(id: string): Promise<User> {
+    try {
+      const userFound = await this.getUserById(id);
+      await this._repository.restore(id);
+      return userFound;
     } catch (error) {
       this._exceptionsService.handler(error, CONTEXT);
     }

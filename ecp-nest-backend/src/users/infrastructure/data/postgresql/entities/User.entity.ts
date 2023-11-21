@@ -1,24 +1,22 @@
-import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
 import { Comment } from 'src/comments/infrastructure/data/postgresql/entities/Comment.entity';
-import { Image } from 'src/images/infrastructure/data/postgresql/entities/Image.entity';
-import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
+import { IGenericAdditionalPropsWithTimeStamptz } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { Review } from 'src/reviews/infrastructure/data/postgresql/entities/Review.entity';
+import { Role } from 'src/roles/infrastructure/data/postgresql/entities/Role.entity';
 import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import { ShoppingCart } from 'src/shopping-carts/infrastructure/data/postgresql/entities/ShoppingCart.entity';
-import { Store } from 'src/stores/infrastructure/data/postgresql/entities/Store.entity';
 import { UserAddress } from 'src/user-addresses/infrastructure/data/postgresql/entities/UserAddress.entity';
 import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/entities/UserPaymentMethod.entity';
-import { UserType, Role, Gender } from 'src/users/domain/enums';
+import { Gender, UserType } from 'src/users/domain/enums';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
   BeforeInsert,
   BeforeUpdate,
+  Column,
+  Entity,
+  Index,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('user_pkey', ['id'], { unique: true })
@@ -26,7 +24,7 @@ import {
 @Index('user_username_idx', ['username'], { unique: true })
 @Index('user_email_idx', ['email'], {})
 @Entity('user')
-export class User {
+export class User extends IGenericAdditionalPropsWithTimeStamptz {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -55,15 +53,6 @@ export class User {
 
   @Column({
     type: 'enum',
-    enum: Role,
-    default: [Role.CLIENT],
-    name: 'role',
-    array: true,
-  })
-  roles: Role[];
-
-  @Column({
-    type: 'enum',
     enum: Gender,
     name: 'gender',
     nullable: true,
@@ -72,15 +61,6 @@ export class User {
 
   @Column('character varying', { name: 'avatar_img', nullable: true })
   avatarImg?: string;
-
-  @Column('boolean', { name: 'active', default: true })
-  active?: boolean;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt?: Date;
 
   @Column('timestamptz', {
     name: 'last_connection',
@@ -92,35 +72,37 @@ export class User {
   @OneToMany(() => UserAddress, (userAddress) => userAddress.user)
   userAddress: UserAddress[];
 
-  @OneToMany(() => ShoppingCart, (shoppingCart) => shoppingCart.user)
-  shoppingCart: ShoppingCart[];
-
-  @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.user)
-  shopOrder: ShopOrder[];
-
   @OneToMany(() => Review, (review) => review.user)
-  review: Review[];
+  reviews: Review[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
-  comment: Comment[];
+  comments: Comment[];
 
   @OneToMany(
     () => UserPaymentMethod,
     (userPaymentMethod) => userPaymentMethod.user,
   )
-  userPaymentMethod: UserPaymentMethod[];
+  userPaymentMethods: UserPaymentMethod[];
 
-  @OneToMany(() => Product, (product) => product.user)
-  product: Product[];
+  @OneToMany(() => ShoppingCart, (shoppingCart) => shoppingCart.user)
+  shoppingCarts: ShoppingCart[];
 
-  @OneToMany(() => Category, (category) => category.user)
-  category: Category[];
+  @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.user)
+  shopOrders: ShopOrder[];
 
-  @OneToMany(() => Image, (image) => image.product)
-  image: Image[];
-
-  @OneToMany(() => Store, (store) => store.user)
-  stores: Store[];
+  @ManyToMany(() => Role, (role) => role.users, { cascade: true, eager: true })
+  @JoinTable({
+    name: 'user_roles',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'role_id',
+      referencedColumnName: 'id',
+    },
+  })
+  roles: Role[];
 
   @BeforeInsert()
   checkFields() {

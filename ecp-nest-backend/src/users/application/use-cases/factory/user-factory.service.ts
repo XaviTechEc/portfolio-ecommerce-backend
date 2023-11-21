@@ -15,11 +15,13 @@ export class UserFactoryService {
     newUser.email = createUserDto.email;
     newUser.password = createUserDto.password;
     newUser.fullName = createUserDto.fullName;
+    newUser.roles = createUserDto.roles;
     return newUser;
   }
 
   updateUser(updateUserDto: UpdateUserDto) {
     const newUser = new IUser();
+    newUser.id = updateUserDto.id;
     newUser.username = updateUserDto.username;
     newUser.email = updateUserDto.email;
     newUser.password = updateUserDto.password;
