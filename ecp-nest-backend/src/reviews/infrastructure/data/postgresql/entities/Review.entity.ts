@@ -1,16 +1,15 @@
 import { Comment } from 'src/comments/infrastructure/data/postgresql/entities/Comment.entity';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { OrderLine } from 'src/order-lines/infrastructure/data/postgresql/entities/OrderLine.entity';
 import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
   OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('review_pkey', ['id'], { unique: true })
@@ -20,7 +19,7 @@ import {
 @Index('review_ordered_product_id_idx', ['orderLine'], {})
 @Index('review_visible_idx', ['visible'], {})
 @Entity('review')
-export class Review {
+export class Review extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -33,14 +32,8 @@ export class Review {
   @Column('boolean', { name: 'visible', nullable: true, default: true })
   visible?: boolean;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt?: Date;
-
   // Relations
-  @ManyToOne(() => User, (user) => user.review)
+  @ManyToOne(() => User, (user) => user.reviews)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
 

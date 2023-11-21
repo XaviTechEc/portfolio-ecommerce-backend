@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IReviewsDataSourceService } from 'src/reviews/domain/abstracts/services/reviews-datasource.abstract.service';
 import {
   CreateReviewInput,
@@ -14,35 +17,32 @@ import { ReviewFactoryService } from './factory/review-factory.service';
 @Injectable()
 export class ReviewUseCases {
   constructor(
-    private dataService: IReviewsDataSourceService,
+    private dataServices: IReviewsDataSourceService,
     private reviewFactoryService: ReviewFactoryService,
   ) {}
-  getReviewsBy(
-    term: string,
-    fields: (keyof IReview)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.reviews.getReviewsBy(term, fields, paginationArgs);
-  }
-  getAllReviews(args?: IGenericArgs<IReview>) {
-    return this.dataService.reviews.getAllReviews(args);
+
+  getMany(props: GetManyProps<IReview>) {
+    return this.dataServices.reviews.getMany({ ...props });
   }
 
-  getReviewById(id: string): Promise<IReview> {
-    return this.dataService.reviews.getReviewById(id);
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.reviews.getOneById({ ...props });
   }
-  createReview(createReviewInput: CreateReviewInput): Promise<IReview> {
-    const review = this.reviewFactoryService.createReview(createReviewInput);
-    return this.dataService.reviews.createReview(review);
+
+  create(props: CreateProps<CreateReviewInput>) {
+    const newReview = this.reviewFactoryService.createReview(props.data);
+    return this.dataServices.reviews.create({ ...props, data: newReview });
   }
-  updateReview(
-    id: string,
-    updateReviewInput: UpdateReviewInput,
-  ): Promise<IReview> {
-    const review = this.reviewFactoryService.updateReview(updateReviewInput);
-    return this.dataService.reviews.updateReview(id, review);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateReviewInput>) {
+    const newReview = this.reviewFactoryService.updateReview(props.data);
+    return this.dataServices.reviews.updateOneById({
+      ...props,
+      data: newReview,
+    });
   }
-  removeReview(id: string): Promise<IReview> {
-    return this.dataService.reviews.removeReview(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.reviews.deleteOneById({ ...props });
   }
 }
