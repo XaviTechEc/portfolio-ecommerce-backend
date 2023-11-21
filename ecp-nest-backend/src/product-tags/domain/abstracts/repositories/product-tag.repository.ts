@@ -1,29 +1,10 @@
-import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
-import {
-  CreateProductTagInput,
-  UpdateProductTagInput,
-} from '../../dtos/graphql/inputs/product-tag.input';
-import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { IGenericDataRepository } from 'src/common/domain/abstracts/generic-data-methods.repository';
 
-export abstract class IProductTagRepository<T> {
-  abstract getAllProductTag(
-    args?: IGenericArgs<T>,
-  ): Promise<GetAllGenericResponse<T>>;
-  abstract getProductTagById(id: string): Promise<T>;
-  abstract createProductTag(
-    createProductTagInput: CreateProductTagInput,
-  ): Promise<T>;
-  abstract updateProductTag(
-    id: string,
-    updateProductTagInput: UpdateProductTagInput,
-  ): Promise<T>;
-  abstract removeProductTag(id: string): Promise<T>;
-  abstract getProductTagsBy(
-    term: string,
-    fields: (keyof T)[],
-    paginationArgs: PaginationArgs,
-  ): Promise<GetAllGenericResponse<T>>;
+export abstract class IProductTagsRepository<
+  TData,
+> extends IGenericDataRepository<TData> {
+  constructor() {
+    super();
+  }
+  // Add custom logic here ↓↓↓
 }

@@ -1,17 +1,16 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
 import { Tag } from 'src/tags/infrastructure/data/postgresql/entities/Tag.entity';
 import {
   Entity,
-  PrimaryGeneratedColumn,
-  PrimaryColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('product_tag')
-export class ProductTag {
+export class ProductTag extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,12 +19,6 @@ export class ProductTag {
 
   @PrimaryColumn('character varying', { name: 'tag_id' })
   tagId: string;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @ManyToOne(() => Product, (product) => product.productTag)
