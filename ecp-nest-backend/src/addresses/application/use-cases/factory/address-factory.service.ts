@@ -19,11 +19,13 @@ export class AddressFactoryService {
     newAddress.reference = createAddressInput.reference;
     newAddress.country = createAddressInput.country;
     newAddress.location = createAddressInput.location;
+    newAddress.active = createAddressInput.active;
     return newAddress;
   }
 
   updateAddress(updateAddressInput: UpdateAddressInput) {
     const newAddress = new IAddress();
+    newAddress.id = updateAddressInput.id;
     newAddress.unitNumber = updateAddressInput.unitNumber;
     newAddress.streetNumber = updateAddressInput.streetNumber;
     newAddress.addressLine1 = updateAddressInput.addressLine1;

@@ -1,37 +1,52 @@
 import { Injectable } from '@nestjs/common';
-import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 import {
   CreateCountryInput,
   UpdateCountryInput,
 } from 'src/addresses/domain/dtos/graphql/inputs/country.input';
 import { ICountry } from 'src/addresses/domain/entities/country.entity';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { CountryFactoryService } from './factory';
+import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 
 @Injectable()
-export class CountryUseCases {
+export class CountriesUseCases {
   constructor(
-    private dataService: IAddressDataSourceService,
+    private dataServices: IAddressDataSourceService,
     private countryFactoryService: CountryFactoryService,
   ) {}
-  getAllCountries(args?: IGenericArgs<ICountry>) {
-    return this.dataService.countries.getAllCountries(args);
+
+  getMany(props: GetManyProps<ICountry>) {
+    return this.dataServices.countries.getMany({ ...props });
   }
-  getCountryById(id: string): Promise<ICountry> {
-    return this.dataService.countries.getCountryById(id);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.countries.getOneById({ ...props });
   }
-  createCountry(createCountryInput: CreateCountryInput): Promise<ICountry> {
-    const country =
-      this.countryFactoryService.createCountry(createCountryInput);
-    return this.dataService.countries.createCountry(country);
+
+  create(props: CreateProps<CreateCountryInput>) {
+    const newCountry = this.countryFactoryService.createCountry(props.data);
+    return this.dataServices.countries.create({ ...props, data: newCountry });
   }
-  updateCountry(
-    id: string,
-    updateCountryInput: UpdateCountryInput,
-  ): Promise<ICountry> {
-    return this.dataService.countries.updateCountry(id, updateCountryInput);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateCountryInput>) {
+    const newCountry = this.countryFactoryService.updateCountry(props.data);
+    return this.dataServices.countries.updateOneById({
+      ...props,
+      data: newCountry,
+    });
   }
-  removeCountry(id: string): Promise<ICountry> {
-    return this.dataService.countries.removeCountry(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.countries.deleteOneById({ ...props });
+  }
+
+  restoreOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.countries.restoreOneById({ ...props });
   }
 }

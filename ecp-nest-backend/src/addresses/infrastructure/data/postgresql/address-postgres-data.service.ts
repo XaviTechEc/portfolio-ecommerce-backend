@@ -3,16 +3,16 @@ import {
   AddressesRepository,
   CountriesRepository,
   LocationsRepository,
-} from './postgresql/repositories';
+} from './repositories';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
-import { Address, Country, Location } from './postgresql/entities';
+import { Address, Country, Location } from './entities';
 import { IAddressDataSourceService } from 'src/addresses/domain/abstracts/services/address-datasource.abstract.service';
 
 @Injectable()
-export class AddressDataSourceService
+export default class AddressPostgresDataService
   implements IAddressDataSourceService, OnApplicationBootstrap
 {
   // Addresses
@@ -28,7 +28,6 @@ export class AddressDataSourceService
     private countriesRepository: Repository<Country>,
     @InjectRepository(Location)
     private locationsRepository: Repository<Location>,
-
     private _loggerService: ILoggerService,
     private _exceptionsService: IExceptionsService,
   ) {}
@@ -38,16 +37,22 @@ export class AddressDataSourceService
       this.addressesRepository,
       this._loggerService,
       this._exceptionsService,
+      'AddressesRepository',
+      'address',
     );
     this.countries = new CountriesRepository(
       this.countriesRepository,
       this._loggerService,
       this._exceptionsService,
+      'CountriesRepository',
+      'country',
     );
     this.locations = new LocationsRepository(
       this.locationsRepository,
       this._loggerService,
       this._exceptionsService,
+      'LocationsRepository',
+      'location',
     );
   }
 }

@@ -6,9 +6,12 @@ import {
 } from 'src/addresses/domain/dtos/graphql/inputs/address.input';
 import { IAddress } from 'src/addresses/domain/entities/address.entity';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  CreateProps,
+  DeleteOneByIdProps,
+  GetManyProps,
+  GetOneByIdProps,
+  UpdateOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { AddressFactoryService } from './factory';
 
 @Injectable()
@@ -17,37 +20,33 @@ export class AddressesUseCases {
     private dataServices: IAddressDataSourceService,
     private addressFactoryService: AddressFactoryService,
   ) {}
-  getAddressesBy(
-    term: string,
-    fields: (keyof IAddress)[],
-    paginationArgs?: PaginationArgs,
-  ) {
-    return this.dataServices.addresses.getAddressesBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<IAddress>) {
+    return this.dataServices.addresses.getMany({ ...props });
   }
-  getAllAddresses(args?: IGenericArgs<IAddress>) {
-    return this.dataServices.addresses.getAllAddresses(args);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.addresses.getOneById({ ...props });
   }
-  getAddressById(id: string): Promise<IAddress> {
-    return this.dataServices.addresses.getAddressById(id);
+
+  create(props: CreateProps<CreateAddressInput>) {
+    const newAddress = this.addressFactoryService.createAddress(props.data);
+    return this.dataServices.addresses.create({ ...props, data: newAddress });
   }
-  createAddress(createAddressInput: CreateAddressInput): Promise<IAddress> {
-    const newAddress =
-      this.addressFactoryService.createAddress(createAddressInput);
-    return this.dataServices.addresses.createAddress(newAddress);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateAddressInput>) {
+    const newAddress = this.addressFactoryService.updateAddress(props.data);
+    return this.dataServices.addresses.updateOneById({
+      ...props,
+      data: newAddress,
+    });
   }
-  updateAddress(
-    id: string,
-    updateAddressInput: UpdateAddressInput,
-  ): Promise<IAddress> {
-    const newAddress =
-      this.addressFactoryService.updateAddress(updateAddressInput);
-    return this.dataServices.addresses.updateAddress(id, newAddress);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.addresses.deleteOneById({ ...props });
   }
-  removeAddress(id: string): Promise<IAddress> {
-    return this.dataServices.addresses.removeAddress(id);
+
+  restoreOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.addresses.restoreOneById({ ...props });
   }
 }

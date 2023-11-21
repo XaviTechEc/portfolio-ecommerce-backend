@@ -1,11 +1,12 @@
 import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
-import { ShopOrderType } from 'src/shop-orders/domain/object-types/shop-order.type';
-import { UserAddressType } from 'src/user-addresses/domain/object-types/user-address.type';
+import { ShopOrderType } from 'src/shop-orders/interface-adapters/graphql/object-types/shop-order.type';
+import { UserAddressType } from 'src/user-addresses/interface-adapters/graphql/object-types/user-address.type';
 import { CountryType } from './country.type';
 import { LocationType } from './location.type';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @ObjectType()
-export class AddressType {
+export class AddressType extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @Field(() => ID)
   id: string;
 

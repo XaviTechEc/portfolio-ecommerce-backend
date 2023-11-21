@@ -5,31 +5,48 @@ import {
   UpdateLocationInput,
 } from 'src/addresses/domain/dtos/graphql/inputs/location.input';
 import { ILocation } from 'src/addresses/domain/entities/location.entity';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { LocationFactoryService } from './factory';
 
 @Injectable()
-export class LocationUseCases {
+export class LocationsUseCases {
   constructor(
-    private dataService: IAddressDataSourceService,
+    private dataServices: IAddressDataSourceService,
     private locationFactoryService: LocationFactoryService,
   ) {}
-  getLocationById(id: string): Promise<ILocation> {
-    return this.dataService.locations.getLocationById(id);
+
+  getMany(props: GetManyProps<ILocation>) {
+    return this.dataServices.locations.getMany({ ...props });
   }
-  createLocation(createLocationInput: CreateLocationInput): Promise<ILocation> {
-    const location =
-      this.locationFactoryService.createLocation(createLocationInput);
-    return this.dataService.locations.createLocation(location);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.locations.getOneById({ ...props });
   }
-  updateLocation(
-    id: string,
-    updateLocationInput: UpdateLocationInput,
-  ): Promise<ILocation> {
-    const location =
-      this.locationFactoryService.updateLocation(updateLocationInput);
-    return this.dataService.locations.updateLocation(id, location);
+
+  create(props: CreateProps<CreateLocationInput>) {
+    const newLocation = this.locationFactoryService.createLocation(props.data);
+    return this.dataServices.locations.create({ ...props, data: newLocation });
   }
-  removeLocation(id: string): Promise<ILocation> {
-    return this.dataService.locations.removeLocation(id);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateLocationInput>) {
+    const newLocation = this.locationFactoryService.updateLocation(props.data);
+    return this.dataServices.locations.updateOneById({
+      ...props,
+      data: newLocation,
+    });
+  }
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.locations.deleteOneById({ ...props });
+  }
+
+  restoreOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.locations.restoreOneById({ ...props });
   }
 }

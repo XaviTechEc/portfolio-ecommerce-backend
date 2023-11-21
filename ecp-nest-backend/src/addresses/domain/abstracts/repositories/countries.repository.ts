@@ -1,19 +1,9 @@
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import {
-  CreateCountryInput,
-  UpdateCountryInput,
-} from '../../dtos/graphql/inputs/country.input';
-import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { IGenericDataRepository } from 'src/common/domain/abstracts/generic-data-methods.repository';
 
-export abstract class ICountriesRepository<T> {
-  abstract getAllCountries(
-    args?: IGenericArgs<T>,
-  ): Promise<GetAllGenericResponse<T>>;
-  abstract getCountryById(id: string): Promise<T>;
-  abstract createCountry(createCountryInput: CreateCountryInput): Promise<T>;
-  abstract updateCountry(
-    id: string,
-    updateCountryInput: UpdateCountryInput,
-  ): Promise<T>;
-  abstract removeCountry(id: string): Promise<T>;
+export abstract class ICountriesRepository<
+  TData,
+> extends IGenericDataRepository<TData> {
+  constructor() {
+    super();
+  }
 }
