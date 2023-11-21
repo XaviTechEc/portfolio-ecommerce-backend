@@ -1,6 +1,6 @@
 import { IProductCategory } from '../../entities/product-category.entity';
-import { IProductCategoryRepository } from '../repositories/product-category.repository';
+import { IProductCategoriesRepository } from '../repositories/product-categories.repository';
 
 export abstract class IProductCategoriesDataSourceService {
-  abstract productCategories: IProductCategoryRepository<IProductCategory>;
+  abstract productCategories: IProductCategoriesRepository<IProductCategory>;
 }

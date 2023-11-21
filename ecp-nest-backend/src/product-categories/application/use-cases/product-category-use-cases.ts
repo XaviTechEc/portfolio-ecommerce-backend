@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IProductCategoriesDataSourceService } from 'src/product-categories/domain/abstracts/services/product-categories-datasource.abstract.service';
 import {
   CreateProductCategoryInput,
@@ -14,51 +17,37 @@ import { ProductCategoryFactoryService } from './factory/product-category-factor
 @Injectable()
 export class ProductCategoryUseCases {
   constructor(
-    private dataService: IProductCategoriesDataSourceService,
+    private dataServices: IProductCategoriesDataSourceService,
     private productCategoryFactoryService: ProductCategoryFactoryService,
   ) {}
-  getProductCategoriesBy(
-    term: string,
-    fields: (keyof IProductCategory)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.productCategories.getProductCategoriesBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<IProductCategory>) {
+    return this.dataServices.productCategories.getMany({ ...props });
   }
-  getAllProductCategory(args?: IGenericArgs<IProductCategory>) {
-    return this.dataService.productCategories.getAllProductCategory(args);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.productCategories.getOneById({ ...props });
   }
-  getProductCategoryById(id: string): Promise<IProductCategory> {
-    return this.dataService.productCategories.getProductCategoryById(id);
+
+  create(props: CreateProps<CreateProductCategoryInput>) {
+    const newProductCategory =
+      this.productCategoryFactoryService.createProductCategory(props.data);
+    return this.dataServices.productCategories.create({
+      ...props,
+      data: newProductCategory,
+    });
   }
-  createProductCategory(
-    createProductCategoryInput: CreateProductCategoryInput,
-  ): Promise<IProductCategory> {
-    const productCategory =
-      this.productCategoryFactoryService.createProductCategory(
-        createProductCategoryInput,
-      );
-    return this.dataService.productCategories.createProductCategory(
-      productCategory,
-    );
+
+  updateOneById(props: UpdateOneByIdProps<UpdateProductCategoryInput>) {
+    const newProductCategory =
+      this.productCategoryFactoryService.updateProductCategory(props.data);
+    return this.dataServices.productCategories.updateOneById({
+      ...props,
+      data: newProductCategory,
+    });
   }
-  updateProductCategory(
-    id: string,
-    updateProductCategoryInput: UpdateProductCategoryInput,
-  ): Promise<IProductCategory> {
-    const productCategory =
-      this.productCategoryFactoryService.updateProductCategory(
-        updateProductCategoryInput,
-      );
-    return this.dataService.productCategories.updateProductCategory(
-      id,
-      productCategory,
-    );
-  }
-  removeProductCategory(id: string): Promise<IProductCategory> {
-    return this.dataService.productCategories.removeProductCategory(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.productCategories.deleteOneById({ ...props });
   }
 }
