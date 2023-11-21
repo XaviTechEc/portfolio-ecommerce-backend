@@ -11,18 +11,19 @@ export class CommentFactoryService {
     const newComment = new IComment();
     newComment.user = createCommentInput.user;
     newComment.content = createCommentInput.content;
-    newComment.visible = createCommentInput.visible;
     newComment.review = createCommentInput.review;
     newComment.comment = createCommentInput.commentParent;
+    newComment.active = createCommentInput.active;
     return newComment;
   }
   updateComment(updateCommentInput: UpdateCommentInput) {
     const newComment = new IComment();
+    newComment.id = updateCommentInput.id;
     newComment.user = updateCommentInput.user;
     newComment.content = updateCommentInput.content;
-    newComment.visible = updateCommentInput.visible;
     newComment.review = updateCommentInput.review;
     newComment.comment = updateCommentInput.commentParent;
+    newComment.active = updateCommentInput.active;
     return newComment;
   }
 }

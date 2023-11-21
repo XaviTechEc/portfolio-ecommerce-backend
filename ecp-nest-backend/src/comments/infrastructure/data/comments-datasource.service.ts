@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CommentsRepository } from './postgresql/repositories/comments.repository';
+import { CommentsPostgresRepository } from './postgresql/repositories/comments.repository';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
@@ -11,20 +11,22 @@ import { ICommentsDataSourceService } from 'src/comments/domain/abstracts/servic
 export class CommentsDataService
   implements ICommentsDataSourceService, OnApplicationBootstrap
 {
-  comments: CommentsRepository;
+  comments: CommentsPostgresRepository<Comment>;
 
   constructor(
     @InjectRepository(Comment)
-    private commentsRepository: Repository<Comment>,
+    private commentsPostgresRepository: Repository<Comment>,
     private _loggerService: ILoggerService,
     private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {
-    this.comments = new CommentsRepository(
-      this.commentsRepository,
+    this.comments = new CommentsPostgresRepository<Comment>(
+      this.commentsPostgresRepository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name,
+      'comment',
     );
   }
 }
