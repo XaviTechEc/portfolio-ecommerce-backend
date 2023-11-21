@@ -22,13 +22,13 @@ export class CreateImageDto {
   @IsUUID()
   category?: any;
 
-  @IsNotEmpty()
-  @IsUUID()
-  user: any;
-
   @IsOptional()
   @IsUUID()
   billboard?: any;
 }
 
-export class UpdateImageDto extends PartialType(CreateImageDto) {}
+export class UpdateImageDto extends PartialType(CreateImageDto) {
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+}

@@ -1,21 +1,20 @@
+import { IGenericDataRepository } from 'src/common/domain/abstracts/generic-data-methods.repository';
 import {
   IGenericArgs,
   PaginationArgs,
 } from 'src/common/domain/dtos/graphql/args';
-import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { ICustomGenericResponseWithPagination } from 'src/common/domain/interfaces/responses/custom-generic-response.interface';
 
-export abstract class IImageRepository<T> {
-  abstract getAllImages(
-    args?: IGenericArgs<T>,
-  ): Promise<GetAllGenericResponse<T>>;
-  abstract getImageById(id: string): Promise<T>;
-  abstract createImage(data: T): Promise<T>;
-  abstract updateImage(id: string, data: T): Promise<T>;
-  abstract removeImage(id: string): Promise<T>;
-
+export abstract class IImageRepository<
+  TData,
+> extends IGenericDataRepository<TData> {
+  constructor() {
+    super();
+  }
+  // Add custom logic here ↓↓↓
   abstract getImagesBy(
     term: string,
-    fields: (keyof T)[],
+    fields: (keyof TData)[],
     paginationArgs: PaginationArgs,
-  ): Promise<GetAllGenericResponse<T>>;
+  ): Promise<ICustomGenericResponseWithPagination<TData>>;
 }

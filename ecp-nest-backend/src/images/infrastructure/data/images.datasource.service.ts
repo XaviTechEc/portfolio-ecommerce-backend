@@ -12,7 +12,7 @@ export class ImagesDataService
   implements IImagesDataSourceService, OnApplicationBootstrap
 {
   // Images
-  images: ImagesRepository;
+  images: ImagesRepository<Image>;
 
   constructor(
     // Images
@@ -28,6 +28,8 @@ export class ImagesDataService
       this.imagesRepository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name, 
+      'image'
     );
   }
 }
