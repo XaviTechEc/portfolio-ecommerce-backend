@@ -13,14 +13,17 @@ export class ProductPromotionFactoryService {
     const newProductPromotion = new IProductPromotion();
     newProductPromotion.product = createProductPromotionInput.product;
     newProductPromotion.promotion = createProductPromotionInput.promotion;
+    newProductPromotion.active = createProductPromotionInput.active;
     return newProductPromotion;
   }
   updateProductPromotion(
     updateProductPromotionInput: UpdateProductPromotionInput,
   ) {
     const newProductPromotion = new IProductPromotion();
+    newProductPromotion.id = updateProductPromotionInput.id;
     newProductPromotion.product = updateProductPromotionInput.product;
     newProductPromotion.promotion = updateProductPromotionInput.promotion;
+    newProductPromotion.active = updateProductPromotionInput.active;
     return newProductPromotion;
   }
 }

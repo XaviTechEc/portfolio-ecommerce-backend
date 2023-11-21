@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IProductPromotionsDataSourceService } from 'src/product-promotions/domain/abstracts/services/product-promotions-datasource.abstract.service';
 import {
   CreateProductPromotionInput,
@@ -14,51 +17,37 @@ import { ProductPromotionFactoryService } from './factory/product-promotion-fact
 @Injectable()
 export class ProductPromotionUseCases {
   constructor(
-    private dataService: IProductPromotionsDataSourceService,
+    private dataServices: IProductPromotionsDataSourceService,
     private productPromotionFactoryService: ProductPromotionFactoryService,
   ) {}
-  getProductPromotionsBy(
-    term: string,
-    fields: (keyof IProductPromotion)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.productPromotions.getProductPromotionsBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<IProductPromotion>) {
+    return this.dataServices.productPromotions.getMany({ ...props });
   }
-  getAllProductPromotion(args?: IGenericArgs<IProductPromotion>) {
-    return this.dataService.productPromotions.getAllProductPromotion(args);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.productPromotions.getOneById({ ...props });
   }
-  getProductPromotionById(id: string): Promise<IProductPromotion> {
-    return this.dataService.productPromotions.getProductPromotionById(id);
+
+  create(props: CreateProps<CreateProductPromotionInput>) {
+    const newProductPromotion =
+      this.productPromotionFactoryService.createProductPromotion(props.data);
+    return this.dataServices.productPromotions.create({
+      ...props,
+      data: newProductPromotion,
+    });
   }
-  createProductPromotion(
-    createProductPromotionInput: CreateProductPromotionInput,
-  ): Promise<IProductPromotion> {
-    const productPromotion =
-      this.productPromotionFactoryService.createProductPromotion(
-        createProductPromotionInput,
-      );
-    return this.dataService.productPromotions.createProductPromotion(
-      productPromotion,
-    );
+
+  updateOneById(props: UpdateOneByIdProps<UpdateProductPromotionInput>) {
+    const newProductPromotion =
+      this.productPromotionFactoryService.updateProductPromotion(props.data);
+    return this.dataServices.productPromotions.updateOneById({
+      ...props,
+      data: newProductPromotion,
+    });
   }
-  updateProductPromotion(
-    id: string,
-    updateProductPromotionInput: UpdateProductPromotionInput,
-  ): Promise<IProductPromotion> {
-    const productPromotion =
-      this.productPromotionFactoryService.updateProductPromotion(
-        updateProductPromotionInput,
-      );
-    return this.dataService.productPromotions.updateProductPromotion(
-      id,
-      productPromotion,
-    );
-  }
-  removeProductPromotion(id: string): Promise<IProductPromotion> {
-    return this.dataService.productPromotions.removeProductPromotion(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.productPromotions.deleteOneById({ ...props });
   }
 }
