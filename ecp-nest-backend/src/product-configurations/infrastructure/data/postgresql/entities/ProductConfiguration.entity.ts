@@ -1,17 +1,16 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
 import { VariationOption } from 'src/variation-options/infrastructure/data/postgresql/entities/VariationOption.entity';
 import {
   Entity,
-  PrimaryGeneratedColumn,
-  PrimaryColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('product_configuration')
-export class ProductConfiguration {
+export class ProductConfiguration extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,12 +19,6 @@ export class ProductConfiguration {
 
   @PrimaryColumn('character varying', { name: 'variation_option_id' })
   variationOptionId: string;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @ManyToOne(

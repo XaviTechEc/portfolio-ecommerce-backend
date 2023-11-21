@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
-import { IProductConfigurationDataSourceService } from 'src/product-configurations/domain/abstracts/services/product-configuration-datasource.abstract.service';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
+import { IProductConfigurationsDataSourceService } from 'src/product-configurations/domain/abstracts/services/product-configurations-datasource.abstract.service';
 import {
   CreateProductConfigurationInput,
   UpdateProductConfigurationInput,
@@ -14,57 +17,41 @@ import { ProductConfigurationFactoryService } from './factory/product-configurat
 @Injectable()
 export class ProductConfigurationUseCases {
   constructor(
-    private dataService: IProductConfigurationDataSourceService,
+    private dataServices: IProductConfigurationsDataSourceService,
     private productConfigurationFactoryService: ProductConfigurationFactoryService,
   ) {}
-  getProductConfigurationsBy(
-    term: string,
-    fields: (keyof IProductConfiguration)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.productConfigurations.getProductConfigurationsBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<IProductConfiguration>) {
+    return this.dataServices.productConfigurations.getMany({ ...props });
   }
-  getAllProductConfiguration(args?: IGenericArgs<IProductConfiguration>) {
-    return this.dataService.productConfigurations.getAllProductConfiguration(
-      args,
-    );
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.productConfigurations.getOneById({ ...props });
   }
-  getProductConfigurationById(id: string): Promise<IProductConfiguration> {
-    return this.dataService.productConfigurations.getProductConfigurationById(
-      id,
-    );
-  }
-  createProductConfiguration(
-    createProductConfigurationInput: CreateProductConfigurationInput,
-  ): Promise<IProductConfiguration> {
-    const productConfiguration =
+
+  create(props: CreateProps<CreateProductConfigurationInput>) {
+    const newProductConfiguration =
       this.productConfigurationFactoryService.createProductConfiguration(
-        createProductConfigurationInput,
+        props.data,
       );
-    return this.dataService.productConfigurations.createProductConfiguration(
-      productConfiguration,
-    );
+    return this.dataServices.productConfigurations.create({
+      ...props,
+      data: newProductConfiguration,
+    });
   }
-  updateProductConfiguration(
-    id: string,
-    updateProductConfigurationInput: UpdateProductConfigurationInput,
-  ): Promise<IProductConfiguration> {
-    const productConfiguration =
+
+  updateOneById(props: UpdateOneByIdProps<UpdateProductConfigurationInput>) {
+    const newProductConfiguration =
       this.productConfigurationFactoryService.updateProductConfiguration(
-        updateProductConfigurationInput,
+        props.data,
       );
-    return this.dataService.productConfigurations.updateProductConfiguration(
-      id,
-      productConfiguration,
-    );
+    return this.dataServices.productConfigurations.updateOneById({
+      ...props,
+      data: newProductConfiguration,
+    });
   }
-  removeProductConfiguration(id: string): Promise<IProductConfiguration> {
-    return this.dataService.productConfigurations.removeProductConfiguration(
-      id,
-    );
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.productConfigurations.deleteOneById({ ...props });
   }
 }

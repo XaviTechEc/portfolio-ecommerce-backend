@@ -4,27 +4,29 @@ import { IExceptionsService } from 'src/common/domain/abstracts/services/excepti
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { ProductConfiguration } from './postgresql/entities/ProductConfiguration.entity';
-import { ProductConfigurationsRepository } from './postgresql/repositories/product-configuration.repository';
-import { IProductConfigurationDataSourceService } from 'src/product-configurations/domain/abstracts/services/product-configuration-datasource.abstract.service';
+import { ProductConfigurationsPostgresRepository } from './postgresql/repositories/product-configuration.repository';
+import { IProductConfigurationsDataSourceService } from 'src/product-configurations/domain/abstracts/services/product-configurations-datasource.abstract.service';
 
 @Injectable()
 export class ProductConfigurationDataService
-  implements IProductConfigurationDataSourceService, OnApplicationBootstrap
+  implements IProductConfigurationsDataSourceService, OnApplicationBootstrap
 {
-  productConfigurations: ProductConfigurationsRepository;
+  productConfigurations: ProductConfigurationsPostgresRepository<ProductConfiguration>;
 
   constructor(
     @InjectRepository(ProductConfiguration)
-    private productConfigurationsRepository: Repository<ProductConfiguration>,
+    private productConfigurationsPostgresRepository: Repository<ProductConfiguration>,
     private _loggerService: ILoggerService,
     private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {
-    this.productConfigurations = new ProductConfigurationsRepository(
-      this.productConfigurationsRepository,
+    this.productConfigurations = new ProductConfigurationsPostgresRepository(
+      this.productConfigurationsPostgresRepository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name,
+      'product_configuration',
     );
   }
 }
