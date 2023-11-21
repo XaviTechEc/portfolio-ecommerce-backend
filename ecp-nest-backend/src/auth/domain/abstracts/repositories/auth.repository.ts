@@ -8,7 +8,12 @@ export abstract class IAuthRepository {
   abstract register(createUserDto: CreateUserDto): Promise<IAuthResponse>;
   abstract checkAuthStatus(token: string): Promise<IAuthResponse>;
   abstract googleLogin(user: IUser): Promise<IAuthResponse>;
-  abstract validateUser(email: string, password: string): Promise<IUser | null>;
+  abstract validateUserLocal(
+    email: string,
+    password: string,
+  ): Promise<IUser | null>;
+
+  abstract validateUserForJwtStrategy(id: string): Promise<IUser>;
 
   abstract renewToken(token: string): Promise<IAuthResponse>;
 }

@@ -23,6 +23,11 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
         message: 'Invalid credentials',
       });
     }
+    if (!user.active) {
+      return this._exceptionsService.unauthorized({
+        message: 'User is not active',
+      });
+    }
     return user;
   }
 }

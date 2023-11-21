@@ -21,15 +21,25 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: IJwtPayload): Promise<IUser> {
+  async validate(payload: IJwtPayload) {
     const { uid } = payload;
-    const user = await this.authUseCases.validateUserForJwtStrategy(uid);
+    const { password, ...user } =
+      await this.authUseCases.validateUserForJwtStrategy(uid);
+    const roles = user.roles.map((role) => role.value);
+    const jwtData = { ...user, roles };
 
-    if (!user || !user.active) {
+    if (!user) {
       return this.exceptionsService.unauthorized({
-        message: 'Invalid token | User does not exists | User is not active',
+        message: 'Invalid token',
       });
     }
-    return user;
+
+    if (!user.active) {
+      return this.exceptionsService.unauthorized({
+        message: ' User does not exists | User is not active',
+      });
+    }
+
+    return jwtData;
   }
 }

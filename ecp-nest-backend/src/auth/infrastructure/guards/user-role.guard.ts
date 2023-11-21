@@ -8,8 +8,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
 import { META_ROLES } from 'src/auth/domain/constants/meta.constants';
-import { Role } from 'src/users/domain/enums';
 import { matchRoles } from '../helpers/match-roles.helper';
+import { RoleValue } from 'src/roles/domain/enums/role-value.enum';
 
 @Injectable()
 export class UserRolesGuard implements CanActivate {
@@ -30,10 +30,10 @@ export class UserRolesGuard implements CanActivate {
     user = ctx.switchToHttp().getRequest().user;
 
     // Metadata
-    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(META_ROLES, [
-      ctx.getHandler(),
-      ctx.getClass(),
-    ]);
+    const requiredRoles = this.reflector.getAllAndOverride<RoleValue[]>(
+      META_ROLES,
+      [ctx.getHandler(), ctx.getClass()],
+    );
 
     // Validations
     if (!requiredRoles) return true;

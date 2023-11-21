@@ -11,6 +11,7 @@ import {
   IJwtService,
   IHashService,
 } from 'src/common/domain/abstracts/services';
+import { Role } from 'src/roles/infrastructure/data/postgresql/entities/Role.entity';
 
 @Injectable()
 export class AuthDataSourceService
@@ -21,6 +22,8 @@ export class AuthDataSourceService
   constructor(
     @InjectRepository(User)
     private _repository: Repository<User>,
+    @InjectRepository(Role)
+    private _roleRepository: Repository<Role>,
     private _loggerService: ILoggerService,
     private _exceptionsService: IExceptionsService,
     private _jwtService: IJwtService,
@@ -31,6 +34,7 @@ export class AuthDataSourceService
     // Auth
     this.auth = new AuthRepository(
       this._repository,
+      this._roleRepository,
       this._loggerService,
       this._exceptionsService,
       this._jwtService,

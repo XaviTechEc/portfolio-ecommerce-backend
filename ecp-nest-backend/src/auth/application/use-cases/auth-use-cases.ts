@@ -13,34 +13,38 @@ export class AuthUseCases {
   constructor(
     private authDataService: IAuthDataSourceService,
     private userFactoryService: UserFactoryService,
-    private usersDataServices: IUsersDataSourceService,
   ) {}
 
-  signIn(signInUserDto: SignInUserDto): Promise<IAuthResponse> {
+  async signIn(signInUserDto: SignInUserDto): Promise<IAuthResponse> {
     return this.authDataService.auth.signIn(signInUserDto);
   }
-  register(createUserDto: CreateUserDto): Promise<IAuthResponse> {
+
+  async register(createUserDto: CreateUserDto): Promise<IAuthResponse> {
     const newUser = this.userFactoryService.createUser(createUserDto);
     return this.authDataService.auth.register(newUser);
   }
-  checkAuthStatus(token: string): Promise<IAuthResponse> {
+
+  async checkAuthStatus(token: string): Promise<IAuthResponse> {
     return this.authDataService.auth.checkAuthStatus(token);
   }
 
-  googleLoginCallback(user: IGoogleUser): Promise<IAuthResponse> {
+  async googleLoginCallback(user: IGoogleUser): Promise<IAuthResponse> {
     const newUser = this.userFactoryService.createGoogleUser(user);
     return this.authDataService.auth.googleLogin(newUser);
   }
 
-  validateUserForJwtStrategy(uid: string): Promise<IUser> {
-    return this.usersDataServices.users.getShortUserById(uid);
+  async validateUserForJwtStrategy(uid: string): Promise<IUser> {
+    return this.authDataService.auth.validateUserForJwtStrategy(uid);
   }
 
-  validateUserLocal(email: string, password: string): Promise<IUser | null> {
-    return this.authDataService.auth.validateUser(email, password);
+  async validateUserLocal(
+    email: string,
+    password: string,
+  ): Promise<IUser | null> {
+    return this.authDataService.auth.validateUserLocal(email, password);
   }
 
-  renewToken(token: string): Promise<IAuthResponse> {
+  async renewToken(token: string): Promise<IAuthResponse> {
     return this.authDataService.auth.renewToken(token);
   }
 }
