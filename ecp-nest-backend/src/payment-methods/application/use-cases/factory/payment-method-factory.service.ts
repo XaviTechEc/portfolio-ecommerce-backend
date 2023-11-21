@@ -10,11 +10,14 @@ export class PaymentMethodFactoryService {
   createPaymentMethod(createPaymentMethodInput: CreatePaymentMethodInput) {
     const newPaymentMethod = new IPaymentMethod();
     newPaymentMethod.value = createPaymentMethodInput.value;
+    newPaymentMethod.active = createPaymentMethodInput.active;
     return newPaymentMethod;
   }
   updatePaymentMethod(updatePaymentMethodInput: UpdatePaymentMethodInput) {
     const newPaymentMethod = new IPaymentMethod();
+    newPaymentMethod.id = updatePaymentMethodInput.id;
     newPaymentMethod.value = updatePaymentMethodInput.value;
+    newPaymentMethod.active = updatePaymentMethodInput.active;
     return newPaymentMethod;
   }
 }

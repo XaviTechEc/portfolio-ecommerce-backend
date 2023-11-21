@@ -1,18 +1,12 @@
 import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/entities/UserPaymentMethod.entity';
-import {
-  Index,
-  Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 
-import { PaymentMethod as PaymentMth } from '../../../../domain/enums/payment-methods.enum';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
+import { PaymentMethodEnum as PaymentMth } from '../../../../domain/enums/payment-methods.enum';
 
 @Index('payment_method_pkey', ['id'], { unique: true })
 @Entity('payment_method')
-export class PaymentMethod {
+export class PaymentMethod extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @Column('character varying', { primary: true, name: 'id' })
   id: string;
 
@@ -23,12 +17,6 @@ export class PaymentMethod {
     default: PaymentMth.CREDIT_CARD,
   })
   value: PaymentMth;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @OneToMany(
