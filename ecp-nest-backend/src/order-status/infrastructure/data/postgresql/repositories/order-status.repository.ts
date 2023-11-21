@@ -1,101 +1,22 @@
-import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
+import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+import { PostgresGenericRepository } from 'src/common/frameworks/data-services/postgresql/repositories/postgres-generic-repository';
 import { IOrderStatusRepository } from 'src/order-status/domain/abstracts/repositories/order-status.repository';
-import {
-  CreateOrderStatusInput,
-  UpdateOrderStatusInput,
-} from 'src/order-status/domain/dtos/graphql/inputs/order-status.input';
-import { Repository, FindManyOptions } from 'typeorm';
-import { OrderStatus } from '../entities/OrderStatus.entity';
+import { Repository } from 'typeorm';
 
-const CONTEXT = 'OrderStatusRepository';
-
-export class OrderStatusRepository
-  implements IOrderStatusRepository<OrderStatus>
+export class OrderStatusPostgresRepository<TData>
+  extends PostgresGenericRepository<TData>
+  implements IOrderStatusRepository<TData>
 {
-  private _repository: Repository<OrderStatus>;
-  private _loggerService: ILoggerService;
-  private _exceptionsService: IExceptionsService;
-
   constructor(
-    repository: Repository<OrderStatus>,
+    repository: Repository<TData>,
     loggerService: ILoggerService,
     exceptionsService: IExceptionsService,
+    context: string,
+    tableAlias: string,
   ) {
-    this._repository = repository;
-    this._loggerService = loggerService;
-    this._exceptionsService = exceptionsService;
+    super(repository, loggerService, exceptionsService, context, tableAlias);
   }
 
-  async getAllOrderStatus(
-    args?: IGenericArgs<OrderStatus>,
-  ): Promise<OrderStatus[]> {
-    try {
-      let queryOptions: FindManyOptions<OrderStatus> = {};
-      if (args) {
-        const { paginationArgs } = args;
-        if (paginationArgs) {
-          const { limit = 10, offset = 0 } = paginationArgs;
-          queryOptions = { take: limit, skip: offset };
-        }
-      }
-      const orderStatusFound =
-        (await this._repository.find(queryOptions)) ?? [];
-      return orderStatusFound;
-    } catch (error) {
-      this._exceptionsService.handler(error, CONTEXT);
-    }
-  }
-
-  async getOrderStatusById(id: string): Promise<OrderStatus> {
-    try {
-      const orderStatus = await this._repository.findOneBy({ id });
-      if (!orderStatus) {
-        return this._exceptionsService.notFound({
-          message: `The order status with id ${id} could not be found`,
-        });
-      }
-      return orderStatus;
-    } catch (error) {
-      this._exceptionsService.handler(error, CONTEXT);
-    }
-  }
-
-  async createOrderStatus(
-    createOrderStatusInput: CreateOrderStatusInput,
-  ): Promise<OrderStatus> {
-    try {
-      const newOrderStatus = this._repository.create({
-        ...createOrderStatusInput,
-      });
-      return this._repository.save(newOrderStatus);
-    } catch (error) {
-      this._exceptionsService.handler(error, CONTEXT);
-    }
-  }
-
-  async updateOrderStatus(
-    id: string,
-    updateOrderStatusInput: UpdateOrderStatusInput,
-  ): Promise<OrderStatus> {
-    try {
-      await this.getOrderStatusById(id);
-      const newOrderStatus = await this._repository.preload({
-        ...updateOrderStatusInput,
-      });
-      return this._repository.save(newOrderStatus);
-    } catch (error) {
-      this._exceptionsService.handler(error, CONTEXT);
-    }
-  }
-
-  async removeOrderStatus(id: string): Promise<OrderStatus> {
-    try {
-      const orderStatus = await this.getOrderStatusById(id);
-      return this._repository.remove(orderStatus);
-    } catch (error) {
-      this._exceptionsService.handler(error, CONTEXT);
-    }
-  }
+  // Add your custom logic here ↓↓↓
 }

@@ -1,18 +1,17 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { StatusValue } from 'src/order-status/domain/enums/status-value.enum';
 import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  Index,
   OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('order_status_pkey', ['id'], { unique: true })
 @Entity('order_status')
-export class OrderStatus {
+export class OrderStatus extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,12 +22,6 @@ export class OrderStatus {
     default: StatusValue.IN_PROGRESS,
   })
   statusValue: StatusValue;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.orderStatus)

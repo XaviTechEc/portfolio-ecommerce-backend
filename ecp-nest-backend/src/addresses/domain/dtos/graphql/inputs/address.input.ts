@@ -7,9 +7,10 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateAddressInput {
+export class CreateAddressInput extends IGenericAdditionalProps {
   @Field(() => Int, { nullable: true })
   @IsInt()
   @IsOptional()

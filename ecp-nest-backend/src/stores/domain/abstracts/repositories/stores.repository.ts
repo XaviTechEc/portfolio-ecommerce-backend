@@ -1,16 +1,10 @@
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import {
-  CreateStoreInput,
-  UpdateStoreInput,
-} from '../../dtos/graphql/inputs/store.input';
+import { IGenericDataRepository } from 'src/common/domain/abstracts/generic-data-methods.repository';
 
-export abstract class IStoresRepository<T> {
-  abstract getAllStores(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getStoreById(id: string): Promise<T>;
-  abstract createStore(createStoreInput: CreateStoreInput): Promise<T>;
-  abstract updateStore(
-    id: string,
-    updateStoreInput: UpdateStoreInput,
-  ): Promise<T>;
-  abstract removeStore(id: string): Promise<T>;
+export abstract class IStoresRepository<
+  TData,
+> extends IGenericDataRepository<TData> {
+  constructor() {
+    super();
+  }
+  // Add custom logic here ↓↓↓
 }

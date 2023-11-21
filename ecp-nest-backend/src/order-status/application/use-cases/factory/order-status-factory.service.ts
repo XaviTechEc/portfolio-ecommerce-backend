@@ -10,11 +10,14 @@ export class OrderStatusFactoryService {
   createOrderStatus(createOrderStatusInput: CreateOrderStatusInput) {
     const newOrderStatus = new IOrderStatus();
     newOrderStatus.statusValue = createOrderStatusInput.statusValue;
+    newOrderStatus.active = createOrderStatusInput.active;
     return newOrderStatus;
   }
   updateOrderStatus(updateOrderStatusInput: UpdateOrderStatusInput) {
     const newOrderStatus = new IOrderStatus();
+    newOrderStatus.id = updateOrderStatusInput.id;
     newOrderStatus.statusValue = updateOrderStatusInput.statusValue;
+    newOrderStatus.active = updateOrderStatusInput.active;
     return newOrderStatus;
   }
 }

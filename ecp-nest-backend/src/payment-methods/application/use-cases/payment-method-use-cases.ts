@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IPaymentMethodsDataSourceService } from 'src/payment-methods/domain/abstracts/services/payment-methods-datasource.abstract.service';
 import {
   CreatePaymentMethodInput,
@@ -11,38 +17,37 @@ import { PaymentMethodFactoryService } from './factory/payment-method-factory.se
 @Injectable()
 export class PaymentMethodUseCases {
   constructor(
-    private dataService: IPaymentMethodsDataSourceService,
+    private dataServices: IPaymentMethodsDataSourceService,
     private paymentMethodFactoryService: PaymentMethodFactoryService,
   ) {}
-  getAllPaymentMethods(
-    args?: IGenericArgs<IPaymentMethod>,
-  ): Promise<IPaymentMethod[]> {
-    return this.dataService.paymentMethods.getAllPaymentMethods(args);
+
+  getMany(props: GetManyProps<IPaymentMethod>) {
+    return this.dataServices.paymentMethods.getMany({ ...props });
   }
-  getPaymentMethodById(id: string): Promise<IPaymentMethod> {
-    return this.dataService.paymentMethods.getPaymentMethodById(id);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.paymentMethods.getOneById({ ...props });
   }
-  createPaymentMethod(
-    createPaymentMethodInput: CreatePaymentMethodInput,
-  ): Promise<IPaymentMethod> {
-    const paymentMethod = this.paymentMethodFactoryService.createPaymentMethod(
-      createPaymentMethodInput,
-    );
-    return this.dataService.paymentMethods.createPaymentMethod(paymentMethod);
+
+  create(props: CreateProps<CreatePaymentMethodInput>) {
+    const newPaymentMethod =
+      this.paymentMethodFactoryService.createPaymentMethod(props.data);
+    return this.dataServices.paymentMethods.create({
+      ...props,
+      data: newPaymentMethod,
+    });
   }
-  updatePaymentMethod(
-    id: string,
-    updatePaymentMethodInput: UpdatePaymentMethodInput,
-  ): Promise<IPaymentMethod> {
-    const paymentMethod = this.paymentMethodFactoryService.updatePaymentMethod(
-      updatePaymentMethodInput,
-    );
-    return this.dataService.paymentMethods.updatePaymentMethod(
-      id,
-      paymentMethod,
-    );
+
+  updateOneById(props: UpdateOneByIdProps<UpdatePaymentMethodInput>) {
+    const newPaymentMethod =
+      this.paymentMethodFactoryService.updatePaymentMethod(props.data);
+    return this.dataServices.paymentMethods.updateOneById({
+      ...props,
+      data: newPaymentMethod,
+    });
   }
-  removePaymentMethod(id: string): Promise<IPaymentMethod> {
-    return this.dataService.paymentMethods.removePaymentMethod(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.paymentMethods.deleteOneById({ ...props });
   }
 }

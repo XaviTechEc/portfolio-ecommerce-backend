@@ -13,14 +13,17 @@ export class OrderLineFactoryService {
     newOrderLine.shopOrder = createOrderLineInput.shopOrder;
     newOrderLine.quantity = createOrderLineInput.quantity;
     newOrderLine.totalPrice = createOrderLineInput.totalPrice;
+    newOrderLine.active = createOrderLineInput.active;
     return newOrderLine;
   }
   updateOrderLine(updateOrderLineInput: UpdateOrderLineInput) {
     const newOrderLine = new IOrderLine();
+    newOrderLine.id = updateOrderLineInput.id;
     newOrderLine.productItem = updateOrderLineInput.productItem;
     newOrderLine.shopOrder = updateOrderLineInput.shopOrder;
     newOrderLine.quantity = updateOrderLineInput.quantity;
     newOrderLine.totalPrice = updateOrderLineInput.totalPrice;
+    newOrderLine.active = updateOrderLineInput.active;
     return newOrderLine;
   }
 }

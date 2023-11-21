@@ -5,11 +5,13 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  NotImplementedException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { ICustomExceptionFormat } from 'src/common/domain/interfaces/exceptions/custom-exception-format.interface';
+import { isQueryFailedError } from '../../../domain/utils/is-query-failed-error.util';
 
 @Injectable()
 export class ExceptionsService implements IExceptionsService {
@@ -46,54 +48,67 @@ export class ExceptionsService implements IExceptionsService {
     } as ICustomExceptionFormat);
   }
 
-  handler(error: any, context: string): never {
-    if (error.code) {
-      if (error.code === '23505') {
-        this.badRequest({
-          message: error.detail,
-        });
-      }
-      if (error.code === '23503') {
-        this.notFound({
-          message: error.detail,
-        });
-      }
+  notImplemented(data: ICustomExceptionFormat): never {
+    throw new NotImplementedException({
+      ...data,
+      code_error: HttpStatus.NOT_IMPLEMENTED,
+    } as ICustomExceptionFormat);
+  }
 
-      if (error.code === '22P02') {
-        this.badRequest({
-          message: error.detail,
-        });
+  handler(error: any, context: string): never {
+    this.loggerService.error(context, error, error.stack);
+    if (isQueryFailedError(error)) {
+      if (error) {
+        const message =
+          context.toUpperCase() + '| ' + error.detail ?? error.message;
+        switch (error.code) {
+          // Bad Request
+          case '23505':
+          case '22P02':
+          case '42703':
+            return this.badRequest({
+              message,
+            });
+          // Not Found
+          case '23503':
+            return this.notFound({
+              message,
+            });
+          default:
+            return this.notImplemented({
+              message,
+            });
+        }
       }
     }
 
     if (error.status) {
       if (error.status === HttpStatus.NOT_FOUND) {
-        this.notFound({
+        return this.notFound({
           message: error.message,
         });
       }
 
       if (error.status === HttpStatus.BAD_REQUEST) {
-        this.badRequest({
+        return this.badRequest({
           message: error.message,
         });
       }
 
       if (error.status === HttpStatus.FORBIDDEN) {
-        this.forbiddenException({
+        return this.forbiddenException({
           message: error.message,
         });
       }
 
       if (error.status === HttpStatus.UNAUTHORIZED) {
-        this.unauthorized({
+        return this.unauthorized({
           message: error.message,
         });
       }
     }
 
-    this.loggerService.error(context, error, error.stack);
-    this.internalServerError({
+    return this.internalServerError({
       message: `${context.toUpperCase()} | Please check server logs `,
     });
   }

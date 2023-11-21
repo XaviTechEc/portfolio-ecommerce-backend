@@ -1,18 +1,15 @@
 import { IBillboard } from 'src/billboard/domain/entities/billboard.entity';
 import { ICategory } from 'src/categories/domain/entities/category.entity';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { IProductItem } from 'src/product-items/domain/entities/product-item.entity';
 import { IProduct } from 'src/products/domain/entities/product.entity';
-import { IUser } from 'src/users/domain/entities/user.entity';
 
-export class IImage {
+export class IImage extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   id: string;
   url: string;
   extension: string;
-  createdAt: Date;
-  updatedAt?: Date;
   product?: IProduct;
   productItem?: IProductItem;
   category?: ICategory;
-  user: IUser;
   billboard?: IBillboard;
 }

@@ -1,9 +1,10 @@
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import { IGenericDataRepository } from 'src/common/domain/abstracts/generic-data-methods.repository';
 
-export abstract class IPaymentMethodsRepository<T> {
-  abstract getAllPaymentMethods(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getPaymentMethodById(id: string): Promise<T>;
-  abstract createPaymentMethod(data: T): Promise<T>;
-  abstract updatePaymentMethod(id: string, data: T): Promise<T>;
-  abstract removePaymentMethod(id: string): Promise<T>;
+export abstract class IPaymentMethodsRepository<
+  TData,
+> extends IGenericDataRepository<TData> {
+  constructor() {
+    super();
+  }
+  // Add custom logic here ↓↓↓
 }

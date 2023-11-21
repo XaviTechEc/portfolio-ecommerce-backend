@@ -1,14 +1,13 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
 import { ShoppingCart } from 'src/shopping-carts/infrastructure/data/postgresql/entities/ShoppingCart.entity';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index(
@@ -19,18 +18,12 @@ import {
 @Index('shopping_cart_product_item_shopping_cart_id_idx', ['shoppingCart'], {})
 @Index('shopping_cart_product_item_product_item_id_idx', ['productItem'], {})
 @Entity('shopping_cart_product_item')
-export class ShoppingCartProductItem {
+export class ShoppingCartProductItem extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('smallint', { name: 'quantity' })
   quantity: number;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @ManyToOne(

@@ -1,8 +1,9 @@
 import { Field, Float, ID, InputType, PartialType } from '@nestjs/graphql';
-import { IsUUID, IsNotEmpty, IsDecimal } from 'class-validator';
+import { IsDecimal, IsNotEmpty, IsUUID } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateLocationInput {
+export class CreateLocationInput extends IGenericAdditionalProps {
   @Field(() => Float)
   @IsNotEmpty()
   @IsDecimal()

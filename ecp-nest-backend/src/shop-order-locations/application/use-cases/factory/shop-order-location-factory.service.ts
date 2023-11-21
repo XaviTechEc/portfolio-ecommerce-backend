@@ -13,14 +13,17 @@ export class ShopOrderLocationFactoryService {
     const newShopOrderLocation = new IShopOrderLocation();
     newShopOrderLocation.shopOrder = createShopOrderLocationInput.shopOrder;
     newShopOrderLocation.location = createShopOrderLocationInput.location;
+    newShopOrderLocation.active = createShopOrderLocationInput.active;
     return newShopOrderLocation;
   }
   updateShopOrderLocation(
     updateShopOrderLocationInput: UpdateShopOrderLocationInput,
   ) {
     const newShopOrderLocation = new IShopOrderLocation();
+    newShopOrderLocation.id = updateShopOrderLocationInput.id;
     newShopOrderLocation.shopOrder = updateShopOrderLocationInput.shopOrder;
     newShopOrderLocation.location = updateShopOrderLocationInput.location;
+    newShopOrderLocation.active = updateShopOrderLocationInput.active;
     return newShopOrderLocation;
   }
 }

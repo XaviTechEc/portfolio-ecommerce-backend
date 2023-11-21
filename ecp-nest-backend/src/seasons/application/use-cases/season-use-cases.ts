@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { ISeasonsDataSourceService } from 'src/seasons/domain/abstracts/services/seasons-datasource.abstract.service';
 import {
   CreateSeasonInput,
@@ -11,28 +17,32 @@ import { SeasonFactoryService } from './factory/season-factory.service';
 @Injectable()
 export class SeasonUseCases {
   constructor(
-    private dataService: ISeasonsDataSourceService,
+    private dataServices: ISeasonsDataSourceService,
     private seasonFactoryService: SeasonFactoryService,
   ) {}
-  getAllSeasons(args?: IGenericArgs<ISeason>): Promise<ISeason[]> {
-    return this.dataService.seasons.getAllSeasons(args);
-  }
-  getSeasonById(id: string): Promise<ISeason> {
-    return this.dataService.seasons.getSeasonById(id);
-  }
-  createSeason(createSeasonInput: CreateSeasonInput): Promise<ISeason> {
-    const season = this.seasonFactoryService.createSeason(createSeasonInput);
-    return this.dataService.seasons.createSeason(season);
-  }
-  updateSeason(
-    id: string,
-    updateSeasonInput: UpdateSeasonInput,
-  ): Promise<ISeason> {
-    const season = this.seasonFactoryService.updateSeason(updateSeasonInput);
 
-    return this.dataService.seasons.updateSeason(id, season);
+  getMany(props: GetManyProps<ISeason>) {
+    return this.dataServices.seasons.getMany({ ...props });
   }
-  removeSeason(id: string): Promise<ISeason> {
-    return this.dataService.seasons.removeSeason(id);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.seasons.getOneById({ ...props });
+  }
+
+  create(props: CreateProps<CreateSeasonInput>) {
+    const newSeason = this.seasonFactoryService.createSeason(props.data);
+    return this.dataServices.seasons.create({ ...props, data: newSeason });
+  }
+
+  updateOneById(props: UpdateOneByIdProps<UpdateSeasonInput>) {
+    const newSeason = this.seasonFactoryService.updateSeason(props.data);
+    return this.dataServices.seasons.updateOneById({
+      ...props,
+      data: newSeason,
+    });
+  }
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.seasons.deleteOneById({ ...props });
   }
 }

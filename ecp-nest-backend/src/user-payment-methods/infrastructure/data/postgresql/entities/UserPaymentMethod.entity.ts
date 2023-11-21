@@ -1,21 +1,20 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { PaymentMethod } from 'src/payment-methods/infrastructure/data/postgresql/entities/PaymentMethod.entity';
 import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('user_payment_method_pkey', ['id'], { unique: true })
 @Entity('user_payment_method')
-export class UserPaymentMethod {
+export class UserPaymentMethod extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -37,17 +36,11 @@ export class UserPaymentMethod {
   })
   isDefault?: boolean;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
-
   // Relations
   @OneToMany(() => ShopOrder, (shopOrder) => shopOrder.userPaymentMethod)
   shopOrder: ShopOrder[];
 
-  @ManyToOne(() => User, (user) => user.userPaymentMethod)
+  @ManyToOne(() => User, (user) => user.userPaymentMethods)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
 

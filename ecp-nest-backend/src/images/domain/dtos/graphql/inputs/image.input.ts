@@ -1,8 +1,9 @@
-import { Field, ID, PartialType, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateImageInput {
+export class CreateImageInput extends IGenericAdditionalProps {
   @Field(() => ID)
   @IsNotEmpty()
   @IsString()

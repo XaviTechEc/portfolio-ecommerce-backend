@@ -1,26 +1,10 @@
-import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
-import {
-  CreateProductPromotionInput,
-  UpdateProductPromotionInput,
-} from '../../dtos/graphql/inputs/product-promotion.input';
+import { IGenericDataRepository } from 'src/common/domain/abstracts/generic-data-methods.repository';
 
-export abstract class IProductPromotionRepository<T> {
-  abstract getAllProductPromotion(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getProductPromotionById(id: string): Promise<T>;
-  abstract createProductPromotion(
-    createProductPromotionInput: CreateProductPromotionInput,
-  ): Promise<T>;
-  abstract updateProductPromotion(
-    id: string,
-    updateProductPromotionInput: UpdateProductPromotionInput,
-  ): Promise<T>;
-  abstract removeProductPromotion(id: string): Promise<T>;
-  abstract getProductPromotionsBy(
-    term: string,
-    fields: (keyof T)[],
-    paginationArgs: PaginationArgs,
-  ): Promise<T[]>;
+export abstract class IProductPromotionsRepository<
+  TData,
+> extends IGenericDataRepository<TData> {
+  constructor() {
+    super();
+  }
+  // Add custom logic here ↓↓↓
 }

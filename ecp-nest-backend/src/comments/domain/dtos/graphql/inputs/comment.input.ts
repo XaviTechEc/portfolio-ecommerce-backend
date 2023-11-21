@@ -1,14 +1,9 @@
 import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateCommentInput {
+export class CreateCommentInput extends IGenericAdditionalProps {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()
@@ -18,11 +13,6 @@ export class CreateCommentInput {
   @IsNotEmpty()
   @IsString()
   content: string;
-
-  @Field(() => Boolean, { nullable: true, defaultValue: true })
-  @IsOptional()
-  @IsBoolean()
-  visible?: boolean;
 
   @Field(() => ID)
   @IsNotEmpty()

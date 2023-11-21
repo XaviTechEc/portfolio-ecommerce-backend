@@ -1,24 +1,20 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { Image } from 'src/images/infrastructure/data/postgresql/entities/Image.entity';
 import { ProductCategory } from 'src/product-categories/infrastructure/data/postgresql/entities/ProductCategory.entity';
 import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
 import { ProductPromotion } from 'src/product-promotions/infrastructure/data/postgresql/entities/ProductPromotion.entity';
 import { ProductTag } from 'src/product-tags/infrastructure/data/postgresql/entities/ProductTag.entity';
-import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  Index,
   OneToMany,
-  ManyToOne,
-  JoinColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('product_pkey', ['id'], { unique: true })
 @Entity('product')
-export class Product {
+export class Product extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -31,22 +27,12 @@ export class Product {
   @Column('text', { name: 'description' })
   description: string;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
-
   // Relations
   @OneToMany(
     () => ProductCategory,
     (productCategory) => productCategory.product,
   )
   productCategory: ProductCategory[];
-
-  @ManyToOne(() => User, (user) => user.product)
-  @JoinColumn([{ name: 'created_by', referencedColumnName: 'id' }])
-  user: User;
 
   @OneToMany(() => ProductTag, (productTag) => productTag.product)
   productTag: ProductTag[];

@@ -6,48 +6,43 @@ import {
 } from 'src/comments/domain/dtos/graphql/inputs/comment.input';
 import { IComment } from 'src/comments/domain/entities/comment.entity';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { CommentFactoryService } from './comment-factory.service';
 
 @Injectable()
 export class CommentUseCases {
   constructor(
-    private dataService: ICommentsDataSourceService,
+    private dataServices: ICommentsDataSourceService,
     private commentFactoryService: CommentFactoryService,
   ) {}
-  getCommentsBy(
-    term: string,
-    fields: (keyof IComment)[],
-    paginationArgs: PaginationArgs,
-  ): Promise<IComment[]> {
-    return this.dataService.comments.getCommentsBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<IComment>) {
+    return this.dataServices.comments.getMany({ ...props });
   }
-  getCommentById(id: string): Promise<IComment> {
-    return this.dataService.comments.getCommentById(id);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.comments.getOneById({ ...props });
   }
-  getAllComments(args?: IGenericArgs<IComment>): Promise<IComment[]> {
-    return this.dataService.comments.getAllComments(args);
+
+  create(props: CreateProps<CreateCommentInput>) {
+    const newComment = this.commentFactoryService.createComment(props.data);
+    return this.dataServices.comments.create({ ...props, data: newComment });
   }
-  createComment(createCommentInput: CreateCommentInput): Promise<IComment> {
-    const comment =
-      this.commentFactoryService.createComment(createCommentInput);
-    return this.dataService.comments.createComment(comment);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateCommentInput>) {
+    const newComment = this.commentFactoryService.updateComment(props.data);
+    return this.dataServices.comments.updateOneById({
+      ...props,
+      data: newComment,
+    });
   }
-  updateComment(
-    id: string,
-    updateCommentInput: UpdateCommentInput,
-  ): Promise<IComment> {
-    const comment =
-      this.commentFactoryService.updateComment(updateCommentInput);
-    return this.dataService.comments.updateComment(id, comment);
-  }
-  removeComment(id: string): Promise<IComment> {
-    return this.dataService.comments.removeComment(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.comments.deleteOneById({ ...props });
   }
 }

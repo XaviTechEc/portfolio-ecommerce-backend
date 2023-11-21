@@ -1,17 +1,20 @@
-import {
-  IsNotEmpty,
-  IsString,
-  IsEmail,
-  IsStrongPassword,
-  IsOptional,
-  IsMobilePhone,
-  IsEnum,
-  IsBoolean,
-  IsArray,
-  IsDate,
-} from 'class-validator';
-import { UserType, Role, Gender } from '../../enums';
 import { PartialType } from '@nestjs/swagger';
+import {
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsMobilePhone,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsStrongPassword,
+  IsUUID,
+} from 'class-validator';
+import { Gender, UserType } from '../../enums';
+import { RoleValue } from 'src/roles/domain/enums/role-value.enum';
+import { IRole } from 'src/roles/domain/entities/role.entity';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -35,9 +38,17 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   fullName: string;
+
+  @IsOptional()
+  @IsUUID('all', { each: true })
+  roles?: any;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
   @IsOptional()
   @IsMobilePhone()
   phoneNumber?: string;
@@ -45,11 +56,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @IsEnum(UserType)
   userType?: UserType;
-
-  @IsOptional()
-  @IsEnum(Role, { each: true })
-  @IsArray()
-  roles?: Role[];
 
   @IsOptional()
   @IsEnum(Gender)

@@ -2,9 +2,14 @@ import { ArgsType, Field } from '@nestjs/graphql';
 import { IsOptional, IsString } from 'class-validator';
 
 @ArgsType()
-export class SearchArgs {
-  @Field(() => String, { name: 'searchTerm', nullable: true })
+export class SearchArgs<TData = any> {
+  @Field(() => String, { name: 'term', nullable: true })
   @IsOptional()
   @IsString()
-  searchTerm?: string;
+  term?: string;
+
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  @IsString({ each: true })
+  fields?: (keyof TData)[];
 }

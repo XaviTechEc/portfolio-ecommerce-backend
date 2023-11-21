@@ -10,9 +10,10 @@ import {
   Max,
   Min,
 } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateReviewInput {
+export class CreateReviewInput extends IGenericAdditionalProps {
   @Field(() => ID)
   @IsNotEmpty()
   @IsUUID()

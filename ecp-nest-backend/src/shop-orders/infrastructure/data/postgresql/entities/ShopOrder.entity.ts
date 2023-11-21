@@ -1,4 +1,5 @@
 import { Address } from 'src/addresses/infrastructure/data/postgresql/entities';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { OrderLine } from 'src/order-lines/infrastructure/data/postgresql/entities/OrderLine.entity';
 import { OrderStatus } from 'src/order-status/infrastructure/data/postgresql/entities/OrderStatus.entity';
 import { ShippingMethod } from 'src/shipping-methods/infrastructure/data/postgresql/entities/ShippingMethod.entity';
@@ -6,31 +7,23 @@ import { ShopOrderLocation } from 'src/shop-order-locations/infrastructure/data/
 import { UserPaymentMethod } from 'src/user-payment-methods/infrastructure/data/postgresql/entities/UserPaymentMethod.entity';
 import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('shop_order_pkey', ['id'], { unique: true })
 @Entity('shop_order')
-export class ShopOrder {
+export class ShopOrder extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('real', { name: 'order_total' })
   orderTotal: number;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @OneToMany(() => OrderLine, (orderLine) => orderLine.shopOrder)
@@ -44,7 +37,7 @@ export class ShopOrder {
   @JoinColumn([{ name: 'order_status_id', referencedColumnName: 'id' }])
   orderStatus: OrderStatus;
 
-  @ManyToOne(() => User, (user) => user.shopOrder)
+  @ManyToOne(() => User, (user) => user.shopOrders)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: User;
 

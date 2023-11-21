@@ -1,17 +1,16 @@
 import { Location } from 'src/addresses/infrastructure/data/postgresql/entities';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import {
   Entity,
-  PrimaryGeneratedColumn,
-  PrimaryColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('shop_order_location')
-export class ShopOrderLocation {
+export class ShopOrderLocation extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,12 +19,6 @@ export class ShopOrderLocation {
 
   @PrimaryColumn('character varying', { name: 'location_id' })
   locationId: string;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @ManyToOne(() => ShopOrder, (shopOrder) => shopOrder.shopOrderLocation)

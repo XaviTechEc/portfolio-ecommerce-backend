@@ -14,21 +14,25 @@ export class UserUseCases {
     private dataServices: IUsersDataSourceService,
     private userFactoryService: UserFactoryService,
   ) {}
-  getAllUsers(args?: IGenericArgs<IUser>): Promise<IUser[]> {
-    return this.dataServices.users.getAllUsers(args);
+  getAllUsers(args?: IGenericArgs<IUser>) {
+    return this.dataServices.users.getAllUsers({ ...args });
   }
-  getUserById(id: string): Promise<IUser> {
+  getUserById(id: string) {
     return this.dataServices.users.getUserById(id);
   }
-  createUser(createUserDto: CreateUserDto): Promise<IUser> {
+  createUser(createUserDto: CreateUserDto) {
     const user = this.userFactoryService.createUser(createUserDto);
     return this.dataServices.users.createUser(user);
   }
-  updateUser(id: string, updateUserDto: UpdateUserDto): Promise<IUser> {
+  updateUser(id: string, updateUserDto: UpdateUserDto) {
     const user = this.userFactoryService.updateUser(updateUserDto);
     return this.dataServices.users.updateUser(id, user);
   }
-  removeUser(id: string): Promise<IUser> {
+  removeUser(id: string) {
     return this.dataServices.users.removeUser(id);
+  }
+
+  restoreUser(id: string) {
+    return this.dataServices.users.restoreUserById(id);
   }
 }

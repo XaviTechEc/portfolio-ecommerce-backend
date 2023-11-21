@@ -5,22 +5,26 @@ import {
   createParamDecorator,
 } from '@nestjs/common';
 import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
+import { IUser } from 'src/users/domain/entities/user.entity';
 
 export const CurrentUser = createParamDecorator(
-  (data: unknown, context: ExecutionContext) => {
+  (
+    data: keyof IUser | (keyof IUser)[] | undefined,
+    context: ExecutionContext,
+  ) => {
     let ctx: GraphQLExecutionContext | ExecutionContext;
-    let user: any;
+    let user: IUser;
     let dataToSend: any;
 
     // Graphql
     if (context.getType<ContextType | 'graphql'>() === 'graphql') {
       ctx = GqlExecutionContext.create(context);
       user = (ctx as GraphQLExecutionContext).getContext().req.user;
+    } else {
+      // Rest
+      ctx = context;
+      user = ctx.switchToHttp().getRequest().user;
     }
-
-    // Rest
-    ctx = context;
-    user = ctx.switchToHttp().getRequest().user;
 
     if (!user) {
       throw new InternalServerErrorException('[PARAM] - No user in request');

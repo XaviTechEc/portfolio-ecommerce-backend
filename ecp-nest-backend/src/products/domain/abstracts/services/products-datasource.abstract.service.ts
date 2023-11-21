@@ -1,5 +1,5 @@
 import { IProduct } from '../../entities/product.entity';
-import { IProductsRepository } from '../repositories/product.repository';
+import { IProductsRepository } from '../repositories/products.repository';
 
 export abstract class IProductsDataSourceService {
   // Products

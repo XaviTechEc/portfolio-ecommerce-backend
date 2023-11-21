@@ -1,31 +1,26 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { Image } from 'src/images/infrastructure/data/postgresql/entities/Image.entity';
 import { Season } from 'src/seasons/infrastructure/data/postgresql/entities/Season.entity';
 import { Store } from 'src/stores/infrastructure/data/postgresql/entities/Store.entity';
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('billboard')
-export class Billboard {
+export class Billboard extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('character varying', { name: 'title' })
   title: string;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
-
+  @Column('text', { name: 'description', nullable: true })
+  description?: string;
   // Relations
   @OneToMany(() => Image, (image) => image.billboard)
   images: Image[];

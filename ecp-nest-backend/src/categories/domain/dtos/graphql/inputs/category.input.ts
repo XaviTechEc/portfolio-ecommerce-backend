@@ -1,20 +1,20 @@
 import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 import {
-  IsBoolean,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
   MinLength,
 } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateCategoryInput {
+export class CreateCategoryInput extends IGenericAdditionalProps {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  value: string;
+  name: string;
 
   @Field(() => String)
   @IsNotEmpty()
@@ -31,16 +31,6 @@ export class CreateCategoryInput {
   @IsOptional()
   @IsUUID()
   parentCategory?: any;
-
-  @Field(() => Boolean, { nullable: true, defaultValue: true })
-  @IsOptional()
-  @IsBoolean()
-  active?: boolean;
-
-  @Field(() => ID)
-  @IsNotEmpty()
-  @IsUUID()
-  user: any;
 
   @Field(() => ID)
   @IsNotEmpty()

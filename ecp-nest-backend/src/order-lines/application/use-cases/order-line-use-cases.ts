@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IOrderLinesDataSourceService } from 'src/order-lines/domain/abstracts/services/order-lines-datasource.abstract.service';
 import {
   CreateOrderLineInput,
@@ -14,44 +17,39 @@ import { OrderLineFactoryService } from './factory/order-line-factory.service';
 @Injectable()
 export class OrderLineUseCases {
   constructor(
-    private dataService: IOrderLinesDataSourceService,
+    private dataServices: IOrderLinesDataSourceService,
     private orderLineFactoryService: OrderLineFactoryService,
   ) {}
-  getOrderLinesBy(
-    term: string,
-    fields: (keyof IOrderLine)[],
-    paginationArgs: PaginationArgs,
-  ): Promise<IOrderLine[]> {
-    return this.dataService.orderLines.getOrderLinesBy(
-      term,
-      fields,
-      paginationArgs,
+
+  getMany(props: GetManyProps<IOrderLine>) {
+    return this.dataServices.orderLines.getMany({ ...props });
+  }
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.orderLines.getOneById({ ...props });
+  }
+
+  create(props: CreateProps<CreateOrderLineInput>) {
+    const newOrderLine = this.orderLineFactoryService.createOrderLine(
+      props.data,
     );
-  }
-  getAllOrderLines(args?: IGenericArgs<IOrderLine>): Promise<IOrderLine[]> {
-    return this.dataService.orderLines.getAllOrderLines(args);
-  }
-
-  getOrderLineById(id: string): Promise<IOrderLine> {
-    return this.dataService.orderLines.getOrderLineById(id);
+    return this.dataServices.orderLines.create({
+      ...props,
+      data: newOrderLine,
+    });
   }
 
-  createOrderLine(
-    createOrderLineInput: CreateOrderLineInput,
-  ): Promise<IOrderLine> {
-    const orderLine =
-      this.orderLineFactoryService.createOrderLine(createOrderLineInput);
-    return this.dataService.orderLines.createOrderLine(orderLine);
+  updateOneById(props: UpdateOneByIdProps<UpdateOrderLineInput>) {
+    const newOrderLine = this.orderLineFactoryService.updateOrderLine(
+      props.data,
+    );
+    return this.dataServices.orderLines.updateOneById({
+      ...props,
+      data: newOrderLine,
+    });
   }
-  updateOrderLine(
-    id: string,
-    updateOrderLineInput: UpdateOrderLineInput,
-  ): Promise<IOrderLine> {
-    const orderLine =
-      this.orderLineFactoryService.updateOrderLine(updateOrderLineInput);
-    return this.dataService.orderLines.updateOrderLine(id, orderLine);
-  }
-  removeOrderLine(id: string): Promise<IOrderLine> {
-    return this.dataService.orderLines.removeOrderLine(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.orderLines.deleteOneById({ ...props });
   }
 }

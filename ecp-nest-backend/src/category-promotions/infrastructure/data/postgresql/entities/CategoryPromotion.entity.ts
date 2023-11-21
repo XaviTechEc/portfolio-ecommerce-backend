@@ -1,17 +1,16 @@
 import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { Promotion } from 'src/promotions/infrastructure/data/postgresql/entities/Promotion.entity';
 import {
   Entity,
-  PrimaryGeneratedColumn,
-  PrimaryColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('category_promotion')
-export class CategoryPromotion {
+export class CategoryPromotion extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,13 +20,7 @@ export class CategoryPromotion {
   @PrimaryColumn('character varying', { name: 'promotion_id' })
   promotionId: string;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
-
-  @ManyToOne(() => Category, (category) => category.categoryPromotion)
+  @ManyToOne(() => Category, (category) => category.categoryPromotions)
   @JoinColumn([{ name: 'category_id', referencedColumnName: 'id' }])
   category: Category;
 

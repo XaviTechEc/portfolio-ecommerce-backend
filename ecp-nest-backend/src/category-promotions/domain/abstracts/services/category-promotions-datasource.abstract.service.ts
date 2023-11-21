@@ -1,6 +1,6 @@
 import { ICategoryPromotion } from '../../entities/category-promotion.entity';
-import { ICategoryPromotionRepository } from '../repositories/category-promotion.repository';
+import { ICategoryPromotionsRepository } from '../repositories/category-promotions.repository';
 
 export abstract class ICategoryPromotionsDataSourceService {
-  abstract categoryPromotions: ICategoryPromotionRepository<ICategoryPromotion>;
+  abstract categoryPromotions: ICategoryPromotionsRepository<ICategoryPromotion>;
 }

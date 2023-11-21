@@ -1,25 +1,24 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { Image } from 'src/images/infrastructure/data/postgresql/entities/Image.entity';
 import { OrderLine } from 'src/order-lines/infrastructure/data/postgresql/entities/OrderLine.entity';
 import { ProductConfiguration } from 'src/product-configurations/infrastructure/data/postgresql/entities/ProductConfiguration.entity';
 import { Product } from 'src/products/infrastructure/data/postgresql/entities/Product.entity';
 import { ShoppingCartProductItem } from 'src/shopping-cart-product-items/infrastructure/data/postgresql/entities/ShoppingCartProductItem.entity';
 import {
-  Index,
-  Entity,
-  PrimaryColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Index('product_item_pkey', ['id'], { unique: true })
 @Index('product_item_sku_idx', ['sku'], { unique: true })
 @Index('product_item_slug_idx', ['slug'], {})
 @Entity('product_item')
-export class ProductItem {
+export class ProductItem extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryColumn('uuid')
   id: string;
 
@@ -35,11 +34,6 @@ export class ProductItem {
   @Column('character varying', { name: 'slug', unique: true })
   slug: string;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
   // Relations
   @OneToMany(
     () => ShoppingCartProductItem,

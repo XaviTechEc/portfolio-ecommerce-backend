@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IShippingMethodsDataSourceService } from 'src/shipping-methods/domain/abstracts/services/shipping-methods-datasource.abstract.service';
 import {
   CreateShippingMethodInput,
@@ -11,42 +17,37 @@ import { ShippingMethodFactoryService } from './factory/shipping-method-factory.
 @Injectable()
 export class ShippingMethodUseCases {
   constructor(
-    private dataService: IShippingMethodsDataSourceService,
+    private dataServices: IShippingMethodsDataSourceService,
     private shippingMethodFactoryService: ShippingMethodFactoryService,
   ) {}
-  getAllShippingMethods(
-    args?: IGenericArgs<IShippingMethod>,
-  ): Promise<IShippingMethod[]> {
-    return this.dataService.shippingMethods.getAllShippingMethods(args);
+
+  getMany(props: GetManyProps<IShippingMethod>) {
+    return this.dataServices.shippingMethods.getMany({ ...props });
   }
-  getShippingMethodById(id: string): Promise<IShippingMethod> {
-    return this.dataService.shippingMethods.getShippingMethodById(id);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.shippingMethods.getOneById({ ...props });
   }
-  createShippingMethod(
-    createShippingMethodInput: CreateShippingMethodInput,
-  ): Promise<IShippingMethod> {
-    const shippingMethod =
-      this.shippingMethodFactoryService.createShippingMethod(
-        createShippingMethodInput,
-      );
-    return this.dataService.shippingMethods.createShippingMethod(
-      shippingMethod,
-    );
+
+  create(props: CreateProps<CreateShippingMethodInput>) {
+    const newShippingMethod =
+      this.shippingMethodFactoryService.createShippingMethod(props.data);
+    return this.dataServices.shippingMethods.create({
+      ...props,
+      data: newShippingMethod,
+    });
   }
-  updateShippingMethod(
-    id: string,
-    updateShippingMethodInput: UpdateShippingMethodInput,
-  ): Promise<IShippingMethod> {
-    const shippingMethod =
-      this.shippingMethodFactoryService.updateShippingMethod(
-        updateShippingMethodInput,
-      );
-    return this.dataService.shippingMethods.updateShippingMethod(
-      id,
-      shippingMethod,
-    );
+
+  updateOneById(props: UpdateOneByIdProps<UpdateShippingMethodInput>) {
+    const newShippingMethod =
+      this.shippingMethodFactoryService.updateShippingMethod(props.data);
+    return this.dataServices.shippingMethods.updateOneById({
+      ...props,
+      data: newShippingMethod,
+    });
   }
-  removeShippingMethod(id: string): Promise<IShippingMethod> {
-    return this.dataService.shippingMethods.removeShippingMethod(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.shippingMethods.deleteOneById({ ...props });
   }
 }

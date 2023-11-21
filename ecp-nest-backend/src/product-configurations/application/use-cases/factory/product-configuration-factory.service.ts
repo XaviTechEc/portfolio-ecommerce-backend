@@ -15,16 +15,19 @@ export class ProductConfigurationFactoryService {
       createProductConfigurationInput.productItem;
     newProductConfiguration.variationOption =
       createProductConfigurationInput.variationOption;
+    newProductConfiguration.active = createProductConfigurationInput.active;
     return newProductConfiguration;
   }
   updateProductConfiguration(
     updateProductConfigurationInput: UpdateProductConfigurationInput,
   ) {
     const newProductConfiguration = new IProductConfiguration();
+    newProductConfiguration.id = updateProductConfigurationInput.id;
     newProductConfiguration.productItem =
       updateProductConfigurationInput.productItem;
     newProductConfiguration.variationOption =
       updateProductConfigurationInput.variationOption;
+    newProductConfiguration.active = updateProductConfigurationInput.active;
     return newProductConfiguration;
   }
 }

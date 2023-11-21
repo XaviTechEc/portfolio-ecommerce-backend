@@ -3,29 +3,29 @@ import {
   AddressFactoryService,
   AddressesUseCases,
   CountryFactoryService,
-  CountryUseCases,
+  CountriesUseCases,
   LocationFactoryService,
-  LocationUseCases,
+  LocationsUseCases,
 } from './application/use-cases';
 import { AddressDataSourceModule } from './infrastructure/data/address-datasource.module';
 import {
   AddressResolver,
-  CountryResolver,
-  LocationResolver,
-} from './interface-adapters/resolvers';
+  CountriesResolver,
+  LocationsResolver,
+} from './interface-adapters/graphql/resolvers';
 
 @Module({
   imports: [AddressDataSourceModule],
   providers: [
     AddressesUseCases,
-    CountryUseCases,
-    LocationUseCases,
+    CountriesUseCases,
+    LocationsUseCases,
     AddressFactoryService,
     CountryFactoryService,
     LocationFactoryService,
     AddressResolver,
-    CountryResolver,
-    LocationResolver,
+    CountriesResolver,
+    LocationsResolver,
   ],
 })
 export class AddressesModule {}

@@ -1,18 +1,10 @@
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
-import {
-  CreateShippingMethodInput,
-  UpdateShippingMethodInput,
-} from '../../dtos/graphql/inputs/shipping-method.input';
+import { IGenericDataRepository } from 'src/common/domain/abstracts/generic-data-methods.repository';
 
-export abstract class IShippingMethodsRepository<T> {
-  abstract getAllShippingMethods(args?: IGenericArgs<T>): Promise<T[]>;
-  abstract getShippingMethodById(id: string): Promise<T>;
-  abstract createShippingMethod(
-    createShippingMethodInput: CreateShippingMethodInput,
-  ): Promise<T>;
-  abstract updateShippingMethod(
-    id: string,
-    updateShippingMethodInput: UpdateShippingMethodInput,
-  ): Promise<T>;
-  abstract removeShippingMethod(id: string): Promise<T>;
+export abstract class IShippingMethodsRepository<
+  TData,
+> extends IGenericDataRepository<TData> {
+  constructor() {
+    super();
+  }
+  // Add custom logic here ↓↓↓
 }

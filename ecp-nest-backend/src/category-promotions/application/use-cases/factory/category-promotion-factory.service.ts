@@ -13,14 +13,17 @@ export class CategoryPromotionFactoryService {
     const newCategoryPromotion = new ICategoryPromotion();
     newCategoryPromotion.category = createCategoryPromotionInput.category;
     newCategoryPromotion.promotion = createCategoryPromotionInput.promotion;
+    newCategoryPromotion.active = createCategoryPromotionInput.active;
     return newCategoryPromotion;
   }
   updateCategoryPromotion(
     updateCategoryPromotionInput: UpdateCategoryPromotionInput,
   ) {
     const newCategoryPromotion = new ICategoryPromotion();
+    newCategoryPromotion.id = updateCategoryPromotionInput.id;
     newCategoryPromotion.category = updateCategoryPromotionInput.category;
     newCategoryPromotion.promotion = updateCategoryPromotionInput.promotion;
+    newCategoryPromotion.active = updateCategoryPromotionInput.active;
     return newCategoryPromotion;
   }
 }

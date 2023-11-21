@@ -12,16 +12,17 @@ export class StoreFactoryService {
     newStore.name = createStoreInput.name;
     newStore.description = createStoreInput.description;
     newStore.slug = createStoreInput.slug;
-    newStore.user = createStoreInput.user;
+    newStore.active = createStoreInput.active;
     return newStore;
   }
 
   updateStore(updateStoreInput: UpdateStoreInput) {
     const newStore = new IStore();
+    newStore.id = updateStoreInput.id;
     newStore.name = updateStoreInput.name;
     newStore.description = updateStoreInput.description;
     newStore.slug = updateStoreInput.slug;
-    newStore.user = updateStoreInput.user;
+    newStore.active = updateStoreInput.active;
     return newStore;
   }
 }

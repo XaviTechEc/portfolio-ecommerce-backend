@@ -1,5 +1,6 @@
-import { Role } from 'src/users/domain/enums';
-
-export const matchRoles = (validRoles: Role[], roles: Role[]): boolean => {
+export function matchRoles<TRoleValue>(
+  validRoles: TRoleValue[],
+  roles: TRoleValue[],
+): boolean {
   return validRoles.some((role) => roles.includes(role));
-};
+}

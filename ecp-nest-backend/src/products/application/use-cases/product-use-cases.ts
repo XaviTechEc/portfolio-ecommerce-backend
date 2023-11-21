@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IProductsDataSourceService } from 'src/products/domain/abstracts/services/products-datasource.abstract.service';
 import {
   CreateProductInput,
@@ -14,41 +17,32 @@ import { ProductFactoryService } from './factory/product-factory.service';
 @Injectable()
 export class ProductUseCases {
   constructor(
-    private dataService: IProductsDataSourceService,
+    private dataServices: IProductsDataSourceService,
     private productFactoryService: ProductFactoryService,
   ) {}
-  getProductsBy(
-    term: string,
-    fields: (keyof IProduct)[],
-    paginationArgs: PaginationArgs,
-  ): Promise<IProduct[]> {
-    return this.dataService.products.getProductsBy(
-      term,
-      fields,
-      paginationArgs,
-    );
-  }
-  getAllProducts(args?: IGenericArgs<IProduct>): Promise<IProduct[]> {
-    return this.dataService.products.getAllProducts(args);
+
+  getMany(props: GetManyProps<IProduct>) {
+    return this.dataServices.products.getMany({ ...props });
   }
 
-  getProductById(id: string): Promise<IProduct> {
-    return this.dataService.products.getProductById(id);
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.products.getOneById({ ...props });
   }
-  createProduct(createProductInput: CreateProductInput): Promise<IProduct> {
-    const product =
-      this.productFactoryService.createProduct(createProductInput);
-    return this.dataService.products.createProduct(product);
+
+  create(props: CreateProps<CreateProductInput>) {
+    const newProduct = this.productFactoryService.createProduct(props.data);
+    return this.dataServices.products.create({ ...props, data: newProduct });
   }
-  updateProduct(
-    id: string,
-    updateProductInput: UpdateProductInput,
-  ): Promise<IProduct> {
-    const product =
-      this.productFactoryService.updateProduct(updateProductInput);
-    return this.dataService.products.updateProduct(id, product);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateProductInput>) {
+    const newProduct = this.productFactoryService.updateProduct(props.data);
+    return this.dataServices.products.updateOneById({
+      ...props,
+      data: newProduct,
+    });
   }
-  removeProduct(id: string): Promise<IProduct> {
-    return this.dataService.products.removeProduct(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.products.deleteOneById({ ...props });
   }
 }

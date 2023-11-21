@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { ITagsDataSourceService } from 'src/tags/domain/abstracts/services/tags-datasource.abstract.service';
 import {
   CreateTagInput,
@@ -11,24 +17,32 @@ import { TagFactoryService } from './factory/tag-factory.service';
 @Injectable()
 export class TagUseCases {
   constructor(
-    private dataService: ITagsDataSourceService,
+    private dataServices: ITagsDataSourceService,
     private tagFactoryService: TagFactoryService,
   ) {}
-  getAllTags(args?: IGenericArgs<ITag>): Promise<ITag[]> {
-    return this.dataService.tags.getAllTags(args);
+
+  getMany(props: GetManyProps<ITag>) {
+    return this.dataServices.tags.getMany({ ...props });
   }
-  getTagById(id: string): Promise<ITag> {
-    return this.dataService.tags.getTagById(id);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.tags.getOneById({ ...props });
   }
-  createTag(createTagInput: CreateTagInput): Promise<ITag> {
-    const tag = this.tagFactoryService.createTag(createTagInput);
-    return this.dataService.tags.createTag(tag);
+
+  create(props: CreateProps<CreateTagInput>) {
+    const newTag = this.tagFactoryService.createTag(props.data);
+    return this.dataServices.tags.create({ ...props, data: newTag });
   }
-  updateTag(id: string, updateTagInput: UpdateTagInput): Promise<ITag> {
-    const tag = this.tagFactoryService.updateTag(updateTagInput);
-    return this.dataService.tags.updateTag(id, tag);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateTagInput>) {
+    const newTag = this.tagFactoryService.updateTag(props.data);
+    return this.dataServices.tags.updateOneById({
+      ...props,
+      data: newTag,
+    });
   }
-  removeTag(id: string): Promise<ITag> {
-    return this.dataService.tags.removeTag(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.tags.deleteOneById({ ...props });
   }
 }

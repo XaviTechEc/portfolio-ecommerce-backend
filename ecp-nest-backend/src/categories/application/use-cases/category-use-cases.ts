@@ -1,54 +1,48 @@
 import { Injectable } from '@nestjs/common';
-import { ICategoryDataSourceService } from 'src/categories/domain/abstracts/services/category-datasource.abstract.service';
+import { ICategoriesDataSourceService } from 'src/categories/domain/abstracts/services/categories-datasource.abstract.service';
 import {
   CreateCategoryInput,
   UpdateCategoryInput,
 } from 'src/categories/domain/dtos/graphql/inputs/category.input';
 import { ICategory } from 'src/categories/domain/entities/category.entity';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { CategoryFactoryService } from './factory/category-factory.service';
 
 @Injectable()
 export class CategoryUseCases {
   constructor(
-    private dataService: ICategoryDataSourceService,
+    private dataServices: ICategoriesDataSourceService,
     private categoryFactoryService: CategoryFactoryService,
   ) {}
-  getCategoriesBy(
-    term: string,
-    fields: (keyof ICategory)[],
-    paginationArgs: PaginationArgs,
-  ): Promise<ICategory[]> {
-    return this.dataService.categories.getCategoriesBy(
-      term,
-      fields,
-      paginationArgs,
-    );
-  }
-  getAllCategories(args?: IGenericArgs<ICategory>): Promise<ICategory[]> {
-    return this.dataService.categories.getAllCategories(args);
+
+  getMany(props: GetManyProps<ICategory>) {
+    return this.dataServices.categories.getMany({ ...props });
   }
 
-  getCategoryById(id: string): Promise<ICategory> {
-    return this.dataService.categories.getCategoryById(id);
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.categories.getOneById({ ...props });
   }
-  createCategory(createCategoryInput: CreateCategoryInput): Promise<ICategory> {
-    const category =
-      this.categoryFactoryService.createCategory(createCategoryInput);
-    return this.dataService.categories.createCategory(category);
+
+  create(props: CreateProps<CreateCategoryInput>) {
+    const newCategory = this.categoryFactoryService.createCategory(props.data);
+    return this.dataServices.categories.create({ ...props, data: newCategory });
   }
-  updateCategory(
-    id: string,
-    updateCategoryInput: UpdateCategoryInput,
-  ): Promise<ICategory> {
-    const category =
-      this.categoryFactoryService.updateCategory(updateCategoryInput);
-    return this.dataService.categories.updateCategory(id, category);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateCategoryInput>) {
+    const newCategory = this.categoryFactoryService.updateCategory(props.data);
+    return this.dataServices.categories.updateOneById({
+      ...props,
+      data: newCategory,
+    });
   }
-  removeCategory(id: string): Promise<ICategory> {
-    return this.dataService.categories.removeCategory(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.categories.deleteOneById({ ...props });
   }
 }

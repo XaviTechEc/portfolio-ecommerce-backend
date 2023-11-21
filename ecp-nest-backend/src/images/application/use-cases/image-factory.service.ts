@@ -14,18 +14,17 @@ export class ImageFactoryService {
     newImage.product = createImageDto.product;
     newImage.productItem = createImageDto.productItem;
     newImage.category = createImageDto.category;
-    newImage.user = createImageDto.user;
     newImage.billboard = createImageDto.billboard;
     return newImage;
   }
   updateImage(updateImageDto: UpdateImageDto) {
     const newImage = new IImage();
+    newImage.id = updateImageDto.id;
     newImage.url = updateImageDto.url;
     newImage.extension = updateImageDto.extension;
     newImage.product = updateImageDto.product;
     newImage.productItem = updateImageDto.productItem;
     newImage.category = updateImageDto.category;
-    newImage.user = updateImageDto.user;
     newImage.billboard = updateImageDto.billboard;
     return newImage;
   }

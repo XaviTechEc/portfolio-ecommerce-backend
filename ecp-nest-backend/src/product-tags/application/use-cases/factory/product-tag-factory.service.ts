@@ -11,12 +11,15 @@ export class ProductTagFactoryService {
     const newProductTag = new IProductTag();
     newProductTag.product = createProductTagInput.product;
     newProductTag.tag = createProductTagInput.tag;
+    newProductTag.active = createProductTagInput.active;
     return newProductTag;
   }
   updateProductTag(updateProductTagInput: UpdateProductTagInput) {
     const newProductTag = new IProductTag();
+    newProductTag.id = updateProductTagInput.id;
     newProductTag.product = updateProductTagInput.product;
     newProductTag.tag = updateProductTagInput.tag;
+    newProductTag.active = updateProductTagInput.active;
     return newProductTag;
   }
 }

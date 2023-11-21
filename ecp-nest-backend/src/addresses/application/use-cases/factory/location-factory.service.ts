@@ -11,12 +11,15 @@ export class LocationFactoryService {
     const newLocation = new ILocation();
     newLocation.lat = createLocationInput.lat;
     newLocation.lng = createLocationInput.lng;
+    newLocation.active = createLocationInput.active;
     return newLocation;
   }
   updateLocation(updateLocationInput: UpdateLocationInput) {
     const newLocation = new ILocation();
+    newLocation.id = updateLocationInput.id;
     newLocation.lat = updateLocationInput.lat;
     newLocation.lng = updateLocationInput.lng;
+    newLocation.active = updateLocationInput.active;
     return newLocation;
   }
 }
