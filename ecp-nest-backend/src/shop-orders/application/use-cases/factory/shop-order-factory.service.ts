@@ -15,16 +15,19 @@ export class ShopOrderFactoryService {
     newShopOrder.shippingMethod = createShopOrderInput.shippingMethod;
     newShopOrder.orderTotal = createShopOrderInput.orderTotal;
     newShopOrder.orderStatus = createShopOrderInput.orderStatus;
+    newShopOrder.active = createShopOrderInput.active;
     return newShopOrder;
   }
   updateShopOrder(updateShopOrderInput: UpdateShopOrderInput) {
     const newShopOrder = new IShopOrder();
+    newShopOrder.id = updateShopOrderInput.id;
     newShopOrder.user = updateShopOrderInput.user;
     newShopOrder.userPaymentMethod = updateShopOrderInput.userPaymentMethod;
     newShopOrder.address = updateShopOrderInput.address;
     newShopOrder.shippingMethod = updateShopOrderInput.shippingMethod;
     newShopOrder.orderTotal = updateShopOrderInput.orderTotal;
     newShopOrder.orderStatus = updateShopOrderInput.orderStatus;
+    newShopOrder.active = updateShopOrderInput.active;
     return newShopOrder;
   }
 }
