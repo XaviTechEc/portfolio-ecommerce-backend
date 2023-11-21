@@ -13,12 +13,14 @@ export class VariationOptionFactoryService {
     const newVariationOption = new IVariationOption();
     newVariationOption.variation = createVariationOptionInput.variation;
     newVariationOption.value = createVariationOptionInput.value;
+    newVariationOption.active = createVariationOptionInput.active;
     return newVariationOption;
   }
   updateVariationOption(
     updateVariationOptionInput: UpdateVariationOptionInput,
   ) {
     const newVariationOption = new IVariationOption();
+    newVariationOption.id = updateVariationOptionInput.id;
     newVariationOption.variation = updateVariationOptionInput.variation;
     newVariationOption.value = updateVariationOptionInput.value;
     return newVariationOption;
