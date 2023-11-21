@@ -14,15 +14,18 @@ export class ProductItemFactoryService {
     newProductItem.quantityInStock = createProductItemInput.quantityInStock;
     newProductItem.price = createProductItemInput.price;
     newProductItem.slug = createProductItemInput.slug;
+    newProductItem.active = createProductItemInput.active;
     return newProductItem;
   }
   updateProductItem(updateProductItemInput: UpdateProductItemInput) {
     const newProductItem = new IProductItem();
+    newProductItem.id = updateProductItemInput.id;
     newProductItem.product = updateProductItemInput.product;
     newProductItem.sku = updateProductItemInput.sku;
     newProductItem.quantityInStock = updateProductItemInput.quantityInStock;
     newProductItem.price = updateProductItemInput.price;
     newProductItem.slug = updateProductItemInput.slug;
+    newProductItem.active = updateProductItemInput.active;
     return newProductItem;
   }
 }

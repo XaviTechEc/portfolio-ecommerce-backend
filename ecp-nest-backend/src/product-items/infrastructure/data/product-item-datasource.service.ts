@@ -4,27 +4,29 @@ import { IExceptionsService } from 'src/common/domain/abstracts/services/excepti
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { ProductItem } from './postgresql/entities/ProductItem.entity';
-import { ProductItemsRepository } from './postgresql/repositories/product-items.repository';
+import { ProductItemsPostgresRepository } from './postgresql/repositories/product-items.repository';
 import { IProductItemsDataSourceService } from 'src/product-items/domain/abstracts/services/product-items-datasource.abstract.service';
 
 @Injectable()
 export class ProductItemsDataService
   implements IProductItemsDataSourceService, OnApplicationBootstrap
 {
-  productItems: ProductItemsRepository;
+  productItems: ProductItemsPostgresRepository<ProductItem>;
 
   constructor(
     @InjectRepository(ProductItem)
-    private productItemsRepository: Repository<ProductItem>,
+    private productItemsPostgresRepository: Repository<ProductItem>,
     private _loggerService: ILoggerService,
     private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {
-    this.productItems = new ProductItemsRepository(
-      this.productItemsRepository,
+    this.productItems = new ProductItemsPostgresRepository(
+      this.productItemsPostgresRepository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name,
+      'product_item',
     );
   }
 }
