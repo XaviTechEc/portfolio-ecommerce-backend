@@ -7,9 +7,10 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateStoreInput {
+export class CreateStoreInput extends IGenericAdditionalProps {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
@@ -20,6 +21,8 @@ export class CreateStoreInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
+  @MinLength(3)
+  @MaxLength(100)
   description?: string;
 
   @Field(() => String)

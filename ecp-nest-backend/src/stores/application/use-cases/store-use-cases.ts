@@ -1,41 +1,48 @@
-import { Injectable } from '@nestjs/common';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
 import { IStoresDataSourceService } from 'src/stores/domain/abstracts/services/stores-datasource.abstract.service';
+import { StoreFactoryService } from './store-factory.service';
+import { Injectable } from '@nestjs/common';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import {
   CreateStoreInput,
   UpdateStoreInput,
 } from 'src/stores/domain/dtos/graphql/inputs/store.input';
 import { IStore } from 'src/stores/domain/entities/store.entity';
-import { StoreFactoryService } from './store-factory.service';
 
 @Injectable()
 export class StoreUseCases {
   constructor(
-    private dataService: IStoresDataSourceService,
+    private dataServices: IStoresDataSourceService,
     private storeFactoryService: StoreFactoryService,
   ) {}
-  async getAllStores(args?: IGenericArgs<IStore>) {
-    return this.dataService.stores.getAllStores(args);
+
+  getMany(props: GetManyProps<IStore>) {
+    return this.dataServices.stores.getMany({ ...props });
   }
 
-  async getStoreById(id: string): Promise<IStore> {
-    return this.dataService.stores.getStoreById(id);
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.stores.getOneById({ ...props });
   }
 
-  async createStore(createStoreInput: CreateStoreInput): Promise<IStore> {
-    const store = this.storeFactoryService.createStore(createStoreInput);
-    return this.dataService.stores.createStore(store);
+  create(props: CreateProps<CreateStoreInput>) {
+    const newStore = this.storeFactoryService.createStore(props.data);
+    return this.dataServices.stores.create({ ...props, data: newStore });
   }
 
-  async updateStore(
-    id: string,
-    updateStoreInput: UpdateStoreInput,
-  ): Promise<IStore> {
-    const store = this.storeFactoryService.updateStore(updateStoreInput);
-    return this.dataService.stores.updateStore(id, store);
+  updateOneById(props: UpdateOneByIdProps<UpdateStoreInput>) {
+    const newStore = this.storeFactoryService.updateStore(props.data);
+    return this.dataServices.stores.updateOneById({
+      ...props,
+      data: newStore,
+    });
   }
 
-  async removeStore(id: string): Promise<IStore> {
-    return this.dataService.stores.removeStore(id);
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.stores.deleteOneById({ ...props });
   }
 }
