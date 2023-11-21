@@ -13,14 +13,17 @@ export class PromotionFactoryService {
     newPromotion.percentageDiscount = createPromotionInput.percentageDiscount;
     newPromotion.startDate = createPromotionInput.startDate;
     newPromotion.endDate = createPromotionInput.endDate;
+    newPromotion.active = createPromotionInput.active;
     return newPromotion;
   }
   updatePromotion(updatePromotionInput: UpdatePromotionInput) {
     const newPromotion = new IPromotion();
+    newPromotion.id = updatePromotionInput.id;
     newPromotion.description = updatePromotionInput.description;
     newPromotion.percentageDiscount = updatePromotionInput.percentageDiscount;
     newPromotion.startDate = updatePromotionInput.startDate;
     newPromotion.endDate = updatePromotionInput.endDate;
+    newPromotion.active = updatePromotionInput.active;
     return newPromotion;
   }
 }

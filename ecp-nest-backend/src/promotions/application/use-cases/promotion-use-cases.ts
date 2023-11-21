@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IPromotionsDataSourceService } from 'src/promotions/domain/abstracts/services/promotions-datasource.abstract.service';
 import {
   CreatePromotionInput,
@@ -11,31 +17,39 @@ import { PromotionFactoryService } from './factory/promotion-factory.service';
 @Injectable()
 export class PromotionUseCases {
   constructor(
-    private dataService: IPromotionsDataSourceService,
+    private dataServices: IPromotionsDataSourceService,
     private promotionFactoryService: PromotionFactoryService,
   ) {}
-  getAllPromotions(args?: IGenericArgs<IPromotion>) {
-    return this.dataService.promotions.getAllPromotions(args);
+
+  getMany(props: GetManyProps<IPromotion>) {
+    return this.dataServices.promotions.getMany({ ...props });
   }
-  getPromotionById(id: string): Promise<IPromotion> {
-    return this.dataService.promotions.getPromotionById(id);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.promotions.getOneById({ ...props });
   }
-  createPromotion(
-    createPromotionInput: CreatePromotionInput,
-  ): Promise<IPromotion> {
-    const promotion =
-      this.promotionFactoryService.createPromotion(createPromotionInput);
-    return this.dataService.promotions.createPromotion(promotion);
+
+  create(props: CreateProps<CreatePromotionInput>) {
+    const newPromotion = this.promotionFactoryService.createPromotion(
+      props.data,
+    );
+    return this.dataServices.promotions.create({
+      ...props,
+      data: newPromotion,
+    });
   }
-  updatePromotion(
-    id: string,
-    updatePromotionInput: UpdatePromotionInput,
-  ): Promise<IPromotion> {
-    const promotion =
-      this.promotionFactoryService.updatePromotion(updatePromotionInput);
-    return this.dataService.promotions.updatePromotion(id, promotion);
+
+  updateOneById(props: UpdateOneByIdProps<UpdatePromotionInput>) {
+    const newPromotion = this.promotionFactoryService.updatePromotion(
+      props.data,
+    );
+    return this.dataServices.promotions.updateOneById({
+      ...props,
+      data: newPromotion,
+    });
   }
-  removePromotion(id: string): Promise<IPromotion> {
-    return this.dataService.promotions.removePromotion(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.promotions.deleteOneById({ ...props });
   }
 }
