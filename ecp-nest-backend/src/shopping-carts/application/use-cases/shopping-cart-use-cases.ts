@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IShoppingCartsDataSourceService } from 'src/shopping-carts/domain/abstracts/services/shopping-carts-datasource.abstract.service';
 import {
   CreateShoppingCartInput,
@@ -14,44 +17,39 @@ import { ShoppingCartFactoryService } from './factory/shopping-cart-factory.serv
 @Injectable()
 export class ShoppingCartUseCases {
   constructor(
-    private dataService: IShoppingCartsDataSourceService,
+    private dataServices: IShoppingCartsDataSourceService,
     private shoppingCartFactoryService: ShoppingCartFactoryService,
   ) {}
-  getShoppingCartsBy(
-    term: string,
-    fields: (keyof IShoppingCart)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.shoppingCarts.getShoppingCartsBy(
-      term,
-      fields,
-      paginationArgs,
+
+  getMany(props: GetManyProps<IShoppingCart>) {
+    return this.dataServices.shoppingCarts.getMany({ ...props });
+  }
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.shoppingCarts.getOneById({ ...props });
+  }
+
+  create(props: CreateProps<CreateShoppingCartInput>) {
+    const newShoppingCart = this.shoppingCartFactoryService.createShoppingCart(
+      props.data,
     );
+    return this.dataServices.shoppingCarts.create({
+      ...props,
+      data: newShoppingCart,
+    });
   }
-  getAllShoppingCarts(args: IGenericArgs<IShoppingCart>) {
-    return this.dataService.shoppingCarts.getAllShoppingCarts(args);
-  }
-  getShoppingCartById(id: string): Promise<IShoppingCart> {
-    return this.dataService.shoppingCarts.getShoppingCartById(id);
-  }
-  createShoppingCart(
-    createShoppingCartInput: CreateShoppingCartInput,
-  ): Promise<IShoppingCart> {
-    const shoppingCart = this.shoppingCartFactoryService.createShoppingCart(
-      createShoppingCartInput,
+
+  updateOneById(props: UpdateOneByIdProps<UpdateShoppingCartInput>) {
+    const newShoppingCart = this.shoppingCartFactoryService.updateShoppingCart(
+      props.data,
     );
-    return this.dataService.shoppingCarts.createShoppingCart(shoppingCart);
+    return this.dataServices.shoppingCarts.updateOneById({
+      ...props,
+      data: newShoppingCart,
+    });
   }
-  updateShoppingCart(
-    id: string,
-    updateShoppingCartInput: UpdateShoppingCartInput,
-  ): Promise<IShoppingCart> {
-    const shoppingCart = this.shoppingCartFactoryService.updateShoppingCart(
-      updateShoppingCartInput,
-    );
-    return this.dataService.shoppingCarts.updateShoppingCart(id, shoppingCart);
-  }
-  removeShoppingCart(id: string): Promise<IShoppingCart> {
-    return this.dataService.shoppingCarts.removeShoppingCart(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.shoppingCarts.deleteOneById({ ...props });
   }
 }
