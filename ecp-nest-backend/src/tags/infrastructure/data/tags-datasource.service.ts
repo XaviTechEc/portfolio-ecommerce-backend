@@ -2,30 +2,31 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IExceptionsService } from 'src/common/domain/abstracts/services/exceptions/exceptions.abstract.service';
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
+import { ITagsDataSourceService } from 'src/tags/domain/abstracts/services/tags-datasource.abstract.service';
 import { Repository } from 'typeorm';
 import { Tag } from './postgresql/entities/Tag.entity';
-import { TagsRepository } from './postgresql/repositories/tags.repository';
-import { ITagsDataSourceService } from 'src/tags/domain/abstracts/services/tags-datasource.abstract.service';
+import { TagsPostgresRepository } from './postgresql/repositories/tags.repository';
 
 @Injectable()
 export class TagsDataService
   implements ITagsDataSourceService, OnApplicationBootstrap
 {
-  tags: TagsRepository;
+  tags: TagsPostgresRepository<Tag>;
 
   constructor(
     @InjectRepository(Tag)
-    private tagsRepository: Repository<Tag>,
-
+    private _repository: Repository<Tag>,
     private _loggerService: ILoggerService,
     private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {
-    this.tags = new TagsRepository(
-      this.tagsRepository,
+    this.tags = new TagsPostgresRepository<Tag>(
+      this._repository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name,
+      'tag',
     );
   }
 }
