@@ -3,10 +3,15 @@
 # ------------------------------------------------------
 
 type AddressType {
+  active: Boolean
   addressLine1: String!
   addressLine2: String
   city: String!
   country: CountryType!
+  createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   location: LocationType
   postalCode: String!
@@ -15,64 +20,186 @@ type AddressType {
   shopOrders: [ShopOrderType!]!
   streetNumber: String
   unitNumber: Int
+  updatedAt: Timestamp!
+  updatedBy: ID
   userAddresses: [UserAddressType!]!
 }
 
+type AddressTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type AddressTypeGenericResponse {
+  data: AddressType!
+  error: AddressTypeErrorType
+  success: Boolean!
+}
+
+type AddressTypeGenericResponseWithPagination {
+  data: [AddressType!]!
+  success: Boolean!
+}
+
 type BillboardType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
+  description: String
   id: ID!
   images: [ImageType!]!
   season: SeasonType!
-  store: StoreType!
+  store: Store!
   title: String!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type BillboardTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type BillboardTypeGenericResponse {
+  data: BillboardType!
+  error: BillboardTypeErrorType
+  success: Boolean!
+}
+
+type BillboardTypeGenericResponseWithPagination {
+  data: [BillboardType!]!
+  success: Boolean!
 }
 
 type CategoryPromotionType {
+  active: Boolean
   category: CategoryType!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   promotion: PromotionType!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type CategoryPromotionTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type CategoryPromotionTypeGenericResponse {
+  data: CategoryPromotionType!
+  error: CategoryPromotionTypeErrorType
+  success: Boolean!
+}
+
+type CategoryPromotionTypeGenericResponseWithPagination {
+  data: [CategoryPromotionType!]!
+  success: Boolean!
 }
 
 type CategoryType {
   active: Boolean
   categories: [CategoryType!]
   createdAt: Timestamp!
-  createdBy: UserObjType!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   description: String!
   id: ID!
   images: [ImageType!]!
+  name: String!
   parentCategory: CategoryType
-  products(limit: Int = 10, offset: Int = 0): [ProductType!]!
-  promotions(limit: Int = 10, offset: Int = 0): [PromotionType!]!
   season: SeasonType!
-  store: StoreType!
-  updatedAt: Timestamp
-  value: String!
+  store: Store!
+  updatedAt: Timestamp!
+  updatedBy: ID
   variations: [VariationType!]!
 }
 
+type CategoryTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type CategoryTypeGenericResponse {
+  data: CategoryType!
+  error: CategoryTypeErrorType
+  success: Boolean!
+}
+
+type CategoryTypeGenericResponseWithPagination {
+  data: [CategoryType!]!
+  success: Boolean!
+}
+
 type CommentType {
+  active: Boolean
   commentParent: CommentType!
   comments: [CommentType!]
   content: String!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   review: ReviewType!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   user: UserObjType!
-  visible: Boolean
+}
+
+type CommentTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type CommentTypeGenericResponse {
+  data: CommentType!
+  error: CommentTypeErrorType
+  success: Boolean!
+}
+
+type CommentTypeGenericResponseWithPagination {
+  data: [CommentType!]!
+  success: Boolean!
 }
 
 type CountryType {
+  active: Boolean
   addresses: [AddressType!]!
   code: String!
+  createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   longName: String!
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type CountryTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type CountryTypeGenericResponse {
+  data: CountryType!
+  error: CountryTypeErrorType
+  success: Boolean!
+}
+
+type CountryTypeGenericResponseWithPagination {
+  data: [CountryType!]!
+  success: Boolean!
 }
 
 input CreateAddressInput {
+  active: Boolean = true
   addressLine1: String!
   addressLine2: String
   city: String!
@@ -86,6 +213,8 @@ input CreateAddressInput {
 }
 
 input CreateBillboardInput {
+  active: Boolean = true
+  description: String
   season: ID!
   store: ID!
   title: String!
@@ -94,37 +223,51 @@ input CreateBillboardInput {
 input CreateCategoryInput {
   active: Boolean = true
   description: String!
+  name: String!
   parentCategory: ID
   season: ID!
   store: ID!
-  user: ID!
-  value: String!
 }
 
 input CreateCategoryPromotionInput {
+  active: Boolean = true
   category: ID!
   promotion: ID!
 }
 
 input CreateCommentInput {
+  active: Boolean = true
   commentParent: ID
   content: String!
   review: ID!
   user: ID!
-  visible: Boolean = true
 }
 
 input CreateCountryInput {
+  active: Boolean = true
   code: String!
   longName: String!
 }
 
+input CreateImageInput {
+  active: Boolean = true
+  billboard: ID
+  category: ID
+  extension: ID!
+  product: ID
+  productItem: ID
+  url: ID!
+  user: ID
+}
+
 input CreateLocationInput {
+  active: Boolean = true
   lat: Float!
   lng: Float!
 }
 
 input CreateOrderLineInput {
+  active: Boolean = true
   productItem: ID!
   quantity: Int!
   shopOrder: ID!
@@ -132,24 +275,35 @@ input CreateOrderLineInput {
 }
 
 input CreateOrderStatusInput {
+  active: Boolean = true
   statusValue: StatusValue! = IN_PROGRESS
 }
 
 input CreatePaymentMethodInput {
+  active: Boolean = true
   value: PaymentMethod!
 }
 
+input CreatePermissionInput {
+  active: Boolean = true
+  entities: PermissionEntity!
+  operations: PermissionOperation!
+}
+
 input CreateProductCategoryInput {
+  active: Boolean = true
   category: ID!
   product: ID!
 }
 
 input CreateProductConfigurationInput {
+  active: Boolean = true
   productItem: ID!
   variationOption: ID!
 }
 
 input CreateProductInput {
+  active: Boolean = true
   description: String!
   subtitle: String!
   title: String!
@@ -157,6 +311,7 @@ input CreateProductInput {
 }
 
 input CreateProductItemInput {
+  active: Boolean = true
   price: Float!
   product: ID!
   quantityInStock: Int = 0
@@ -165,16 +320,19 @@ input CreateProductItemInput {
 }
 
 input CreateProductPromotionInput {
+  active: Boolean = true
   product: ID!
   promotion: ID!
 }
 
 input CreateProductTagInput {
+  active: Boolean = true
   product: ID!
   tag: ID!
 }
 
 input CreatePromotionInput {
+  active: Boolean = true
   description: String!
   endDate: Timestamp
   percentageDiscount: Int = 0
@@ -182,6 +340,7 @@ input CreatePromotionInput {
 }
 
 input CreateReviewInput {
+  active: Boolean = true
   content: String
   orderLine: ID!
   ratingValue: Int!
@@ -189,18 +348,27 @@ input CreateReviewInput {
   visible: Boolean = true
 }
 
+input CreateRoleInput {
+  active: Boolean = true
+  value: String!
+}
+
 input CreateSeasonInput {
+  active: Boolean = true
   description: String!
   endDate: Timestamp
+  name: String!
   startDate: Timestamp
 }
 
 input CreateShippingMethodInput {
+  active: Boolean = true
   name: String!
   price: Float!
 }
 
 input CreateShopOrderInput {
+  active: Boolean = true
   address: ID!
   orderStatus: ID!
   orderTotal: Float!
@@ -210,32 +378,38 @@ input CreateShopOrderInput {
 }
 
 input CreateShopOrderLocationInput {
+  active: Boolean = true
   location: ID!
   shopOrder: ID!
 }
 
 input CreateShoppingCartInput {
+  active: Boolean = true
   user: ID!
 }
 
 input CreateShoppingCartProductItemInput {
+  active: Boolean = true
   productItem: ID!
   quantity: Int!
   shoppingCart: ID!
 }
 
 input CreateStoreInput {
+  active: Boolean = true
   description: String
   name: String!
   slug: String!
 }
 
 input CreateTagInput {
+  active: Boolean = true
   code: String!
   value: String!
 }
 
 input CreateUserAddressInput {
+  active: Boolean = true
   address: ID!
   isDefault: Boolean!
   user: ID!
@@ -243,6 +417,7 @@ input CreateUserAddressInput {
 
 input CreateUserPaymentMethodInput {
   accountNumber: Timestamp
+  active: Boolean = true
   expiryDate: Timestamp
   isDefault: Boolean
   paymentMethod: ID!
@@ -251,13 +426,20 @@ input CreateUserPaymentMethodInput {
 }
 
 input CreateVariationInput {
+  active: Boolean = true
   category: ID!
   name: String!
 }
 
 input CreateVariationOptionInput {
+  active: Boolean = true
   value: String!
   variation: ID!
+}
+
+type CustomErrorType {
+  code: Int!
+  message: String!
 }
 
 enum Gender {
@@ -266,137 +448,285 @@ enum Gender {
   OTHER
 }
 
+type GetAllUsersResponse {
+  data: [UserObjType!]!
+  success: Boolean!
+}
+
+type GetRoleByNameResponseType {
+  data: RoleType!
+  error: CustomErrorType
+  success: Boolean!
+}
+
 type ImageType {
+  active: Boolean
   billboard: BillboardType!
   category: CategoryType
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   extension: String!
   id: ID!
   product: ProductType
   productItem: ProductItemType
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   url: String!
-  user: UserObjType!
+}
+
+type ImageTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ImageTypeGenericResponse {
+  data: ImageType!
+  error: ImageTypeErrorType
+  success: Boolean!
+}
+
+type ImageTypeGenericResponseWithPagination {
+  data: [ImageType!]!
+  success: Boolean!
 }
 
 type LocationType {
+  active: Boolean
   address: AddressType!
+  createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   lat: String!
   lng: String!
   shopOrderLocations: [ShopOrderLocationType!]!
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type LocationTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type LocationTypeGenericResponse {
+  data: LocationType!
+  error: LocationTypeErrorType
+  success: Boolean!
+}
+
+type LocationTypeGenericResponseWithPagination {
+  data: [LocationType!]!
+  success: Boolean!
 }
 
 type Mutation {
-  createAddress(createAddressInput: CreateAddressInput!): AddressType!
-  createBillboard(createBillboardInput: CreateBillboardInput!): BillboardType!
-  createCategory(createCategoryInput: CreateCategoryInput!): CategoryType!
-  createCategoryPromotion(createCategoryPromotionInput: CreateCategoryPromotionInput!): CategoryPromotionType!
-  createComment(createCommentInput: CreateCommentInput!): CommentType!
-  createCountry(createCountryInput: CreateCountryInput!): CountryType!
-  createLocation(createLocationInput: CreateLocationInput!): LocationType!
-  createOrderLine(createOrderLineInput: CreateOrderLineInput!): OrderLineType!
-  createOrderStatus(createOrderStatusInput: CreateOrderStatusInput!): OrderStatusType!
-  createPaymentMethod(createPaymentMethodInput: CreatePaymentMethodInput!): PaymentMethodType!
-  createProduct(createProductInput: CreateProductInput!): ProductType!
-  createProductCategory(createProductCategoryInput: CreateProductCategoryInput!): ProductCategoryType!
-  createProductConfiguration(createProductConfigurationInput: CreateProductConfigurationInput!): ProductConfigurationType!
-  createProductItem(createProductItemInput: CreateProductItemInput!): ProductItemType!
-  createProductPromotion(createProductPromotionInput: CreateProductPromotionInput!): ProductPromotionType!
-  createProductTag(createProductTagInput: CreateProductTagInput!): ProductTagType!
-  createPromotion(createPromotionInput: CreatePromotionInput!): PromotionType!
-  createReview(createReviewInput: CreateReviewInput!): ReviewType!
-  createSeason(createSeasonInput: CreateSeasonInput!): SeasonType!
-  createShippingMethod(createShippingMethodInput: CreateShippingMethodInput!): ShippingMethodType!
-  createShopOrder(createShopOrderInput: CreateShopOrderInput!): ShopOrderType!
-  createShopOrderLocation(createShopOrderLocationInput: CreateShopOrderLocationInput!): ShopOrderLocationType!
-  createShoppingCart(createShoppingCartInput: CreateShoppingCartInput!): ShoppingCartType!
-  createShoppingCartProductItem(createShoppingCartProductItemInput: CreateShoppingCartProductItemInput!): ShoppingCartProductItemType!
-  createStore(createStoreInput: CreateStoreInput!): StoreType!
-  createTag(createTagInput: CreateTagInput!): TagType!
-  createUserAddress(createUserAddressInput: CreateUserAddressInput!): UserAddressType!
-  createUserPaymentMethod(createUserPaymentMethodInput: CreateUserPaymentMethodInput!): UserPaymentMethodType!
-  createVariation(createVariationInput: CreateVariationInput!): VariationType!
-  createVariationOption(createVariationOptionInput: CreateVariationOptionInput!): VariationOptionType!
-  deleteBillboard(id: ID!): BillboardType!
-  removeAddress(id: ID!): AddressType!
-  removeCategory(id: ID!): CategoryType!
-  removeCategoryPromotion(id: ID!): CategoryPromotionType!
-  removeComment(id: ID!): CommentType!
-  removeCountry(id: ID!): CountryType!
-  removeLocation(id: ID!): LocationType!
-  removeOrderLine(id: ID!): OrderLineType!
-  removeOrderStatus(id: ID!): OrderStatusType!
-  removePaymentMethod(id: ID!): PaymentMethodType!
-  removeProduct(id: ID!): ProductType!
-  removeProductCategory(id: ID!): ProductCategoryType!
-  removeProductConfiguration(id: ID!): ProductConfigurationType!
-  removeProductItem(id: ID!): ProductItemType!
-  removeProductPromotion(id: ID!): ProductPromotionType!
-  removeProductTag(id: ID!): ProductTagType!
-  removePromotion(id: ID!): PromotionType!
-  removeReview(id: ID!): ReviewType!
-  removeSeason(id: ID!): SeasonType!
-  removeShippingMethod(id: ID!): ShippingMethodType!
-  removeShopOrder(id: ID!): ShopOrderType!
-  removeShopOrderLocation(id: ID!): ShopOrderLocationType!
-  removeShoppingCart(id: ID!): ShoppingCartType!
-  removeShoppingCartProductItem(id: ID!): ShoppingCartProductItemType!
-  removeStore(id: String!): StoreType!
-  removeTag(id: ID!): TagType!
-  removeUserAddress(id: ID!): UserAddressType!
-  removeUserPaymentMethod(id: ID!): UserPaymentMethodType!
-  removeVariation(id: ID!): VariationType!
-  removeVariationOption(id: ID!): VariationOptionType!
-  updateAddress(updateAddressInput: UpdateAddressInput!): AddressType!
-  updateBillboard(updateBillboardInput: UpdateBillboardInput!): BillboardType!
-  updateCategory(updateCategoryInput: UpdateCategoryInput!): CategoryType!
-  updateCategoryPromotion(updateCategoryPromotionInput: UpdateCategoryPromotionInput!): CategoryPromotionType!
-  updateComment(updateCommentInput: UpdateCommentInput!): CommentType!
-  updateCountry(updateCountryInput: UpdateCountryInput!): CountryType!
-  updateLocation(id: ID!, updateLocationInput: UpdateLocationInput!): LocationType!
-  updateOrderLine(updateOrderLineInput: UpdateOrderLineInput!): OrderLineType!
-  updateOrderStatus(updateOrderStatusInput: UpdateOrderStatusInput!): OrderStatusType!
-  updatePaymentMethod(updatePaymentMethodInput: UpdatePaymentMethodInput!): PaymentMethodType!
-  updateProduct(updateProductInput: UpdateProductInput!): ProductType!
-  updateProductCategory(updateProductCategoryInput: UpdateProductCategoryInput!): ProductCategoryType!
-  updateProductConfiguration(updateProductConfigurationInput: UpdateProductConfigurationInput!): ProductConfigurationType!
-  updateProductItem(updateProductItemInput: UpdateProductItemInput!): ProductItemType!
-  updateProductPromotion(updateProductPromotionInput: UpdateProductPromotionInput!): ProductPromotionType!
-  updateProductTag(updateProductTagInput: UpdateProductTagInput!): ProductTagType!
-  updatePromotion(updatePromotionInput: UpdatePromotionInput!): PromotionType!
-  updateReview(updateReviewInput: UpdateReviewInput!): ReviewType!
-  updateSeason(updateSeasonInput: UpdateSeasonInput!): SeasonType!
-  updateShippingMethod(updateShippingMethodInput: UpdateShippingMethodInput!): ShippingMethodType!
-  updateShopOrder(updateShopOrderInput: UpdateShopOrderInput!): ShopOrderType!
-  updateShopOrderLocation(updateShopOrderLocationInput: UpdateShopOrderLocationInput!): ShopOrderLocationType!
-  updateShoppingCart(updateShoppingCartInput: UpdateShoppingCartInput!): ShoppingCartType!
-  updateShoppingCartProductItem(updateShoppingCartProductItemInput: UpdateShoppingCartProductItemInput!): ShoppingCartProductItemType!
-  updateStore(updateStoreInput: UpdateStoreInput!): StoreType!
-  updateTag(updateTagInput: UpdateTagInput!): TagType!
-  updateUserAddress(updateUserAddressInput: UpdateUserAddressInput!): UserAddressType!
-  updateUserPaymentMethod(updateUserPaymentMethodInput: UpdateUserPaymentMethodInput!): UserPaymentMethodType!
-  updateVariation(updateVariationInput: UpdateVariationInput!): VariationType!
-  updateVariationOption(updateVariationOptionInput: UpdateVariationOptionInput!): VariationOptionType!
+  createAddressType(createInputData: CreateAddressInput!): AddressTypeGenericResponse!
+  createBillboardType(createInputData: CreateBillboardInput!): BillboardTypeGenericResponse!
+  createCategoryPromotionType(createInputData: CreateCategoryPromotionInput!): CategoryPromotionTypeGenericResponse!
+  createCategoryType(createInputData: CreateCategoryInput!): CategoryTypeGenericResponse!
+  createCommentType(createInputData: CreateCommentInput!): CommentTypeGenericResponse!
+  createCountryType(createInputData: CreateCountryInput!): CountryTypeGenericResponse!
+  createImageType(createInputData: CreateImageInput!): ImageTypeGenericResponse!
+  createLocationType(createInputData: CreateLocationInput!): LocationTypeGenericResponse!
+  createOrderLineType(createInputData: CreateOrderLineInput!): OrderLineTypeGenericResponse!
+  createOrderStatusType(createInputData: CreateOrderStatusInput!): OrderStatusTypeGenericResponse!
+  createPaymentMethodType(createInputData: CreatePaymentMethodInput!): PaymentMethodTypeGenericResponse!
+  createPermissionType(createInputData: CreatePermissionInput!): PermissionTypeGenericResponse!
+  createProductCategoryType(createInputData: CreateProductCategoryInput!): ProductCategoryTypeGenericResponse!
+  createProductConfigurationType(createInputData: CreateProductConfigurationInput!): ProductConfigurationTypeGenericResponse!
+  createProductItemType(createInputData: CreateProductItemInput!): ProductItemTypeGenericResponse!
+  createProductPromotionType(createInputData: CreateProductPromotionInput!): ProductPromotionTypeGenericResponse!
+  createProductTagType(createInputData: CreateProductTagInput!): ProductTagTypeGenericResponse!
+  createProductType(createInputData: CreateProductInput!): ProductTypeGenericResponse!
+  createPromotionType(createInputData: CreatePromotionInput!): PromotionTypeGenericResponse!
+  createReviewType(createInputData: CreateReviewInput!): ReviewTypeGenericResponse!
+  createRoleType(createInputData: CreateRoleInput!): RoleTypeGenericResponse!
+  createSeasonType(createInputData: CreateSeasonInput!): SeasonTypeGenericResponse!
+  createShippingMethodType(createInputData: CreateShippingMethodInput!): ShippingMethodTypeGenericResponse!
+  createShopOrderLocationType(createInputData: CreateShopOrderLocationInput!): ShopOrderLocationTypeGenericResponse!
+  createShopOrderType(createInputData: CreateShopOrderInput!): ShopOrderTypeGenericResponse!
+  createShoppingCartProductItemType(createInputData: CreateShoppingCartProductItemInput!): ShoppingCartProductItemTypeGenericResponse!
+  createShoppingCartType(createInputData: CreateShoppingCartInput!): ShoppingCartTypeGenericResponse!
+  createStoreType(createInputData: CreateStoreInput!): StoreTypeGenericResponse!
+  createTagType(createInputData: CreateTagInput!): TagTypeGenericResponse!
+  createUserAddressType(createInputData: CreateUserAddressInput!): UserAddressTypeGenericResponse!
+  createUserPaymentMethodType(createInputData: CreateUserPaymentMethodInput!): UserPaymentMethodTypeGenericResponse!
+  createVariationOptionType(createInputData: CreateVariationOptionInput!): VariationOptionTypeGenericResponse!
+  createVariationType(createInputData: CreateVariationInput!): VariationTypeGenericResponse!
+  deleteOneAddressTypeById(id: ID!): AddressTypeGenericResponse!
+  deleteOneBillboardTypeById(id: ID!): BillboardTypeGenericResponse!
+  deleteOneCategoryPromotionTypeById(id: ID!): CategoryPromotionTypeGenericResponse!
+  deleteOneCategoryTypeById(id: ID!): CategoryTypeGenericResponse!
+  deleteOneCommentTypeById(id: ID!): CommentTypeGenericResponse!
+  deleteOneCountryTypeById(id: ID!): CountryTypeGenericResponse!
+  deleteOneImageTypeById(id: ID!): ImageTypeGenericResponse!
+  deleteOneLocationTypeById(id: ID!): LocationTypeGenericResponse!
+  deleteOneOrderLineTypeById(id: ID!): OrderLineTypeGenericResponse!
+  deleteOneOrderStatusTypeById(id: ID!): OrderStatusTypeGenericResponse!
+  deleteOnePaymentMethodTypeById(id: ID!): PaymentMethodTypeGenericResponse!
+  deleteOnePermissionTypeById(id: ID!): PermissionTypeGenericResponse!
+  deleteOneProductCategoryTypeById(id: ID!): ProductCategoryTypeGenericResponse!
+  deleteOneProductConfigurationTypeById(id: ID!): ProductConfigurationTypeGenericResponse!
+  deleteOneProductItemTypeById(id: ID!): ProductItemTypeGenericResponse!
+  deleteOneProductPromotionTypeById(id: ID!): ProductPromotionTypeGenericResponse!
+  deleteOneProductTagTypeById(id: ID!): ProductTagTypeGenericResponse!
+  deleteOneProductTypeById(id: ID!): ProductTypeGenericResponse!
+  deleteOnePromotionTypeById(id: ID!): PromotionTypeGenericResponse!
+  deleteOneReviewTypeById(id: ID!): ReviewTypeGenericResponse!
+  deleteOneRoleTypeById(id: ID!): RoleTypeGenericResponse!
+  deleteOneSeasonTypeById(id: ID!): SeasonTypeGenericResponse!
+  deleteOneShippingMethodTypeById(id: ID!): ShippingMethodTypeGenericResponse!
+  deleteOneShopOrderLocationTypeById(id: ID!): ShopOrderLocationTypeGenericResponse!
+  deleteOneShopOrderTypeById(id: ID!): ShopOrderTypeGenericResponse!
+  deleteOneShoppingCartProductItemTypeById(id: ID!): ShoppingCartProductItemTypeGenericResponse!
+  deleteOneShoppingCartTypeById(id: ID!): ShoppingCartTypeGenericResponse!
+  deleteOneStoreTypeById(id: ID!): StoreTypeGenericResponse!
+  deleteOneTagTypeById(id: ID!): TagTypeGenericResponse!
+  deleteOneUserAddressTypeById(id: ID!): UserAddressTypeGenericResponse!
+  deleteOneUserPaymentMethodTypeById(id: ID!): UserPaymentMethodTypeGenericResponse!
+  deleteOneVariationOptionTypeById(id: ID!): VariationOptionTypeGenericResponse!
+  deleteOneVariationTypeById(id: ID!): VariationTypeGenericResponse!
+  restoreAddressTypeById(id: ID!): AddressTypeGenericResponse!
+  restoreBillboardTypeById(id: ID!): BillboardTypeGenericResponse!
+  restoreCategoryPromotionTypeById(id: ID!): CategoryPromotionTypeGenericResponse!
+  restoreCategoryTypeById(id: ID!): CategoryTypeGenericResponse!
+  restoreCommentTypeById(id: ID!): CommentTypeGenericResponse!
+  restoreCountryTypeById(id: ID!): CountryTypeGenericResponse!
+  restoreImageTypeById(id: ID!): ImageTypeGenericResponse!
+  restoreLocationTypeById(id: ID!): LocationTypeGenericResponse!
+  restoreOrderLineTypeById(id: ID!): OrderLineTypeGenericResponse!
+  restoreOrderStatusTypeById(id: ID!): OrderStatusTypeGenericResponse!
+  restorePaymentMethodTypeById(id: ID!): PaymentMethodTypeGenericResponse!
+  restorePermissionTypeById(id: ID!): PermissionTypeGenericResponse!
+  restoreProductCategoryTypeById(id: ID!): ProductCategoryTypeGenericResponse!
+  restoreProductConfigurationTypeById(id: ID!): ProductConfigurationTypeGenericResponse!
+  restoreProductItemTypeById(id: ID!): ProductItemTypeGenericResponse!
+  restoreProductPromotionTypeById(id: ID!): ProductPromotionTypeGenericResponse!
+  restoreProductTagTypeById(id: ID!): ProductTagTypeGenericResponse!
+  restoreProductTypeById(id: ID!): ProductTypeGenericResponse!
+  restorePromotionTypeById(id: ID!): PromotionTypeGenericResponse!
+  restoreReviewTypeById(id: ID!): ReviewTypeGenericResponse!
+  restoreRoleTypeById(id: ID!): RoleTypeGenericResponse!
+  restoreSeasonTypeById(id: ID!): SeasonTypeGenericResponse!
+  restoreShippingMethodTypeById(id: ID!): ShippingMethodTypeGenericResponse!
+  restoreShopOrderLocationTypeById(id: ID!): ShopOrderLocationTypeGenericResponse!
+  restoreShopOrderTypeById(id: ID!): ShopOrderTypeGenericResponse!
+  restoreShoppingCartProductItemTypeById(id: ID!): ShoppingCartProductItemTypeGenericResponse!
+  restoreShoppingCartTypeById(id: ID!): ShoppingCartTypeGenericResponse!
+  restoreStoreTypeById(id: ID!): StoreTypeGenericResponse!
+  restoreTagTypeById(id: ID!): TagTypeGenericResponse!
+  restoreUserAddressTypeById(id: ID!): UserAddressTypeGenericResponse!
+  restoreUserPaymentMethodTypeById(id: ID!): UserPaymentMethodTypeGenericResponse!
+  restoreVariationOptionTypeById(id: ID!): VariationOptionTypeGenericResponse!
+  restoreVariationTypeById(id: ID!): VariationTypeGenericResponse!
+  updateOneAddressTypeById(updateInputData: UpdateAddressInput!): AddressTypeGenericResponse!
+  updateOneBillboardTypeById(updateInputData: UpdateBillboardInput!): BillboardTypeGenericResponse!
+  updateOneCategoryPromotionTypeById(updateInputData: UpdateCategoryPromotionInput!): CategoryPromotionTypeGenericResponse!
+  updateOneCategoryTypeById(updateInputData: UpdateCategoryInput!): CategoryTypeGenericResponse!
+  updateOneCommentTypeById(updateInputData: UpdateCommentInput!): CommentTypeGenericResponse!
+  updateOneCountryTypeById(updateInputData: UpdateCountryInput!): CountryTypeGenericResponse!
+  updateOneImageTypeById(updateInputData: UpdateImageInput!): ImageTypeGenericResponse!
+  updateOneLocationTypeById(updateInputData: UpdateLocationInput!): LocationTypeGenericResponse!
+  updateOneOrderLineTypeById(updateInputData: UpdateOrderLineInput!): OrderLineTypeGenericResponse!
+  updateOneOrderStatusTypeById(updateInputData: UpdateOrderStatusInput!): OrderStatusTypeGenericResponse!
+  updateOnePaymentMethodTypeById(updateInputData: UpdatePaymentMethodInput!): PaymentMethodTypeGenericResponse!
+  updateOnePermissionTypeById(updateInputData: UpdatePermissionInput!): PermissionTypeGenericResponse!
+  updateOneProductCategoryTypeById(updateInputData: UpdateProductCategoryInput!): ProductCategoryTypeGenericResponse!
+  updateOneProductConfigurationTypeById(updateInputData: UpdateProductConfigurationInput!): ProductConfigurationTypeGenericResponse!
+  updateOneProductItemTypeById(updateInputData: UpdateProductItemInput!): ProductItemTypeGenericResponse!
+  updateOneProductPromotionTypeById(updateInputData: UpdateProductPromotionInput!): ProductPromotionTypeGenericResponse!
+  updateOneProductTagTypeById(updateInputData: UpdateProductTagInput!): ProductTagTypeGenericResponse!
+  updateOneProductTypeById(updateInputData: UpdateProductInput!): ProductTypeGenericResponse!
+  updateOnePromotionTypeById(updateInputData: UpdatePromotionInput!): PromotionTypeGenericResponse!
+  updateOneReviewTypeById(updateInputData: UpdateReviewInput!): ReviewTypeGenericResponse!
+  updateOneRoleTypeById(updateInputData: UpdateRoleInput!): RoleTypeGenericResponse!
+  updateOneSeasonTypeById(updateInputData: UpdateSeasonInput!): SeasonTypeGenericResponse!
+  updateOneShippingMethodTypeById(updateInputData: UpdateShippingMethodInput!): ShippingMethodTypeGenericResponse!
+  updateOneShopOrderLocationTypeById(updateInputData: UpdateShopOrderLocationInput!): ShopOrderLocationTypeGenericResponse!
+  updateOneShopOrderTypeById(updateInputData: UpdateShopOrderInput!): ShopOrderTypeGenericResponse!
+  updateOneShoppingCartProductItemTypeById(updateInputData: UpdateShoppingCartProductItemInput!): ShoppingCartProductItemTypeGenericResponse!
+  updateOneShoppingCartTypeById(updateInputData: UpdateShoppingCartInput!): ShoppingCartTypeGenericResponse!
+  updateOneStoreTypeById(updateInputData: UpdateStoreInput!): StoreTypeGenericResponse!
+  updateOneTagTypeById(updateInputData: UpdateTagInput!): TagTypeGenericResponse!
+  updateOneUserAddressTypeById(updateInputData: UpdateUserAddressInput!): UserAddressTypeGenericResponse!
+  updateOneUserPaymentMethodTypeById(updateInputData: UpdateUserPaymentMethodInput!): UserPaymentMethodTypeGenericResponse!
+  updateOneVariationOptionTypeById(updateInputData: UpdateVariationOptionInput!): VariationOptionTypeGenericResponse!
+  updateOneVariationTypeById(updateInputData: UpdateVariationInput!): VariationTypeGenericResponse!
+}
+
+input OrderFieldType {
+  field: String!
+  order: OrderType!
 }
 
 type OrderLineType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   productItem: ProductItemType!
   quantity: Float!
   reviews: [ReviewType!]!
   shopOrder: ShopOrderType!
   totalPrice: Float!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type OrderLineTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type OrderLineTypeGenericResponse {
+  data: OrderLineType!
+  error: OrderLineTypeErrorType
+  success: Boolean!
+}
+
+type OrderLineTypeGenericResponseWithPagination {
+  data: [OrderLineType!]!
+  success: Boolean!
 }
 
 type OrderStatusType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   shopOrders: [ShopOrderType!]!
   statusValue: StatusValue!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type OrderStatusTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type OrderStatusTypeGenericResponse {
+  data: OrderStatusType!
+  error: OrderStatusTypeErrorType
+  success: Boolean!
+}
+
+type OrderStatusTypeGenericResponseWithPagination {
+  data: [OrderStatusType!]!
+  success: Boolean!
+}
+
+enum OrderType {
+  ASC
+  DESC
 }
 
 enum PaymentMethod {
@@ -406,29 +736,139 @@ enum PaymentMethod {
 }
 
 type PaymentMethodType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   userPaymentMethods: [UserPaymentMethodType!]!
   value: PaymentMethod!
 }
 
+type PaymentMethodTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type PaymentMethodTypeGenericResponse {
+  data: PaymentMethodType!
+  error: PaymentMethodTypeErrorType
+  success: Boolean!
+}
+
+type PaymentMethodTypeGenericResponseWithPagination {
+  data: [PaymentMethodType!]!
+  success: Boolean!
+}
+
+enum PermissionEntity {
+  PRODUCT
+}
+
+enum PermissionOperation {
+  ALL
+  CREATE
+  DELETE
+  NONE
+  READ
+  UPDATE
+}
+
+type PermissionType {
+  active: Boolean
+  createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
+  entity: PermissionEntity!
+  id: ID!
+  operation: PermissionOperation!
+  roles: [RoleType!]!
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type PermissionTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type PermissionTypeGenericResponse {
+  data: PermissionType!
+  error: PermissionTypeErrorType
+  success: Boolean!
+}
+
+type PermissionTypeGenericResponseWithPagination {
+  data: [PermissionType!]!
+  success: Boolean!
+}
+
 type ProductCategoryType {
+  active: Boolean
   category: CategoryType!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   product: ProductType!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type ProductCategoryTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ProductCategoryTypeGenericResponse {
+  data: ProductCategoryType!
+  error: ProductCategoryTypeErrorType
+  success: Boolean!
+}
+
+type ProductCategoryTypeGenericResponseWithPagination {
+  data: [ProductCategoryType!]!
+  success: Boolean!
 }
 
 type ProductConfigurationType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   productItem: ProductItemType!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   variationOption: VariationOptionType!
 }
 
+type ProductConfigurationTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ProductConfigurationTypeGenericResponse {
+  data: ProductConfigurationType!
+  error: ProductConfigurationTypeErrorType
+  success: Boolean!
+}
+
+type ProductConfigurationTypeGenericResponseWithPagination {
+  data: [ProductConfigurationType!]!
+  success: Boolean!
+}
+
 type ProductItemType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   images: [ImageType!]!
   orderLines: [OrderLineType!]!
@@ -438,232 +878,473 @@ type ProductItemType {
   shoppingCartProductItems: [ShoppingCartProductItemType!]!
   sku: String!
   slug: String!
-  updatedAt: Timestamp
-  variationOptions(limit: Int = 10, offset: Int = 0): [VariationOptionType!]!
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type ProductItemTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ProductItemTypeGenericResponse {
+  data: ProductItemType!
+  error: ProductItemTypeErrorType
+  success: Boolean!
+}
+
+type ProductItemTypeGenericResponseWithPagination {
+  data: [ProductItemType!]!
+  success: Boolean!
 }
 
 type ProductPromotionType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   product: ProductType!
   promotion: PromotionType!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type ProductPromotionTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ProductPromotionTypeGenericResponse {
+  data: ProductPromotionType!
+  error: ProductPromotionTypeErrorType
+  success: Boolean!
+}
+
+type ProductPromotionTypeGenericResponseWithPagination {
+  data: [ProductPromotionType!]!
+  success: Boolean!
 }
 
 type ProductTagType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   product: ProductType!
   tag: TagType!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type ProductTagTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ProductTagTypeGenericResponse {
+  data: ProductTagType!
+  error: ProductTagTypeErrorType
+  success: Boolean!
+}
+
+type ProductTagTypeGenericResponseWithPagination {
+  data: [ProductTagType!]!
+  success: Boolean!
 }
 
 type ProductType {
+  active: Boolean
   createdAt: Timestamp!
-  createdBy: UserObjType!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   description: String!
   id: ID!
   images: [ImageType!]!
   productCategories: [ProductCategoryType!]!
   productItems: [ProductItemType!]!
-  promotions(limit: Int = 10, offset: Int = 0): [PromotionType!]!
   subtitle: String!
-  tags(limit: Int = 10, offset: Int = 0): [TagType!]!
   title: String!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type ProductTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ProductTypeGenericResponse {
+  data: ProductType!
+  error: ProductTypeErrorType
+  success: Boolean!
+}
+
+type ProductTypeGenericResponseWithPagination {
+  data: [ProductType!]!
+  success: Boolean!
 }
 
 type PromotionType {
+  active: Boolean
   categoryPromotions: [CategoryPromotionType!]!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   description: String!
   endDate: Timestamp
   id: ID!
   percentageDiscount: Int
   productPromotions: [ProductPromotionType!]!
   startDate: Timestamp
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type PromotionTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type PromotionTypeGenericResponse {
+  data: PromotionType!
+  error: PromotionTypeErrorType
+  success: Boolean!
+}
+
+type PromotionTypeGenericResponseWithPagination {
+  data: [PromotionType!]!
+  success: Boolean!
 }
 
 type Query {
-  address(id: ID!): AddressType!
-  addresses(limit: Int = 10, offset: Int = 0, searchTerm: String): [AddressType!]!
-  addressesByCountry(limit: Int = 10, offset: Int = 0, term: String!): [AddressType!]!
-  addressesByLocation(limit: Int = 10, offset: Int = 0, term: String!): [AddressType!]!
-  allOrderStatus(limit: Int = 10, offset: Int = 0, searchTerm: String): [OrderStatusType!]!
-  billboard(id: ID!): BillboardType!
-  billboards(limit: Int = 10, offset: Int = 0, searchTerm: String): [BillboardType!]!
-  categories(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryType!]!
-  categoriesByParentCategory(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
-  categoriesBySeason(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
-  categoriesByUser(limit: Int = 10, offset: Int = 0, term: String!): [CategoryType!]!
-  category(id: ID!): CategoryType!
-  categoryPromotion(id: ID!): CategoryPromotionType!
-  categoryPromotions(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryPromotionType!]!
-  categoryPromotionsByCategory(limit: Int = 10, offset: Int = 0, term: String!): [CategoryPromotionType!]!
-  categoryPromotionsByPromotion(limit: Int = 10, offset: Int = 0, term: String!): [CategoryPromotionType!]!
-  comment(id: ID!): CommentType!
-  comments(limit: Int = 10, offset: Int = 0, searchTerm: String): [CommentType!]!
-  commentsByParentComment(limit: Int = 10, offset: Int = 0, term: String!): [CommentType!]!
-  commentsByReview(limit: Int = 10, offset: Int = 0, term: String!): [CommentType!]!
-  commentsByUser(limit: Int = 10, offset: Int = 0, term: String!): [CommentType!]!
-  countries(limit: Int = 10, offset: Int = 0, searchTerm: String): [CountryType!]!
-  country(id: ID!): CountryType!
-  getLocationById(id: ID!): LocationType!
-  image(id: ID!): ImageType!
-  images(limit: Int = 10, offset: Int = 0, searchTerm: String): [ImageType!]!
+  getAllAddressType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): AddressTypeGenericResponseWithPagination!
+  getAllBillboardType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): BillboardTypeGenericResponseWithPagination!
+  getAllCategoryPromotionType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): CategoryPromotionTypeGenericResponseWithPagination!
+  getAllCategoryType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): CategoryTypeGenericResponseWithPagination!
+  getAllCommentType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): CommentTypeGenericResponseWithPagination!
+  getAllCountryType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): CountryTypeGenericResponseWithPagination!
+  getAllImageType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ImageTypeGenericResponseWithPagination!
+  getAllLocationType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): LocationTypeGenericResponseWithPagination!
+  getAllOrderLineType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): OrderLineTypeGenericResponseWithPagination!
+  getAllOrderStatusType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): OrderStatusTypeGenericResponseWithPagination!
+  getAllPaymentMethodType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): PaymentMethodTypeGenericResponseWithPagination!
+  getAllPermissionType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): PermissionTypeGenericResponseWithPagination!
+  getAllProductCategoryType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ProductCategoryTypeGenericResponseWithPagination!
+  getAllProductConfigurationType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ProductConfigurationTypeGenericResponseWithPagination!
+  getAllProductItemType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ProductItemTypeGenericResponseWithPagination!
+  getAllProductPromotionType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ProductPromotionTypeGenericResponseWithPagination!
+  getAllProductTagType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ProductTagTypeGenericResponseWithPagination!
+  getAllProductType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ProductTypeGenericResponseWithPagination!
+  getAllPromotionType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): PromotionTypeGenericResponseWithPagination!
+  getAllReviewType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ReviewTypeGenericResponseWithPagination!
+  getAllRoleType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): RoleTypeGenericResponseWithPagination!
+  getAllSeasonType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): SeasonTypeGenericResponseWithPagination!
+  getAllShippingMethodType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ShippingMethodTypeGenericResponseWithPagination!
+  getAllShopOrderLocationType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ShopOrderLocationTypeGenericResponseWithPagination!
+  getAllShopOrderType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ShopOrderTypeGenericResponseWithPagination!
+  getAllShoppingCartProductItemType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ShoppingCartProductItemTypeGenericResponseWithPagination!
+  getAllShoppingCartType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): ShoppingCartTypeGenericResponseWithPagination!
+  getAllStoreType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): StoreTypeGenericResponseWithPagination!
+  getAllTagType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): TagTypeGenericResponseWithPagination!
+  getAllUserAddressType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): UserAddressTypeGenericResponseWithPagination!
+  getAllUserPaymentMethodType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): UserPaymentMethodTypeGenericResponseWithPagination!
+  getAllVariationOptionType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): VariationOptionTypeGenericResponseWithPagination!
+  getAllVariationType(fields: [String!], limit: Int = 10, offset: Int = 0, orderArgs: [OrderFieldType!], term: String): VariationTypeGenericResponseWithPagination!
+  getOneAddressTypeById(id: ID!): AddressTypeGenericResponse!
+  getOneBillboardTypeById(id: ID!): BillboardTypeGenericResponse!
+  getOneCategoryPromotionTypeById(id: ID!): CategoryPromotionTypeGenericResponse!
+  getOneCategoryTypeById(id: ID!): CategoryTypeGenericResponse!
+  getOneCommentTypeById(id: ID!): CommentTypeGenericResponse!
+  getOneCountryTypeById(id: ID!): CountryTypeGenericResponse!
+  getOneImageTypeById(id: ID!): ImageTypeGenericResponse!
+  getOneLocationTypeById(id: ID!): LocationTypeGenericResponse!
+  getOneOrderLineTypeById(id: ID!): OrderLineTypeGenericResponse!
+  getOneOrderStatusTypeById(id: ID!): OrderStatusTypeGenericResponse!
+  getOnePaymentMethodTypeById(id: ID!): PaymentMethodTypeGenericResponse!
+  getOnePermissionTypeById(id: ID!): PermissionTypeGenericResponse!
+  getOneProductCategoryTypeById(id: ID!): ProductCategoryTypeGenericResponse!
+  getOneProductConfigurationTypeById(id: ID!): ProductConfigurationTypeGenericResponse!
+  getOneProductItemTypeById(id: ID!): ProductItemTypeGenericResponse!
+  getOneProductPromotionTypeById(id: ID!): ProductPromotionTypeGenericResponse!
+  getOneProductTagTypeById(id: ID!): ProductTagTypeGenericResponse!
+  getOneProductTypeById(id: ID!): ProductTypeGenericResponse!
+  getOnePromotionTypeById(id: ID!): PromotionTypeGenericResponse!
+  getOneReviewTypeById(id: ID!): ReviewTypeGenericResponse!
+  getOneRoleTypeById(id: ID!): RoleTypeGenericResponse!
+  getOneSeasonTypeById(id: ID!): SeasonTypeGenericResponse!
+  getOneShippingMethodTypeById(id: ID!): ShippingMethodTypeGenericResponse!
+  getOneShopOrderLocationTypeById(id: ID!): ShopOrderLocationTypeGenericResponse!
+  getOneShopOrderTypeById(id: ID!): ShopOrderTypeGenericResponse!
+  getOneShoppingCartProductItemTypeById(id: ID!): ShoppingCartProductItemTypeGenericResponse!
+  getOneShoppingCartTypeById(id: ID!): ShoppingCartTypeGenericResponse!
+  getOneStoreTypeById(id: ID!): StoreTypeGenericResponse!
+  getOneTagTypeById(id: ID!): TagTypeGenericResponse!
+  getOneUserAddressTypeById(id: ID!): UserAddressTypeGenericResponse!
+  getOneUserPaymentMethodTypeById(id: ID!): UserPaymentMethodTypeGenericResponse!
+  getOneVariationOptionTypeById(id: ID!): VariationOptionTypeGenericResponse!
+  getOneVariationTypeById(id: ID!): VariationTypeGenericResponse!
+  getRoleTypeByName(name: String!): GetRoleByNameResponseType!
   imagesByCategory(limit: Int = 10, offset: Int = 0, term: String!): [ImageType!]!
   imagesByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ImageType!]!
   imagesByProductItem(limit: Int = 10, offset: Int = 0, term: String!): [ImageType!]!
-  imagesByUser(limit: Int = 10, offset: Int = 0, term: String!): [ImageType!]!
-  orderLine(id: ID!): OrderLineType!
-  orderLines(limit: Int = 10, offset: Int = 0, searchTerm: String): [OrderLineType!]!
-  orderLinesByProductItem(limit: Int = 10, offset: Int = 0, term: String!): [OrderLineType!]!
-  orderLinesByShopOrder(limit: Int = 10, offset: Int = 0, term: String!): [OrderLineType!]!
-  orderStatus(id: ID!): OrderStatusType!
-  paymentMethod(id: ID!): PaymentMethodType!
-  product(id: ID!): ProductType!
-  productCategories(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductCategoryType!]!
-  productCategoriesByCategory(limit: Int = 10, offset: Int = 0, term: String!): [ProductCategoryType!]!
-  productCategoriesByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ProductCategoryType!]!
-  productCategory(id: ID!): ProductCategoryType!
-  productConfiguration(id: ID!): ProductConfigurationType!
-  productConfigurations(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductConfigurationType!]!
-  productConfigurationsByProductItem(limit: Int = 10, offset: Int = 0, term: String!): [ProductConfigurationType!]!
-  productConfigurationsByVariationOption(limit: Int = 10, offset: Int = 0, term: String!): [ProductConfigurationType!]!
-  productItem(id: ID!): ProductItemType!
-  productItems(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductItemType!]!
-  productItemsByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ProductItemType!]!
-  productPromotion(id: ID!): ProductPromotionType!
-  productPromotions(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductPromotionType!]!
-  productPromotionsByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ProductPromotionType!]!
-  productPromotionsByPromotion(limit: Int = 10, offset: Int = 0, term: String!): [ProductPromotionType!]!
-  productTag(id: ID!): ProductTagType!
-  productTags(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductTagType!]!
-  productTagsByProduct(limit: Int = 10, offset: Int = 0, term: String!): [ProductTagType!]!
-  productTagsByTag(limit: Int = 10, offset: Int = 0, term: String!): [ProductTagType!]!
-  products(limit: Int = 10, offset: Int = 0, searchTerm: String): [ProductType!]!
-  productsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ProductType!]!
-  promotion(id: ID!): PromotionType!
-  promotions(limit: Int = 10, offset: Int = 0, searchTerm: String): [PromotionType!]!
-  review(id: ID!): ReviewType!
-  reviews(limit: Int = 10, offset: Int = 0, searchTerm: String): [ReviewType!]!
-  reviewsByOrderLine(limit: Int = 10, offset: Int = 0, term: String!): [ReviewType!]!
-  reviewsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ReviewType!]!
-  season(id: ID!): SeasonType!
-  seasons(limit: Int = 10, offset: Int = 0, searchTerm: String): [SeasonType!]!
-  shippingMethod(id: ID!): ShippingMethodType!
-  shopOrder(id: ID!): ShopOrderType!
-  shopOrderLocation(id: ID!): ShopOrderLocationType!
-  shopOrderLocations(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShopOrderLocationType!]!
-  shopOrderLocationsByLocation(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderLocationType!]!
-  shopOrderLocationsByShopOrder(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderLocationType!]!
-  shopOrders(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShopOrderType!]!
-  shopOrdersByAddress(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
-  shopOrdersByOrderStatus(limit: Int = 10, offset: Int = 0, term: StatusValue!): [ShopOrderType!]!
-  shopOrdersByShippingMethod(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
-  shopOrdersByUser(limit: Int = 10, offset: Int = 0, term: String!): [ShopOrderType!]!
-  shoppingCart(id: ID!): ShoppingCartType!
-  shoppingCartProductItem(id: ID!): ShoppingCartProductItemType!
-  shoppingCartProductItems(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShoppingCartProductItemType!]!
-  shoppingCartProductItemsByProductItem(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartProductItemType!]!
-  shoppingCartProductItemsByShoppingCart(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartProductItemType!]!
-  shoppingCarts(limit: Int = 10, offset: Int = 0, searchTerm: String): [ShoppingCartType!]!
-  shoppingCartsByUser(limit: Int = 10, offset: Int = 0, term: String!): [ShoppingCartType!]!
-  store(id: ID!): StoreType!
-  stores(limit: Int = 10, offset: Int = 0, searchTerm: String): [StoreType!]!
-  tag(id: ID!): TagType!
-  tags(limit: Int = 10, offset: Int = 0, searchTerm: String): [TagType!]!
   user(id: ID!): UserObjType!
-  userAddress(id: ID!): UserAddressType!
-  userAddresses(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserAddressType!]!
-  userAddressesByAddress(limit: Int = 10, offset: Int = 0, term: String!): [UserAddressType!]!
-  userAddressesByUser(limit: Int = 10, offset: Int = 0, term: String!): [UserAddressType!]!
-  userPaymentMethod(id: ID!): UserPaymentMethodType!
-  userPaymentMethods(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserPaymentMethodType!]!
-  userPaymentMethodsByPaymentMethod(limit: Int = 10, offset: Int = 0, term: String!): [UserPaymentMethodType!]!
-  userPaymentMethodsByUser(limit: Int = 10, offset: Int = 0, term: String!): [UserPaymentMethodType!]!
-  users(limit: Int = 10, offset: Int = 0, searchTerm: String): [UserObjType!]!
-  variation(id: ID!): VariationType!
-  variationOption(id: ID!): VariationOptionType!
-  variationOptions(limit: Int = 10, offset: Int = 0, searchTerm: String): [VariationOptionType!]!
-  variationOptionsByVariation(limit: Int = 10, offset: Int = 0, term: String!): [VariationOptionType!]!
-  variations(limit: Int = 10, offset: Int = 0, searchTerm: String): [VariationType!]!
-  variationsByCategory(limit: Int = 10, offset: Int = 0, term: String!): [VariationType!]!
+  users(fields: [String!], limit: Int = 10, offset: Int = 0, term: String): GetAllUsersResponse!
 }
 
 type ReviewType {
+  active: Boolean
   comments: [CommentType!]!
   content: String
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   orderLine: OrderLineType!
   ratingValue: Int!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   user: UserObjType!
   visible: Boolean
 }
 
-enum Role {
+type ReviewTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ReviewTypeGenericResponse {
+  data: ReviewType!
+  error: ReviewTypeErrorType
+  success: Boolean!
+}
+
+type ReviewTypeGenericResponseWithPagination {
+  data: [ReviewType!]!
+  success: Boolean!
+}
+
+type RoleType {
+  active: Boolean
+  createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
+  id: ID!
+  permissions: [PermissionType!]!
+  updatedAt: Timestamp!
+  updatedBy: ID
+  users: [UserObjType!]!
+  value: RoleValue!
+}
+
+type RoleTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type RoleTypeGenericResponse {
+  data: RoleType!
+  error: RoleTypeErrorType
+  success: Boolean!
+}
+
+type RoleTypeGenericResponseWithPagination {
+  data: [RoleType!]!
+  success: Boolean!
+}
+
+enum RoleValue {
   ADMIN
   CLIENT
+  CUSTOM
   SUPER_ADMIN
 }
 
 type SeasonType {
+  active: Boolean
   billboards: [BillboardType!]!
   categories: CategoryType!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   description: String!
   endDate: Timestamp
   id: String!
+  name: String!
   startDate: Timestamp
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type SeasonTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type SeasonTypeGenericResponse {
+  data: SeasonType!
+  error: SeasonTypeErrorType
+  success: Boolean!
+}
+
+type SeasonTypeGenericResponseWithPagination {
+  data: [SeasonType!]!
+  success: Boolean!
 }
 
 type ShippingMethodType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   name: String!
   price: Float!
   shopOrders: [ShopOrderType!]!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type ShippingMethodTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ShippingMethodTypeGenericResponse {
+  data: ShippingMethodType!
+  error: ShippingMethodTypeErrorType
+  success: Boolean!
+}
+
+type ShippingMethodTypeGenericResponseWithPagination {
+  data: [ShippingMethodType!]!
+  success: Boolean!
 }
 
 type ShopOrderLocationType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   location: LocationType!
   shopOrder: ShopOrderType!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type ShopOrderLocationTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ShopOrderLocationTypeGenericResponse {
+  data: ShopOrderLocationType!
+  error: ShopOrderLocationTypeErrorType
+  success: Boolean!
+}
+
+type ShopOrderLocationTypeGenericResponseWithPagination {
+  data: [ShopOrderLocationType!]!
+  success: Boolean!
 }
 
 type ShopOrderType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
-  locations(limit: Int = 10, offset: Int = 0): [LocationType!]!
   orderLines: [OrderLineType!]!
   orderStatus: OrderStatusType!
   orderTotal: Float!
   shippingAddress: AddressType!
   shippingMethod: ShippingMethodType!
-  updatedAt: Timestamp
-  user: UserObjType!
+  updatedAt: Timestamp!
+  updatedBy: ID
   userPaymentMethod: UserPaymentMethodType!
 }
 
+type ShopOrderTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ShopOrderTypeGenericResponse {
+  data: ShopOrderType!
+  error: ShopOrderTypeErrorType
+  success: Boolean!
+}
+
+type ShopOrderTypeGenericResponseWithPagination {
+  data: [ShopOrderType!]!
+  success: Boolean!
+}
+
 type ShoppingCartProductItemType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   productItem: ProductItemType!
   quantity: Float!
   shoppingCart: ShoppingCartType!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type ShoppingCartProductItemTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ShoppingCartProductItemTypeGenericResponse {
+  data: ShoppingCartProductItemType!
+  error: ShoppingCartProductItemTypeErrorType
+  success: Boolean!
+}
+
+type ShoppingCartProductItemTypeGenericResponseWithPagination {
+  data: [ShoppingCartProductItemType!]!
+  success: Boolean!
 }
 
 type ShoppingCartType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
-  productItems(limit: Int = 10, offset: Int = 0): [ProductItemType!]!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   user: UserObjType!
+}
+
+type ShoppingCartTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type ShoppingCartTypeGenericResponse {
+  data: ShoppingCartType!
+  error: ShoppingCartTypeErrorType
+  success: Boolean!
+}
+
+type ShoppingCartTypeGenericResponseWithPagination {
+  data: [ShoppingCartType!]!
+  success: Boolean!
 }
 
 enum StatusValue {
@@ -673,25 +1354,76 @@ enum StatusValue {
   PROCESSING
 }
 
-type StoreType {
-  billboards(limit: Int = 10, offset: Int = 0, searchTerm: String): [BillboardType!]!
-  categories(limit: Int = 10, offset: Int = 0, searchTerm: String): [CategoryType!]!
+type Store {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type StoreType {
+  active: Boolean
+  billboards: [BillboardType!]!
+  categories: [CategoryType!]!
+  createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   description: String
   id: ID!
   name: String!
   slug: String!
-  updatedAt: Timestamp
-  user: UserObjType!
+  updatedAt: Timestamp!
+  updatedBy: ID
+}
+
+type StoreTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type StoreTypeGenericResponse {
+  data: StoreType!
+  error: StoreTypeErrorType
+  success: Boolean!
+}
+
+type StoreTypeGenericResponseWithPagination {
+  data: [StoreType!]!
+  success: Boolean!
 }
 
 type TagType {
+  active: Boolean
   code: String!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   productTags: [ProductTagType!]!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   value: String!
+}
+
+type TagTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type TagTypeGenericResponse {
+  data: TagType!
+  error: TagTypeErrorType
+  success: Boolean!
+}
+
+type TagTypeGenericResponseWithPagination {
+  data: [TagType!]!
+  success: Boolean!
 }
 
 """
@@ -700,6 +1432,7 @@ type TagType {
 scalar Timestamp
 
 input UpdateAddressInput {
+  active: Boolean = true
   addressLine1: String
   addressLine2: String
   city: String
@@ -714,6 +1447,8 @@ input UpdateAddressInput {
 }
 
 input UpdateBillboardInput {
+  active: Boolean = true
+  description: String
   id: ID!
   season: ID
   store: ID
@@ -724,41 +1459,56 @@ input UpdateCategoryInput {
   active: Boolean = true
   description: String
   id: String!
+  name: String
   parentCategory: ID
   season: ID
   store: ID
-  user: ID
-  value: String
 }
 
 input UpdateCategoryPromotionInput {
+  active: Boolean = true
   category: ID
   id: ID!
   promotion: ID
 }
 
 input UpdateCommentInput {
+  active: Boolean = true
   commentParent: ID
   content: String
   id: ID!
   review: ID
   user: ID
-  visible: Boolean = true
 }
 
 input UpdateCountryInput {
+  active: Boolean = true
   code: String
   id: ID!
   longName: String
 }
 
+input UpdateImageInput {
+  active: Boolean = true
+  billboard: ID
+  category: ID
+  extension: ID
+  id: ID!
+  product: ID
+  productItem: ID
+  url: ID
+  user: ID
+}
+
 input UpdateLocationInput {
+  active: Boolean = true
   id: ID!
   lat: Float
   lng: Float
 }
 
 input UpdateOrderLineInput {
+  active: Boolean = true
   id: ID!
   productItem: ID
   quantity: Int
@@ -767,28 +1517,40 @@ input UpdateOrderLineInput {
 }
 
 input UpdateOrderStatusInput {
+  active: Boolean = true
   id: ID!
   statusValue: StatusValue = IN_PROGRESS
 }
 
 input UpdatePaymentMethodInput {
+  active: Boolean = true
   id: ID!
   value: PaymentMethod
 }
 
+input UpdatePermissionInput {
+  active: Boolean = true
+  entities: PermissionEntity
+  id: ID!
+  operations: PermissionOperation
+}
+
 input UpdateProductCategoryInput {
+  active: Boolean = true
   category: ID
   id: ID!
   product: ID
 }
 
 input UpdateProductConfigurationInput {
+  active: Boolean = true
   id: ID!
   productItem: ID
   variationOption: ID
 }
 
 input UpdateProductInput {
+  active: Boolean = true
   description: String
   id: ID!
   subtitle: String
@@ -797,6 +1559,7 @@ input UpdateProductInput {
 }
 
 input UpdateProductItemInput {
+  active: Boolean = true
   id: ID!
   price: Float
   product: ID
@@ -806,18 +1569,21 @@ input UpdateProductItemInput {
 }
 
 input UpdateProductPromotionInput {
+  active: Boolean = true
   id: ID!
   product: ID
   promotion: ID
 }
 
 input UpdateProductTagInput {
+  active: Boolean = true
   id: ID!
   product: ID
   tag: ID
 }
 
 input UpdatePromotionInput {
+  active: Boolean = true
   description: String
   endDate: Timestamp
   id: ID!
@@ -826,6 +1592,7 @@ input UpdatePromotionInput {
 }
 
 input UpdateReviewInput {
+  active: Boolean = true
   content: String
   id: ID!
   orderLine: ID
@@ -834,20 +1601,30 @@ input UpdateReviewInput {
   visible: Boolean = true
 }
 
+input UpdateRoleInput {
+  active: Boolean = true
+  id: ID!
+  value: String
+}
+
 input UpdateSeasonInput {
+  active: Boolean = true
   description: String
   endDate: Timestamp
   id: String!
+  name: String
   startDate: Timestamp
 }
 
 input UpdateShippingMethodInput {
+  active: Boolean = true
   id: ID!
   name: String
   price: Float
 }
 
 input UpdateShopOrderInput {
+  active: Boolean = true
   address: ID
   id: ID!
   orderStatus: ID
@@ -858,17 +1635,20 @@ input UpdateShopOrderInput {
 }
 
 input UpdateShopOrderLocationInput {
+  active: Boolean = true
   id: ID!
   location: ID
   shopOrder: ID
 }
 
 input UpdateShoppingCartInput {
+  active: Boolean = true
   id: ID!
   user: ID
 }
 
 input UpdateShoppingCartProductItemInput {
+  active: Boolean = true
   id: ID!
   productItem: ID
   quantity: Int
@@ -876,6 +1656,7 @@ input UpdateShoppingCartProductItemInput {
 }
 
 input UpdateStoreInput {
+  active: Boolean = true
   description: String
   id: ID!
   name: String
@@ -883,12 +1664,14 @@ input UpdateStoreInput {
 }
 
 input UpdateTagInput {
+  active: Boolean = true
   code: String
   id: ID!
   value: String
 }
 
 input UpdateUserAddressInput {
+  active: Boolean = true
   address: ID
   id: ID!
   isDefault: Boolean
@@ -897,6 +1680,7 @@ input UpdateUserAddressInput {
 
 input UpdateUserPaymentMethodInput {
   accountNumber: Timestamp
+  active: Boolean = true
   expiryDate: Timestamp
   id: ID!
   isDefault: Boolean
@@ -906,32 +1690,57 @@ input UpdateUserPaymentMethodInput {
 }
 
 input UpdateVariationInput {
+  active: Boolean = true
   category: ID
   id: ID!
   name: String
 }
 
 input UpdateVariationOptionInput {
+  active: Boolean = true
   id: ID!
   value: String
   variation: ID
 }
 
 type UserAddressType {
+  active: Boolean
   address: AddressType!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   isDefault: Boolean
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   user: UserObjType!
 }
 
+type UserAddressTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type UserAddressTypeGenericResponse {
+  data: UserAddressType!
+  error: UserAddressTypeErrorType
+  success: Boolean!
+}
+
+type UserAddressTypeGenericResponseWithPagination {
+  data: [UserAddressType!]!
+  success: Boolean!
+}
+
 type UserObjType {
-  active: Boolean!
-  addresses(limit: Int = 10, offset: Int = 0): [AddressType!]!
+  active: Boolean
   avatarImg: String
   categories: [CategoryType!]!
   comments: [CommentType!]!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   email: String!
   fullName: String!
   gender: Gender!
@@ -939,28 +1748,51 @@ type UserObjType {
   images: [ImageType!]!
   lastConnection: Timestamp
   password: String!
-  paymentMethods(limit: Int = 10, offset: Int = 0): [PaymentMethodType!]!
   phoneNumber: String
   products: [ProductType!]!
   reviews: [ReviewType!]!
-  roles: [Role!]!
+  roles: [RoleType!]!
   shopOrders: [ShopOrderType!]!
   shoppingCarts: [ShoppingCartType!]!
-  stores: [StoreType!]!
-  updatedAt: Timestamp
+  stores: [Store!]!
+  updatedAt: Timestamp!
+  updatedBy: ID
   userType: UserType!
   username: String!
 }
 
 type UserPaymentMethodType {
   accountNumber: String!
+  active: Boolean
+  createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   expiryDate: Timestamp
   id: ID!
   isDefault: Boolean
   paymentMethod: PaymentMethodType!
   provider: String!
   shopOrders: [ShopOrderType!]!
+  updatedAt: Timestamp!
+  updatedBy: ID
   user: UserObjType!
+}
+
+type UserPaymentMethodTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type UserPaymentMethodTypeGenericResponse {
+  data: UserPaymentMethodType!
+  error: UserPaymentMethodTypeErrorType
+  success: Boolean!
+}
+
+type UserPaymentMethodTypeGenericResponseWithPagination {
+  data: [UserPaymentMethodType!]!
+  success: Boolean!
 }
 
 enum UserType {
@@ -969,19 +1801,61 @@ enum UserType {
 }
 
 type VariationOptionType {
+  active: Boolean
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   productConfigurations: [ProductConfigurationType!]!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   value: String!
   variation: VariationType!
 }
 
+type VariationOptionTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type VariationOptionTypeGenericResponse {
+  data: VariationOptionType!
+  error: VariationOptionTypeErrorType
+  success: Boolean!
+}
+
+type VariationOptionTypeGenericResponseWithPagination {
+  data: [VariationOptionType!]!
+  success: Boolean!
+}
+
 type VariationType {
+  active: Boolean
   category: CategoryType!
   createdAt: Timestamp!
+  createdBy: ID!
+  deletedAt: Timestamp!
+  deletedBy: ID
   id: ID!
   name: String!
-  updatedAt: Timestamp
+  updatedAt: Timestamp!
+  updatedBy: ID
   variationOptions: [VariationOptionType!]!
+}
+
+type VariationTypeErrorType {
+  code: Int!
+  message: String!
+}
+
+type VariationTypeGenericResponse {
+  data: VariationType!
+  error: VariationTypeErrorType
+  success: Boolean!
+}
+
+type VariationTypeGenericResponseWithPagination {
+  data: [VariationType!]!
+  success: Boolean!
 }
