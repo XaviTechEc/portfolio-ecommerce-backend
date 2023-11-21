@@ -1,20 +1,23 @@
 import { Billboard } from 'src/billboard/infrastructure/data/postgresql/entities/billboard.entity';
 import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
+
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  Index,
   OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('season_pkey', ['id'], { unique: true })
 @Entity('season')
-export class Season {
+export class Season extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column('character varying', { name: 'name' })
+  name: string;
 
   @Column('text', { name: 'description' })
   description: string;
@@ -28,15 +31,9 @@ export class Season {
   @Column('timestamptz', { name: 'end_date', nullable: true })
   endDate?: Date;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
-
   // Relations
   @OneToMany(() => Category, (category) => category.season)
-  category: Category[];
+  categories: Category[];
 
   @OneToMany(() => Billboard, (billboard) => billboard.season)
   billboards: Billboard[];

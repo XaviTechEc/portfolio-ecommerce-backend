@@ -4,14 +4,14 @@ import { IExceptionsService } from 'src/common/domain/abstracts/services/excepti
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { Season } from './postgresql/entities/Season.entity';
-import { SeasonsRepository } from './postgresql/repositories/seasons.repository';
 import { ISeasonsDataSourceService } from 'src/seasons/domain/abstracts/services/seasons-datasource.abstract.service';
+import { SeasonsRepository } from './postgresql/repositories/seasons.repository';
 
 @Injectable()
 export class SeasonsDataService
   implements ISeasonsDataSourceService, OnApplicationBootstrap
 {
-  seasons: SeasonsRepository;
+  seasons: SeasonsRepository<Season>;
 
   constructor(
     @InjectRepository(Season)
@@ -25,6 +25,8 @@ export class SeasonsDataService
       this.seasonsRepository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name,
+      'season',
     );
   }
 }

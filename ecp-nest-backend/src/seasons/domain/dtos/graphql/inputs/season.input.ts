@@ -6,9 +6,16 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
+import { IGenericAdditionalProps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 
 @InputType()
-export class CreateSeasonInput {
+export class CreateSeasonInput extends IGenericAdditionalProps {
+  @Field(() => String)
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  name: string;
+
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
