@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
+import { CommonModule } from './common/common.module';
+import { UsersModule } from './users/users.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
 import { BillboardsModule } from './billboard/billboards.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CategoryPromotionsModule } from './category-promotions/category-promotions.module';
 import { CommentsModule } from './comments/comments.module';
-import { CommonModule } from './common/common.module';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { FilesModule } from './files/files.module';
 import { ImagesModule } from './images/images.module';
@@ -30,21 +31,24 @@ import { StoresModule } from './stores/stores.module';
 import { TagsModule } from './tags/tags.module';
 import { UserAddressesModule } from './user-addresses/user-addresses.module';
 import { UserPaymentMethodsModule } from './user-payment-methods/user-payment-methods.module';
-import { UsersModule } from './users/users.module';
+
 import { VariationOptionsModule } from './variation-options/variation-options.module';
 import { VariationsModule } from './variations/variations.module';
 import { APP_GUARD } from '@nestjs/core';
 import { GlobalJWTAuthGuard } from './auth/infrastructure/guards/global-auth.guard';
+import { RolesModule } from './roles/roles.module';
+import { PermissionsModule } from './permissions/permissions.module';
 
 @Module({
   imports: [
+    CommonModule,
+    UsersModule,
     AddressesModule,
     AuthModule,
     BillboardsModule,
     CategoriesModule,
     CategoryPromotionsModule,
     CommentsModule,
-    CommonModule,
     ConfigurationModule,
     ImagesModule,
     OrderLinesModule,
@@ -68,10 +72,11 @@ import { GlobalJWTAuthGuard } from './auth/infrastructure/guards/global-auth.gua
     TagsModule,
     UserAddressesModule,
     UserPaymentMethodsModule,
-    UsersModule,
     VariationOptionsModule,
     VariationsModule,
     FilesModule,
+    RolesModule,
+    PermissionsModule,
   ],
   providers: [
     {
