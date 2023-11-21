@@ -1,21 +1,20 @@
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { ProductItem } from 'src/product-items/infrastructure/data/postgresql/entities/ProductItem.entity';
 import { Review } from 'src/reviews/infrastructure/data/postgresql/entities/Review.entity';
 import { ShopOrder } from 'src/shop-orders/infrastructure/data/postgresql/entities/ShopOrder.entity';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('order_line_pkey', ['id'], { unique: true })
 @Entity('order_line')
-export class OrderLine {
+export class OrderLine extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -24,12 +23,6 @@ export class OrderLine {
 
   @Column('real', { name: 'total_price' })
   totalPrice: number;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @OneToMany(() => Review, (review) => review.orderLine)
