@@ -6,59 +6,48 @@ import {
 } from 'src/category-promotions/domain/dtos/graphql/inputs/category-promotion.input';
 import { ICategoryPromotion } from 'src/category-promotions/domain/entities/category-promotion.entity';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { CategoryPromotionFactoryService } from './factory/category-promotion-factory.service';
 
 @Injectable()
 export class CategoryPromotionUseCases {
   constructor(
-    private dataService: ICategoryPromotionsDataSourceService,
+    private dataServices: ICategoryPromotionsDataSourceService,
     private categoryPromotionFactoryService: CategoryPromotionFactoryService,
   ) {}
-  getCategoryPromotionBy(
-    term: string,
-    fields: (keyof ICategoryPromotion)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.categoryPromotions.getCategoryPromotionBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<ICategoryPromotion>) {
+    return this.dataServices.categoryPromotions.getMany({ ...props });
   }
-  getAllCategoryPromotion(args?: IGenericArgs<ICategoryPromotion>) {
-    return this.dataService.categoryPromotions.getAllCategoryPromotion(args);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.categoryPromotions.getOneById({ ...props });
   }
-  getCategoryPromotionById(id: string): Promise<ICategoryPromotion> {
-    return this.dataService.categoryPromotions.getCategoryPromotionById(id);
+
+  create(props: CreateProps<CreateCategoryPromotionInput>) {
+    const newCategoryPromotion =
+      this.categoryPromotionFactoryService.createCategoryPromotion(props.data);
+    return this.dataServices.categoryPromotions.create({
+      ...props,
+      data: newCategoryPromotion,
+    });
   }
-  createCategoryPromotion(
-    createCategoryPromotionInput: CreateCategoryPromotionInput,
-  ): Promise<ICategoryPromotion> {
-    const categoryPromotion =
-      this.categoryPromotionFactoryService.createCategoryPromotion(
-        createCategoryPromotionInput,
-      );
-    return this.dataService.categoryPromotions.createCategoryPromotion(
-      categoryPromotion,
-    );
+
+  updateOneById(props: UpdateOneByIdProps<UpdateCategoryPromotionInput>) {
+    const newCategoryPromotion =
+      this.categoryPromotionFactoryService.updateCategoryPromotion(props.data);
+    return this.dataServices.categoryPromotions.updateOneById({
+      ...props,
+      data: newCategoryPromotion,
+    });
   }
-  updateCategoryPromotion(
-    id: string,
-    updateCategoryPromotionInput: UpdateCategoryPromotionInput,
-  ): Promise<ICategoryPromotion> {
-    const categoryPromotion =
-      this.categoryPromotionFactoryService.updateCategoryPromotion(
-        updateCategoryPromotionInput,
-      );
-    return this.dataService.categoryPromotions.updateCategoryPromotion(
-      id,
-      categoryPromotion,
-    );
-  }
-  removeCategoryPromotion(id: string): Promise<ICategoryPromotion> {
-    return this.dataService.categoryPromotions.removeCategoryPromotion(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.categoryPromotions.deleteOneById({ ...props });
   }
 }
