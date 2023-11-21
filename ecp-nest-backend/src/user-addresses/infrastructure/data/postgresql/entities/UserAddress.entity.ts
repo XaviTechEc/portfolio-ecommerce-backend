@@ -1,18 +1,17 @@
 import { Address } from 'src/addresses/infrastructure/data/postgresql/entities';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { User } from 'src/users/infrastructure/data/postgresql/entities/User.entity';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  PrimaryColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('user_address')
-export class UserAddress {
+export class UserAddress extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -27,12 +26,6 @@ export class UserAddress {
     nullable: true,
   })
   isDefault?: boolean;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   @ManyToOne(() => User, (user) => user.userAddress)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])

@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IUserAddressesDataSourceService } from 'src/user-addresses/domain/abstracts/services/user-addresses-datasource.abstract.service';
 import {
   CreateUserAddressInput,
@@ -14,44 +17,39 @@ import { UserAddressFactoryService } from './factory/user-address-factory.servic
 @Injectable()
 export class UserAddressUseCases {
   constructor(
-    private dataService: IUserAddressesDataSourceService,
+    private dataServices: IUserAddressesDataSourceService,
     private userAddressFactoryService: UserAddressFactoryService,
   ) {}
-  getUserAddressesBy(
-    term: string,
-    fields: (keyof IUserAddress)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.userAddresses.getUserAddressesBy(
-      term,
-      fields,
-      paginationArgs,
+
+  getMany(props: GetManyProps<IUserAddress>) {
+    return this.dataServices.userAddresses.getMany({ ...props });
+  }
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.userAddresses.getOneById({ ...props });
+  }
+
+  create(props: CreateProps<CreateUserAddressInput>) {
+    const newUserAddress = this.userAddressFactoryService.createUserAddress(
+      props.data,
     );
+    return this.dataServices.userAddresses.create({
+      ...props,
+      data: newUserAddress,
+    });
   }
-  getAllUserAddress(args?: IGenericArgs<IUserAddress>) {
-    return this.dataService.userAddresses.getAllUserAddress(args);
-  }
-  getUserAddressById(id: string): Promise<IUserAddress> {
-    return this.dataService.userAddresses.getUserAddressById(id);
-  }
-  createUserAddress(
-    createUserAddressInput: CreateUserAddressInput,
-  ): Promise<IUserAddress> {
-    const userAddress = this.userAddressFactoryService.createUserAddress(
-      createUserAddressInput,
+
+  updateOneById(props: UpdateOneByIdProps<UpdateUserAddressInput>) {
+    const newUserAddress = this.userAddressFactoryService.updateUserAddress(
+      props.data,
     );
-    return this.dataService.userAddresses.createUserAddress(userAddress);
+    return this.dataServices.userAddresses.updateOneById({
+      ...props,
+      data: newUserAddress,
+    });
   }
-  updateUserAddress(
-    id: string,
-    updateUserAddressInput: UpdateUserAddressInput,
-  ): Promise<IUserAddress> {
-    const userAddress = this.userAddressFactoryService.updateUserAddress(
-      updateUserAddressInput,
-    );
-    return this.dataService.userAddresses.updateUserAddress(id, userAddress);
-  }
-  removeUserAddress(id: string): Promise<IUserAddress> {
-    return this.dataService.userAddresses.removeUserAddress(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.userAddresses.deleteOneById({ ...props });
   }
 }

@@ -1,6 +1,6 @@
 import { IUserAddress } from '../../entities/user-address.entity';
-import { IUserAddressRepository } from '../repositories/user-address.repository';
+import { IUserAddressesRepository } from '../repositories/user-addresses.repository';
 
 export abstract class IUserAddressesDataSourceService {
-  abstract userAddresses: IUserAddressRepository<IUserAddress>;
+  abstract userAddresses: IUserAddressesRepository<IUserAddress>;
 }

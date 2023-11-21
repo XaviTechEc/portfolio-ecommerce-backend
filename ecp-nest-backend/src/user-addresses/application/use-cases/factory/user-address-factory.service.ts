@@ -12,13 +12,16 @@ export class UserAddressFactoryService {
     newUserAddress.isDefault = createUserAddressInput.isDefault;
     newUserAddress.user = createUserAddressInput.user;
     newUserAddress.address = createUserAddressInput.address;
+    newUserAddress.active = createUserAddressInput.active;
     return newUserAddress;
   }
   updateUserAddress(updateUserAddressInput: UpdateUserAddressInput) {
     const newUserAddress = new IUserAddress();
+    newUserAddress.id = updateUserAddressInput.id;
     newUserAddress.isDefault = updateUserAddressInput.isDefault;
     newUserAddress.user = updateUserAddressInput.user;
     newUserAddress.address = updateUserAddressInput.address;
+    newUserAddress.active = updateUserAddressInput.active;
     return newUserAddress;
   }
 }
