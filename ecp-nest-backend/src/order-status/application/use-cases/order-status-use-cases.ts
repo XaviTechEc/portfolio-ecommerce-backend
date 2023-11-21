@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IGenericArgs } from 'src/common/domain/dtos/graphql/args';
+import {
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IOrderStatusDataSourceService } from 'src/order-status/domain/abstracts/services/order-status-datasource.abstract.service';
 import {
   CreateOrderStatusInput,
@@ -11,33 +17,39 @@ import { OrderStatusFactoryService } from './factory/order-status-factory.servic
 @Injectable()
 export class OrderStatusUseCases {
   constructor(
-    private dataService: IOrderStatusDataSourceService,
+    private dataServices: IOrderStatusDataSourceService,
     private orderStatusFactoryService: OrderStatusFactoryService,
   ) {}
-  getAllOrderStatus(args?: IGenericArgs<IOrderStatus>) {
-    return this.dataService.orderStatus.getAllOrderStatus(args);
+
+  getMany(props: GetManyProps<IOrderStatus>) {
+    return this.dataServices.orderStatus.getMany({ ...props });
   }
-  getOrderStatusById(id: string): Promise<IOrderStatus> {
-    return this.dataService.orderStatus.getOrderStatusById(id);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.orderStatus.getOneById({ ...props });
   }
-  createOrderStatus(
-    createOrderStatusInput: CreateOrderStatusInput,
-  ): Promise<IOrderStatus> {
-    const orderStatus = this.orderStatusFactoryService.createOrderStatus(
-      createOrderStatusInput,
+
+  create(props: CreateProps<CreateOrderStatusInput>) {
+    const newOrderStatus = this.orderStatusFactoryService.createOrderStatus(
+      props.data,
     );
-    return this.dataService.orderStatus.createOrderStatus(orderStatus);
+    return this.dataServices.orderStatus.create({
+      ...props,
+      data: newOrderStatus,
+    });
   }
-  updateOrderStatus(
-    id: string,
-    updateOrderStatusInput: UpdateOrderStatusInput,
-  ): Promise<IOrderStatus> {
-    const orderStatus = this.orderStatusFactoryService.updateOrderStatus(
-      updateOrderStatusInput,
+
+  updateOneById(props: UpdateOneByIdProps<UpdateOrderStatusInput>) {
+    const newOrderStatus = this.orderStatusFactoryService.updateOrderStatus(
+      props.data,
     );
-    return this.dataService.orderStatus.updateOrderStatus(id, orderStatus);
+    return this.dataServices.orderStatus.updateOneById({
+      ...props,
+      data: newOrderStatus,
+    });
   }
-  removeOrderStatus(id: string): Promise<IOrderStatus> {
-    return this.dataService.orderStatus.removeOrderStatus(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.orderStatus.deleteOneById({ ...props });
   }
 }
