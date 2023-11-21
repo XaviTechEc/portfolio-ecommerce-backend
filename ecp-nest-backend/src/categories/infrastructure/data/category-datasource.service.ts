@@ -3,16 +3,16 @@ import { IExceptionsService } from 'src/common/domain/abstracts/services/excepti
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { Category } from './postgresql/entities/Category.entity';
-import { CategoriesRepository } from './postgresql/repositories/categories.repository';
+import { CategoriesPostgresRepository } from './postgresql/repositories/categories.repository';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { ICategoryDataSourceService } from 'src/categories/domain/abstracts/services/category-datasource.abstract.service';
+import { ICategoriesDataSourceService } from 'src/categories/domain/abstracts/services/categories-datasource.abstract.service';
 
 @Injectable()
 export class CategoryDataSourceService
-  implements ICategoryDataSourceService, OnApplicationBootstrap
+  implements ICategoriesDataSourceService, OnApplicationBootstrap
 {
   // Categories
-  categories: CategoriesRepository;
+  categories: CategoriesPostgresRepository;
 
   constructor(
     // Categories
@@ -24,10 +24,12 @@ export class CategoryDataSourceService
 
   onApplicationBootstrap() {
     // Categories
-    this.categories = new CategoriesRepository(
+    this.categories = new CategoriesPostgresRepository(
       this.categoriesRepository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name,
+      'category',
     );
   }
 }

@@ -9,24 +9,23 @@ import { ICategory } from 'src/categories/domain/entities/category.entity';
 export class CategoryFactoryService {
   createCategory(createCategoryInput: CreateCategoryInput) {
     const newCategory = new ICategory();
-    newCategory.value = createCategoryInput.value;
+    newCategory.name = createCategoryInput.name;
     newCategory.description = createCategoryInput.description;
     newCategory.season = createCategoryInput.season;
     newCategory.parentCategory = createCategoryInput.parentCategory;
-    newCategory.active = createCategoryInput.active;
-    newCategory.user = createCategoryInput.user;
     newCategory.store = createCategoryInput.store;
+    newCategory.active = createCategoryInput.active;
     return newCategory;
   }
   updateCategory(updateCategoryInput: UpdateCategoryInput) {
     const newCategory = new ICategory();
-    newCategory.value = updateCategoryInput.value;
+    newCategory.id = updateCategoryInput.id;
+    newCategory.name = updateCategoryInput.name;
     newCategory.description = updateCategoryInput.description;
     newCategory.season = updateCategoryInput.season;
     newCategory.parentCategory = updateCategoryInput.parentCategory;
-    newCategory.active = updateCategoryInput.active;
-    newCategory.user = updateCategoryInput.user;
     newCategory.store = updateCategoryInput.store;
+    newCategory.active = updateCategoryInput.active;
     return newCategory;
   }
 }

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ICategoryDataSourceService } from 'src/categories/domain/abstracts/services/category-datasource.abstract.service';
+import { ICategoriesDataSourceService } from 'src/categories/domain/abstracts/services/categories-datasource.abstract.service';
 import { CategoryDataSourceService } from './category-datasource.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './postgresql/entities/Category.entity';
@@ -8,10 +8,10 @@ import { Category } from './postgresql/entities/Category.entity';
   imports: [TypeOrmModule.forFeature([Category])],
   providers: [
     {
-      provide: ICategoryDataSourceService,
+      provide: ICategoriesDataSourceService,
       useClass: CategoryDataSourceService,
     },
   ],
-  exports: [ICategoryDataSourceService, TypeOrmModule],
+  exports: [ICategoriesDataSourceService, TypeOrmModule],
 })
 export class CategoryDataSourceModule {}
