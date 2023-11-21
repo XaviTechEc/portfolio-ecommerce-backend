@@ -1,11 +1,11 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { ImageType } from 'src/images/domain/object-types/image.type';
-import { ProductCategoryType } from 'src/product-categories/domain/object-types/product-category.type';
-import { ProductItemType } from 'src/product-items/domain/object-types/product-item.type';
-import { UserObjType } from 'src/users/domain/object-types/user.type';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
+import { ImageType } from 'src/images/interface-adapters/graphql/object-types/image.type';
+import { ProductCategoryType } from 'src/product-categories/interface-adapters/graphql/object-types/product-category.type';
+import { ProductItemType } from 'src/product-items/interface-adapters/graphql/object-types/product-item.type';
 
 @ObjectType()
-export class ProductType {
+export class ProductType extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @Field(() => ID)
   id: string;
 
@@ -18,18 +18,9 @@ export class ProductType {
   @Field(() => String)
   description: string;
 
-  @Field(() => Date)
-  createdAt: Date;
-
-  @Field(() => Date, { nullable: true })
-  updatedAt?: Date;
-
   // Relations
   @Field(() => [ProductCategoryType])
   productCategories: ProductCategoryType[];
-
-  @Field(() => UserObjType)
-  createdBy: UserObjType;
 
   @Field(() => [ProductItemType])
   productItems: ProductItemType[];

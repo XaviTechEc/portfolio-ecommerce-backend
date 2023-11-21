@@ -12,15 +12,16 @@ export class ProductFactoryService {
     newProduct.title = createProductInput.title;
     newProduct.subtitle = createProductInput.subtitle;
     newProduct.description = createProductInput.description;
-    newProduct.user = createProductInput.user;
+    newProduct.active = createProductInput.active;
     return newProduct;
   }
   updateProduct(updateProductInput: UpdateProductInput) {
     const newProduct = new IProduct();
+    newProduct.id = updateProductInput.id;
     newProduct.title = updateProductInput.title;
     newProduct.subtitle = updateProductInput.subtitle;
     newProduct.description = updateProductInput.description;
-    newProduct.user = updateProductInput.user;
+    newProduct.active = updateProductInput.active;
     return newProduct;
   }
 }
