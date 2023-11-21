@@ -11,12 +11,15 @@ export class VariationFactoryService {
     const newVariation = new IVariation();
     newVariation.category = createVariationInput.category;
     newVariation.name = createVariationInput.name;
+    newVariation.active = createVariationInput.active;
     return newVariation;
   }
   updateVariation(updateVariationInput: UpdateVariationInput) {
     const newVariation = new IVariation();
+    newVariation.id = updateVariationInput.id;
     newVariation.category = updateVariationInput.category;
     newVariation.name = updateVariationInput.name;
+    newVariation.active = updateVariationInput.active;
     return newVariation;
   }
 }

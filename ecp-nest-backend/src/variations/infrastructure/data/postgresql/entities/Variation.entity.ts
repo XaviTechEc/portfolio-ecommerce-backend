@@ -1,31 +1,24 @@
 import { Category } from 'src/categories/infrastructure/data/postgresql/entities/Category.entity';
+import { IGenericAdditionalPropsWithUserRefAndTimeStamps } from 'src/common/frameworks/data-services/postgresql/entities/generic-additional-props.entity';
 import { VariationOption } from 'src/variation-options/infrastructure/data/postgresql/entities/VariationOption.entity';
 import {
-  Index,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Index('variation_pkey', ['id'], { unique: true })
 @Entity('variation')
-export class Variation {
+export class Variation extends IGenericAdditionalPropsWithUserRefAndTimeStamps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('character varying', { name: 'name' })
   name: string;
-
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'NOW()' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamptz', nullable: true })
-  updatedAt?: Date;
 
   // Relations
   @OneToMany(
@@ -34,7 +27,7 @@ export class Variation {
   )
   variationOption: VariationOption[];
 
-  @ManyToOne(() => Category, (category) => category.variation)
+  @ManyToOne(() => Category, (category) => category.variations)
   @JoinColumn([{ name: 'category_id', referencedColumnName: 'id' }])
   category: Category;
 }
