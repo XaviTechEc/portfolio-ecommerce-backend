@@ -1,4 +1,4 @@
-import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { ICustomGenericResponseWithPagination } from 'src/common/domain/interfaces/responses/custom-generic-response.interface';
 import { ValidFileDestination } from '../interfaces/valid-file-destination.type';
 
 export abstract class IFileRepository<T> {
@@ -11,5 +11,5 @@ export abstract class IFileRepository<T> {
     name: string,
     destination: ValidFileDestination,
   ): Promise<string>;
-  abstract findAll(): Promise<GetAllGenericResponse<T>>;
+  abstract findAll(): Promise<ICustomGenericResponseWithPagination<T>>;
 }

@@ -5,7 +5,7 @@ import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logg
 import { IFileRepository } from 'src/files/domain/abstracts/file.repository';
 import { ValidFileDestination } from 'src/files/domain/interfaces/valid-file-destination.type';
 import { EnvironmentConfigService } from '../../../../configuration/env/env-config.service';
-import { GetAllGenericResponse } from 'src/common/domain/interfaces/responses/get-all-generic-response.interface';
+import { ICustomGenericResponseWithPagination } from 'src/common/domain/interfaces/responses/custom-generic-response.interface';
 
 export class StaticFilesRepository
   implements IFileRepository<Express.Multer.File>
@@ -82,7 +82,9 @@ export class StaticFilesRepository
     });
   }
 
-  findAll(): Promise<GetAllGenericResponse<Express.Multer.File>> {
+  findAll(): Promise<
+    ICustomGenericResponseWithPagination<Express.Multer.File>
+  > {
     throw new Error('Method not implemented.');
   }
 }
