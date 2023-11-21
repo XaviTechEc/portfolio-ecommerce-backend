@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IShopOrderLocationsDataSourceService } from 'src/shop-order-locations/domain/abstracts/services/shop-order-locations-datasource.abstract.service';
 import {
   CreateShopOrderLocationInput,
@@ -14,51 +17,37 @@ import { ShopOrderLocationFactoryService } from './factory/shop-order-location-f
 @Injectable()
 export class ShopOrderLocationUseCases {
   constructor(
-    private dataService: IShopOrderLocationsDataSourceService,
+    private dataServices: IShopOrderLocationsDataSourceService,
     private shopOrderLocationFactoryService: ShopOrderLocationFactoryService,
   ) {}
-  getShopOrderLocationsBy(
-    term: string,
-    fields: (keyof IShopOrderLocation)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.shopOrderLocations.getShopOrderLocationsBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<IShopOrderLocation>) {
+    return this.dataServices.shopOrderLocations.getMany({ ...props });
   }
-  getAllShopOrderLocation(args?: IGenericArgs<IShopOrderLocation>) {
-    return this.dataService.shopOrderLocations.getAllShopOrderLocation(args);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.shopOrderLocations.getOneById({ ...props });
   }
-  getShopOrderLocationById(id: string): Promise<IShopOrderLocation> {
-    return this.dataService.shopOrderLocations.getShopOrderLocationById(id);
+
+  create(props: CreateProps<CreateShopOrderLocationInput>) {
+    const newShopOrderLocation =
+      this.shopOrderLocationFactoryService.createShopOrderLocation(props.data);
+    return this.dataServices.shopOrderLocations.create({
+      ...props,
+      data: newShopOrderLocation,
+    });
   }
-  createShopOrderLocation(
-    createShopOrderLocationInput: CreateShopOrderLocationInput,
-  ): Promise<IShopOrderLocation> {
-    const shopOrderLocation =
-      this.shopOrderLocationFactoryService.createShopOrderLocation(
-        createShopOrderLocationInput,
-      );
-    return this.dataService.shopOrderLocations.createShopOrderLocation(
-      shopOrderLocation,
-    );
+
+  updateOneById(props: UpdateOneByIdProps<UpdateShopOrderLocationInput>) {
+    const newShopOrderLocation =
+      this.shopOrderLocationFactoryService.updateShopOrderLocation(props.data);
+    return this.dataServices.shopOrderLocations.updateOneById({
+      ...props,
+      data: newShopOrderLocation,
+    });
   }
-  updateShopOrderLocation(
-    id: string,
-    updateShopOrderLocationInput: UpdateShopOrderLocationInput,
-  ): Promise<IShopOrderLocation> {
-    const shopOrderLocation =
-      this.shopOrderLocationFactoryService.updateShopOrderLocation(
-        updateShopOrderLocationInput,
-      );
-    return this.dataService.shopOrderLocations.updateShopOrderLocation(
-      id,
-      shopOrderLocation,
-    );
-  }
-  removeShopOrderLocation(id: string): Promise<IShopOrderLocation> {
-    return this.dataService.shopOrderLocations.removeShopOrderLocation(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.shopOrderLocations.deleteOneById({ ...props });
   }
 }
