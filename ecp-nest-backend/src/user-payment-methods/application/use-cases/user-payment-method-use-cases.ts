@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-
 import {
-  IGenericArgs,
-  PaginationArgs,
-} from 'src/common/domain/dtos/graphql/args';
-import { IUserPaymentMethodsRepository } from 'src/user-payment-methods/domain/abstracts/repositories/user-payment-methods.repository';
+  GetManyProps,
+  GetOneByIdProps,
+  CreateProps,
+  UpdateOneByIdProps,
+  DeleteOneByIdProps,
+} from 'src/common/domain/abstracts/generic-data-methods.repository';
 import { IUserPaymentMethodsDataSourceService } from 'src/user-payment-methods/domain/abstracts/services/user-payment-methods-datasource.abstract.service';
 import {
   CreateUserPaymentMethodInput,
@@ -14,48 +15,39 @@ import { IUserPaymentMethod } from 'src/user-payment-methods/domain/entities/use
 import { UserPaymentMethodFactoryService } from './factory/user-payment-method-factory.service';
 
 @Injectable()
-export class UserPaymentMethodUseCases
-  implements IUserPaymentMethodsRepository<IUserPaymentMethod>
-{
+export class UserPaymentMethodUseCases {
   constructor(
-    private dataService: IUserPaymentMethodsDataSourceService,
+    private dataServices: IUserPaymentMethodsDataSourceService,
     private userPaymentMethodFactoryService: UserPaymentMethodFactoryService,
   ) {}
-  getUserPaymentMethodsBy(
-    term: string,
-    fields: (keyof IUserPaymentMethod)[],
-    paginationArgs: PaginationArgs,
-  ) {
-    return this.dataService.userPaymentMethods.getUserPaymentMethodsBy(
-      term,
-      fields,
-      paginationArgs,
-    );
+
+  getMany(props: GetManyProps<IUserPaymentMethod>) {
+    return this.dataServices.userPaymentMethods.getMany({ ...props });
   }
-  getAllUserPaymentMethods(args?: IGenericArgs<IUserPaymentMethod>) {
-    return this.dataService.userPaymentMethods.getAllUserPaymentMethods(args);
+
+  getOneById(props: GetOneByIdProps) {
+    return this.dataServices.userPaymentMethods.getOneById({ ...props });
   }
-  getUserPaymentMethodById(id: string): Promise<IUserPaymentMethod> {
-    return this.dataService.userPaymentMethods.getUserPaymentMethodById(id);
+
+  create(props: CreateProps<CreateUserPaymentMethodInput>) {
+    const newUserPaymentMethod =
+      this.userPaymentMethodFactoryService.createUserPaymentMethod(props.data);
+    return this.dataServices.userPaymentMethods.create({
+      ...props,
+      data: newUserPaymentMethod,
+    });
   }
-  createUserPaymentMethod(
-    createUserPaymentMethodInput: CreateUserPaymentMethodInput,
-  ): Promise<IUserPaymentMethod> {
-    const upm = this.userPaymentMethodFactoryService.createUserPaymentMethod(
-      createUserPaymentMethodInput,
-    );
-    return this.dataService.userPaymentMethods.createUserPaymentMethod(upm);
+
+  updateOneById(props: UpdateOneByIdProps<UpdateUserPaymentMethodInput>) {
+    const newUserPaymentMethod =
+      this.userPaymentMethodFactoryService.updateUserPaymentMethod(props.data);
+    return this.dataServices.userPaymentMethods.updateOneById({
+      ...props,
+      data: newUserPaymentMethod,
+    });
   }
-  updateUserPaymentMethod(
-    id: string,
-    updateUserPaymentMethodInput: UpdateUserPaymentMethodInput,
-  ): Promise<IUserPaymentMethod> {
-    const upm = this.userPaymentMethodFactoryService.updateUserPaymentMethod(
-      updateUserPaymentMethodInput,
-    );
-    return this.dataService.userPaymentMethods.updateUserPaymentMethod(id, upm);
-  }
-  removeUserPaymentMethod(id: string): Promise<IUserPaymentMethod> {
-    return this.dataService.userPaymentMethods.removeUserPaymentMethod(id);
+
+  deleteOneById(props: DeleteOneByIdProps) {
+    return this.dataServices.userPaymentMethods.deleteOneById({ ...props });
   }
 }

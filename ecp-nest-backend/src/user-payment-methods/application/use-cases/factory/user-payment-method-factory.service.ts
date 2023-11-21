@@ -19,12 +19,14 @@ export class UserPaymentMethodFactoryService {
       createUserPaymentMethodInput.accountNumber;
     newUserPaymentMethod.expiryDate = createUserPaymentMethodInput.expiryDate;
     newUserPaymentMethod.isDefault = createUserPaymentMethodInput.isDefault;
+    newUserPaymentMethod.active = createUserPaymentMethodInput.active;
     return newUserPaymentMethod;
   }
   updateUserPaymentMethod(
     updateUserPaymentMethodInput: UpdateUserPaymentMethodInput,
   ) {
     const newUserPaymentMethod = new IUserPaymentMethod();
+    newUserPaymentMethod.id = updateUserPaymentMethodInput.id;
     newUserPaymentMethod.user = updateUserPaymentMethodInput.user;
     newUserPaymentMethod.paymentMethod =
       updateUserPaymentMethodInput.paymentMethod;
@@ -33,6 +35,7 @@ export class UserPaymentMethodFactoryService {
       updateUserPaymentMethodInput.accountNumber;
     newUserPaymentMethod.expiryDate = updateUserPaymentMethodInput.expiryDate;
     newUserPaymentMethod.isDefault = updateUserPaymentMethodInput.isDefault;
+    newUserPaymentMethod.active = updateUserPaymentMethodInput.active;
     return newUserPaymentMethod;
   }
 }
