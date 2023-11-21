@@ -4,27 +4,29 @@ import { IExceptionsService } from 'src/common/domain/abstracts/services/excepti
 import { ILoggerService } from 'src/common/domain/abstracts/services/logger/logger.abstract.service';
 import { Repository } from 'typeorm';
 import { ShippingMethod } from './postgresql/entities/ShippingMethod.entity';
-import { ShippingMethodsRepository } from './postgresql/repositories/shipping-methods.repository';
+import { ShippingMethodsPostgresRepository } from './postgresql/repositories/shipping-methods.repository';
 import { IShippingMethodsDataSourceService } from 'src/shipping-methods/domain/abstracts/services/shipping-methods-datasource.abstract.service';
 
 @Injectable()
 export class ShippingMethodsDataService
   implements IShippingMethodsDataSourceService, OnApplicationBootstrap
 {
-  shippingMethods: ShippingMethodsRepository;
+  shippingMethods: ShippingMethodsPostgresRepository<ShippingMethod>;
 
   constructor(
     @InjectRepository(ShippingMethod)
-    private shippingMethodsRepository: Repository<ShippingMethod>,
+    private shippingMethodsPostgresRepository: Repository<ShippingMethod>,
     private _loggerService: ILoggerService,
     private _exceptionsService: IExceptionsService,
   ) {}
 
   onApplicationBootstrap() {
-    this.shippingMethods = new ShippingMethodsRepository(
-      this.shippingMethodsRepository,
+    this.shippingMethods = new ShippingMethodsPostgresRepository(
+      this.shippingMethodsPostgresRepository,
       this._loggerService,
       this._exceptionsService,
+      this.constructor.name,
+      'shipping_method',
     );
   }
 }
